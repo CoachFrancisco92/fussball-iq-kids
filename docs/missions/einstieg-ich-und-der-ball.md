@@ -259,3 +259,44 @@ Geprüft: Mit den Überschreibungen bleiben `tag` und die übrigen Felder erhalt
 **Technik**
 - F8: Nummer und Anzeige der Einstiegsmission (`nummer: 0`? „Start“?) und Dateiname bzw. Standardmission (T10).
 - F9: Vorhandener Grammatikfehler „Der Weg zu die freie Stelle war frei.“ korrigieren? Das ändert Mission 1 (Referenztests neu erzeugen, nur nach Freigabe).
+
+---
+
+## 13. Überarbeitung nach Grundsatzentscheidung des Product Owners (18.11.2026)
+**Entscheidung PO:** Variante B – ein Pass in den freien Raum kann eine gute Entscheidung sein, wenn er aus der Situation heraus sinnvoll ist (Erreichbarkeit, Gegnerpositionen, Risiko des Ballverlusts). **Übergeordnetes Prinzip:** Das Lernziel einer Mission darf andere fußballerisch sinnvolle Entscheidungen nicht künstlich abwerten. Schau-Schritt bleibt aus. Texte freundlich, kurz, für Fünfjährige. Mehrere sinnvolle Wege erwünscht, aber nicht bei jeder Aktion nötig.
+
+### 13.1 Notwendige Engine-Anpassungen (geprüft mit einem Wegwerf-Prototyp außerhalb des Repos)
+| # | Anpassung | Kriterien / Inhalt | Auswirkung auf Mission 1 (gemessen) |
+|---|---|---|---|
+| E1 | **Pass in den Raum situationsbezogen bewerten** | gleiche Zeitlogik wie die Simulation: Ballweg frei · nächster Mitspieler kommt **mit Reserve** (Vorschlag ≥ 0,3 s) vor jedem Gegner an · Zielpunkt nicht im Gedränge (≥ 3 m zum nächsten Gegner) · nicht nach hinten · ≥ 4 m weit | **Spielverlauf unverändert** (0 von 200 Abfolgen). Bewertung ändert sich bei 45 von 710 Entscheidungen: 42 × Pässe in den Raum, die bisher einen Stern bekamen, obwohl kein Mitspieler sie sicher erreichen konnte (bisher wurde nur der Ballweg geprüft – eine **Schwäche in Mission 1**, die E1 behebt); 3 × neue „Pass wäre besser“-Hinweise; 2 × Stern neu. Musterweg und Hilfe-Durchlauf unverändert. Referenzen: `golden` (Ablauf „dribbling“ + 54 Abfolgen) und Oberflächen-Mitschrift (1 von 3 Abläufen) **müssen nach Freigabe neu erzeugt werden**. |
+| E1a | **Eigene Texte für Raum-Pässe** | „Du hast den freien Raum für deinen Freund gesehen.“ · „Knapp! {Gegner} wäre fast genauso schnell gewesen.“ · „Dort kommt dein Freund nicht rechtzeitig hin.“ | ohne E1a widersprächen sich Schau-Schritt („Keiner ist frei“) und Rückmeldung („Ein Freund stand frei“) – im Prototyp beobachtet |
+| E2 | **Hilfe: Lernweg je Mission** | Missionsfeld (Daten) `hilfe: { reihenfolge: ['dribbeln', 'schiessen', 'passen'] }` – die Hilfe zeigt die erste Aktion der Reihenfolge, **die in der Lage sinnvoll ist**; ein Zusatztext nennt weitere gute Wege („Ein Pass in den Lauf wäre auch gut.“). Standard = heutige Reihenfolge (Schießen > Passen > Dribbeln). | **keine** (Mission 1 nutzt den Standard; Empfehlungen im Hilfe-Durchlauf geprüft identisch) |
+| E3 | **Flexible Phasen** | `verteidigung: 0` zulassen → Mission endet nach Tor, Ballverlust oder `maxAngriff` | keine (Mission 1 behält 4 + 2) |
+| E4 | Grammatik „zu die freie Stelle“ | eigene Textschlüssel für Raum-Pässe („Der Weg zur freien Stelle war frei.“) | Texte in Mission 1 nur bei Raum-Pässen; zusammen mit E1 neu erzeugen |
+| E5 | **Prinzip absichern** | Test: gleiche Lage ⇒ gleiche Bewertung, **unabhängig von der Mission** (Missionen steuern nur Aufstellung, Hilfe-Reihenfolge, Texte – nie die Bewertung) | keine |
+| E6 | Standardmission eindeutig (T10) | Testlader übernimmt die Reihenfolge aus `index.html` (eine Quelle für App und Tests) | keine |
+
+Prototyp-Ergebnisse für „Freie Bahn!“ (E1): Pass nach (32|21,5) außen in den Lauf von Blau 3 → **gut** (Reserve 0,43 s). Pass nach (30|18) → **nicht gut, knapp** (Reserve 0,11 s – kam in der Simulation an, war aber riskant: *Ergebnis ≠ Entscheidung*). Pässe zu den gedeckten Freunden → weiter nicht gut. Dribbeln nach unten → weiter ⭐. Ohne E2 würde die Hilfe in Moment 1 den Raum-Pass zeigen (feste Reihenfolge) – daher E2.
+
+### 13.2 Überarbeitete fachliche Empfehlung
+1. **Lernziel unverändert** („Ich schaue, wo Platz ist, bevor ich losgehe“), **P1 erweitert:** „Ist vor dir Platz? Nimm den Ball mit – **oder spiel ihn in den Lauf deines Freundes.**“ P2 bleibt.
+2. **Moment 1 hat zwei gute Wege:** Dribbeln in den freien Platz (Lernweg, von der Hilfe erklärt) **und** der sichere Pass in den Lauf. Riskante oder zugestellte Pässe bleiben „nicht gut“ – fußballerisch begründet, nicht wegen des Lernziels.
+3. **Kein Verteidigungsmoment** im Einstieg (E3, `verteidigung: 0`): Er wäre ein drittes Lernprinzip. Die Mission endet mit Tor, Ballverlust (mit „Anders probieren“) oder nach 3 Angriffsentscheidungen. Umschalten und gemeinsames Verteidigen gehören in Lernwelt 3.
+4. **Startlage natürlicher machen (F1):** Rote Spieler stehen torseitig statt hinter dem Ball; die Freunde müssen nicht mehr künstlich zugestellt werden, weil E2 den Lernweg sichert. Neue Lage nach den Engine-Änderungen mit dem `mission-designer` simulieren.
+
+### 13.3 Offene Entscheidungen F1–F9 – Empfehlung
+| F | Frage | Empfehlung | Begründung |
+|---|---|---|---|
+| F1 | Freunde gedeckt hinten, Rot hinter dem Ball? | **Ändern:** Rot torseitig, Freunde natürlich positioniert; nach E1/E2 neu simulieren | wirkte konstruiert; die Zustellung war nur eine Umgehung der Hilfe-Reihenfolge (T2), die E2 löst |
+| F2 | Echte Wahl oben/unten schon im Einstieg? | **Nein**, eine freie Seite; gespiegelte Lage als zweite Lernwelt-1-Mission | weniger Informationen gleichzeitig; T8 zeigte, dass die mittige Lage unruhig wird |
+| F3 | Raum-Pass als gute Entscheidung? | **Ja, mit Kriterien (E1)** – entschieden | PO-Grundsatz; behebt zugleich die bisherige Überbewertung unerreichbarer Pässe in Mission 1 |
+| F4 | Verteidigungsmoment im Einstieg? | **Nein, `verteidigung: 0` (E3)** | max. zwei Lernprinzipien; kleine Engine-Änderung ohne Wirkung auf Mission 1 |
+| F5 | Schau-Schritt? | **Aus** – entschieden | die Frage „Wer steht frei?“ gehört zu Lernwelt 2 |
+| F6 | Texte („Wo ist Platz?“, sanfteres `inGegner`) | **Ja**, beide als missionseigene Texte; zusätzlich Hilfe-Zusatztext für den zweiten guten Weg | kurz, freundlich; ändert Mission 1 nicht |
+| F7 | Passen in Moment 1 nie „gute Idee“? | **Erledigt durch E1/E2** | sicherer Raum-Pass wird gut bewertet; Hilfe erklärt Dribbeln, ohne den Pass abzuwerten |
+| F8 | Nummer, Dateiname, Standardmission | id `einstieg-ich-und-der-ball`; Startbildschirm-Kennzeichnung erst mit der Missionsauswahl; **Standardmission über `index.html`-Reihenfolge (E6)**, Mission 1 bleibt vorerst Start | verhindert den stillen Wechsel der Standardmission (T10) |
+| F9 | Grammatikfehler korrigieren? | **Ja, zusammen mit E1 (E4)** | ein freigegebener Verhaltenswechsel → einmal Referenzen neu erzeugen statt zweimal |
+
+### 13.4 Vorgeschlagene Reihenfolge (nach Freigabe)
+1. **Engine-Paket** (eigener Branch): E1–E6, neue Referenzen für Mission 1 nur nach Freigabe der dokumentierten Abweichungen (Liste der 45 geänderten Bewertungen).
+2. **Missionspaket** (eigener Branch): `mission-designer` simuliert die natürlichere Startlage neu; danach Missionsdatei, Szenario-Tests; Einbindung ohne Missionsauswahl erst, wenn die Startmission geklärt ist.
