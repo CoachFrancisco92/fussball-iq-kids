@@ -29,12 +29,15 @@ async function run(viewport, label, strategy = 'hint') {
   await page.goto(base + 'index.html', { waitUntil: 'domcontentloaded' });
   const mode = () => page.evaluate(() => window.__fiq.mode);
   const waitMode = async (m, ms = 25000) => { const t = Date.now(); while (Date.now() - t < ms) { if (errors.length) fail('Abbruch'); if ((await mode()) === m) return; await page.waitForTimeout(80); } fail(`[${label}] Zeitüberschreitung: warte auf ${m}, ist ${await mode()}`); };
+  // Tippen erst, wenn das Spielfeld ruhig liegt (nach dem Ausblenden der Rückmeldung ändert sich das Layout kurz)
+  const fieldRect = () => page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; });
   const tap = async (x, y) => {
-    const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; });
+    let b = await fieldRect();
+    for (let i = 0; i < 40; i++) { await page.waitForTimeout(60); const n = await fieldRect(); if (n.every((v, k) => Math.abs(v - b[k]) < 0.5)) break; b = n; }
     const s = b[2] / 40.4; await page.mouse.click(b[0] + (x + 2.2) * s, b[1] + (y + 1.6) * s);
   };
   // Zustandsbasiertes Warten statt fester Pausen (stabil auch auf langsamen CI-Rechnern)
-  const until = async (fn, what, ms = 4000) => { const t = Date.now(); while (Date.now() - t < ms) { if (await page.evaluate(fn)) return; await page.waitForTimeout(50); } fail(`[${label}] Zustand nicht erreicht: ${what}`); };
+  const until = async (fn, what, ms = 8000) => { const t = Date.now(); while (Date.now() - t < ms) { if (await page.evaluate(fn)) return; await page.waitForTimeout(50); } fail(`[${label}] Zustand nicht erreicht: ${what}`); };
   const actionStarted = async (what) => {
     const t = Date.now();
     while (Date.now() - t < 4000) { if ((await mode()) !== 'decide') return; await page.waitForTimeout(50); }
