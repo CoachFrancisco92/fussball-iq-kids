@@ -55,7 +55,14 @@ async function run(viewport, label, strategy = 'hint') {
     });
     const label = await page.evaluate((k) => FIQ.ACTIONS[k].label, plan.k);
     if (!(await page.locator('#actions .act.on').count())) await page.locator('#actions .act', { hasText: label }).click();
-    for (const t of plan.taps) { await tap(...t); await page.waitForTimeout(150); }
+    for (const t of plan.taps) { await tap(...t); await page.waitForTimeout(250); }
+    // Diagnose: hat der Tipp keine Aktion ausgelöst, Zustand ausgeben und bewusst mit der Hilfe weitermachen
+    for (let w = 0; w < 20 && (await mode()) === 'decide'; w++) await page.waitForTimeout(100);
+    if ((await mode()) === 'decide') {
+      const diag = await page.evaluate(() => ({ ctx: window.__fiq.ctx.type, actions: window.__fiq.ctx.actions, players: window.__fiq.S.players.map((p) => p.id + '@' + p.x.toFixed(1) + ',' + p.y.toFixed(1)) }));
+      console.log(`  ⚠ [${label}] Tipp ohne Wirkung: ${JSON.stringify(plan)} ${JSON.stringify(diag)}`);
+      await followHint();
+    }
   };
 
   await page.click('#play');
