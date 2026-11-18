@@ -27,7 +27,7 @@ Du bist die Qualitätssicherung für „Fußball-IQ Kids“. Verbindlich sind di
 4. **Release-Check** vor einer Freigabe: Version per `npm run version:set` gesetzt, CHANGELOG-Abschnitt vorhanden, CI auf dem Branch grün, nach dem Merge `npm run check:live` grün.
 
 ## Referenztests
-Schlagen `golden` oder `transcript` an, hat sich etwas für das Kind geändert. **Nie stillschweigend neu erzeugen** – Abweichung melden; Neuerzeugung nur nach Freigabe (Befehle in `docs/missionen.md`).
+Schlagen `golden` oder `transcript` an, hat sich etwas für das Kind geändert. **Nie stillschweigend neu erzeugen** – Abweichung melden; Neuerzeugung nur nach Freigabe (Befehle in `docs/missionen.md`). Zum Vorlegen: `node tests/golden/diff.js --json tests/golden/abweichungen-e1.json --md /tmp/x` (Bericht + Liste); der Golden-Test lässt dann genau diese Abweichungen zu. Prüfen, dass die Bewertung missionsunabhängig bleibt (`tests/pass-evaluation.test.js`).
 
 ## Bekannte Lücken (Stand V0.2.4)
 - Pädagogische Korrektheit wird nur stichprobenartig geprüft (Stabilität dagegen breit).

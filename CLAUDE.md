@@ -8,6 +8,7 @@ Fußballspiel mit Entscheidungstraining für Kinder ab 5 (PWA): Das Kind erlebt 
 ## Leitplanken (nicht verhandelbar)
 1. **Deterministisch:** keine Zufallswerte in Engine oder App. Gleiche Lage + gleiche Entscheidung = gleiches Ergebnis.
 2. **Entscheidung ≠ Ergebnis:** Bewertet werden *Entscheidung* (Aktionsart), *Ausführung* (Ziel) und *Ergebnis* getrennt. Stern nur bei guter Entscheidung **und** Ausführung.
+   Die Bewertung ist **missionsunabhängig**: gleiche Lage + gleiche Entscheidung = gleiche Bewertung in jeder Mission. Missionen steuern nur, welchen guten Weg die Hilfe zuerst zeigt (`hilfe`).
 3. **Keine Musterlösung erzwingen:** Das Spiel reagiert auf jede Entscheidung; es springt nie auf einen „richtigen“ Pfad zurück.
 4. **Für Fünfjährige:** max. 2–3 Aktionen gleichzeitig, alles wird vorgelesen, kein Lesen nötig, große Tippflächen.
 5. **Datenschutz:** keine Konten, kein Tracking, keine Server-Aufrufe, keine KI zur Laufzeit, **keine echten Kindernamen** in Code, Texten, Tests oder Commits.
@@ -22,7 +23,7 @@ Fußballspiel mit Entscheidungstraining für Kinder ab 5 (PWA): Das Kind erlebt 
 | `index.html` | Layout, Styles, Ladereihenfolge: Texte → Missionen → Engine → App |
 | `sw.js`, `manifest.webmanifest`, `icon*` | PWA / Offline |
 | `scripts/` | `site-files.json` (Auslieferungsliste), `build-site.mjs`, `set-version.mjs`, `check-live.mjs` |
-| `tests/` | `simulation`, `branches` (200 Fehlabfolgen), `golden` (Mission 1 ≙ v0.2.3), `missions` (Trennung, Testmission), `look` (Wahrnehmung), `dom`, `release`, `e2e/play.mjs`, `e2e/transcript.mjs` (Oberflächen-Mitschrift ≙ v0.2.3) |
+| `tests/` | `simulation`, `branches` (200 Fehlabfolgen), `golden` (Mission 1 ≙ v0.2.3, vorgelegte Abweichungen in `golden/abweichungen-e1.json`), `pass-evaluation` (Raumpass, Hilfe, Missionsunabhängigkeit), `missions` (Trennung, Testmission), `look` (Wahrnehmung), `dom`, `release`, `e2e/play.mjs`, `e2e/transcript.mjs` (Oberflächen-Mitschrift ≙ v0.2.3) |
 | `docs/` | `RELEASE.md`, `missionen.md`, `bestandsaufnahme-2026-11.md` |
 
 Kein Framework, kein Build-Tool, keine Laufzeit-Abhängigkeiten. `playwright` ist die einzige Entwicklungs-Abhängigkeit.
@@ -45,7 +46,7 @@ Agenten aufrufen: Nach Änderungen an `engine.js`/`app.js` → `simulation-qa`. 
 - Keine neuen Missionen oder Spielfunktionen, wenn der Auftrag sie nicht ausdrücklich nennt.
 - Fehlschlagende Tests werden verstanden und behoben – **nie durch Lockern der Tests** „grün gemacht“.
 - Änderungen an Bewertung oder Gegnerverhalten: Wirkung auf Mission 1 per Test belegen.
-- **Referenztests nie stillschweigend neu erzeugen.** Schlagen `golden`/`transcript` an, hat sich Verhalten oder Text für das Kind geändert – nur nach Freigabe neu erzeugen und im CHANGELOG benennen.
+- **Referenztests nie stillschweigend neu erzeugen.** Schlagen `golden`/`transcript` an, hat sich Verhalten oder Text für das Kind geändert – nur nach Freigabe neu erzeugen und im CHANGELOG benennen. Bis zur Freigabe werden die Abweichungen mit `node tests/golden/diff.js --json tests/golden/abweichungen-e1.json` vorgelegt; der Test lässt dann genau diese zu.
 - Neue Missionen ohne Änderung an `engine.js` (Ablauf: `docs/missionen.md`).
 - Versionsnummer nur über `npm run version:set -- X.Y.Z` ändern.
 

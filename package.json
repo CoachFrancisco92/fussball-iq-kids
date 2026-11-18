@@ -1,6 +1,6 @@
 {
   "name": "fussball-iq-kids",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "private": true,
   "description": "Fußballspiel mit Entscheidungstraining für Kinder ab 5 Jahren (PWA)",
   "scripts": {

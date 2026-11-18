@@ -1,5 +1,16 @@
 # Changelog
 
+## V0.3.0 – Engine-Paket E1–E6 (Bewertung Raumpass, Hilfe-Lernweg, optionale Abwehrphase)
+**Zur Freigabe vorgelegt, nicht veröffentlicht.** Spielverlauf von Mission 1 unverändert; geändert sind Bewertung und Rückmeldetexte in 151 Entscheidungen (vollständig: `docs/bewertungsaenderungen-e1.md`). Referenzaufnahmen v0.2.3 **nicht** neu erzeugt; die Tests lassen genau die vorgelegten Abweichungen zu (`tests/golden/abweichungen-e1.json`).
+- **E1 Pass in den Raum:** gut, wenn der Passweg frei ist **und** der Mitspieler mindestens 0,3 s vor dem nächsten Gegner ankommt (Startwert, `CFG.spaceReserve`). Keine pauschale 3-m-Regel, Rückpässe nicht abgewertet. Gleiche Zeitrechnung wie die Simulation (`spaceContest`). Rückmeldung nennt den schnelleren Gegner. Folge in Mission 1: 17 Raumpässe ohne Stern (knapp/Gegner zuerst), 2 mit neuem Stern.
+- **E2 Hilfe:** Reihenfolge je Mission (`hilfe.reihenfolge`), optional Alternativen nennen (`hilfe.alternativenNennen`). Empfiehlt nur sinnvolle Aktionen. Mission 1: Reihenfolge wie bisher, Empfehlung in allen 614 geprüften Lagen gleich. Korrigiert: Hilfe zeigte in 2 Lagen auf einen gedeckten Mitspieler und in 2 Lagen einen versperrten Dribbelpunkt.
+- **E3 Abwehrphase optional:** `phasen.verteidigung: 0` beendet die Mission nach dem Angriff.
+- **E4 Grammatik:** „zur freien Stelle“.
+- **E5 Bewertung missionsunabhängig** (Test über alle Lagen).
+- **E6 Testlader** lädt Skripte in der Reihenfolge von `index.html`.
+- Dribbeln bleibt gut, wenn nur ein Raumpass sicher gewesen wäre (neuer Text, Stern bleibt).
+- Neue Tests `tests/pass-evaluation.test.js` (13), Analyse `tests/analysis/pass-reserve.js`, Abweichungsbericht `tests/golden/diff.js`.
+
 ## V0.2.4 – Missionsarchitektur (Phase 2)
 **Für das Kind ändert sich nichts** – nachgewiesen gegen Referenzaufnahmen von v0.2.3. Ziel: Missionen und Texte ohne Eingriff in die Simulation pflegen.
 - **Missionen als Daten:** `missions/mission-1.js` enthält Aufstellung, Neustarts, Phasen (`maxAngriff`/`verteidigung`), Lernziele, Schau-Schritt-Einstellung, Startbildschirm-Texte und den Merksatz. Die Engine liest Missionen aus einer Registrierung; `newState(id)`, `newMission(id)`; ohne id die erste Mission.
