@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Fußball-IQ Kids</title>
+<meta name="theme-color" content="#1e3a8a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Fußball-IQ">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a; --blue: #2563eb; --blue-d: #1e3a8a; --red: #e11d48; --sun: #ffd60a;
+    --paper: #fffdf6; --grass: #2f8f3e;
+    --font: "Baloo 2", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; background: #14532d; color: var(--ink); font-family: var(--font); overflow: hidden; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  button { font-family: inherit; cursor: pointer; border: 0; }
+  #app { position: fixed; inset: 0; display: flex; flex-direction: column;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    background: radial-gradient(120% 90% at 50% 0%, #1f7a3a 0%, #14532d 70%); }
+
+  /* Kopfzeile */
+  header { display: flex; align-items: center; gap: 10px; padding: 8px 12px; color: #fff; }
+  .round { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; font-size: 22px; display: grid; place-items: center; flex: none; }
+  .round:active { transform: scale(.94); }
+  .mtitle { font-weight: 800; font-size: 17px; line-height: 1.1; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mtitle small { display: block; font-weight: 600; font-size: 12px; opacity: .75; }
+  #progress { display: flex; gap: 6px; }
+  .dot { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.18); display: grid; place-items: center; font-size: 14px; font-weight: 800; color: rgba(255,255,255,.8); }
+  .dot.cur { background: #fff; color: var(--blue-d); box-shadow: 0 0 0 3px rgba(255,214,10,.8); }
+  .dot.done { background: rgba(255,255,255,.4); color: #fff; }
+  .dot.star { background: var(--sun); color: #7a5a00; }
+  #score { white-space: nowrap; font-weight: 800; font-size: 20px; background: rgba(0,0,0,.25); padding: 2px 12px; border-radius: 999px; }
+  #score::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #60a5fa; margin-right: 6px; vertical-align: 1px; }
+  #score::after { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #fb7185; margin-left: 6px; vertical-align: 1px; }
+
+  /* Spielfeld */
+  #fieldWrap { position: relative; flex: 1; min-height: 0; margin: 0 8px; }
+  #field { position: absolute; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); touch-action: none; }
+  #prompt { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 10px;
+    background: rgba(255,253,246,.96); padding: 6px 8px 6px 14px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.25); max-width: calc(100% - 16px); transition: opacity .2s; }
+  #prompt.dim { opacity: .55; }
+  #prompt h2 { margin: 0; font-size: clamp(16px, 2.6vw, 22px); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tag { font-size: 12px; font-weight: 800; padding: 2px 10px; border-radius: 999px; color: #fff; white-space: nowrap; }
+  .tag.att { background: var(--blue); } .tag.def { background: var(--red); }
+  #decNo { font-weight: 700; font-size: 13px; opacity: .55; }
+  #repeat { width: 38px; height: 38px; border-radius: 50%; background: #eef2ff; font-size: 18px; flex: none; }
+  #step { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 3; background: rgba(15,23,42,.82); color: #fff; padding: 6px 16px; border-radius: 999px; font-weight: 700; font-size: clamp(14px, 2.2vw, 18px); max-width: calc(100% - 20px); text-align: center; }
+  #portraitTip { position: absolute; left: 10px; top: calc(50% + 31vw); white-space: nowrap; z-index: 3; background: rgba(0,0,0,.5); color: #fff; font-size: 13px; padding: 4px 10px; border-radius: 999px; }
+
+  /* Aktionsleiste */
+  #bar { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 12px 12px; min-height: 92px; }
+  #actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  #actions.wiggle { animation: wig .45s; }
+  @keyframes wig { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  .act { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; min-width: 96px; height: 76px; padding: 4px 14px; border-radius: 20px;
+    background: var(--paper); color: var(--ink); font-weight: 800; font-size: 16px; box-shadow: 0 5px 0 #c9c2a5, 0 8px 18px rgba(0,0,0,.25); transition: transform .08s; }
+  .act .ico { font-size: 30px; line-height: 1.1; }
+  .act:active { transform: translateY(3px); box-shadow: 0 2px 0 #c9c2a5; }
+  .act.on { background: var(--sun); box-shadow: 0 5px 0 #b89600, 0 0 0 4px #fff; }
+  .act.hint { background: rgba(255,255,255,.18); color: #fff; box-shadow: none; min-width: 78px; }
+  #cancel { background: rgba(255,255,255,.18); color: #fff; }
+
+  /* Rückmeldung */
+  .sheet { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 6; width: min(640px, calc(100% - 20px));
+    background: var(--paper); border-radius: 26px; padding: 14px 16px 16px; box-shadow: 0 18px 50px rgba(0,0,0,.45); animation: up .25s ease-out; }
+  @keyframes up { from { transform: translate(-50%, 30px); opacity: 0; } }
+  .fbTop { display: flex; gap: 12px; align-items: center; }
+  #fbIcon { font-size: 46px; line-height: 1; }
+  #fbText { margin: 0; font-size: clamp(17px, 2.6vw, 22px); font-weight: 800; line-height: 1.2; }
+  .why { margin: 6px 0 0; font-size: 15px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; }
+  .why.good { background: #fff3b0; color: #6b4e00; } .why.think { background: #e0e7ff; color: #3730a3; }
+  .fbBtns { display: flex; gap: 10px; margin-top: 12px; }
+  .fbBtns button { flex: 1; height: 64px; border-radius: 18px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .fbBtns .ico { font-size: 26px; }
+  #fbRetry { background: #e0e7ff; color: #3730a3; box-shadow: 0 4px 0 #a5b4fc; }
+  #fbCompare { background: #fce7f3; color: #9d174d; box-shadow: 0 4px 0 #f9a8d4; }
+  #fbNext { background: var(--blue); color: #fff; box-shadow: 0 4px 0 var(--blue-d); }
+  .fbBtns button:active { transform: translateY(2px); }
+  #skip { position: absolute; right: 12px; bottom: 12px; z-index: 6; background: var(--paper); border-radius: 999px; padding: 10px 18px; font-weight: 800; }
+
+  /* Vollbild-Screens */
+  .screen { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 20px;
+    background: radial-gradient(100% 80% at 50% 10%, rgba(37,99,235,.92), rgba(30,58,138,.97)); color: #fff; text-align: center; }
+  .screen .inner { max-width: 560px; width: 100%; }
+  .logo { font-size: 64px; line-height: 1; animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(-8px) rotate(12deg); } }
+  .screen h1 { margin: 6px 0 0; font-size: clamp(34px, 7vw, 52px); font-weight: 800; letter-spacing: -.5px; line-height: 1; }
+  .screen h1 span { color: var(--sun); }
+  .sub { margin: 6px 0 18px; font-size: 17px; opacity: .85; font-weight: 600; }
+  .mcard { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.25); border-radius: 22px; padding: 14px 16px; text-align: left; display: flex; gap: 14px; align-items: center; }
+  .mcard .num { width: 54px; height: 54px; border-radius: 16px; background: var(--sun); color: #6b4e00; font-size: 26px; font-weight: 800; display: grid; place-items: center; flex: none; }
+  .mcard b { font-size: 20px; display: block; line-height: 1.1; }
+  .mcard small { opacity: .8; font-size: 14px; font-weight: 600; }
+  .chips { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .chips span { background: rgba(255,255,255,.18); padding: 1px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+  .big { margin-top: 20px; height: 76px; padding: 0 44px; border-radius: 999px; background: var(--sun); color: #3d2e00; font-size: 26px; font-weight: 800; box-shadow: 0 6px 0 #b89600, 0 12px 30px rgba(0,0,0,.3); }
+  .big:active { transform: translateY(3px); box-shadow: 0 3px 0 #b89600; }
+  .how { display: flex; justify-content: center; gap: 18px; margin-top: 22px; font-size: 14px; font-weight: 700; opacity: .9; }
+  .how div { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .how i { font-style: normal; font-size: 28px; }
+  #stars { font-size: 46px; letter-spacing: 4px; margin: 6px 0; }
+  #stars span { color: rgba(255,255,255,.25); } #stars span.on { color: var(--sun); text-shadow: 0 0 18px rgba(255,214,10,.6); }
+  #endScore { font-weight: 800; font-size: 18px; opacity: .85; }
+  #endMsg { font-size: 18px; font-weight: 600; margin: 10px 0; }
+  #endList { list-style: none; padding: 0; margin: 10px auto; max-width: 420px; text-align: left; font-weight: 700; }
+  #endList li { background: rgba(255,255,255,.1); margin: 4px 0; padding: 6px 12px; border-radius: 12px; display: flex; gap: 10px; }
+  #endList li span { margin-left: auto; } #endList b { opacity: .6; }
+  .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .row .big { padding: 0 26px; font-size: 20px; height: 64px; }
+  .row .ghost { background: rgba(255,255,255,.16); color: #fff; box-shadow: none; }
+
+  /* Tor-Effekte */
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 8; overflow: hidden; }
+  #confetti i { position: absolute; top: -12px; width: 10px; height: 14px; border-radius: 2px; animation: fall 1.6s ease-in forwards; }
+  @keyframes fall { to { top: 105%; transform: rotate(540deg) translateX(40px); } }
+  .goalBanner { position: fixed; left: 50%; top: 42%; transform: translate(-50%, -50%) scale(.3); z-index: 9; font-size: clamp(44px, 10vw, 96px); font-weight: 800; color: #fff; opacity: 0; pointer-events: none; text-shadow: 0 6px 0 rgba(0,0,0,.25); }
+  .goalBanner.show { animation: pop 1.6s ease-out forwards; }
+  .goalBanner.blue { color: var(--sun); }
+  @keyframes pop { 15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } 30% { transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1); } }
+
+  [hidden] { display: none !important; }
+  @media (max-height: 460px) {
+    header { padding: 4px 10px; } .round { width: 38px; height: 38px; font-size: 18px; }
+    #bar { min-height: 70px; padding: 6px 10px 8px; } .act { height: 60px; min-width: 84px; font-size: 14px; } .act .ico { font-size: 24px; }
+    .dot { width: 24px; height: 24px; font-size: 12px; }
+    .fbBtns button { height: 52px; }
+  }
+  @media (max-width: 560px) { .mtitle { display: none; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <button class="round" id="home" aria-label="Start">🏠</button>
+    <div class="mtitle">Mission 1: Zusammen sind wir stark!<small>3 gegen 3 · Einsteiger</small></div>
+    <div id="progress"></div>
+    <div id="score">0 : 0</div>
+    <button class="round" id="sound" aria-label="Ton an/aus">🔊</button>
+  </header>
+
+  <div id="fieldWrap">
+    <canvas id="field"></canvas>
+    <div id="prompt" hidden>
+      <span class="tag att" id="tag">Angriff</span>
+      <h2 id="title">…</h2>
+      <span id="decNo"></span>
+      <button id="repeat" aria-label="Nochmal hören">🔈</button>
+    </div>
+    <div id="step" hidden></div>
+    <div id="portraitTip" hidden>📱↻ Quer halten macht's größer</div>
+
+    <div class="sheet" id="feedback" hidden>
+      <div class="fbTop">
+        <div id="fbIcon">👍</div>
+        <div>
+          <p id="fbText"></p>
+          <p class="why" id="fbWhy"></p>
+        </div>
+      </div>
+      <div class="fbBtns">
+        <button id="fbRetry"><span class="ico">↩️</span><span>Anders probieren</span></button>
+        <button id="fbCompare" hidden><span class="ico">🔁</span><span>Vergleichen</span></button>
+        <button id="fbNext"><span class="ico">▶️</span><span class="lbl">Weiterspielen</span></button>
+      </div>
+    </div>
+    <button id="skip" hidden>Überspringen ⏭</button>
+  </div>
+
+  <div id="bar">
+    <div id="actions"></div>
+    <button class="act" id="cancel" hidden><span class="ico">✖</span><span>Zurück</span></button>
+  </div>
+</div>
+
+<div class="screen" id="startScreen">
+  <div class="inner">
+    <div class="logo">⚽</div>
+    <h1>Fußball-<span>IQ</span> Kids</h1>
+    <p class="sub">Schau hin. Entscheide. Probier's aus!</p>
+    <div class="mcard">
+      <div class="num">1</div>
+      <div>
+        <b>Zusammen sind wir stark!</b>
+        <small>Fünf Entscheidungen · Angriff und Verteidigung</small>
+        <div class="chips"><span>3 gegen 3</span><span>4 Minitore</span><span>Einsteiger</span></div>
+      </div>
+    </div>
+    <button class="big" id="play">▶ Los geht's</button>
+    <div class="how">
+      <div><i>🔵</i>Du spielst Blau</div>
+      <div><i>👆</i>Knopf, dann Feld</div>
+      <div><i>↩️</i>Nochmal probieren</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="endScreen" hidden>
+  <div class="inner">
+    <div class="logo">🏆</div>
+    <h1>Mission <span>geschafft!</span></h1>
+    <div id="stars"></div>
+    <div id="endScore"></div>
+    <p id="endMsg"></p>
+    <ul id="endList"></ul>
+    <div class="row">
+      <button class="big" id="hl">🎬 Szenen ansehen</button>
+      <button class="big" id="again">🔄 Nochmal</button>
+      <button class="big ghost" id="home2">🏠</button>
+    </div>
+  </div>
+</div>
+
+<div id="confetti"></div>
+<div class="goalBanner" id="goalBanner"></div>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
