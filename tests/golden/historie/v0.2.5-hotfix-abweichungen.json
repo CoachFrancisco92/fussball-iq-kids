@@ -1,0 +1,61 @@
+{
+ "grund": "zur Freigabe vorgelegt, Referenzen noch NICHT aktualisiert",
+ "bericht": "",
+ "geaenderteEntscheidungen": 17,
+ "spielverlaufGeaendert": [
+  "Abfolge 12",
+  "Abfolge 24",
+  "Abfolge 46",
+  "Abfolge 56",
+  "Abfolge 74",
+  "Abfolge 128",
+  "Abfolge 136",
+  "Abfolge 144",
+  "Abfolge 172",
+  "Abfolge 182"
+ ],
+ "scripted": {},
+ "hinted": null,
+ "seeds": {
+  "12": {
+   "alt": "98c5c74281616793",
+   "neu": "0930d696d9d615ec"
+  },
+  "24": {
+   "alt": "44f7b9b2e4e672cc",
+   "neu": "160ef1d2cfbf1085"
+  },
+  "46": {
+   "alt": "5587a0c45e339660",
+   "neu": "70c114251c64a2c2"
+  },
+  "56": {
+   "alt": "5fc61daf8c99af76",
+   "neu": "f8afe96f6bddb888"
+  },
+  "74": {
+   "alt": "4403ae10361bb771",
+   "neu": "b1e8d6004460242d"
+  },
+  "128": {
+   "alt": "eb1db99ad61573ec",
+   "neu": "b80fe8e2e7a892f8"
+  },
+  "136": {
+   "alt": "0d33aec062a78f1d",
+   "neu": "34026dee65afa220"
+  },
+  "144": {
+   "alt": "44afd099cd9647c8",
+   "neu": "ef891789e9e473d3"
+  },
+  "172": {
+   "alt": "f309b310d2865446",
+   "neu": "e3533ba0e2fc1fc4"
+  },
+  "182": {
+   "alt": "8fd430711d30bb56",
+   "neu": "c61ba941b949ce21"
+  }
+ }
+}

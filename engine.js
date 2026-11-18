@@ -535,6 +535,10 @@
     }
     s.ball.flight.from = c.id;
     s.ball.flight.recv = recv.id;
+    if (isAI && c.team === 'red') {
+      s.ai.lastPass = { from: c.id, to: recv.id };
+      if (s.ep && s.ep.endT != null) s.ep.endPassers = (s.ep.endPassers || []).concat(c.id);
+    }
     if (isAI) event(s, c.team === 'red' ? 'redPass' : 'pass');
     else if (s.ep && !s.ep.explain) s.ep.explain = { from: { x: c.x, y: c.y }, to: { x: to.x, y: to.y }, ok: !hit, key: hit ? hit.id : null };
   }
@@ -604,6 +608,7 @@
     const m = F.goals.blue.map((g) => lane(c, g, CFG.shotSpeed, team(s, 'blue'), CFG.blueReact, CFG.blockReach).margin);
     s.ai.goal = m[0] >= m[1] ? 0 : 1;
     s.ai.next = 0;
+    s.ai.lastPass = null;
   }
 
   function redCarrierAI(s, c) {
@@ -618,7 +623,12 @@
       const gi = lanes[0] >= lanes[1] ? 0 : 1;
       if (lanes[gi] > CFG.shotLaneOk) { event(s, 'redShot'); doShot(s, c, gi); return; }
     }
-    const passes = () => passOptions(s).filter((o) => o.margin > CFG.passLaneOk && P(s, o.id).x < c.x + 3).sort((a, b) => b.margin - a.margin)[0];
+    // Kein sofortiger Rückpass an den, von dem der Ball gerade kam (sonst Pass-Pingpong zweier Gegner unter Druck)
+    const back = s.ai.lastPass && s.ai.lastPass.to === c.id ? s.ai.lastPass.from : null;
+    // Ist das Szenenende schon eingeleitet, spielt jeder Gegner höchstens noch einmal ab. So endet jede Szene sicher:
+    // höchstens drei weitere Pässe, danach behält der Ballführende den Ball (gültiger Zustand für die nächste Entscheidung).
+    const ended = s.ep && s.ep.endT != null && (s.ep.endPassers || []).includes(c.id);
+    const passes = () => (ended ? undefined : passOptions(s).filter((o) => o.margin > CFG.passLaneOk && P(s, o.id).x < c.x + 3 && o.id !== back).sort((a, b) => b.margin - a.margin)[0]);
     // 2) Unter Druck -> abspielen oder ausweichen
     if (pressured) {
       const o = passes();
