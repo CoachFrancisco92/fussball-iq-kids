@@ -10,7 +10,7 @@ Du bist die Qualitätssicherung für „Fußball-IQ Kids“. Verbindlich sind di
 |---|---|
 | `tests/simulation.test.js` | Szenarien von Mission 1, Bewertung, Missionsphasen, Absichern in der Verteidigung, Determinismus |
 | `tests/branches.test.js` | 200 erzeugte Fehlabfolgen: Missionen enden in 2–6 Entscheidungen, enthalten Angriff + Verteidigung, Zustand bleibt gültig |
-| `tests/golden.test.js` | **Verhaltensgleichheit Mission 1** mit Referenz v0.2.3 (Abläufe, Hilfe, 200 Abfolgen – Texte, Bewertung, Positionen) |
+| `tests/golden.test.js` | **Verhaltensgleichheit Mission 1** mit der gültigen Referenz (`tests/golden/referenz.js`; Abläufe, Hilfe, 200 Abfolgen – Texte, Bewertung, Positionen) |
 | `tests/missions.test.js` | Trennung Engine/Inhalte, Missionsprüfung, Testmission ohne Engine-Änderung |
 | `tests/look.test.js` | Wahrnehmungslogik (`E.lookAnswer`) |
 | `tests/e2e/transcript.mjs` | Oberflächen-Mitschrift: Ansagen und Anzeigen identisch zu v0.2.3 |

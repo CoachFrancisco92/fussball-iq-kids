@@ -1,0 +1,171 @@
+{
+ "herkunft": "Mission 1, Kinder-Abfolge 12 (tests/golden/trace.js), 4. Entscheidung: Verteidigung. In v0.2.4 endet „Weg versperren“ von Blau 1 auf (1/1) nie (Rot spielt sich den Ball endlos zu).",
+ "zustand": {
+  "missionId": "mission-1",
+  "players": [
+   {
+    "id": "b1",
+    "team": "blue",
+    "num": 1,
+    "x": 16.19243346292178,
+    "y": 8.687065876991978,
+    "tx": 7.474255566485226,
+    "ty": 3.2087312922813,
+    "vx": -3.725520958008577,
+    "vy": -2.3410454056764585,
+    "ctrl": "run",
+    "delay": -0.016666666666666646,
+    "tackleT": 0,
+    "role": null
+   },
+   {
+    "id": "b2",
+    "team": "blue",
+    "num": 2,
+    "x": 26.22431481506032,
+    "y": 3.1111064578186864,
+    "tx": 23.511019952139566,
+    "ty": 3.3236707519567417,
+    "vx": -2.791446946422237,
+    "vy": 0.2186868658835486,
+    "ctrl": null,
+    "delay": 0,
+    "tackleT": 0,
+    "role": "cover"
+   },
+   {
+    "id": "b3",
+    "team": "blue",
+    "num": 3,
+    "x": 21.06648726018748,
+    "y": 19.00683388012705,
+    "tx": 21.06648726018748,
+    "ty": 19.00683388012705,
+    "vx": -2.799966869040096,
+    "vy": -0.01362102337565236,
+    "ctrl": null,
+    "delay": 0,
+    "tackleT": 0,
+    "role": "cover"
+   },
+   {
+    "id": "r1",
+    "team": "red",
+    "num": 1,
+    "x": 28.143879818743113,
+    "y": 13.966808781977482,
+    "tx": 5,
+    "ty": 6,
+    "vx": -3.025750710100133,
+    "vy": -1.0415529944887802,
+    "ctrl": null,
+    "delay": 0,
+    "tackleT": 0,
+    "role": "press"
+   },
+   {
+    "id": "r2",
+    "team": "red",
+    "num": 2,
+    "x": 25.855619921834748,
+    "y": 3.0522246532009323,
+    "tx": 23.194308997244782,
+    "ty": 3.0522246532009323,
+    "vx": -2.4,
+    "vy": 0,
+    "ctrl": null,
+    "delay": -0.016666666666666618,
+    "tackleT": 0,
+    "role": "support"
+   },
+   {
+    "id": "r3",
+    "team": "red",
+    "num": 3,
+    "x": 23.423750924281535,
+    "y": 19.121406672771453,
+    "tx": 23.194308997244782,
+    "ty": 19.121406672771453,
+    "vx": -2.4,
+    "vy": 0,
+    "ctrl": null,
+    "delay": 0,
+    "tackleT": 0,
+    "role": "support"
+   }
+  ],
+  "ball": {
+   "x": 27.151055366991507,
+   "y": 13.62504920566085,
+   "owner": "r1",
+   "flight": null
+  },
+  "poss": "red",
+  "score": {
+   "blue": 0,
+   "red": 0
+  },
+  "t": 8.283333333333324,
+  "ai": {
+   "goal": 0,
+   "next": 8.299999999999981,
+   "mode": "attack"
+  },
+  "ep": {
+   "a": {
+    "kind": "pass",
+    "x": 7.474255566485226,
+    "y": 3.2087312922813
+   },
+   "t": 1.816666666666665,
+   "endT": 1.7999999999999998,
+   "events": [
+    {
+     "type": "intercepted",
+     "t": 0.15,
+     "by": "r2",
+     "team": "blue"
+    },
+    {
+     "type": "redPass",
+     "t": 0.16666666666666666
+    },
+    {
+     "type": "received",
+     "t": 1.4166666666666665,
+     "by": "r1",
+     "team": "red"
+    }
+   ],
+   "frames": [],
+   "startPoss": "blue",
+   "eval": {
+    "good": false,
+    "rec": {
+     "good": false,
+     "why": "Ein Tor war frei – Schießen wäre gut gewesen."
+    },
+    "exe": {
+     "good": true,
+     "why": "Das war noch der beste Passweg."
+    },
+    "why": "Ein Tor war frei – Schießen wäre gut gewesen."
+   },
+   "phase": "main",
+   "restart": null,
+   "explain": {
+    "from": {
+     "x": 30.800000000000097,
+     "y": 2.3733333333332975
+    },
+    "to": {
+     "x": 7.474255566485226,
+     "y": 3.2087312922813
+    },
+    "ok": false,
+    "key": "r2"
+   },
+   "done": true
+  }
+ }
+}
