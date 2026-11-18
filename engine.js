@@ -33,7 +33,8 @@
     // Pass in den Raum: Mindest-Vorsprung (s) des Empfängers vor dem schnellsten Gegner am Zielpunkt.
     // 0,3 s ≈ Puffer für einen Gegner, der 1 m besser steht oder 0,1 s schneller reagiert
     // (Analyse: tests/analysis/pass-reserve.js – ab 0,3 s in 100 % der Fälle robust, 0,2–0,3 s nur 62 %).
-    spaceReserve: 0.3,
+    spaceReserve: 0.3,      // ab hier „frei“: klar sicher, nur solche Punkte zeigt die Hilfe bevorzugt
+    spaceReserveMin: 0.1,   // ab hier „knapp, aber gut“ (Stern): in der Simulation robust gegen 0,1 s schnellere Gegner
     spaceMinDist: 2, // nur technische Untergrenze (entspricht der Bedienung: Tipp > 2 m vom Ballführenden), keine fachliche Regel
   };
 
@@ -349,10 +350,11 @@
     if (lr.hit) status = 'abgefangen';
     else if (lr.margin <= CFG.passLaneOk) status = 'wegNah';
     else if (sc.reserve <= -0.05) status = 'gegnerZuerst';
+    else if (sc.reserve < CFG.spaceReserveMin) status = 'zuKnapp';
     else if (sc.reserve < CFG.spaceReserve) status = 'knapp';
     else status = 'frei';
     const key = lr.hit ? lr.hit.id : status === 'wegNah' ? laneKey(s, c, to, other(c.team)) : sc.first ? sc.first.id : null;
-    return { ok: status === 'frei', status, recv: sc.recv.id, reserve: sc.reserve, lane: lr.margin, key };
+    return { ok: status === 'frei' || status === 'knapp', status, recv: sc.recv.id, reserve: sc.reserve, lane: lr.margin, key };
   }
   /** Sinnvoller Pass in den Raum für die Hilfe (Raster 1,5 m) oder null. Ob es einen gibt, ist für die Bewertung
    *  entscheidend; welcher Punkt gezeigt wird, nur für die Hilfe (Sicherheit + Raumgewinn). */
@@ -366,7 +368,7 @@
       if (!r.ok) continue;
       // Auswahl für die Hilfe: sicher (gedeckelt, damit „weit weg vom Gegner“ nicht alles schlägt) und mit Raumgewinn
       const fwd = c.team === 'blue' ? x - c.x : c.x - x;
-      const v = Math.min(r.lane, r.reserve, 1) + 0.03 * fwd;
+      const v = Math.min(r.lane, r.reserve, 1) + 0.03 * fwd + (r.status === 'frei' ? 10 : 0); // „frei“ vor „knapp“
       if (!best || v > best.v) best = { v, pt, info: r };
     }
     return best;
@@ -410,6 +412,9 @@
    *  ausfuehren – war das gewählte Ziel sinnvoll? (welcher Mitspieler, welches Tor, welcher Raum)
    *  Das Ergebnis (Tor, Ballverlust …) wird getrennt davon in outcome() ermittelt.
    *  Stern nur, wenn erkennen UND ausfuehren gut sind. */
+  /** Merkt sich, welchen Gegner die Ziel-Rückmeldung nennt, damit feedback() nach der Simulation denselben Gegner
+   *  nennt, der den Ball tatsächlich bekommen hat (nicht aufzählbar → ändert keine Bewertung und keine Aufzeichnung). */
+  function named(r, id, txt) { Object.defineProperty(r, 'named', { value: { id, txt }, enumerable: false }); return r; }
   function evaluate(s, a) {
     const c = carrier(s);
     const E = texts(s).erkennen, X = texts(s).ausfuehren;
@@ -420,7 +425,7 @@
       const anyOk = sit.ok.pass || sit.ok.shoot || sit.ok.dribble;
       const raumGewaehlt = a.kind === 'pass' && !a.id;
       const passText = () => {
-        if (sit.ok.mate && !(raumGewaehlt && spacePassInfo(s, c, clampP(a)).ok)) return E.freund; // wie bisher
+        if (sit.ok.mate && !raumGewaehlt) return E.freund;                                     // wie bisher (Pass zum Mitspieler)
         if (raumGewaehlt && spacePassInfo(s, c, clampP(a)).ok) return E.raum;                  // genau diesen Raum gesehen
         return E.abspielen;                                                                    // Abspielen richtig, Ziel nicht
       };
@@ -438,14 +443,19 @@
         const o = sit.passes.find((x) => x.id === a.id), m = o.margin, target = nameOf(s, a.id);
         if (m > CFG.passLaneOk) exe = R(true, X.wegFrei(target));
         else if (!sit.ok.pass && m >= sit.pBest - 0.05) exe = R(true, X.besterPassweg);
-        else { const k = (o.hit && o.hit.id) || laneKey(s, c, P(s, a.id), 'red'); exe = R(false, X.wegNah(k ? nameOf(s, k) : X.einGegner, target) + (sit.ok.mate ? X.andererFreier : sit.ok.space ? X.raumWaereGegangen : '')); }
+        else {
+          const k = (o.hit && o.hit.id) || laneKey(s, c, P(s, a.id), 'red');
+          const txt = (id) => X.wegNah(id ? nameOf(s, id) : X.einGegner, target) + (sit.ok.mate ? X.andererFreier : sit.ok.space ? X.raumWaereGegangen : '');
+          exe = named(R(false, txt(k)), k, txt);
+        }
       } else if (a.kind === 'pass') {
         const info = spacePassInfo(s, c, clampP(a));
-        const g = info.key ? nameOf(s, info.key) : X.einGegner, f = nameOf(s, info.recv);
-        if (info.ok) exe = R(true, X.raumFrei(f));
-        else if (info.status === 'knapp') exe = R(false, X.raumKnapp(g));
-        else if (info.status === 'gegnerZuerst') exe = R(false, X.raumGegnerZuerst(g, f));
-        else exe = R(false, X.raumWegNah(g) + (sit.ok.mate ? X.andererFreier : ''));
+        const f = nameOf(s, info.recv), gn = (id) => (id ? nameOf(s, id) : X.einGegner), g = gn(info.key);
+        if (info.status === 'frei') exe = R(true, X.raumFrei(f));
+        else if (info.status === 'knapp') exe = R(true, X.raumKnapp(g, f));
+        else if (info.status === 'zuKnapp') exe = named(R(false, X.raumZuKnapp(g)), info.key, (id) => X.raumZuKnapp(gn(id)));
+        else if (info.status === 'gegnerZuerst') exe = named(R(false, X.raumGegnerZuerst(g, f)), info.key, (id) => X.raumGegnerZuerst(gn(id), f));
+        else { const txt = (id) => X.raumWegNah(gn(id)) + (sit.ok.mate ? X.andererFreier : ''); exe = named(R(false, txt(info.key)), info.key, txt); }
       } else if (a.kind === 'shoot') {
         const m = sit.shots[a.goal].margin;
         if (m > CFG.shotLaneOk) exe = R(true, X.freiesTor);
@@ -883,7 +893,13 @@
   /** Kindgerechte Rückmeldung (Review V0.2.1, Punkt B): die dreiteilige Bewertung bleibt intern,
    *  gesprochen wird ein kurzer Satz in Kindersprache. */
   function feedback(s) {
-    const ev = s.ep.eval, out = outcome(s), a = s.ep.a, T = texts(s).rueckmeldung;
+    let ev = s.ep.eval; const out = outcome(s), a = s.ep.a, T = texts(s).rueckmeldung;
+    // Ergebnis und Ziel-Rückmeldung nennen denselben Gegner: den, der den Ball bekommen hat (Wertung bleibt gleich)
+    const ic = a.kind === 'pass' && s.ep.events.find((e) => e.type === 'intercepted');
+    if (ic && ev.exe.named && ev.exe.named.id !== ic.by) {
+      const exe = { good: ev.exe.good, why: ev.exe.named.txt(ic.by) };
+      ev = { good: ev.good, rec: ev.rec, exe, why: !ev.rec.good ? ev.rec.why : exe.why };
+    }
     let tip;
     if (ev.rec.good && ev.exe.good) tip = out.success ? T.super : T.trotzdemGut;
     else if (ev.rec.good) tip = T.guteIdeeAber(T.idee[a.kind], ev.exe.why);
@@ -912,11 +928,12 @@
       else {
         const k = laneKey(s, c, p, 'red'); r.key = k;
         r.say = T.imWeg(nameOf(s, k), name);
-        if (tries >= 2) { r.finish = true; r.say += free.length ? T.zeigeFrei(nameOf(s, free[0].id)) : T.keinerFreiZusatz; if (free.length) r.reveal = free[0].id; }
+        if (tries >= 2) { r.finish = true; r.say += free.length ? T.zeigeFrei(nameOf(s, free[0].id)) : situation(s).ok.space ? T.keinerFreiRaumZusatz : T.keinerFreiZusatz; if (free.length) r.reveal = free[0].id; }
         else r.say += T.nochmal;
       }
     } else if (!free.length) {
-      r.right = r.finish = true; r.say = T.richtigKeiner;
+      // „Keiner steht frei“ ist richtig – aber ein Pass in den freien Raum kann trotzdem gehen (kein Widerspruch zur Bewertung)
+      r.right = r.finish = true; r.say = situation(s).ok.space ? T.richtigKeinerRaum : T.richtigKeiner;
       r.dribblePoint = hint(s, 'dribbeln').point;
     } else {
       const f = free[0];

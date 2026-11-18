@@ -99,12 +99,31 @@ try {
   if (wi > 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(result, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }
   else {
     const ref = JSON.parse(fs.readFileSync(golden, 'utf8'));
+    const J = (x) => JSON.stringify(x);
+    // Vorgelegte, noch nicht freigegebene Abweichungen: genau diese Einträge dürfen abweichen (alt = Referenz, neu = jetzt).
+    const pi = process.argv.indexOf('--pending-write');
+    if (pi > 0) {
+      const out = {};
+      for (const name of Object.keys(ref)) {
+        const ra = ref[name], rb = result[name] || [];
+        if (ra.length !== rb.length) throw new Error(`${name}: andere Anzahl Einträge (${ra.length} → ${rb.length}) – Ablauf geändert, nicht nur Text`);
+        ra.forEach((x, i) => { if (J(x) !== J(rb[i])) (out[name] = out[name] || []).push({ eintrag: i, alt: x, neu: rb[i] }); });
+      }
+      fs.writeFileSync(process.argv[pi + 1], JSON.stringify(out, null, 1) + '\n'); console.log('Abweichungen geschrieben:', process.argv[pi + 1]);
+    }
+    const pfile = path.join(here, '..', 'golden', 'abweichungen-e1-ui.json');
+    const pending = pi < 0 && fs.existsSync(pfile) ? JSON.parse(fs.readFileSync(pfile, 'utf8')) : {};
     for (const name of Object.keys(ref)) {
-      const ra = ref[name], rb = result[name] || [];
-      if (JSON.stringify(ra) !== JSON.stringify(rb)) {
-        const i = ra.findIndex((x, k) => JSON.stringify(x) !== JSON.stringify(rb[k]));
-        console.error(`✗ ${name}: Abweichung bei Eintrag ${i}\n  Referenz: ${JSON.stringify(ra[i])}\n  jetzt:    ${JSON.stringify(rb[i])}`); exit = 1;
-      } else console.log(`✓ ${name}: identisch zur Referenz v0.2.3 (${ra.length} Einträge)`);
+      const ra = ref[name], rb = result[name] || [], listed = new Map((pending[name] || []).map((d) => [d.eintrag, d]));
+      const bad = [];
+      for (let i = 0; i < Math.max(ra.length, rb.length); i++) {
+        const d = listed.get(i);
+        if (d ? J(d.alt) !== J(ra[i]) || J(d.neu) !== J(rb[i]) : J(ra[i]) !== J(rb[i])) bad.push(i);
+      }
+      if (bad.length) {
+        const i = bad[0];
+        console.error(`✗ ${name}: Abweichung bei Eintrag ${i}${listed.has(i) ? ' (anders als vorgelegt)' : ''}\n  Referenz: ${J(ra[i])}\n  jetzt:    ${J(rb[i])}`); exit = 1;
+      } else console.log(`✓ ${name}: identisch zur Referenz v0.2.3${listed.size ? ` bis auf ${listed.size} vorgelegte Abweichung(en)` : ''} (${ra.length} Einträge)`);
     }
   }
 } catch (e) { console.error('✗', e.message); exit = 1; }

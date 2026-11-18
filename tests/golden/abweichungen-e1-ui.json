@@ -1,0 +1,73 @@
+{
+ "Keiner ist frei, Ball im Aus, Verteidigung": [
+  {
+   "eintrag": 6,
+   "alt": {
+    "where": "keiner frei 1",
+    "said": [
+     "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+     "Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln."
+    ],
+    "title": "Wer steht frei?",
+    "tag": "Schau hin",
+    "step": "✅ Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln."
+   },
+   "neu": {
+    "where": "keiner frei 1",
+    "said": [
+     "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+     "Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+    ],
+    "title": "Wer steht frei?",
+    "tag": "Schau hin",
+    "step": "✅ Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+   }
+  },
+  {
+   "eintrag": 10,
+   "alt": {
+    "where": "keiner frei 1",
+    "said": [
+     "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+     "Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln."
+    ],
+    "title": "Wer steht frei?",
+    "tag": "Schau hin",
+    "step": "✅ Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln."
+   },
+   "neu": {
+    "where": "keiner frei 1",
+    "said": [
+     "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+     "Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+    ],
+    "title": "Wer steht frei?",
+    "tag": "Schau hin",
+    "step": "✅ Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+   }
+  },
+  {
+   "eintrag": 14,
+   "alt": {
+    "where": "keiner frei 1",
+    "said": [
+     "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+     "Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln."
+    ],
+    "title": "Wer steht frei?",
+    "tag": "Schau hin",
+    "step": "✅ Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln."
+   },
+   "neu": {
+    "where": "keiner frei 1",
+    "said": [
+     "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+     "Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+    ],
+    "title": "Wer steht frei?",
+    "tag": "Schau hin",
+    "step": "✅ Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+   }
+  }
+ ]
+}

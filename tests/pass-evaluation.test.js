@@ -34,14 +34,28 @@ test('Nicht erreichbarer Pass in den Raum: Gegner zuerst am Ball → nicht gut, 
   assert.ok(simulate(s, Object.assign({ kind: 'pass' }, to)).includes('intercepted'));
 });
 
-test('Riskanter Pass: kommt an, wird aber nicht gelobt (Entscheidung ≠ Ergebnis)', () => {
+function findStatus(s, st, extra) {
+  for (let x = 1.5; x < 35; x += 0.25) for (let y = 1.5; y < 23; y += 0.25) { const i = E.spacePassInfo(s, E.carrier(s), { x, y }); if (i.status === st && (!extra || extra(i))) return { x, y }; }
+  return null;
+}
+test('Knapper, aber robuster Pass (Reserve 0,1–0,3 s): kommt an und wird gelobt – mit Hinweis „Knapp“', () => {
   const s = place(base);
-  // Punkt suchen, an dem der Empfänger knapp (unter der Reserve) zuerst ist
-  let to = null;
-  for (let x = 1.5; x < 35 && !to; x += 0.5) for (let y = 1.5; y < 23 && !to; y += 0.5) { const i = E.spacePassInfo(s, E.carrier(s), { x, y }); if (i.status === 'knapp' && i.reserve > 0.05) to = { x, y }; }
+  const to = findStatus(s, 'knapp', (i) => i.reserve < 0.2);
   assert.ok(to, 'knappe Lage gefunden');
   const ev = E.evaluate(s, Object.assign({ kind: 'pass' }, to));
-  assert.strictEqual(ev.exe.good, false); assert.match(ev.exe.why, /^Knapp!/);
+  assert.strictEqual(ev.exe.good, true); assert.match(ev.exe.why, /^Knapp, aber/);
+  assert.ok(simulate(s, Object.assign({ kind: 'pass' }, to)).includes('received'), 'kommt in der Simulation an');
+  // auch wenn die Gegner 0,1 s schneller reagieren
+  const r0 = E.CFG.redReact; E.CFG.redReact = r0 - 0.1;
+  try { assert.ok(simulate(s, Object.assign({ kind: 'pass' }, to)).includes('received'), 'robust gegen 0,1 s'); } finally { E.CFG.redReact = r0; }
+});
+
+test('Zu knapper Pass (Reserve unter 0,1 s): kommt zwar an, wird aber nicht gelobt (Entscheidung ≠ Ergebnis)', () => {
+  const s = place(base);
+  const to = findStatus(s, 'zuKnapp', (i) => i.reserve > 0);
+  assert.ok(to, 'zu knappe Lage gefunden');
+  const ev = E.evaluate(s, Object.assign({ kind: 'pass' }, to));
+  assert.strictEqual(ev.exe.good, false); assert.match(ev.exe.why, /^Zu knapp!/);
   assert.ok(simulate(s, Object.assign({ kind: 'pass' }, to)).includes('received'), 'kommt in der Simulation an');
 });
 
@@ -71,13 +85,15 @@ test('Kein pauschaler Mindestabstand zum Gegner: sicherer Pass auch nahe an eine
   assert.ok(simulate(hit.s, Object.assign({ kind: 'pass' }, hit.to)).includes('received'));
 });
 
-test('Bewertungsgrenze: Reserve knapp unter / über CFG.spaceReserve', () => {
-  const s = place(base), c = E.carrier(s);
-  const pts = [];
-  for (let x = 1.5; x < 35; x += 0.25) for (let y = 1.5; y < 23; y += 0.5) { const i = E.spacePassInfo(s, c, { x, y }); if (i.lane > E.CFG.passLaneOk && Math.abs(i.reserve - E.CFG.spaceReserve) < 0.03) pts.push(i); }
-  assert.ok(pts.some((i) => i.reserve < E.CFG.spaceReserve) && pts.some((i) => i.reserve >= E.CFG.spaceReserve), 'Punkte auf beiden Seiten gefunden');
-  for (const i of pts) assert.strictEqual(i.status, i.reserve >= E.CFG.spaceReserve ? 'frei' : 'knapp');
-});
+for (const [grenze, unten, oben] of [['spaceReserve', 'knapp', 'frei'], ['spaceReserveMin', 'zuKnapp', 'knapp']]) {
+  test(`Bewertungsgrenze: Reserve knapp unter / über CFG.${grenze}`, () => {
+    const s = place(base), c = E.carrier(s), g = E.CFG[grenze];
+    const pts = [];
+    for (let x = 1.5; x < 35; x += 0.25) for (let y = 1.5; y < 23; y += 0.25) { const i = E.spacePassInfo(s, c, { x, y }); if (i.lane > E.CFG.passLaneOk && Math.abs(i.reserve - g) < 0.03) pts.push(i); }
+    assert.ok(pts.some((i) => i.reserve < g) && pts.some((i) => i.reserve >= g), 'Punkte auf beiden Seiten gefunden');
+    for (const i of pts) assert.strictEqual(i.status, i.reserve >= g ? oben : unten);
+  });
+}
 
 // Zustände aus echten Abläufen (Mission 1, 120 Kinder-Abfolgen)
 function sampleStates(n) {
@@ -95,14 +111,14 @@ function sampleStates(n) {
 }
 const STATES = sampleStates(120);
 
-test('Bewertung und Simulation passen zusammen: als „frei“ bewertete Raum-Pässe kommen immer an, „Gegner zuerst“/„abgefangen“ nie', () => {
+test('Bewertung und Simulation passen zusammen: als gut bewertete Raum-Pässe („frei“, „knapp“) kommen immer an, „Gegner zuerst“/„abgefangen“ nie', () => {
   let checked = 0;
   for (const { s } of STATES.slice(0, 60)) {
     const c = E.carrier(s);
     for (let x = 3; x < 34; x += 4) for (let y = 3; y < 22; y += 4) {
       const to = { x, y }; if (E.dist(c, to) < 2) continue;
       const i = E.spacePassInfo(s, c, to); const ev = simulate(s, Object.assign({ kind: 'pass' }, to));
-      if (i.status === 'frei') assert.ok(ev.includes('received'), JSON.stringify(i));
+      if (i.ok) assert.ok(ev.includes('received'), JSON.stringify(i)); // „frei“ und „knapp, aber gut“
       if (i.status === 'gegnerZuerst' || i.status === 'abgefangen') assert.ok(ev.includes('intercepted'), JSON.stringify(i));
       checked++;
     }
@@ -197,4 +213,46 @@ test('E5 strukturell: Bewertungsfunktionen lesen keine Missionseinstellungen', (
     assert.ok(b.length > 20, f);
     assert.doesNotMatch(b, /mission\(|helpOrder|\.hilfe|\.phasen|schauSchritt/, `${f} darf nicht von der Mission abhängen`);
   }
+});
+
+test('Begriffe widersprechen sich nicht: „steht frei“ (Mitspieler) vs. „freier Raum“ (dorthin laufen)', () => {
+  const FREI = /Freund (steht|stand|war) frei|freien Freund|Freund stand freier|steht frei/;
+  const T = E.texts(E.newState());
+  let n = 0, keinerRaum = 0;
+  for (const { s, ctx } of STATES) {
+    const sit = E.situation(s), c = E.carrier(s), look = E.lookAnswer(s, null, 0);
+    // Schau-Schritt „Keiner ist frei“ ist genau dann richtig, wenn kein Mitspieler frei steht
+    assert.strictEqual(look.right, !sit.ok.mate);
+    if (look.right && sit.ok.space) { assert.strictEqual(look.say, T.schau.richtigKeinerRaum); keinerRaum++; }
+    const acts = [];
+    if (ctx.actions.includes('passen')) {
+      for (const b of E.team(s, 'blue')) if (b !== c) acts.push({ kind: 'pass', id: b.id });
+      for (let x = 2; x < 35; x += 6) for (let y = 2; y < 23; y += 6) acts.push({ kind: 'pass', x, y });
+    }
+    if (ctx.actions.includes('dribbeln')) acts.push(Object.assign({ kind: 'dribble' }, E.hint(s, 'dribbeln').point));
+    if (ctx.actions.includes('schiessen')) acts.push({ kind: 'shoot', goal: 0 }, { kind: 'shoot', goal: 1 });
+    for (const a of acts) {
+      const ev = E.evaluate(s, a), txt = ev.rec.why + ' ' + ev.exe.why;
+      if (!sit.ok.mate) assert.doesNotMatch(txt, FREI, `kein Mitspieler steht frei, Text sagt es aber: ${txt}`);
+      if (a.kind === 'pass' && !a.id) assert.notStrictEqual(ev.rec.why, T.erkennen.freund, 'Pass in den Raum wird nicht als „Freund frei“ gelobt');
+      n++;
+    }
+  }
+  assert.ok(n > 1000 && keinerRaum > 0, `${n} Bewertungen, ${keinerRaum} Lagen „keiner frei, aber Raum“`);
+});
+
+test('Rückmeldung nennt beim Ballverlust denselben Gegner wie das Ergebnis („Rot 1 hat den Ball …“ ↔ „Rot 1 war schneller“)', () => {
+  let n = 0, fixed = 0;
+  for (const { s, ctx } of STATES.slice(0, 30)) {
+    if (!ctx.actions.includes('passen')) continue;
+    for (let x = 2; x < 35; x += 4) for (let y = 2; y < 23; y += 4) {
+      const a = { kind: 'pass', x, y }, t = E.clone(s); E.startAction(t, a); let k = 0; while (!t.ep.done && k++ < 3000) E.tick(t);
+      assert.ok(t.ep.done, 'Ablauf endet');
+      const fb = E.feedback(t), o = (fb.text.match(/Rot \d/) || [])[0], e = (fb.exe.why.match(/Rot \d/) || [])[0];
+      if (!o || !e) continue;
+      assert.strictEqual(e, o, fb.say); n++;
+      if ((t.ep.eval.exe.why.match(/Rot \d/) || [])[0] !== o) { fixed++; assert.strictEqual(fb.exe.good, t.ep.eval.exe.good, 'Wertung unverändert'); }
+    }
+  }
+  assert.ok(n > 200 && fixed > 0, `${n} Ballverluste, ${fixed} mit korrigiertem Namen`);
 });
