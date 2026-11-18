@@ -467,7 +467,10 @@
     } else if (a.kind === 'run') {
       const sc = runSpotScore(s, c, P(s, a.id), a);
       rec = R(true, E.geholfen);
-      exe = sc.ok ? R(true, X.gelaufenFrei) : R(false, sc.open < 3.2 ? X.gelaufenBesetzt : sc.d < 3.5 ? X.gelaufenZuNah : X.gelaufenZu);
+      // Grund in fester Reihenfolge: Gegner am Ziel → zu nah → zu weit → Passweg versperrt (Wertung unverändert)
+      const grund = sc.ok ? 'frei' : sc.open < 3.2 ? 'besetzt' : sc.d < 3.5 ? 'zuNah' : sc.d > 15 ? 'zuWeit' : 'versperrt';
+      exe = R(sc.ok, { frei: X.gelaufenFrei, besetzt: X.gelaufenBesetzt, zuNah: X.gelaufenZuNah, zuWeit: X.gelaufenZuWeit, versperrt: X.gelaufenZu }[grund]);
+      Object.defineProperty(exe, 'lauf', { value: grund, enumerable: false });
     } else if (a.kind === 'press') {
       const blues = team(s, 'blue').sort((x, y) => dist(x, c) - dist(y, c));
       rec = dist(blues[0], c) < 8 ? R(true, E.angreifenRichtig) : R(false, E.angreifenZuWeit);
@@ -579,7 +582,10 @@
       }
       case 'run': {
         const p = P(s, a.id); p.ctrl = 'run'; const t = clampP(a); p.tx = t.x; p.ty = t.y;
-        s.ep.explain = { from: { x: p.x, y: p.y }, to: t, ok: ev.good, key: ev.good ? null : laneKey(s, c, t, 'red'), pass: { from: { x: c.x, y: c.y }, to: t } };
+        const grund = ev.exe.lauf, zielOk = grund === 'frei' || grund === 'versperrt';
+        const nearest = team(s, 'red').slice().sort((x, y) => dist(x, t) - dist(y, t))[0];
+        s.ep.explain = { from: { x: p.x, y: p.y }, to: t, ok: zielOk, key: grund === 'besetzt' ? nearest.id : grund === 'versperrt' ? laneKey(s, c, t, 'red') : null,
+          pass: zielOk ? { from: { x: c.x, y: c.y }, to: t, ok: grund === 'frei' } : null };
         break;
       }
       case 'press': {
@@ -823,6 +829,15 @@
     return true;
   }
 
+  /** Freilaufen: Ist der Läufer am Ende der Szene anspielbar? Das ist genau die Lage, die das Kind im Rückmeldebild sieht
+   *  und in der es als Nächstes entscheidet (tatsächliche Lage, nicht die Lage bei der Entscheidung). */
+  function arrivalCheck(s, r) {
+    const c = carrier(s);
+    if (!c || c.team !== r.team) return null;
+    const o = passOptions(s).find((x) => x.id === r.id);
+    const free = o.margin > CFG.passLaneOk;
+    return { free, key: free ? null : (o.hit && o.hit.id) || laneKey(s, c, r, 'red'), from: { x: c.x, y: c.y }, to: { x: r.x, y: r.y } };
+  }
   function episodeLogic(s) {
     const ep = s.ep, a = ep.a;
     if (ep.endT != null) {
@@ -884,8 +899,14 @@
       else { success = true; text = T.dribbelGut; icon = '👍'; }
     } else if (a.kind === 'run') {
       if (find('steal')) { text = T.laufBallweg; icon = '😮'; }
-      else if (ep.eval.good) { success = true; text = find('autoDribble') ? T.laufFreiDribbel : T.laufFrei; icon = '🙌'; }
-      else { text = T.laufSchwer; icon = '🤔'; }
+      else {
+        // Ergebnis aus der tatsächlichen Lage am Ende der Szene – nur wenn das Laufziel selbst passte (sonst wie bisher „schwer“)
+        const grund = ep.eval.exe.lauf, arr = arrivalCheck(s, P(s, a.id));
+        if ((grund === 'frei' || grund === 'versperrt') && arr) {
+          if (arr.free) { success = true; text = grund === 'frei' ? (find('autoDribble') ? T.laufFreiDribbel : T.laufFrei) : T.laufJetztFrei; icon = grund === 'frei' ? '🙌' : '👍'; }
+          else { text = T.laufZu(arr.key ? nameOf(s, arr.key) : T.einGegner) + (find('autoDribble') ? T.laufZuDribbel : ''); icon = '🤔'; }
+        } else { text = T.laufSchwer; icon = '🤔'; }
+      }
     } else if (a.kind === 'press' || a.kind === 'cover') {
       if (goal && goal.team === 'red') { text = T.gegentor; icon = '😬'; }
       else if (find('steal') && s.poss === 'blue') { success = true; text = T.erobert; icon = '💪'; }
@@ -910,17 +931,31 @@
       const exe = { good: ev.exe.good, why: ev.exe.named.txt(ic.by) };
       ev = { good: ev.good, rec: ev.rec, exe, why: !ev.rec.good ? ev.rec.why : exe.why };
     }
+    let explain = s.ep.explain || null;
+    if (a.kind === 'run' && explain && explain.pass) {
+      const lost = s.ep.events.some((e) => e.type === 'steal');
+      const arr = lost ? null : arrivalCheck(s, P(s, a.id));
+      // ohne Ballbesitz (Ball verloren) gibt es keinen Passweg zu zeigen
+      explain = Object.assign({}, explain, arr ? { pass: { from: arr.from, to: arr.to, ok: arr.free }, key: arr.free ? null : arr.key } : { pass: null });
+      // Bei der Entscheidung versperrt, bei Ankunft frei: Begründung bezieht sich ausdrücklich auf den Moment des Loslaufens
+      if (arr && arr.free && ev.exe.lauf === 'versperrt') {
+        const exe = { good: ev.exe.good, why: texts(s).ausfuehren.gelaufenZuBeimStart };
+        ev = { good: ev.good, rec: ev.rec, exe, why: !ev.rec.good ? ev.rec.why : exe.why };
+      }
+    }
     let tip;
     if (ev.rec.good && ev.exe.good) tip = out.success ? T.super : T.trotzdemGut;
     else if (ev.rec.good) tip = T.guteIdeeAber(T.idee[a.kind], ev.exe.why);
     else tip = (out.success ? T.geklapptAber : T.schauMal) + ev.rec.why;
     const say = out.text + ' ' + tip;
-    const zielGut = T.tagZielGut[a.kind] || T.tagZielGut.sonst, zielSchlecht = T.tagZielSchlecht[a.kind] || T.tagZielSchlecht.sonst;
+    const grundLauf = a.kind === 'run' && s.ep.eval.exe.lauf;
+    const zielGut = T.tagZielGut[a.kind] || T.tagZielGut.sonst;
+    const zielSchlecht = (grundLauf && T.tagLaufSchlecht[grundLauf]) || T.tagZielSchlecht[a.kind] || T.tagZielSchlecht.sonst;
     const tags = {
       rec: { good: ev.rec.good, label: ev.rec.good ? T.tagIdeeGut : T.tagIdeeBesser },
       exe: { good: ev.exe.good, label: ev.exe.good ? zielGut : zielSchlecht },
     };
-    return { good: ev.good, success: out.success, icon: out.icon, text: out.text, tip, tags, why: ev.why, rec: ev.rec, exe: ev.exe, say, goal: out.goal, explain: s.ep.explain || null };
+    return { good: ev.good, success: out.success, icon: out.icon, text: out.text, tip, tags, why: ev.why, rec: ev.rec, exe: ev.exe, say, goal: out.goal, explain };
   }
 
   // ---------------------------------------------------------------- Wahrnehmung: „Erst schauen, dann entscheiden“
@@ -986,5 +1021,5 @@
   function missionApply(m, s) { if (m.pending) { restart(s, m.pending); m.pending = null; } }
 
   root.FIQ = {
-    VERSION: '0.3.0', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.3.1', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

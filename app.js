@@ -1,7 +1,7 @@
 /* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen (V0.2) */
 (function () {
   'use strict';
-  const APP_VERSION = '0.3.0';
+  const APP_VERSION = '0.3.1';
   // Schutz gegen gemischte Cache-Stände (neue Seite + altes Skript oder umgekehrt)
   try {
     const htmlV = (document.querySelector('meta[name="app-version"]') || {}).content;
@@ -232,7 +232,8 @@
   function drawExplain(ex) {
     if (!ex) return;
     if (ex.threat) arrow(ex.threat.from, ex.threat.to, 'rgba(255,59,48,.75)', 0.22, true);
-    if (ex.pass && !ex.ok) arrow(ex.pass.from, ex.pass.to, 'rgba(255,59,48,.8)', 0.2, true);
+    // Passlinie (Freilaufen): grün = bei Ankunft anspielbar, rot = Passweg zu. Nur nach der Entscheidung sichtbar.
+    if (ex.pass) arrow(ex.pass.from, ex.pass.to, ex.pass.ok ? 'rgba(34,197,94,.85)' : 'rgba(255,59,48,.8)', 0.2, true);
     arrow(ex.from, ex.to, ex.ok ? 'rgba(34,197,94,.95)' : 'rgba(255,59,48,.95)', 0.3, false);
   }
   function explainIds(ex) {

@@ -1,0 +1,52 @@
+{
+ "Schau falsch/richtig, Fehlpass, Wiederholen, Vergleichen, Rest mit Hilfe": [
+  {
+   "eintrag": 12,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.",
+     "Wohin soll er laufen? Tippe auf eine freie Stelle.",
+     "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne. Super gemacht!"
+    ],
+    "title": "Wo kann ich helfen?",
+    "tag": "Bewegung ohne Ball",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.",
+     "Wohin soll er laufen? Tippe auf eine freie Stelle.",
+     "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee! Manchmal klappt es nicht."
+    ],
+    "title": "Wo kann ich helfen?",
+    "tag": "Bewegung ohne Ball",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 13,
+   "alt": {
+    "fb": [
+     "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne.",
+     "Super gemacht!",
+     "✓ 💡 Gute Idee",
+     "✓ 🎯 Weg frei",
+     "⭐"
+    ],
+    "compare": false
+   },
+   "neu": {
+    "fb": [
+     "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne.",
+     "Das war trotzdem eine gute Idee! Manchmal klappt es nicht.",
+     "✓ 💡 Gute Idee",
+     "✓ 🎯 Guter Platz",
+     "⭐"
+    ],
+    "compare": false
+   }
+  }
+ ]
+}

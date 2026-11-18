@@ -89,6 +89,8 @@
       gelaufenBesetzt: 'Dort stand schon ein Gegner.',
       gelaufenZuNah: 'Das war zu nah am Ball – dein Freund braucht Platz.',
       gelaufenZu: 'Von dort war der Passweg versperrt.',
+      gelaufenZuWeit: 'Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.',
+      gelaufenZuBeimStart: 'Als du losgelaufen bist, stand ein Gegner im Passweg.',
       naechsterGreift: 'Der Spieler am nächsten am Ball greift an.',
       wegWeit: (spieler) => `Der Weg war weit. ${spieler} war näher am Ball.`,
       zwischenTor: 'Du stehst zwischen Gegner und Tor.',
@@ -108,6 +110,9 @@
       laufFreiDribbel: 'Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne.',
       laufFrei: 'Super! Jetzt bist du anspielbar.',
       laufSchwer: 'Dort ist es schwer, angespielt zu werden.',
+      laufJetztFrei: 'Jetzt ist der Weg zu dir frei.',
+      laufZu: (gegner) => `Jetzt steht ${gegner} im Passweg.`,
+      laufZuDribbel: ' Dein Freund dribbelt dafür nach vorne.',
       gegentor: 'Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen.',
       erobert: 'Ball erobert! Jetzt greifen wir an.',
       selbstGeblockt: 'Geblockt! Du hast im Weg gestanden.',
@@ -129,8 +134,10 @@
       schauMal: 'Schau mal: ',
       tagIdeeGut: 'Gute Idee',
       tagIdeeBesser: 'Andere Idee besser',
-      tagZielGut: { shoot: 'Freies Tor', press: 'Richtiger Spieler', cover: 'Gut gestellt', sonst: 'Weg frei' },
+      tagZielGut: { shoot: 'Freies Tor', press: 'Richtiger Spieler', cover: 'Gut gestellt', run: 'Guter Platz', sonst: 'Weg frei' },
       tagZielSchlecht: { press: 'Anderer Spieler näher', cover: 'Weg offen', sonst: 'Gegner im Weg' },
+      // Freilaufen: Etikett nach dem Grund (Laufziel vs. Passweg)
+      tagLaufSchlecht: { besetzt: 'Gegner dort', zuNah: 'Zu nah am Ball', zuWeit: 'Zu weit weg', versperrt: 'Passweg zu' },
     },
 
     // „Erst schauen, dann entscheiden“

@@ -1,5 +1,13 @@
 # Changelog
 
+## V0.3.1 – Korrektur A: Freilaufen (Rückmeldung, Etikett, Erklärbild)
+**Zur Freigabe vorgelegt.** Bewertung, Sterne und Spielverlauf unverändert. Details und alle geänderten Texte: `docs/korrektur-a-freilaufen.md`.
+- Grund „zu weit weg vom Ball“ statt „Passweg versperrt“, wenn das Ziel mehr als 15 m entfernt ist.
+- Ergebnis beim Freilaufen aus der Lage am Szenenende (= Bild): „Jetzt steht Rot N im Passweg.“ statt „Du bist frei“, wenn der Passweg zu ist.
+- Etiketten nach Grund (Guter Platz / Gegner dort / Zu nah am Ball / Zu weit weg / Passweg zu).
+- Erklärbild: Laufpfeil zeigt das Laufziel, Passlinie (grün/rot) den Passweg im gezeigten Bild, markiert wird der genannte Gegner.
+- Tests `tests/freilaufen.test.js`; Abweichungen vorgelegt in `tests/golden/abweichungen-a*.json`. Offener Punkt K1 (Hilfe-Punkte beim Freilaufen) zur Entscheidung.
+
 ## V0.3.0 – Engine-Paket E1–E6 (Bewertung Raumpass, Hilfe-Lernweg, optionale Abwehrphase)
 Fachlich freigegeben. Spielverlauf von Mission 1 unverändert; geändert sind Bewertung und Rückmeldetexte in 153 Entscheidungen und 3 Ansagen im Schau-Schritt (vollständig mit Begründung: `docs/bewertungsaenderungen-e1.md`). Nach dem Hotfix gegen v0.2.5 neu gemessen: identisch. Neue Referenzen `tests/golden/mission1.v0.3.0.json`, `ui-transcript.v0.3.0.json` (nur diese Änderungen, geprüft); Vorgänger und Abweichungslisten unter `tests/golden/historie/`.
 - **E1 Pass in den Raum:** gut, wenn der Passweg frei ist **und** der Mitspieler vor dem nächsten Gegner ankommt: ab 0,3 s „frei“ (`CFG.spaceReserve`, Hilfe), ab 0,1 s „knapp, aber gut“ (`CFG.spaceReserveMin`, in der Simulation robust gegen 0,1 s schnellere Gegner), darunter „zu knapp“. Keine pauschale 3-m-Regel, Rückpässe nicht abgewertet. Gleiche Zeitrechnung wie die Simulation (`spaceContest`). Rückmeldung nennt den schnelleren Gegner. Folge in Mission 1: 9 Raumpässe ohne Stern (alle mit Ballverlust, v0.2.4 gab dafür einen Stern), 2 mit neuem Stern.
