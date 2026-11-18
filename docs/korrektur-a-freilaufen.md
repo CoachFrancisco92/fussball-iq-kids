@@ -1,7 +1,19 @@
 # Korrektur A – Freilaufen: Rückmeldung, Etikett und Erklärbild (V0.3.1)
 
-Stand: Branch `korrektur-a-freilaufen`, **zur Freigabe vorgelegt** (nicht gemergt, nicht veröffentlicht).
+**Fachlich freigegeben vom Product Owner (18.11.2026)**, einschließlich K1. Merge und Veröffentlichung als V0.3.1 werden gesondert freigegeben.
 Grundlage: Analyse vom 18.11.2026, Freigabe „A“ durch den Product Owner.
+
+## Änderungshistorie
+| Schritt | Commit | Inhalt |
+|---|---|---|
+| 1 | 7330a9d | Texte, Etiketten, Erklärbild; Ergebnis aus der Lage am Szenenende; Abweichungen vorgelegt |
+| 2 | a660e8f | K1: Hilfe beim Freilaufen mit Vorausrechnung; Abweichungen neu vorgelegt |
+| 3 | (dieser Stand) | Referenzen `mission1.v0.3.1.json` und `ui-transcript.v0.3.1.json` erzeugt und vollständig gegen die vorgelegten Listen geprüft; Listen und Vorgänger unter `tests/golden/historie/` |
+
+**Abschlussprüfung:**
+- **Engine-Referenz:** Gegenüber v0.3.0 sind ausschließlich die vorgelegten Abweichungen enthalten: feste Abläufe „musterweg“ und „geblockt“, Hilfe-Durchlauf und 101 Kinder-Abfolgen.
+- **Oberflächen-Mitschrift:** genau die 2 vorgelegten Einträge.
+- **Sterne und Bewertungsregeln:** In den 115 geänderten Entscheidungen hat sich kein Stern und keine Wertung von Entscheidung oder Ziel geändert. Zusätzlich habe ich die Bewertung von v0.3.0 und V0.3.1 unabhängig verglichen, über alle Kinder-Entscheidungen und ein Raster von Freilauf-Zielen: 17 496 Bewertungen, 0 Abweichungen bei Stern, Entscheidung, Ziel-Wertung oder Entscheidungstext.
 
 ## Was gleich bleibt
 - **Bewertung:** Entscheidung, Ziel und Stern sind in allen 112 betroffenen Entscheidungen von Mission 1 unverändert (Stern / Entscheidung / Ziel: 0 / 0 / 0 Änderungen).
@@ -107,3 +119,6 @@ Grundlage: Analyse vom 18.11.2026, Freigabe „A“ durch den Product Owner.
   - **K1:** In allen 53 Freilauf-Lagen ist das Hilfe-Ziel gut bewertet. Die Empfehlung ist reproduzierbar und verändert die Lage nicht. „Anspielen“ in der Hilfe bedeutet: am Ende anspielbar, mit mindestens 3 von 4 Nachbarpunkten. Der Warnhinweis kommt nur, wenn es wirklich nicht klappt. Mindestens 45 Lagen haben eine anspielbare Empfehlung (vorher 9). Die Standardlage des Musterwegs erhält den ehrlichen Warnhinweis.
 - Referenzen: unverändert; die Abweichungen sind vorgelegt (s. o.).
 - Sichtprüfung: Rückmeldebilder für (21/15), (24/15) und (10/22) im Browser aufgenommen.
+
+## Für Paket B festgehalten (Product Owner, 18.11.2026)
+Eine gute Freilaufbewegung muss nicht dazu führen, dass der Spieler selbst anspielbar wird. Sie kann einen Gegenspieler mitziehen und so Platz für einen anderen Spieler oder den Ballführenden schaffen (z. B. die Standardlage des Musterwegs, in der der Ballführende den frei gewordenen Raum zum Dribbeln nutzt). Dieses Prinzip ist bei der späteren Bewertung des Freilaufens (B3) zu berücksichtigen.
