@@ -1,5 +1,11 @@
 # Changelog
 
+## V0.2.5 – Hotfix: Szene endet nie (Pass-Pingpong der Gegner)
+Behebt einen Fehler aus v0.2.4: Unter Druck spielten sich zwei Gegner den Ball endlos zu; weil das Szenenende wartet, solange der Ball fliegt, blieb die App in der Szene hängen (z. B. Pass von der Startposition auf 17/11, mehrere Verteidigungsszenen). Details: `docs/hotfix-endlosszene.md`.
+- Gegner spielen nicht sofort an den zurück, von dem sie den Ball bekommen haben; nach eingeleitetem Szenenende spielt jeder Gegner höchstens noch einmal ab.
+- Neue Tests `tests/endlos.test.js` (Regression 17/11 und Verteidigung, Eigenschaftstest über > 3 000 Szenen). Analysen `tests/analysis/hang-search.js`, `hotfix-impact.js`.
+- Wirkung auf Mission 1: 10 von 200 Kinder-Abfolgen ändern den Spielverlauf ab der Pingpong-Szene; feste Abläufe, Hilfe-Durchlauf und Oberfläche unverändert. Referenzen noch nicht neu erzeugt (vorgelegt in `tests/golden/abweichungen-hotfix.json`).
+
 ## V0.2.4 – Missionsarchitektur (Phase 2)
 **Für das Kind ändert sich nichts** – nachgewiesen gegen Referenzaufnahmen von v0.2.3. Ziel: Missionen und Texte ohne Eingriff in die Simulation pflegen.
 - **Missionen als Daten:** `missions/mission-1.js` enthält Aufstellung, Neustarts, Phasen (`maxAngriff`/`verteidigung`), Lernziele, Schau-Schritt-Einstellung, Startbildschirm-Texte und den Merksatz. Die Engine liest Missionen aus einer Registrierung; `newState(id)`, `newMission(id)`; ohne id die erste Mission.
