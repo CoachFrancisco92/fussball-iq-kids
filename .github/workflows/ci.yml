@@ -43,14 +43,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Browser-Durchlauf (Ende-zu-Ende)
         run: npm run test:e2e
-      - name: Auslieferungspaket bauen
-        run: |
-          rm -rf _site && mkdir _site
-          for f in $(node -p "require('./.release-tools/scripts/site-files.json').files.join(' ')"); do
-            if [ -f "$f" ]; then cp "$f" _site/; else echo "fehlt im Stand: $f"; exit 1; fi
-          done
-          touch _site/.nojekyll
-          echo "Version: $(node -p "require('./package.json').version")" && ls _site
+      - name: Auslieferungspaket bauen (Paketliste des jeweiligen Stands)
+        run: bash .release-tools/scripts/pack.sh
       - name: Paket für GitHub Pages bereitstellen
         if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
         uses: actions/upload-pages-artifact@v3

@@ -10,10 +10,12 @@ Kinderfußball nach DFB: 3 gegen 3 (später 4 gegen 4), vier Minitore, kein Torw
 
 Lernwelten: 1 Ich und der Ball · 2 Wir spielen zusammen · 3 Wir verteidigen · 4 Wir werden clever · 5 Wir spielen als Team.
 
-## Ist-Stand der Architektur (wichtig)
-- Es gibt **eine** Mission. Ihre Aufstellung steht derzeit in `engine.js` (`newState`, `restart`), ihre Texte in `engine.js` (`context`, `outcome`, `feedback`) und `app.js` (Schau-Schritt).
-- Missionsphasen sind allgemein: Angriff (bis Ballverlust/Tor, max. 4) + Verteidigung (2), siehe `newMission`/`missionAfter`.
-- **Bis Missionsinhalte von der Engine getrennt sind, änderst du keinen Code.** Dein Ergebnis ist ein Missionsentwurf als Markdown unter `docs/missions/`.
+## Ist-Stand der Architektur
+- Missionen sind **Daten**: eine Datei je Mission unter `missions/` (Format und Checkliste: `docs/missionen.md`). Vorlage: `missions/mission-1.js`.
+- Texte stehen in `content/texte.js`; missionseigene Texte im Feld `texte` der Mission.
+- Phasen und Schau-Schritt sind Missionseinstellungen (`phasen`, `schauSchritt`).
+- **`engine.js` änderst du nie.** Fehlt der Engine etwas für deine Mission, beschreibst du das im Entwurf; die Entscheidung trifft die Hauptsitzung mit dem Product Owner.
+- Dein Ergebnis: Entwurf `docs/missions/<id>.md` und – nach Abstimmung – die Missionsdatei. `E.validateMission` muss leer zurückgeben.
 
 ## Inhalt eines Missionsentwurfs
 - Titel, Lernwelt, 2–3 Lernziele
@@ -24,7 +26,7 @@ Lernwelten: 1 Ich und der Ball · 2 Wir spielen zusammen · 3 Wir verteidigen ·
 - angebotene Aktionen (max. 2–3 gleichzeitig)
 
 ## Prüfung gegen die Simulation
-Startlagen mit einem headless Durchlauf prüfen (Muster: `tests/simulation.test.js`, Funktionen `FIQ.newState`, `startAction`, `tick`, `feedback`) und justieren, bis Musterweg und Alternativen wie beschrieben eintreten. Ergebnisse im Entwurf festhalten; die Umsetzung übernimmt die Hauptsitzung, die Tests `simulation-qa`.
+Startlagen mit einem headless Durchlauf prüfen (Laden: `tests/helpers/load.js`; Muster: `tests/simulation.test.js`, `tests/golden/trace.js` mit `playMission(E, wähler, ['<id>'])`) und justieren, bis Musterweg und Alternativen wie beschrieben eintreten. Ergebnisse im Entwurf festhalten; die Umsetzung übernimmt die Hauptsitzung, die Tests `simulation-qa`.
 
 ## Regeln
 - Keine Zufallswerte; Ergebnisse folgen aus Positionen und Wegen.

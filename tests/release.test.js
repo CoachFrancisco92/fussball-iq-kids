@@ -41,6 +41,7 @@ test('Veröffentlichung nur über einen Workflow und nur nach bestandenen Tests'
   assert.match(ci, /check-live\.mjs/, 'Live-Prüfung nach dem Veröffentlichen');
   assert.match(ci, /if: failure\(\)[\s\S]*Wiederherstellen/, 'bei roter Live-Prüfung Anleitung zur Wiederherstellung');
   assert.match(ci, /path: \.release-tools/, 'Rollback auch für ältere Stände (Werkzeuge aus main)');
+  assert.match(ci, /\.release-tools\/scripts\/pack\.sh/, 'Verpacken mit der Paketliste des jeweiligen Stands');
   const tagJob = ci.slice(ci.indexOf('\n  tag:'));
   assert.match(tagJob, /needs: live-check/, 'Tag erst nach grüner Live-Prüfung');
 });

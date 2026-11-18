@@ -9,7 +9,7 @@ const { files } = JSON.parse(fs.readFileSync(path.join(root, 'scripts/site-files
 const out = path.join(root, '_site');
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out);
-for (const f of files) fs.copyFileSync(path.join(root, f), path.join(out, f));
+for (const f of files) { fs.mkdirSync(path.dirname(path.join(out, f)), { recursive: true }); fs.copyFileSync(path.join(root, f), path.join(out, f)); }
 fs.writeFileSync(path.join(out, '.nojekyll'), '');
 const v = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
 console.log(`_site erstellt: ${files.length} Dateien, Version ${v}`);

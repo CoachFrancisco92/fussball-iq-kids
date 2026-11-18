@@ -2,8 +2,7 @@
 // Die Engine bleibt zufallsfrei – nur der TEST erzeugt mit festem Startwert viele verschiedene Abfolgen.
 const test = require('node:test');
 const assert = require('node:assert');
-require('../engine.js');
-const E = globalThis.FIQ;
+const E = require('./helpers/load.js');
 const F = E.F;
 
 function lcg(seed) { let x = seed >>> 0; return () => ((x = (1664525 * x + 1013904223) >>> 0) / 4294967296); }

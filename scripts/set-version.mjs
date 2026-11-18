@@ -12,23 +12,21 @@ const edits = {
   'package.json': [[/"version": "[^"]+"/, `"version": "${v}"`]],
   'index.html': [
     [/name="app-version" content="[^"]+"/, `name="app-version" content="${v}"`],
-    [/engine\.js\?v=[\d.]+/, `engine.js?v=${v}`],
-    [/app\.js\?v=[\d.]+/, `app.js?v=${v}`],
+    [/\.js\?v=[\d.]+/g, `.js?v=${v}`],
     [/id="ver">Version [\d.]+</, `id="ver">Version ${v}<`],
   ],
   'app.js': [[/APP_VERSION = '[\d.]+'/, `APP_VERSION = '${v}'`]],
   'engine.js': [[/VERSION: '[\d.]+'/, `VERSION: '${v}'`]],
   'sw.js': [
     [/fiq-v[\d.]+/, `fiq-v${v}`],
-    [/engine\.js\?v=[\d.]+/, `engine.js?v=${v}`],
-    [/app\.js\?v=[\d.]+/, `app.js?v=${v}`],
+    [/\.js\?v=[\d.]+/g, `.js?v=${v}`],
   ],
 };
 for (const [file, list] of Object.entries(edits)) {
   const p = path.join(root, file);
   let s = fs.readFileSync(p, 'utf8');
   for (const [re, rep] of list) {
-    if (!re.test(s)) { console.error(`${file}: Stelle nicht gefunden (${re})`); process.exit(1); }
+    if (!new RegExp(re.source).test(s)) { console.error(`${file}: Stelle nicht gefunden (${re})`); process.exit(1); }
     s = s.replace(re, rep);
   }
   fs.writeFileSync(p, s);

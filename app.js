@@ -1,7 +1,7 @@
 /* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen (V0.2) */
 (function () {
   'use strict';
-  const APP_VERSION = '0.2.3';
+  const APP_VERSION = '0.2.4';
   // Schutz gegen gemischte Cache-Stände (neue Seite + altes Skript oder umgekehrt)
   try {
     const htmlV = (document.querySelector('meta[name="app-version"]') || {}).content;
@@ -10,8 +10,9 @@
     } else sessionStorage.removeItem('fiq-reloaded');
   } catch (e) {}
   const E = window.FIQ, F = E.F;
+  const MISSION_ID = E.mission().id;           // derzeit eine Mission; Auswahl folgt mit weiteren Missionen
+  const T = () => E.texts(MISSION_ID);         // Textkatalog inkl. Missions-Texte (content/texte.js)
   const SIM_SPEED = 0.85;
-  const LOOK_STEP = true;          // „Erst schauen, dann entscheiden“ (Einsteiger)
   const MIN_TAP_PX = 34;           // Mindest-Tippradius in Pixeln (kleine Handys)
 
   // ------------------------------------------------------------ DOM
@@ -337,7 +338,7 @@
 
   // ------------------------------------------------------------ Ablauf der Mission
   function startMission() {
-    S = E.newState(); M = E.newMission(); dec = 0; hist = [];
+    S = E.newState(MISSION_ID); M = E.newMission(MISSION_ID); dec = 0; hist = [];
     hintView = null; marker = null; explainView = null;
     $('startScreen').hidden = true; $('endScreen').hidden = true;
     updateScore(); beginDecision(null);
@@ -352,7 +353,7 @@
     sel = null; hintView = null; marker = null; explainView = null; lookView = null;
     updateProgress();
     setPrompt(c.tag, c.type === 'verteidigung' ? 'def' : 'att', c.title);
-    if (LOOK_STEP && c.type === 'angriff' && !hist[dec].look) return beginLook(c);
+    if (E.lookBefore(S, c) && !hist[dec].look) return beginLook(c);
     startDecide(c, true);
   }
 
@@ -373,59 +374,37 @@
   }
 
   // ---------- Schau-Schritt: „Erst schauen, dann entscheiden“ (Review V0.1 Punkt 8, V0.2.1 Punkt A)
-  // Das Kind tippt den freien Freund an – oder sagt „Keiner ist frei!“. Beides kann richtig sein.
+  // Das Kind tippt den freien Freund an – oder sagt „Keiner ist frei!“. Die Bewertung der Antwort
+  // liegt in der Engine (E.lookAnswer, unabhängig testbar); hier nur Anzeige, Ton und Ablauf.
   function beginLook(c) {
+    const t = T().schau;
     mode = 'look';
     lookView = { tries: 0 };
-    setPrompt('Schau hin', 'look', 'Wer steht frei?');
+    setPrompt(t.tag, 'look', t.title);
     const box = $('actions'); box.innerHTML = ''; $('cancel').hidden = true;
     const b = document.createElement('button');
     b.className = 'act'; b.id = 'lookNone';
-    b.innerHTML = '<span class="ico">🙅</span><span>Keiner ist frei</span>';
+    b.innerHTML = `<span class="ico">${t.knopf.icon}</span><span>${t.knopf.label}</span>`;
     b.onclick = () => { if (mode === 'look' && !(lookView && lookView.done)) { Sfx.tap(); hideHand(); onLookAnswer(null); } };
     box.appendChild(b);
-    setStepText('👀 Tippe auf den freien Freund – oder auf „Keiner ist frei“.');
-    Voice.say('Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.');
+    setStepText(t.startAnzeige);
+    Voice.say(t.start);
     armIdle();
   }
   /** p = angetippter Mitspieler oder null für „Keiner ist frei“ */
   function onLookAnswer(p) {
-    const c = E.carrier(S);
-    const opts = E.passOptions(S);
-    const free = opts.filter((x) => x.margin > E.CFG.passLaneOk).sort((a, b) => b.margin - a.margin);
     lookView.tries++;
-    lookView.key = null; lookView.right = null; lookView.lane = null;
-    let t, right = false, finish = false;
-    if (p) {
-      const o = opts.find((x) => x.id === p.id);
-      const name = E.nameOf(S, p.id);
-      lookView.lane = { from: { x: c.x, y: c.y }, to: { x: p.x, y: p.y }, ok: o.margin > E.CFG.passLaneOk };
-      if (o.margin > E.CFG.passLaneOk) {
-        right = finish = true; lookView.right = p.id;
-        t = `Ja! ${name} steht frei. Zwischen euch ist kein Gegner.`;
-      } else {
-        const k = E.laneKey(S, c, p, 'red'); lookView.key = k;
-        t = `Schau genau: ${E.nameOf(S, k)} steht im Weg zu ${name}.`;
-        if (lookView.tries >= 2) { finish = true; t += free.length ? ` ${E.nameOf(S, free[0].id)} steht frei.` : ' Gerade ist keiner frei.'; if (free.length) lookView.right = free[0].id; }
-        else t += ' Probier\'s nochmal!';
-      }
-    } else if (!free.length) {
-      right = finish = true;
-      t = 'Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln.';
-      const h = E.hint(S, 'dribbeln'); hintView = { point: h.point };
-    } else {
-      const f = free[0];
-      t = `Schau nochmal genau: ${E.nameOf(S, f.id)} steht frei.`;
-      if (lookView.tries >= 2) { finish = true; lookView.right = f.id; } else { t = 'Schau nochmal genau. Ist wirklich keiner frei?'; }
-    }
-    if (right) Sfx.good(); else Sfx.soft();
-    setStepText((right ? '✅ ' : '👀 ') + t);
-    Voice.say(t);
-    if (finish) {
+    const r = E.lookAnswer(S, p ? p.id : null, lookView.tries);
+    lookView.key = r.key; lookView.right = r.reveal; lookView.lane = r.lane;
+    if (r.dribblePoint) hintView = { point: r.dribblePoint };
+    if (r.right) Sfx.good(); else Sfx.soft();
+    setStepText((r.right ? '✅ ' : '👀 ') + r.say);
+    Voice.say(r.say);
+    if (r.finish) {
       lookView.done = true;
       const b = $('lookNone'); if (b) b.disabled = true;
-      hist[dec].look = { right, tries: lookView.tries };
-      setTimeout(() => { if (mode === 'look') { lookView = null; const hv = hintView; startDecide(hist[dec].ctx, false); hintView = hv; Voice.say('Und jetzt: Was machst du mit dem Ball?'); } }, 3400);
+      hist[dec].look = { right: r.right, tries: lookView.tries };
+      setTimeout(() => { if (mode === 'look') { lookView = null; const hv = hintView; startDecide(hist[dec].ctx, false); hintView = hv; Voice.say(T().schau.weiter); } }, 3400);
     }
   }
 
@@ -440,29 +419,22 @@
       box.appendChild(b);
     }
     const h = document.createElement('button');
-    h.className = 'act hint'; h.innerHTML = '<span class="ico">💡</span><span>Hilfe</span>';
+    h.className = 'act hint'; h.innerHTML = `<span class="ico">💡</span><span>${T().bedienung.hilfeKnopf}</span>`;
     h.onclick = () => showHint();
     box.appendChild(h);
     $('cancel').hidden = !sel;
     syncLayout();
   }
 
-  const STEP_SAY = {
-    passen: ['Tippe auf einen Mitspieler. Oder auf eine freie Stelle.'],
-    dribbeln: ['Tippe dorthin, wohin du dribbeln willst.'],
-    schiessen: ['Tippe auf ein rotes Tor.'],
-    freilaufen: ['Wähle einen blauen Spieler ohne Ball.', 'Wohin soll er laufen? Tippe auf eine freie Stelle.'],
-    erobern: ['Welcher blaue Spieler soll den Gegner angreifen? Tippe ihn an.'],
-    raum: ['Wähle einen blauen Spieler.', 'Wo soll er sich hinstellen? Tippe auf die Stelle.'],
-  };
+  const STEP_SAY = (k) => T().bedienung.schritte[k];
   function chooseAction(k, silent) {
     if (mode !== 'decide') return;
     hideHand();
     if (sel && sel.action === k && !silent) { sel = null; renderActions(hist[dec].ctx); setStepText(''); return; }
     sel = { action: k, step: 1, playerId: null };
     renderActions(hist[dec].ctx);
-    setStepText(STEP_SAY[k][0]);
-    if (!silent) Voice.say(STEP_SAY[k][0]);
+    setStepText(STEP_SAY(k)[0]);
+    if (!silent) Voice.say(STEP_SAY(k)[0]);
     armIdle();
   }
   function setStepText(t) { $('step').textContent = t; $('step').hidden = !t; syncLayout(); }
@@ -519,11 +491,11 @@
       if (lookView && lookView.done) return;
       const p = hitPlayer(pt, (q) => q.team === 'blue' && q !== c);
       hideHand();
-      if (p) onLookAnswer(p); else Voice.say('Tippe auf einen blauen Spieler – oder auf: Keiner ist frei.');
+      if (p) onLookAnswer(p); else Voice.say(T().schau.danebenGetippt);
       return;
     }
     if (mode !== 'decide') return;
-    if (!sel) { Voice.say('Tippe zuerst unten auf einen Knopf.'); pulseActions(); return; }
+    if (!sel) { Voice.say(T().bedienung.zuerstKnopf); pulseActions(); return; }
     hideHand();
     const inField = pt.x > 0.3 && pt.x < F.W - 0.3 && pt.y > 0.3 && pt.y < F.H - 0.3;
     const k = sel.action;
@@ -536,12 +508,12 @@
     } else if (k === 'schiessen') {
       const gi = F.goals.red.map((g) => E.dist(g, pt)).reduce((bi, d, i, arr) => (d < arr[bi] ? i : bi), 0);
       if (E.dist(F.goals.red[gi], pt) < 5 || pt.x > F.W - 4) return act({ kind: 'shoot', goal: gi }, F.goals.red[gi], c);
-      Voice.say('Tippe auf eines der roten Tore rechts.');
+      Voice.say(T().bedienung.toreRechts);
     } else if (k === 'freilaufen' || k === 'raum') {
       const filt = (q) => q.team === 'blue' && (k === 'raum' || q !== c);
       if (sel.step === 1) {
         const p = hitPlayer(pt, filt);
-        if (p) { Sfx.tap(); sel.playerId = p.id; sel.step = 2; setStepText(STEP_SAY[k][1]); Voice.say(STEP_SAY[k][1]); }
+        if (p) { Sfx.tap(); sel.playerId = p.id; sel.step = 2; setStepText(STEP_SAY(k)[1]); Voice.say(STEP_SAY(k)[1]); }
         return;
       }
       const p = hitPlayer(pt, filt);
@@ -592,7 +564,7 @@
     chip($('fbRec'), fb.tags.rec, '💡', fb.rec.why);
     chip($('fbExe'), fb.tags.exe, '🎯', fb.exe.why);
     $('fbCompare').hidden = h.attempts.length < 2;
-    $('fbNext').querySelector('.lbl').textContent = M.done ? 'Fertig' : 'Weiterspielen';
+    $('fbNext').querySelector('.lbl').textContent = M.done ? T().bedienung.fertig : T().bedienung.weiterspielen;
     $('feedback').hidden = false;
     syncLayout();
     if (fb.good) Sfx.good();
@@ -607,7 +579,7 @@
     h.final = null; explainView = null;
     if (h.look && !h.look.right) h.look = null; // Wahrnehmung war falsch -> auch das Schauen wiederholen
     updateScore();
-    Voice.say('Gleiche Situation – probier etwas anderes!');
+    Voice.say(T().bedienung.andersProbieren);
     setTimeout(() => beginDecision(h.last), 900);
   }
   function next() {
@@ -619,8 +591,8 @@
     dec++;
     if (M.note === 'aus') {
       Sfx.whistle();
-      Voice.say('Der Ball ist im Aus. Jetzt haben die Roten den Ball. Pass gut auf unsere Tore auf!');
-      setStepText('🏳️ Ball im Aus – jetzt hat Rot den Ball.');
+      Voice.say(T().bedienung.ballImAus);
+      setStepText(T().bedienung.ballImAusAnzeige);
       M.note = null;
       setTimeout(() => beginDecision(last), 2600);
       return;
@@ -634,8 +606,8 @@
     $('feedback').hidden = true;
     const say = (pre, at) => `${pre}: ${at.fb.say}`;
     startReplay([
-      { frames: a1.frames, label: 'Vorher', explain: a1.fb.explain, say: say('Vorher', a1) },
-      { frames: a2.frames, label: 'Jetzt', explain: a2.fb.explain, say: say('Jetzt', a2) },
+      { frames: a1.frames, label: T().bedienung.vorher, explain: a1.fb.explain, say: say(T().bedienung.vorher, a1) },
+      { frames: a2.frames, label: T().bedienung.jetzt, explain: a2.fb.explain, say: say(T().bedienung.jetzt, a2) },
     ], () => { S = E.clone(h.final.endState); explainView = h.final.fb.explain; $('feedback').hidden = false; mode = 'feedback'; syncLayout(); });
   }
   function startReplay(queue, onDone) {
@@ -654,15 +626,15 @@
     const good = done.filter((h) => h.final.fb.good).length;
     const looks = hist.filter((h) => h.look);
     $('stars').innerHTML = done.map((h) => `<span class="${h.final.fb.good ? 'on' : ''}">★</span>`).join('');
-    $('endScore').textContent = `Blau ${S.score.blue} : ${S.score.red} Rot` + (looks.length ? `  ·  👀 ${looks.filter((l) => l.right && l.tries === 1).length}/${looks.length} sofort erkannt` : '');
-    let msg = good >= done.length - 1 ? 'Super gespielt!' : good >= 2 ? 'Gut gemacht!' : 'Toll, dass du es probiert hast!';
-    msg += ' Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!';
+    const TE = T().ende;
+    $('endScore').textContent = TE.spielstand(S.score.blue, S.score.red) + (looks.length ? TE.erkannt(looks.filter((l) => l.right && l.tries === 1).length, looks.length) : '');
+    const msg = TE.lob(good, done.length) + (TE.merksatz || '');
     $('endMsg').textContent = msg;
     $('endList').innerHTML = done.map((h, i) => `<li class="${h.final.fb.good ? 'good' : ''}"><b>${h.ctx.type === 'verteidigung' ? '🛡️' : '⚽'}</b> ${h.ctx.title} <span>${h.final.fb.good ? '⭐' : '💭'}</span></li>`).join('');
     $('prompt').hidden = true; setStepText('');
     $('endScreen').hidden = false;
     firstRun = false;
-    Voice.say(msg + ` Du hast ${good} von ${done.length} Sternen.`);
+    Voice.say(msg + TE.sterne(good, done.length));
   }
   function highlights() {
     $('endScreen').hidden = true;
@@ -700,13 +672,13 @@
       s.style.animationDelay = (i % 8) * 0.05 + 's';
       box.appendChild(s);
     }
-    $('goalBanner').textContent = teamName === 'blue' ? 'TOOOR! ⚽' : 'Tor für Rot';
+    $('goalBanner').textContent = teamName === 'blue' ? T().bedienung.torBlau : T().bedienung.torRot;
     $('goalBanner').className = 'goalBanner show ' + teamName;
     setTimeout(() => { box.innerHTML = ''; $('goalBanner').className = 'goalBanner'; }, 1800);
   }
 
   // ------------------------------------------------------------ Verdrahtung
-  $('play').onclick = () => { Sfx.ctx(); Voice.init(); Voice.say('Los geht\'s! Du spielst mit den Blauen.'); setTimeout(startMission, 50); };
+  $('play').onclick = () => { Sfx.ctx(); Voice.init(); Voice.say(T().bedienung.losGehts); setTimeout(startMission, 50); };
   $('again').onclick = () => startMission();
   $('home').onclick = () => { Voice.stop(); hideHand(); mode = 'start'; $('feedback').hidden = true; $('endScreen').hidden = true; $('startScreen').hidden = false; };
   $('home2').onclick = $('home').onclick;
@@ -715,14 +687,24 @@
   $('fbNext').onclick = () => next();
   $('fbCompare').onclick = () => compare();
   $('cancel').onclick = () => { sel = null; hintView = null; renderActions(hist[dec].ctx); setStepText(''); };
-  $('repeat').onclick = () => Voice.say(mode === 'look' ? 'Welcher Freund steht frei? Tippe ihn an.' : hist[dec] ? hist[dec].ctx.say : '');
+  $('repeat').onclick = () => Voice.say(mode === 'look' ? T().schau.wiederholen : hist[dec] ? hist[dec].ctx.say : '');
   $('skip').onclick = () => { if (replay) { const d = replay.onDone; replay = null; d(); } };
   $('sound').onclick = () => { Voice.on = !Voice.on; $('sound').textContent = Voice.on ? '🔊' : '🔇'; if (!Voice.on) Voice.stop(); };
+
+  // Startbildschirm aus der Missionsdatei
+  (function renderStart() {
+    const m = E.mission(MISSION_ID);
+    $('mNum').textContent = String(m.nummer);
+    $('mTitle').textContent = m.titel;
+    $('mSub').textContent = m.untertitel;
+    $('mChips').innerHTML = '';
+    for (const c of m.merkmale) { const sp = document.createElement('span'); sp.textContent = c; $('mChips').appendChild(sp); }
+  })();
 
   window.addEventListener('resize', resize);
   try { new ResizeObserver(() => resize()).observe(wrap); } catch (e) {}
   resize();
-  S = E.newState(); M = E.newMission();
+  S = E.newState(MISSION_ID); M = E.newMission(MISSION_ID);
   updateScore(); updateProgress();
   requestAnimationFrame(loop);
 

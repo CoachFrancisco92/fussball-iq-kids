@@ -4,7 +4,7 @@ Ein Fußballspiel mit integriertem Entscheidungstraining für Kinder ab fünf Ja
 Das Kind erlebt eine echte Spielsituation (3 gegen 3, vier Minitore, Torschusszonen nach DFB-Kinderfußball),
 entscheidet per Antippen, und der nächste Spielzustand ergibt sich aus dieser Entscheidung.
 
-**Stand:** V0.2 – Mission 1 „Zusammen sind wir stark!“ (Angriffs- und Verteidigungsphase, „Erst schauen, dann entscheiden“). Änderungen: [CHANGELOG.md](CHANGELOG.md).
+**Stand:** V0.2.4 – Mission 1 „Zusammen sind wir stark!“ (Angriffs- und Verteidigungsphase, „Erst schauen, dann entscheiden“). Änderungen: [CHANGELOG.md](CHANGELOG.md).
 
 ## Spielen
 - Online: https://coachfrancisco92.github.io/fussball-iq-kids/ (Version steht auf dem Startbildschirm)
@@ -17,7 +17,9 @@ Erkennen → Entscheiden → Erleben → Verstehen → Wiederholen
 ## Aufbau
 | Datei | Inhalt |
 |---|---|
-| `engine.js` | Deterministische, regelbasierte Simulation: Feld, Spieler, Pass-/Schuss-/Dribbling-Regeln, Gegner- und Mitspieler-Verhalten, Bewertung der Entscheidungsqualität, Hilfe |
+| `engine.js` | Deterministische, regelbasierte Simulation: Feld, Spieler, Pass-/Schuss-/Dribbling-Regeln, Gegner- und Mitspieler-Verhalten, Bewertung der Entscheidungsqualität, Hilfe, Wahrnehmungslogik – ohne Missionsinhalte und Texte |
+| `missions/` | Missionen als Daten (Aufstellung, Phasen, Lernziele) – siehe [docs/missionen.md](docs/missionen.md) |
+| `content/texte.js` | alle pädagogischen Texte |
 | `app.js` | Oberfläche: Canvas-Spielfeld, Tipp-Steuerung, deutsche Sprachausgabe, Rückmeldung, Wiederholen & Vergleichen, Missionsende |
 | `index.html` | Layout & Styles |
 | `sw.js`, `manifest.webmanifest`, `icon*` | PWA (offline, installierbar) |

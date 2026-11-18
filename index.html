@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Fußball-IQ Kids</title>
 <meta name="theme-color" content="#1e3a8a">
-<meta name="app-version" content="0.2.3">
+<meta name="app-version" content="0.2.4">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fußball-IQ">
@@ -229,11 +229,11 @@
     <h1>Fußball-<span>IQ</span> Kids</h1>
     <p class="sub">Schau hin. Entscheide. Probier's aus!</p>
     <div class="mcard">
-      <div class="num">1</div>
+      <div class="num" id="mNum"></div>
       <div>
-        <b>Zusammen sind wir stark!</b>
-        <small>Erst schauen, dann entscheiden</small>
-        <div class="chips"><span>3 gegen 3</span><span>4 Minitore</span><span>Angriff + Verteidigung</span></div>
+        <b id="mTitle"></b>
+        <small id="mSub"></small>
+        <div class="chips" id="mChips"></div>
       </div>
     </div>
     <button class="big" id="play">▶ Los geht's</button>
@@ -242,7 +242,7 @@
       <div><i>👆</i>Knopf, dann Feld</div>
       <div><i>↩️</i>Nochmal probieren</div>
     </div>
-    <p class="ver" id="ver">Version 0.2.3</p>
+    <p class="ver" id="ver">Version 0.2.4</p>
   </div>
 </div>
 
@@ -266,7 +266,9 @@
 <div id="confetti"></div>
 <div class="goalBanner" id="goalBanner"></div>
 
-<script src="engine.js?v=0.2.3"></script>
-<script src="app.js?v=0.2.3"></script>
+<script src="content/texte.js?v=0.2.4"></script>
+<script src="missions/mission-1.js?v=0.2.4"></script>
+<script src="engine.js?v=0.2.4"></script>
+<script src="app.js?v=0.2.4"></script>
 </body>
 </html>

@@ -1,8 +1,7 @@
 // Szenario-Tests für die Simulation. Ausführen: node --test tests/
 const test = require('node:test');
 const assert = require('node:assert');
-require('../engine.js');
-const E = globalThis.FIQ;
+const E = require('./helpers/load.js');
 
 const MAP = { passen: 'pass', schiessen: 'shoot', dribbeln: 'dribble', freilaufen: 'run', erobern: 'press', raum: 'cover' };
 

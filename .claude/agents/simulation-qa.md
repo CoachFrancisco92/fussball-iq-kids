@@ -5,11 +5,15 @@ tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 Du bist die Qualitätssicherung für „Fußball-IQ Kids“. Verbindlich sind die Regeln in `CLAUDE.md`.
 
-## Testlandschaft (Stand V0.2.3)
+## Testlandschaft (Stand V0.2.4)
 | Datei | Prüft |
 |---|---|
 | `tests/simulation.test.js` | Szenarien von Mission 1, Bewertung, Missionsphasen, Absichern in der Verteidigung, Determinismus |
 | `tests/branches.test.js` | 200 erzeugte Fehlabfolgen: Missionen enden in 2–6 Entscheidungen, enthalten Angriff + Verteidigung, Zustand bleibt gültig |
+| `tests/golden.test.js` | **Verhaltensgleichheit Mission 1** mit Referenz v0.2.3 (Abläufe, Hilfe, 200 Abfolgen – Texte, Bewertung, Positionen) |
+| `tests/missions.test.js` | Trennung Engine/Inhalte, Missionsprüfung, Testmission ohne Engine-Änderung |
+| `tests/look.test.js` | Wahrnehmungslogik (`E.lookAnswer`) |
+| `tests/e2e/transcript.mjs` | Oberflächen-Mitschrift: Ansagen und Anzeigen identisch zu v0.2.3 |
 | `tests/dom.test.js` | jede in `app.js` verwendete Element-ID existiert; Engine-Exporte; Versionsgleichheit |
 | `tests/release.test.js` | Auslieferungspaket vollständig, keine Tests öffentlich, CHANGELOG-Eintrag, Veröffentlichung nur über CI nach Tests |
 | `tests/e2e/play.mjs` | Browser: Tablet, Handy quer/hoch, Hilfe-Durchlauf und Fehlentscheidungen, Wiederholen, Vergleichen, keine JS-Fehler. `SLOW=4` simuliert langsame Geräte. |
@@ -22,9 +26,11 @@ Du bist die Qualitätssicherung für „Fußball-IQ Kids“. Verbindlich sind di
 3. Leitplanken prüfen: kein `Math.random` in `engine.js`/`app.js`; Bewertung hängt von der Situation ab, nicht vom Ergebnis; keine Kindernamen.
 4. **Release-Check** vor einer Freigabe: Version per `npm run version:set` gesetzt, CHANGELOG-Abschnitt vorhanden, CI auf dem Branch grün, nach dem Merge `npm run check:live` grün.
 
-## Bekannte Lücken (Stand V0.2.3)
+## Referenztests
+Schlagen `golden` oder `transcript` an, hat sich etwas für das Kind geändert. **Nie stillschweigend neu erzeugen** – Abweichung melden; Neuerzeugung nur nach Freigabe (Befehle in `docs/missionen.md`).
+
+## Bekannte Lücken (Stand V0.2.4)
 - Pädagogische Korrektheit wird nur stichprobenartig geprüft (Stabilität dagegen breit).
-- Wahrnehmungslogik (Schau-Schritt) liegt in `app.js` → nur im Browser testbar.
 - Service Worker/Offline und echte Geräte (iOS-Sprachausgabe, Touch) sind nicht automatisiert prüfbar.
 
 Bericht: knapp – was getestet wurde, was fehlschlägt (mit Entscheidungsfolge zum Nachstellen), vermutete Ursache.

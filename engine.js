@@ -1,7 +1,11 @@
-/* Fußball-IQ Kids – Simulations-Engine V0.1
+/* Fußball-IQ Kids – Simulations-Engine
  * Deterministische, regelbasierte 3-gegen-3-Simulation (Funino-Spielform, 4 Minitore).
  * Keine Zufallswerte: gleiche Ausgangslage + gleiche Entscheidung = gleiches Ergebnis.
  * Koordinaten in Metern. x nach rechts (Blau greift nach rechts an), y nach unten.
+ *
+ * Die Engine enthält keine Missionsinhalte und keine Sätze:
+ *   - Aufstellungen, Phasen, Ziele:  missions/*.js   (Registrierung in root.FIQ_MISSIONS)
+ *   - Pädagogische Texte:            content/texte.js (root.FIQ_TEXTE, je Mission überschreibbar)
  */
 (function (root) {
   'use strict';
@@ -71,14 +75,84 @@
     return { id: (teamName === 'blue' ? 'b' : 'r') + num, team: teamName, num, x, y, tx: x, ty: y, vx: 0, vy: 0, ctrl: null, delay: 0, tackleT: 0 };
   }
 
-  function newState() {
+  // ---------------------------------------------------------------- Missionen & Texte
+  const missionList = () => root.FIQ_MISSIONS || [];
+  /** Mission nach id; ohne id die erste registrierte Mission. */
+  function mission(id) {
+    const list = missionList();
+    const m = id == null ? list[0] : list.find((x) => x.id === id);
+    if (!m) throw new Error('Mission nicht gefunden: ' + (id == null ? '(keine Mission registriert)' : id));
+    return m;
+  }
+  const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v) && typeof v !== 'function';
+  function merge(base, over) {
+    if (!isObj(over)) return base;
+    const out = Object.assign({}, base);
+    for (const k of Object.keys(over)) out[k] = isObj(base && base[k]) && isObj(over[k]) ? merge(base[k], over[k]) : over[k];
+    return out;
+  }
+  const textCache = {};
+  /** Textkatalog für einen Zustand (bzw. eine Mission): content/texte.js + Überschreibungen der Mission. */
+  function texts(sOrId) {
+    if (!root.FIQ_TEXTE) throw new Error('Textkatalog fehlt (content/texte.js nicht geladen)');
+    const id = sOrId && typeof sOrId === 'object' ? sOrId.missionId : sOrId;
+    const m = mission(id);
+    if (!textCache[m.id] || textCache[m.id].base !== root.FIQ_TEXTE) textCache[m.id] = { base: root.FIQ_TEXTE, t: merge(root.FIQ_TEXTE, m.texte) };
+    return textCache[m.id].t;
+  }
+
+  /** Prüft eine Missionsdatei auf Vollständigkeit und Plausibilität. Gibt eine Liste von Fehlern zurück. */
+  function validateMission(m) {
+    const err = [];
+    const need = (cond, msg) => { if (!cond) err.push(msg); };
+    need(m && typeof m.id === 'string' && m.id, 'id fehlt');
+    need(typeof m.titel === 'string' && m.titel, 'titel fehlt');
+    need(Array.isArray(m.lernziele) && m.lernziele.length >= 1, 'lernziele fehlen');
+    const lineup = (L, where) => {
+      need(L && Array.isArray(L.spieler), `${where}: spieler fehlen`);
+      if (!L || !Array.isArray(L.spieler)) return;
+      const ids = L.spieler.map((p) => p.id);
+      need(new Set(ids).size === ids.length, `${where}: Spieler doppelt`);
+      for (const p of L.spieler) {
+        need(/^[br][1-9]$/.test(p.id), `${where}: ungültige Spieler-id ${p.id}`);
+        need(Number.isFinite(p.x) && Number.isFinite(p.y) && p.x > 0 && p.x < F.W && p.y > 0 && p.y < F.H, `${where}: ${p.id} außerhalb des Feldes`);
+      }
+      need(ids.includes(L.ballbesitz), `${where}: ballbesitz ${L.ballbesitz} ist kein Spieler`);
+    };
+    lineup(m.start, 'start');
+    if (m.start && Array.isArray(m.start.spieler)) {
+      const b = m.start.spieler.filter((p) => p.id[0] === 'b').length, r = m.start.spieler.filter((p) => p.id[0] === 'r').length;
+      need(b >= 2 && r >= 2, 'start: mindestens 2 gegen 2');
+    }
+    for (const t of ['red', 'blue']) {
+      lineup(m.neustart && m.neustart[t], 'neustart.' + t);
+      if (m.neustart && m.neustart[t] && m.start) need((m.neustart[t].ballbesitz || '')[0] === (t === 'red' ? 'r' : 'b'), `neustart.${t}: Ball muss beim Team ${t} sein`);
+    }
+    need(m.phasen && Number.isInteger(m.phasen.maxAngriff) && m.phasen.maxAngriff >= 1, 'phasen.maxAngriff fehlt');
+    need(m.phasen && Number.isInteger(m.phasen.verteidigung) && m.phasen.verteidigung >= 1, 'phasen.verteidigung fehlt');
+    need(Array.isArray(m.schauSchritt), 'schauSchritt fehlt (leere Liste = aus)');
+    return err;
+  }
+
+  function placePlayers(s, lineup) {
+    for (const q of lineup.spieler) {
+      const p = P(s, q.id);
+      p.x = p.tx = q.x; p.y = p.ty = q.y; p.vx = p.vy = 0; p.ctrl = null; p.delay = 0;
+    }
+  }
+
+  function newState(missionId) {
+    const m = mission(missionId);
+    const errs = validateMission(m);
+    if (errs.length) throw new Error(`Mission ${m.id} ungültig: ${errs.join('; ')}`);
+    const players = m.start.spieler.map((q) => mkPlayer(q.id[0] === 'b' ? 'blue' : 'red', Number(q.id.slice(1)), q.x, q.y));
+    const owner = players.find((p) => p.id === m.start.ballbesitz);
+    const ball = m.start.ball || { x: owner.x, y: owner.y };
     return {
-      players: [
-        mkPlayer('blue', 1, 14, 13), mkPlayer('blue', 2, 24, 6), mkPlayer('blue', 3, 19, 19.5),
-        mkPlayer('red', 1, 18.5, 12.5), mkPlayer('red', 2, 28, 13), mkPlayer('red', 3, 18, 16.8),
-      ],
-      ball: { x: 14.4, y: 13, owner: 'b1', flight: null },
-      poss: 'blue',
+      missionId: m.id,
+      players,
+      ball: { x: ball.x, y: ball.y, owner: owner.id, flight: null },
+      poss: owner.team,
       score: { blue: 0, red: 0 },
       t: 0,
       ai: { goal: 0, next: 0 },
@@ -87,16 +161,9 @@
   }
 
   function restart(s, teamName) {
-    const set = (id, x, y) => { const p = P(s, id); p.x = p.tx = x; p.y = p.ty = y; p.vx = p.vy = 0; p.ctrl = null; p.delay = 0; };
-    if (teamName === 'red') {
-      set('r1', 33.5, 12); set('r2', 31, 4); set('r3', 31, 20);
-      set('b1', 17, 11); set('b2', 24.5, 8); set('b3', 26.5, 15);
-      s.ball.owner = 'r1';
-    } else {
-      set('b1', 2.5, 12); set('b2', 6, 5); set('b3', 6, 19);
-      set('r1', 19, 12); set('r2', 13, 7); set('r3', 13, 17);
-      s.ball.owner = 'b1';
-    }
+    const L = mission(s.missionId).neustart[teamName];
+    placePlayers(s, L);
+    s.ball.owner = L.ballbesitz;
     s.ball.flight = null;
     const c = carrier(s); s.ball.x = c.x; s.ball.y = c.y;
     s.poss = teamName;
@@ -104,31 +171,19 @@
   }
 
   // ---------------------------------------------------------------- Entscheidungskontext
-  const ACTIONS = {
-    passen: { icon: '⚽', label: 'Passen' },
-    dribbeln: { icon: '🏃', label: 'Dribbeln' },
-    schiessen: { icon: '🥅', label: 'Schießen' },
-    freilaufen: { icon: '👟', label: 'Freilaufen' },
-    erobern: { icon: '🛡️', label: 'Ball erobern' },
-    raum: { icon: '🧱', label: 'Weg versperren' },
-  };
-
   function context(s, last) {
     const c = carrier(s);
+    const t = texts(s);
+    const mk = (type, key, actions) => Object.assign({ type }, { title: t.kontext[key].title, tag: t.kontext[key].tag }, { actions }, { say: t.kontext[key].say });
     if (s.poss === 'blue') {
       const inZone = c.x >= F.W - F.ZONE - 0.3;
-      if (inZone) return { type: 'abschluss', title: 'Welches Tor ist frei?', tag: 'Torabschluss', actions: ['schiessen', 'passen'], say: 'Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?' };
-      if (last && last.kind === 'pass' && last.success && last.team === 'blue')
-        return { type: 'ohneBall', title: 'Wo kann ich helfen?', tag: 'Bewegung ohne Ball', actions: ['freilaufen'], say: 'Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.' };
+      if (inZone) return mk('abschluss', 'abschluss', ['schiessen', 'passen']);
+      if (last && last.kind === 'pass' && last.success && last.team === 'blue') return mk('ohneBall', 'ohneBall', ['freilaufen']);
       const near = team(s, 'red').some((r) => dist(r, c) < 4.5);
-      return near
-        ? { type: 'angriff', title: 'Wem spiele ich den Ball zu?', tag: 'Angriff', actions: ['passen', 'dribbeln'], say: 'Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?' }
-        : { type: 'angriff', title: 'Was machst du mit dem Ball?', tag: 'Angriff', actions: ['passen', 'dribbeln'], say: 'Du hast den Ball! Schau dich um. Passen oder dribbeln?' };
+      return near ? mk('angriff', 'angriffDruck', ['passen', 'dribbeln']) : mk('angriff', 'angriffFrei', ['passen', 'dribbeln']);
     }
     const pressed = team(s, 'blue').some((b) => dist(b, c) < 3.5);
-    return pressed
-      ? { type: 'verteidigung', title: 'Wie schützen wir unser Tor?', tag: 'Verteidigung', actions: ['raum', 'erobern'], say: 'Der Gegner will zu unserem Tor! Wo muss dein Spieler stehen, damit er nicht einfach schießen kann?' }
-      : { type: 'verteidigung', title: 'Wer hält den Gegner auf?', tag: 'Verteidigung', actions: ['erobern', 'raum'], say: 'Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?' };
+    return pressed ? mk('verteidigung', 'verteidigungNah', ['raum', 'erobern']) : mk('verteidigung', 'verteidigungFern', ['erobern', 'raum']);
   }
 
   // ---------------------------------------------------------------- Bewertung & Hilfen
@@ -178,11 +233,11 @@
     if (s.poss === 'red') redPlan(s);
     if (actionKey === 'passen') {
       const o = passOptions(s).sort((a, b) => b.margin - a.margin)[0];
-      return { ids: [o.id], say: 'Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner.' };
+      return { ids: [o.id], say: texts(s).hilfe.passen };
     }
     if (actionKey === 'schiessen') {
       const o = shotOptions(s).sort((a, b) => b.margin - a.margin)[0];
-      return { goal: o.goal, say: 'Vor diesem Tor steht kein Gegner im Weg.' };
+      return { goal: o.goal, say: texts(s).hilfe.schiessen };
     }
     if (actionKey === 'dribbeln') {
       let best = null;
@@ -192,22 +247,22 @@
         const m = dribbleLane(s, c, pt).margin + pt.x * 0.02;
         if (!best || m > best.m) best = { m, pt };
       }
-      return { point: best.pt, say: 'Dribbel dorthin, wo kein Gegner im Weg ist.' };
+      return { point: best.pt, say: texts(s).hilfe.dribbeln };
     }
     if (actionKey === 'freilaufen') {
       const best = bestRunSpot(s);
-      return { ids: [best.id], point: best.pt, say: 'Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.' };
+      return { ids: [best.id], point: best.pt, say: texts(s).hilfe.freilaufen };
     }
     if (actionKey === 'erobern') {
       const b = team(s, 'blue').sort((a, b2) => dist(a, c) - dist(b2, c))[0];
-      return { ids: [b.id], say: 'Der Spieler, der am nächsten am Ball ist, greift an.' };
+      return { ids: [b.id], say: texts(s).hilfe.erobern };
     }
     if (actionKey === 'raum') {
       const g = F.goals.blue[s.ai.goal];
       const pt = { x: g.x + (c.x - g.x) * 0.4, y: g.y + (c.y - g.y) * 0.4 };
       pt.x = Math.max(3, pt.x);
       const b = team(s, 'blue').sort((a, b2) => dist(a, pt) - dist(b2, pt))[0];
-      return { ids: [b.id], point: pt, say: 'Stell dich zwischen den Gegner und unser Tor.' };
+      return { ids: [b.id], point: pt, say: texts(s).hilfe.raum };
     }
     return {};
   }
@@ -257,7 +312,7 @@
     return { passes, pBest, shots, sBest, dBest, inZone,
       ok: { pass: pBest > CFG.passLaneOk, shoot: sBest > CFG.shotLaneOk, dribble: dBest > 0.2 } };
   }
-  const nameOf = (s, id) => { const p = P(s, id); return (p.team === 'blue' ? 'Blau ' : 'Rot ') + p.num; };
+  const nameOf = (s, id) => { const p = P(s, id); return texts(s).teams[p.team] + ' ' + p.num; };
   /** Gegner, der einem Weg am nächsten steht (für Erklärungen) */
   function laneKey(s, from, to, teamName) {
     let best = null;
@@ -272,45 +327,46 @@
    *  Stern nur, wenn erkennen UND ausfuehren gut sind. */
   function evaluate(s, a) {
     const c = carrier(s);
+    const E = texts(s).erkennen, X = texts(s).ausfuehren;
     const R = (good, why) => ({ good, why });
     let rec = R(true, ''), exe = R(true, '');
     if (a.kind === 'pass' || a.kind === 'shoot' || a.kind === 'dribble') {
       const sit = situation(s);
       const anyOk = sit.ok.pass || sit.ok.shoot || sit.ok.dribble;
-      if (sit.ok[a.kind]) rec = R(true, a.kind === 'shoot' ? 'Du hast die Torchance erkannt.' : a.kind === 'pass' ? 'Du hast gesehen, dass ein Freund frei war.' : 'Du hast den freien Platz gesehen.');
-      else if (!anyOk) rec = R(true, 'Eine schwierige Lage – nirgends war es richtig frei.');
-      else if (sit.ok.shoot) rec = R(false, 'Ein Tor war frei – Schießen wäre gut gewesen.');
-      else if (sit.ok.pass) rec = R(false, a.kind === 'shoot' ? 'Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.' : 'Ein Freund stand frei – ein Pass wäre besser gewesen.');
-      else rec = R(false, a.kind === 'shoot' ? 'Beide Tore waren zugestellt. Vor dir war aber Platz zum Dribbeln.' : 'Vor dir war Platz zum Dribbeln.');
+      if (sit.ok[a.kind]) rec = R(true, a.kind === 'shoot' ? E.torchance : a.kind === 'pass' ? E.freund : E.platz);
+      else if (!anyOk) rec = R(true, E.schwierig);
+      else if (sit.ok.shoot) rec = R(false, E.besserSchiessen);
+      else if (sit.ok.pass) rec = R(false, a.kind === 'shoot' ? E.besserPassStattSchuss : E.besserPass);
+      else rec = R(false, a.kind === 'shoot' ? E.besserDribbelnStattSchuss : E.besserDribbeln);
 
       if (a.kind === 'pass') {
         const m = a.id ? sit.passes.find((o) => o.id === a.id).margin : lane(c, a, CFG.passSpeed, team(s, 'red'), CFG.redReact, CFG.reach).margin;
-        const target = a.id ? nameOf(s, a.id) : 'die freie Stelle';
-        if (m > CFG.passLaneOk) exe = R(true, `Der Weg zu ${target} war frei.`);
-        else if (!sit.ok.pass && m >= sit.pBest - 0.05) exe = R(true, 'Das war noch der beste Passweg.');
-        else { const o = a.id ? sit.passes.find((x) => x.id === a.id) : null; const k = (o && o.hit && o.hit.id) || laneKey(s, c, a.id ? P(s, a.id) : a, 'red'); exe = R(false, `${k ? nameOf(s, k) : 'Ein Gegner'} stand nah am Weg zu ${target}.` + (sit.ok.pass ? ' Ein anderer Freund stand freier.' : '')); }
+        const target = a.id ? nameOf(s, a.id) : X.freieStelle;
+        if (m > CFG.passLaneOk) exe = R(true, X.wegFrei(target));
+        else if (!sit.ok.pass && m >= sit.pBest - 0.05) exe = R(true, X.besterPassweg);
+        else { const o = a.id ? sit.passes.find((x) => x.id === a.id) : null; const k = (o && o.hit && o.hit.id) || laneKey(s, c, a.id ? P(s, a.id) : a, 'red'); exe = R(false, X.wegNah(k ? nameOf(s, k) : X.einGegner, target) + (sit.ok.pass ? X.andererFreier : '')); }
       } else if (a.kind === 'shoot') {
         const m = sit.shots[a.goal].margin;
-        if (m > CFG.shotLaneOk) exe = R(true, 'Du hast das freie Tor gewählt.');
-        else { const h = sit.shots[a.goal].hit; const k = (h && h.id) || laneKey(s, c, F.goals.red[a.goal], 'red'); exe = R(false, `Vor diesem Tor stand ${k ? nameOf(s, k) : 'ein Gegner'}.` + (sit.shots[1 - a.goal].margin > CFG.shotLaneOk ? ' Das andere Tor war frei.' : '')); }
+        if (m > CFG.shotLaneOk) exe = R(true, X.freiesTor);
+        else { const h = sit.shots[a.goal].hit; const k = (h && h.id) || laneKey(s, c, F.goals.red[a.goal], 'red'); exe = R(false, X.vorDemTor(k ? nameOf(s, k) : X.einGegnerKlein) + (sit.shots[1 - a.goal].margin > CFG.shotLaneOk ? X.anderesTorFrei : '')); }
       } else {
         const m = dribbleLane(s, c, a).margin;
-        exe = m > 0.2 ? R(true, 'Du bist in den freien Raum gedribbelt.') : R(false, 'Du bist direkt auf einen Gegner zugelaufen.');
+        exe = m > 0.2 ? R(true, X.freierRaum) : R(false, X.inGegner);
       }
     } else if (a.kind === 'run') {
       const sc = runSpotScore(s, c, P(s, a.id), a);
-      rec = R(true, 'Du hast deinem Freund geholfen, statt stehen zu bleiben.');
-      exe = sc.ok ? R(true, 'Du bist in einen freien Raum gelaufen.') : R(false, sc.open < 3.2 ? 'Dort stand schon ein Gegner.' : sc.d < 3.5 ? 'Das war zu nah am Ball – dein Freund braucht Platz.' : 'Von dort war der Passweg versperrt.');
+      rec = R(true, E.geholfen);
+      exe = sc.ok ? R(true, X.gelaufenFrei) : R(false, sc.open < 3.2 ? X.gelaufenBesetzt : sc.d < 3.5 ? X.gelaufenZuNah : X.gelaufenZu);
     } else if (a.kind === 'press') {
       const blues = team(s, 'blue').sort((x, y) => dist(x, c) - dist(y, c));
-      rec = dist(blues[0], c) < 8 ? R(true, 'Angreifen war richtig – ein Spieler war nah genug.') : R(false, 'Der Gegner war weit weg. Besser erst den Weg zum Tor versperren.');
+      rec = dist(blues[0], c) < 8 ? R(true, E.angreifenRichtig) : R(false, E.angreifenZuWeit);
       const okP = a.id === blues[0].id || dist(P(s, a.id), c) - dist(blues[0], c) < 1;
-      exe = okP ? R(true, 'Der Spieler am nächsten am Ball greift an.') : R(false, `Der Weg war weit. ${nameOf(s, blues[0].id)} war näher am Ball.`);
+      exe = okP ? R(true, X.naechsterGreift) : R(false, X.wegWeit(nameOf(s, blues[0].id)));
     } else if (a.kind === 'cover') {
       const g = F.goals.blue[s.ai.goal];
       const sd = segDist(a, c, g);
-      rec = R(true, 'Du hast an unser Tor gedacht.');
-      exe = sd.d < 2.2 && sd.t > 0.15 && sd.t < 0.92 ? R(true, 'Du stehst zwischen Gegner und Tor.') : R(false, 'Der Weg zum Tor blieb offen.');
+      rec = R(true, E.torGedacht);
+      exe = sd.d < 2.2 && sd.t > 0.15 && sd.t < 0.92 ? R(true, X.zwischenTor) : R(false, X.torOffen);
     }
     const good = rec.good && exe.good;
     return { good, rec, exe, why: !rec.good ? rec.why : exe.why };
@@ -676,55 +732,86 @@
 
   // ---------------------------------------------------------------- Ergebnis-Text
   function outcome(s) {
-    const ep = s.ep, a = ep.a, evs = ep.events;
+    const ep = s.ep, a = ep.a, evs = ep.events, T = texts(s).ergebnis;
     const find = (t) => evs.find((e) => e.type === t);
     const goal = find('goal');
     let success = false, text = '', icon = '';
     if (a.kind === 'pass') {
       const ic = find('intercepted');
-      if (ic) { text = `Oh! ${nameOf(s, ic.by)} stand im Weg und hat den Ball bekommen.`; icon = '😮'; }
-      else { success = true; text = 'Der Pass ist angekommen!'; icon = '👍'; }
+      if (ic) { text = T.abgefangen(nameOf(s, ic.by)); icon = '😮'; }
+      else { success = true; text = T.passAngekommen; icon = '👍'; }
     } else if (a.kind === 'shoot') {
-      if (goal) { success = true; text = 'Toooor! Der Weg war frei.'; icon = '🎉'; }
-      else { const bl = find('blocked'); text = `Geblockt! ${bl ? nameOf(s, bl.by) : 'Ein Gegner'} stand vor dem Tor.`; icon = '🧤'; }
+      if (goal) { success = true; text = T.tor; icon = '🎉'; }
+      else { const bl = find('blocked'); text = T.geblockt(bl ? nameOf(s, bl.by) : T.einGegner); icon = '🧤'; }
     } else if (a.kind === 'dribble') {
       const st = find('steal');
-      if (st) { text = `${nameOf(s, st.by)} stand im Weg und hat dir den Ball abgenommen.`; icon = '😮'; }
-      else { success = true; text = 'Gut gedribbelt – du hast den Ball behalten!'; icon = '👍'; }
+      if (st) { text = T.ballAbgenommen(nameOf(s, st.by)); icon = '😮'; }
+      else { success = true; text = T.dribbelGut; icon = '👍'; }
     } else if (a.kind === 'run') {
-      if (find('steal')) { text = 'Oh, der Gegner hat den Ball erobert.'; icon = '😮'; }
-      else if (ep.eval.good) { success = true; text = find('autoDribble') ? 'Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne.' : 'Super! Jetzt bist du anspielbar.'; icon = '🙌'; }
-      else { text = 'Dort ist es schwer, angespielt zu werden.'; icon = '🤔'; }
+      if (find('steal')) { text = T.laufBallweg; icon = '😮'; }
+      else if (ep.eval.good) { success = true; text = find('autoDribble') ? T.laufFreiDribbel : T.laufFrei; icon = '🙌'; }
+      else { text = T.laufSchwer; icon = '🤔'; }
     } else if (a.kind === 'press' || a.kind === 'cover') {
-      if (goal && goal.team === 'red') { text = 'Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen.'; icon = '😬'; }
-      else if (find('steal') && s.poss === 'blue') { success = true; text = 'Ball erobert! Jetzt greifen wir an.'; icon = '💪'; }
-      else if (find('blocked')) { success = true; text = 'Geblockt! Du hast im Weg gestanden.'; icon = '🧱'; }
-      else if (find('intercepted') && s.poss === 'blue') { success = true; text = 'Abgefangen! Der Ball gehört uns.'; icon = '💪'; }
-      else if (find('turn') || (a.kind === 'cover' && find('evade') && ep.eval.good)) { success = true; text = 'Klasse! Der Gegner kommt nicht vorbei und muss die Richtung ändern.'; icon = '🛡️'; }
-      else if (a.kind === 'press' && (find('redPass') || find('evade'))) { success = true; text = 'Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen.'; icon = '💨'; }
-      else if (a.kind === 'cover' && find('redPass') && ep.eval.good) { success = true; text = 'Der Gegner kam nicht durch und musste quer spielen.'; icon = '🛡️'; }
-      else if (a.kind === 'cover' && find('redPass')) { success = true; text = 'Der Gegner hat abgespielt.'; icon = '👀'; }
-      else { text = 'Der Gegner läuft weiter Richtung Tor.'; icon = '🤔'; }
+      if (goal && goal.team === 'red') { text = T.gegentor; icon = '😬'; }
+      else if (find('steal') && s.poss === 'blue') { success = true; text = T.erobert; icon = '💪'; }
+      else if (find('blocked')) { success = true; text = T.selbstGeblockt; icon = '🧱'; }
+      else if (find('intercepted') && s.poss === 'blue') { success = true; text = T.selbstAbgefangen; icon = '💪'; }
+      else if (find('turn') || (a.kind === 'cover' && find('evade') && ep.eval.good)) { success = true; text = T.richtungAendern; icon = '🛡️'; }
+      else if (a.kind === 'press' && (find('redPass') || find('evade'))) { success = true; text = T.druckGemacht; icon = '💨'; }
+      else if (a.kind === 'cover' && find('redPass') && ep.eval.good) { success = true; text = T.querSpielen; icon = '🛡️'; }
+      else if (a.kind === 'cover' && find('redPass')) { success = true; text = T.abgespielt; icon = '👀'; }
+      else { text = T.laeuftWeiter; icon = '🤔'; }
     }
     return { success, text, icon, goal: goal ? goal.team : null };
   }
 
-  const IDEA = { pass: 'den Ball abzuspielen', shoot: 'aufs Tor zu schießen', dribble: 'zu dribbeln', run: 'dich freizulaufen', press: 'den Gegner anzugreifen', cover: 'dich in den Weg zu stellen' };
   /** Kindgerechte Rückmeldung (Review V0.2.1, Punkt B): die dreiteilige Bewertung bleibt intern,
    *  gesprochen wird ein kurzer Satz in Kindersprache. */
   function feedback(s) {
-    const ev = s.ep.eval, out = outcome(s), a = s.ep.a;
+    const ev = s.ep.eval, out = outcome(s), a = s.ep.a, T = texts(s).rueckmeldung;
     let tip;
-    if (ev.rec.good && ev.exe.good) tip = out.success ? 'Super gemacht!' : 'Das war trotzdem eine gute Idee! Manchmal klappt es nicht.';
-    else if (ev.rec.good) tip = `Gute Idee, ${IDEA[a.kind]}! Aber schau mal: ${ev.exe.why}`;
-    else tip = (out.success ? 'Hat geklappt! Aber schau mal: ' : 'Schau mal: ') + ev.rec.why;
+    if (ev.rec.good && ev.exe.good) tip = out.success ? T.super : T.trotzdemGut;
+    else if (ev.rec.good) tip = T.guteIdeeAber(T.idee[a.kind], ev.exe.why);
+    else tip = (out.success ? T.geklapptAber : T.schauMal) + ev.rec.why;
     const say = out.text + ' ' + tip;
+    const zielGut = T.tagZielGut[a.kind] || T.tagZielGut.sonst, zielSchlecht = T.tagZielSchlecht[a.kind] || T.tagZielSchlecht.sonst;
     const tags = {
-      rec: { good: ev.rec.good, label: ev.rec.good ? 'Gute Idee' : 'Andere Idee besser' },
-      exe: { good: ev.exe.good, label: ev.exe.good ? (a.kind === 'shoot' ? 'Freies Tor' : a.kind === 'press' ? 'Richtiger Spieler' : a.kind === 'cover' ? 'Gut gestellt' : 'Weg frei') : (a.kind === 'press' ? 'Anderer Spieler näher' : a.kind === 'cover' ? 'Weg offen' : 'Gegner im Weg') },
+      rec: { good: ev.rec.good, label: ev.rec.good ? T.tagIdeeGut : T.tagIdeeBesser },
+      exe: { good: ev.exe.good, label: ev.exe.good ? zielGut : zielSchlecht },
     };
     return { good: ev.good, success: out.success, icon: out.icon, text: out.text, tip, tags, why: ev.why, rec: ev.rec, exe: ev.exe, say, goal: out.goal, explain: s.ep.explain || null };
   }
+
+  // ---------------------------------------------------------------- Wahrnehmung: „Erst schauen, dann entscheiden“
+  /** Bewertet eine Antwort im Schau-Schritt. answerId = angetippter Mitspieler oder null für „Keiner ist frei“.
+   *  tries = Anzahl der Antworten einschließlich dieser. Reine Funktion: verändert den Zustand nicht. */
+  function lookAnswer(s, answerId, tries) {
+    const c = carrier(s), T = texts(s).schau;
+    const opts = passOptions(s);
+    const free = opts.filter((x) => x.margin > CFG.passLaneOk).sort((a, b) => b.margin - a.margin);
+    const r = { right: false, finish: false, say: '', key: null, reveal: null, lane: null, dribblePoint: null };
+    if (answerId) {
+      const p = P(s, answerId), o = opts.find((x) => x.id === answerId), name = nameOf(s, answerId);
+      r.lane = { from: { x: c.x, y: c.y }, to: { x: p.x, y: p.y }, ok: o.margin > CFG.passLaneOk };
+      if (o.margin > CFG.passLaneOk) { r.right = r.finish = true; r.reveal = answerId; r.say = T.richtigFrei(name); }
+      else {
+        const k = laneKey(s, c, p, 'red'); r.key = k;
+        r.say = T.imWeg(nameOf(s, k), name);
+        if (tries >= 2) { r.finish = true; r.say += free.length ? T.zeigeFrei(nameOf(s, free[0].id)) : T.keinerFreiZusatz; if (free.length) r.reveal = free[0].id; }
+        else r.say += T.nochmal;
+      }
+    } else if (!free.length) {
+      r.right = r.finish = true; r.say = T.richtigKeiner;
+      r.dribblePoint = hint(s, 'dribbeln').point;
+    } else {
+      const f = free[0];
+      r.say = T.dochFrei(nameOf(s, f.id));
+      if (tries >= 2) { r.finish = true; r.reveal = f.id; } else r.say = T.wirklichKeiner;
+    }
+    return r;
+  }
+  /** Soll vor diesem Entscheidungsmoment der Schau-Schritt kommen? (Missionseinstellung) */
+  const lookBefore = (s, ctx) => mission(s.missionId).schauSchritt.includes(ctx.type);
 
   // ---------------------------------------------------------------- Aufnahme für Wiederholung / Vergleich
   function frame(s) {
@@ -738,7 +825,10 @@
   // Angriffsphase: endet bei Ballverlust/Tor, spätestens nach maxAttack Entscheidungen (dann Ball im Aus -> Rot).
   // Verteidigungsphase: defense Entscheidungen, endet früher bei Balleroberung oder Gegentor.
   // So enthält jede Mission sicher Angriff UND Verteidigung, ohne frühere Entscheidungen zu verändern.
-  function newMission() { return { phase: 'attack', att: 0, def: 0, maxAttack: 4, defense: 2, done: false, note: null }; }
+  function newMission(missionId) {
+    const m = mission(missionId);
+    return { id: m.id, phase: 'attack', att: 0, def: 0, maxAttack: m.phasen.maxAngriff, defense: m.phasen.verteidigung, done: false, note: null };
+  }
   function missionAfter(m, s, ctxType) {
     m.note = null;
     if (ctxType === 'verteidigung') m.def++; else m.att++;
@@ -752,5 +842,5 @@
   function missionApply(m, s) { if (m.pending) { restart(s, m.pending); m.pending = null; } }
 
   root.FIQ = {
-    VERSION: '0.2.3', F, CFG, ACTIONS, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.2.4', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

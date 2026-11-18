@@ -15,13 +15,15 @@ Fußballspiel mit Entscheidungstraining für Kinder ab 5 (PWA): Das Kind erlebt 
 ## Architektur
 | Datei | Verantwortung |
 |---|---|
-| `engine.js` | Simulation (Feld, Bewegung, Pass/Schuss/Abfangen, Gegner-/Mitspieler-Verhalten), Bewertung, Hilfe, Missionsphasen, Rückmeldungstexte. *Derzeit auch Aufstellung von Mission 1 (`newState`, `restart`) – wird in Phase 2 ausgelagert.* |
+| `engine.js` | Simulation (Feld, Bewegung, Pass/Schuss/Abfangen, Gegner-/Mitspieler-Verhalten), Bewertung (Entscheidung/Ausführung/Ergebnis), Hilfe, Wahrnehmungslogik (`lookAnswer`), Phasenablauf, Missionsprüfung. **Enthält keine Missionsinhalte und keine Sätze.** |
+| `missions/*.js` | eine Datei je Mission: Aufstellungen, Neustarts, Phasen, Lernziele, Schau-Schritt, missionseigene Texte – nur Daten (Format: `docs/missionen.md`) |
+| `content/texte.js` | alle pädagogischen Texte (Ansagen, Rückmeldungen, Bedienung), je Mission überschreibbar |
 | `app.js` | Oberfläche: Canvas, Eingabe, Sprache/Töne, Ablauf (Schau-Schritt, Entscheiden, Rückmeldung, Wiederholen, Vergleichen, Missionsende) |
-| `index.html` | Layout und Styles |
+| `index.html` | Layout, Styles, Ladereihenfolge: Texte → Missionen → Engine → App |
 | `sw.js`, `manifest.webmanifest`, `icon*` | PWA / Offline |
 | `scripts/` | `site-files.json` (Auslieferungsliste), `build-site.mjs`, `set-version.mjs`, `check-live.mjs` |
-| `tests/` | `simulation`, `branches` (200 Fehlabfolgen), `dom` (IDs/Version), `release` (Auslieferung/Workflow), `e2e/play.mjs` (Browser) |
-| `docs/` | `RELEASE.md` (Release & Rollback), `bestandsaufnahme-2026-11.md` (Grundlagenentscheidungen) |
+| `tests/` | `simulation`, `branches` (200 Fehlabfolgen), `golden` (Mission 1 ≙ v0.2.3), `missions` (Trennung, Testmission), `look` (Wahrnehmung), `dom`, `release`, `e2e/play.mjs`, `e2e/transcript.mjs` (Oberflächen-Mitschrift ≙ v0.2.3) |
+| `docs/` | `RELEASE.md`, `missionen.md`, `bestandsaufnahme-2026-11.md` |
 
 Kein Framework, kein Build-Tool, keine Laufzeit-Abhängigkeiten. `playwright` ist die einzige Entwicklungs-Abhängigkeit.
 
@@ -43,6 +45,8 @@ Agenten aufrufen: Nach Änderungen an `engine.js`/`app.js` → `simulation-qa`. 
 - Keine neuen Missionen oder Spielfunktionen, wenn der Auftrag sie nicht ausdrücklich nennt.
 - Fehlschlagende Tests werden verstanden und behoben – **nie durch Lockern der Tests** „grün gemacht“.
 - Änderungen an Bewertung oder Gegnerverhalten: Wirkung auf Mission 1 per Test belegen.
+- **Referenztests nie stillschweigend neu erzeugen.** Schlagen `golden`/`transcript` an, hat sich Verhalten oder Text für das Kind geändert – nur nach Freigabe neu erzeugen und im CHANGELOG benennen.
+- Neue Missionen ohne Änderung an `engine.js` (Ablauf: `docs/missionen.md`).
 - Versionsnummer nur über `npm run version:set -- X.Y.Z` ändern.
 
 ## Definition of Done

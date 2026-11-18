@@ -27,6 +27,11 @@ async function check() {
   if (!app.includes(`APP_VERSION = '${want}'`)) problems.push('app.js hat eine andere Version');
   const eng = await get(`engine.js?v=${want}`);
   if (!eng.includes(`VERSION: '${want}'`)) problems.push('engine.js hat eine andere Version');
+  const scripts = [...html.matchAll(/<script src="([^"]+)"/g)].map((m) => m[1]);
+  for (const src of scripts) {
+    if (!src.endsWith(`?v=${want}`)) problems.push(`${src} ist nicht mit Version ${want} verknüpft`);
+    try { await get(src); } catch (e) { problems.push(`${src} nicht abrufbar (${e.message})`); }
+  }
   const sw = await get('sw.js');
   if (!sw.includes(`fiq-v${want}`)) problems.push('sw.js hat eine andere Version');
   for (const f of ['tests/simulation.test.js', 'package.json']) {

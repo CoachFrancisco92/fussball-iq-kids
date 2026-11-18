@@ -1,5 +1,15 @@
 # Changelog
 
+## V0.2.4 – Missionsarchitektur (Phase 2)
+**Für das Kind ändert sich nichts** – nachgewiesen gegen Referenzaufnahmen von v0.2.3. Ziel: Missionen und Texte ohne Eingriff in die Simulation pflegen.
+- **Missionen als Daten:** `missions/mission-1.js` enthält Aufstellung, Neustarts, Phasen (`maxAngriff`/`verteidigung`), Lernziele, Schau-Schritt-Einstellung, Startbildschirm-Texte und den Merksatz. Die Engine liest Missionen aus einer Registrierung; `newState(id)`, `newMission(id)`; ohne id die erste Mission.
+- **Texte getrennt:** alle Ansagen, Rückmeldungen und Bedientexte in `content/texte.js`, je Mission überschreibbar. `engine.js` und `app.js` enthalten keine kindgerichteten Sätze mehr (wird getestet).
+- **Wahrnehmungslogik in der Engine:** `E.lookAnswer()` bewertet die Antworten im Schau-Schritt (rein, deterministisch, unabhängig testbar); `app.js` zeigt nur noch an.
+- **Missionsprüfung:** `E.validateMission()` – Pflichtfelder, Feldgrenzen, Ballbesitz, Neustarts; ungültige Missionen starten nicht.
+- **Nachweis Verhaltensgleichheit:** Referenzaufnahmen aus v0.2.3 – Engine (`tests/golden/`, 4 Abläufe, Hilfe-Durchlauf, 200 Kinder-Abfolgen inkl. aller Texte, Bewertungen, Positionen) und Oberfläche (`tests/e2e/transcript.mjs`, 3 Abläufe mit allen Ansagen und Anzeigen). Beide schlagen bei einem geänderten Wort bzw. einem verschobenen Spieler an (geprüft).
+- **Neue Tests:** Trennung Engine/Inhalte, Missionsprüfung, Testmission mit anderer Aufstellung/Phasen/Texten ohne Engine-Änderung (nur Test, nicht ausgeliefert), Wahrnehmungslogik (7 Tests).
+- **Doku:** `docs/missionen.md`; `CLAUDE.md`, Agenten und README an die neue Struktur angepasst.
+
 ## V0.2.3 – Entwicklungsprozess & Qualitätssicherung (Phase 1)
 Keine Änderung am Spielverhalten. Ziel: verlässliche Freigabe und Auslieferung.
 - **Veröffentlichung nur nach grünen Tests:** neuer Workflow `CI` (Tests → Paket bauen → Veröffentlichen → Live-Prüfung). Ersetzt den bisherigen Test-Workflow und – nach Umstellung von *Pages → Source* auf „GitHub Actions“ – die testunabhängige Veröffentlichung „Deploy from a branch“.

@@ -1,0 +1,4 @@
+{
+  "comment": "Paketliste für Stände ohne eigene scripts/site-files.json (v0.2.2 und älter). Nur für Rollbacks.",
+  "files": ["index.html", "engine.js", "app.js", "sw.js", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png"]
+}
