@@ -1,6 +1,6 @@
 # Hotfix V0.2.5 – Szene endet nie (Pass-Pingpong der Gegner)
 
-Stand: Branch `hotfix-endlosschleife`, Basis `main` (v0.2.4). **Zur Freigabe vorgelegt.** Referenzaufnahmen v0.2.3 unverändert; die Tests lassen genau die unten genannten Abweichungen zu (`tests/golden/abweichungen-hotfix.json`).
+Freigegeben vom Product Owner am 18.11.2026. Neue Referenz `tests/golden/mission1.v0.2.5.json` – gegenüber v0.2.3 ausschließlich die unten genannten 10 Abfolgen geändert (vorgelegte Liste: `tests/golden/historie/v0.2.5-hotfix-abweichungen.json`).
 
 ## Fehlerbild
 Pass von der Startposition auf 17/11: Rot 1 fängt ab, danach spielen sich Rot 1 und Rot 3 (1,3 m auseinander) den Ball alle ~0,22 s zu. Die Szene endet nie, die App bleibt in der Szene hängen. Gleiches in der Verteidigung (z. B. Kinder-Abfolge 12, „Weg versperren“).

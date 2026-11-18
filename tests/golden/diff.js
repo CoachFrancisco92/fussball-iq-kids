@@ -1,9 +1,10 @@
-// Abweichungsbericht: vergleicht die aktuelle Engine mit der Referenz v0.2.3 (Mission 1) Entscheidung für Entscheidung.
+// Abweichungsbericht: vergleicht die aktuelle Engine mit der gültigen Referenz (referenz.js, Mission 1) Entscheidung für Entscheidung.
 // Ändert KEINE Referenz. Aufruf: node tests/golden/diff.js [--json pfad] [--md pfad]
 const fs = require('node:fs');
 const E = require('../helpers/load.js');
 const { traceAll, playMission, lcg, hash } = require('./trace.js');
-const ref = require('./mission1.v0.2.3.json');
+const REF = require('./referenz.js');
+const ref = require('./' + REF.file);
 
 // Kinder-Abfolgen einzeln neu erzeugen (gleiche Logik wie trace.js), um Unterschiede zu zeigen
 const T = require('./trace.js');
@@ -57,7 +58,7 @@ const { execFileSync } = require('node:child_process');
 const path = require('node:path');
 const os = require('node:os');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'fiq-ref-'));
-execFileSync('git', ['worktree', 'add', '-q', '--detach', tmp, 'v0.2.4'], { cwd: path.join(__dirname, '..', '..') });
+execFileSync('git', ['worktree', 'add', '-q', '--detach', tmp, REF.tag], { cwd: path.join(__dirname, '..', '..') });
 let refSeedLogs;
 try {
   const out = execFileSync(process.execPath, ['-e', `

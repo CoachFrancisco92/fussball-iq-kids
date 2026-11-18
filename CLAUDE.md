@@ -22,7 +22,7 @@ Fußballspiel mit Entscheidungstraining für Kinder ab 5 (PWA): Das Kind erlebt 
 | `index.html` | Layout, Styles, Ladereihenfolge: Texte → Missionen → Engine → App |
 | `sw.js`, `manifest.webmanifest`, `icon*` | PWA / Offline |
 | `scripts/` | `site-files.json` (Auslieferungsliste), `build-site.mjs`, `set-version.mjs`, `check-live.mjs` |
-| `tests/` | `simulation`, `branches` (200 Fehlabfolgen), `golden` (Mission 1 ≙ v0.2.3, vorgelegte Abweichungen in `golden/abweichungen-*.json`), `endlos` (jede Szene endet), `missions` (Trennung, Testmission), `look` (Wahrnehmung), `dom`, `release`, `e2e/play.mjs`, `e2e/transcript.mjs` (Oberflächen-Mitschrift ≙ v0.2.3) |
+| `tests/` | `simulation`, `branches` (200 Fehlabfolgen), `golden` (Mission 1 ≙ Referenz laut `golden/referenz.js`, vorgelegte Abweichungen in `golden/abweichungen-*.json`, Historie in `golden/historie/`), `endlos` (jede Szene endet), `missions` (Trennung, Testmission), `look` (Wahrnehmung), `dom`, `release`, `e2e/play.mjs`, `e2e/transcript.mjs` (Oberflächen-Mitschrift ≙ v0.2.3) |
 | `docs/` | `RELEASE.md`, `missionen.md`, `bestandsaufnahme-2026-11.md` |
 
 Kein Framework, kein Build-Tool, keine Laufzeit-Abhängigkeiten. `playwright` ist die einzige Entwicklungs-Abhängigkeit.
