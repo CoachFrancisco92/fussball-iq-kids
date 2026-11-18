@@ -8,6 +8,8 @@
 - **Missionsprüfung:** `E.validateMission()` – Pflichtfelder, Feldgrenzen, Ballbesitz, Neustarts; ungültige Missionen starten nicht.
 - **Nachweis Verhaltensgleichheit:** Referenzaufnahmen aus v0.2.3 – Engine (`tests/golden/`, 4 Abläufe, Hilfe-Durchlauf, 200 Kinder-Abfolgen inkl. aller Texte, Bewertungen, Positionen) und Oberfläche (`tests/e2e/transcript.mjs`, 3 Abläufe mit allen Ansagen und Anzeigen). Beide schlagen bei einem geänderten Wort bzw. einem verschobenen Spieler an (geprüft).
 - **Neue Tests:** Trennung Engine/Inhalte, Missionsprüfung, Testmission mit anderer Aufstellung/Phasen/Texten ohne Engine-Änderung (nur Test, nicht ausgeliefert), Wahrnehmungslogik (7 Tests).
+- **Registrierung abgesichert:** Test erkennt jede Missionsdatei, die in `index.html`, Paketliste oder Offline-Cache fehlt, falsche Ladereihenfolge und doppelte Missions-ids.
+- **Offline-Test mit echtem Service Worker** (`tests/e2e/offline.mjs`): alle Dateien inkl. Texte und Missionen im Cache, App startet ohne Netz. Dafür registriert die App den Service Worker auch auf `localhost` (nur Entwicklung).
 - **Doku:** `docs/missionen.md`; `CLAUDE.md`, Agenten und README an die neue Struktur angepasst.
 
 ## V0.2.3 – Entwicklungsprozess & Qualitätssicherung (Phase 1)

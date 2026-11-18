@@ -58,3 +58,26 @@ test('set-version ändert alle Stellen konsistent (Probelauf in Kopie)', () => {
   for (const n of ['APP_VERSION = \'9.8.7\'', "VERSION: '9.8.7'", 'fiq-v9.8.7', 'app.js?v=9.8.7', 'engine.js?v=9.8.7', 'content="9.8.7"', 'Version 9.8.7']) assert.ok(all.includes(n), `${n} fehlt`);
   fs.rmSync(tmp, { recursive: true, force: true });
 });
+
+test('Missionsregistrierung vollständig: jede Missionsdatei in index.html, Paketliste und Offline-Cache – in richtiger Ladereihenfolge', () => {
+  const html = read('index.html'), sw = read('sw.js');
+  const missionFiles = fs.readdirSync(path.join(root, 'missions')).filter((f) => f.endsWith('.js')).map((f) => 'missions/' + f);
+  assert.ok(missionFiles.length >= 1);
+  const scripts = [...html.matchAll(/<script src="([^"?]+)\?v=[^"]*"/g)].map((m) => m[1]);
+  for (const f of missionFiles) {
+    assert.ok(scripts.includes(f), `${f} fehlt als <script> in index.html`);
+    assert.ok(files.includes(f), `${f} fehlt in scripts/site-files.json`);
+    assert.ok(sw.includes(`'./${f}?v=`), `${f} fehlt im Offline-Cache (sw.js)`);
+  }
+  for (const s of scripts.filter((x) => x.startsWith('missions/'))) assert.ok(missionFiles.includes(s), `index.html lädt ${s}, die Datei existiert nicht`);
+  const at = (f) => scripts.indexOf(f);
+  assert.ok(at('content/texte.js') >= 0 && at('engine.js') > at('content/texte.js') && at('app.js') > at('engine.js'), 'Reihenfolge Texte → Engine → App');
+  for (const f of missionFiles) assert.ok(at(f) > at('content/texte.js') && at(f) < at('engine.js'), `${f} muss zwischen Texten und Engine geladen werden`);
+});
+
+test('Missions-ids eindeutig und jede Mission gültig', () => {
+  const E = require('./helpers/load.js');
+  const ids = E.missions().map((m) => m.id);
+  assert.strictEqual(new Set(ids).size, ids.length, 'doppelte Missions-id');
+  for (const m of E.missions()) assert.deepStrictEqual(E.validateMission(m), [], `${m.id} ungültig`);
+});

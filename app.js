@@ -708,7 +708,7 @@
   updateScore(); updateProgress();
   requestAnimationFrame(loop);
 
-  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
   }
   // Testzugriff (nur lesend) für automatisierte Oberflächentests
