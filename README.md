@@ -4,7 +4,7 @@ Ein Fußballspiel mit integriertem Entscheidungstraining für Kinder ab fünf Ja
 Das Kind erlebt eine echte Spielsituation (3 gegen 3, vier Minitore, Torschusszonen nach DFB-Kinderfußball),
 entscheidet per Antippen, und der nächste Spielzustand ergibt sich aus dieser Entscheidung.
 
-**Stand:** Prototyp V0.1 – Mission 1 „Zusammen sind wir stark!“ (fünf Entscheidungsmomente, Angriff und Verteidigung).
+**Stand:** V0.2 – Mission 1 „Zusammen sind wir stark!“ (Angriffs- und Verteidigungsphase, „Erst schauen, dann entscheiden“). Änderungen: [CHANGELOG.md](CHANGELOG.md).
 
 ## Spielen
 - Online: GitHub Pages dieses Repos (Settings → Pages → Branch `main`, Ordner `/`).
@@ -26,7 +26,7 @@ Erkennen → Entscheiden → Erleben → Verstehen → Wiederholen
 
 ## Leitplanken (aus dem Spielkonzept V1.0)
 1. **Keine Zufallswerte.** Ob ein Pass ankommt, folgt aus Passweg, Entfernung, Tempo und Positionen. Gleiche Lage + gleiche Entscheidung = gleiches Ergebnis.
-2. **Entscheidungsqualität ≠ Ergebnis.** Sterne gibt es für kluge Entscheidungen, nicht für Tore. Ein guter Pass kann abgefangen werden – das Feedback sagt das.
+2. **Entscheidungsqualität ≠ Ergebnis.** Bewertet werden 👀 Entscheidung (Aktionsart) und 🎯 Ausführung (Ziel) getrennt vom Ergebnis. Stern nur, wenn beides gut ist – nie für „das Beste von mehreren schlechten“, wenn es eine bessere Aktionsart gab.
 3. **Keine Musterlösung erzwingen.** Nach einer anderen Entscheidung springt das Spiel nicht auf den „richtigen“ Pfad zurück.
 4. **Für Fünfjährige bedienbar.** Höchstens 2–3 Aktionen gleichzeitig, alles wird vorgelesen, kein Lesen nötig.
 5. **Datenschutz.** Keine Konten, kein Tracking, keine Server-Aufrufe, keine KI zur Laufzeit.
@@ -36,10 +36,13 @@ Erkennen → Entscheiden → Erleben → Verstehen → Wiederholen
 - Pass 9 m/s, Schuss 13 m/s. Abfangen, wenn ein Verteidiger einen Punkt auf dem Ballweg (Reichweite 0,75 m, Reaktionszeit 0,35 s) vor dem Ball erreicht.
 - Rote Verteidigung: der Ballnächste presst (Einsteiger: bleibt 1,4 m entfernt), einer sichert in Tornähe ein Tor, der Rest deckt locker.
 - Rot mit Ball: dribbelt aufs freiere Tor, schießt im Schussbereich bei freiem Weg, spielt unter Druck ab, dreht bei versperrtem Weg ab.
+- Blau ohne Auftrag sichert in der Verteidigung ab (torseitig zum nächsten freien Gegner).
 - Missionsschritte passen sich dem Spielzustand an (Angriff / Bewegung ohne Ball / Torabschluss / Verteidigung).
+- Lernmission = Angriffsphase (bis Ballverlust/Tor, max. 4) + Verteidigungsphase (2, endet bei Balleroberung).
 
 ## Nächste Schritte
-- Test mit Kindern: Versteht das Kind die Situation – oder tippt es sich nur durch?
-- Missionen als Daten statt im Code, dann Mission 2 (Lernwelt „Wir spielen zusammen“).
+- Test mit Kindern (ohne Erklärung): Erkennt das Kind den freien Spieler? Versteht es, warum ein Pass abgefangen wird? Probiert es beim zweiten Versuch bewusst etwas anderes?
+- Sprachausgabe auf iPhone/iPad prüfen.
+- Missionen als Daten statt im Code, dann Mission „Gemeinsam verteidigen“ (Lernwelt 3).
 - Leicht variierende Ausgangslagen, damit keine Klickfolge auswendig gelernt wird.
 - Später: kurze Sequenzen in langsam laufender Spielzeit; 4 gegen 4.

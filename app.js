@@ -1,9 +1,10 @@
-/* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen */
+/* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen (V0.2) */
 (function () {
   'use strict';
   const E = window.FIQ, F = E.F;
-  const MISSION = { title: 'Zusammen sind wir stark!', decisions: 5 };
   const SIM_SPEED = 0.85;
+  const LOOK_STEP = true;          // „Erst schauen, dann entscheiden“ (Einsteiger)
+  const MIN_TAP_PX = 34;           // Mindest-Tippradius in Pixeln (kleine Handys)
 
   // ------------------------------------------------------------ DOM
   const $ = (id) => document.getElementById(id);
@@ -17,7 +18,7 @@
       if (!('speechSynthesis' in window)) return;
       const pick = () => {
         const vs = speechSynthesis.getVoices().filter((v) => /^de/i.test(v.lang));
-        this.v = vs.find((v) => /female|anna|petra|helena|katja|google/i.test(v.name)) || vs[0] || null;
+        this.v = vs.find((v) => /anna|petra|helena|katja|google|female/i.test(v.name)) || vs[0] || null;
       };
       pick();
       speechSynthesis.onvoiceschanged = pick;
@@ -50,22 +51,28 @@
     good() { [660, 880].forEach((f, i) => this.tone(f, 0.18, 'triangle', 0.12, i * 0.1)); },
     soft() { this.tone(330, 0.25, 'sine', 0.1); },
     tap() { this.tone(900, 0.05, 'sine', 0.06); },
+    whistle() { this.tone(2300, 0.18, 'sine', 0.1); this.tone(2300, 0.35, 'sine', 0.1, 0.22); },
   };
 
-  // ------------------------------------------------------------ Spielzustand der Oberfläche
+  // ------------------------------------------------------------ Zustand der Oberfläche
   let S = null;          // Simulationszustand
-  let dec = 0;           // aktuelle Entscheidung (0..4)
-  let hist = [];         // pro Entscheidung: {snap, ctx, last, attempts[], final}
-  let mode = 'start';    // start | decide | anim | feedback | replay | end
+  let M = null;          // Missionszustand (Phasen)
+  let dec = 0;           // Index der aktuellen Entscheidung
+  let hist = [];         // pro Entscheidung: {snap, mission, ctx, last, attempts[], final, look}
+  let mode = 'start';    // start | look | decide | anim | feedback | replay | end
   let sel = null;        // {action, step, playerId}
   let hintView = null;   // {ids, goal, point}
-  let marker = null;     // Zielmarkierung während der Animation
-  let replay = null;     // {queue:[{frames,label}], i, f, acc, onDone}
+  let marker = null;     // Zielmarkierung + geplanter Weg während der Animation
+  let explainView = null;// Erklärung nach der Aktion (Ballweg, entscheidender Spieler)
+  let lookView = null;   // Schau-Schritt: {wrong:id, key:id, right:id}
+  let replay = null;     // {queue:[{frames,label,explain}], i, f, acc, onDone}
   let tickCount = 0;
+  let firstRun = true;   // Fingerzeig nur beim ersten Spiel
+  let idleTimer = null;
 
   // ------------------------------------------------------------ Darstellung
   const VIEW = { x0: -2.2, y0: -1.6, w: 40.4, h: 27.2 };
-  let scale = 20, offX = 0, offY = 0, dpr = 1;
+  let scale = 20, dpr = 1;
 
   function resize() {
     const r = wrap.getBoundingClientRect();
@@ -74,16 +81,16 @@
     const cw = VIEW.w * scale, ch = VIEW.h * scale;
     cv.style.width = cw + 'px'; cv.style.height = ch + 'px';
     cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr);
-    offX = (r.width - cw) / 2; offY = (r.height - ch) / 2;
-    cv.style.left = offX + 'px'; cv.style.top = offY + 'px';
+    cv.style.left = (r.width - cw) / 2 + 'px'; cv.style.top = (r.height - ch) / 2 + 'px';
     $('portraitTip').hidden = !(window.innerHeight > window.innerWidth * 1.15);
   }
   const X = (x) => (x - VIEW.x0) * scale * dpr;
   const Y = (y) => (y - VIEW.y0) * scale * dpr;
-  const M = (m) => m * scale * dpr;
+  const Mm = (m) => m * scale * dpr;
+  const FONT = (px) => `800 ${px}px "Baloo 2", ui-rounded, system-ui, sans-serif`;
 
   function viewFromState(s) {
-    return { players: s.players.map((p) => ({ id: p.id, team: p.team, num: p.num, x: p.x, y: p.y })), ball: { x: s.ball.x, y: s.ball.y }, owner: s.ball.owner, score: s.score };
+    return { players: s.players.map((p) => ({ id: p.id, team: p.team, num: p.num, x: p.x, y: p.y })), ball: { x: s.ball.x, y: s.ball.y }, owner: s.ball.owner };
   }
   function viewFromFrame(f, base) {
     const players = base.players.map((p, i) => ({ id: p.id, team: p.team, num: p.num, x: f[i * 2], y: f[i * 2 + 1] }));
@@ -91,33 +98,28 @@
     return { players, ball: { x: f[f.length - 3], y: f[f.length - 2] }, owner: oi >= 0 ? players[oi].id : null };
   }
 
-  function drawField(now) {
+  function drawField() {
     const W = cv.width, H = cv.height;
     ctx.clearRect(0, 0, W, H);
-    // Rasen
     const stripes = 9;
     for (let i = 0; i < stripes; i++) {
       ctx.fillStyle = i % 2 ? '#3fa34d' : '#47ad55';
-      const x0 = F.W / stripes * i;
-      ctx.fillRect(X(x0), Y(-1.6), M(F.W / stripes) + 1, M(VIEW.h));
+      ctx.fillRect(X(F.W / stripes * i), 0, Mm(F.W / stripes) + 1, H);
     }
     ctx.fillStyle = '#3a9747';
     ctx.fillRect(0, 0, X(0), H); ctx.fillRect(X(F.W), 0, W - X(F.W), H);
-    // Linien
-    ctx.strokeStyle = 'rgba(255,255,255,.95)'; ctx.lineWidth = M(0.14);
-    ctx.strokeRect(X(0), Y(0), M(F.W), M(F.H));
+    ctx.strokeStyle = 'rgba(255,255,255,.95)'; ctx.lineWidth = Mm(0.14);
+    ctx.strokeRect(X(0), Y(0), Mm(F.W), Mm(F.H));
     ctx.strokeStyle = 'rgba(255,255,255,.35)';
     ctx.beginPath(); ctx.moveTo(X(F.W / 2), Y(0)); ctx.lineTo(X(F.W / 2), Y(F.H)); ctx.stroke();
-    ctx.beginPath(); ctx.arc(X(F.W / 2), Y(F.H / 2), M(3), 0, Math.PI * 2); ctx.stroke();
-    // Torschusszonen
-    ctx.setLineDash([M(0.6), M(0.45)]); ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = M(0.12);
+    ctx.beginPath(); ctx.arc(X(F.W / 2), Y(F.H / 2), Mm(3), 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([Mm(0.6), Mm(0.45)]); ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = Mm(0.12);
     [F.ZONE, F.W - F.ZONE].forEach((x) => { ctx.beginPath(); ctx.moveTo(X(x), Y(0)); ctx.lineTo(X(x), Y(F.H)); ctx.stroke(); });
     ctx.setLineDash([]);
-    ctx.fillStyle = 'rgba(37,99,235,.07)'; ctx.fillRect(X(0), Y(0), M(F.ZONE), M(F.H));
-    ctx.fillStyle = 'rgba(225,29,72,.07)'; ctx.fillRect(X(F.W - F.ZONE), Y(0), M(F.ZONE), M(F.H));
-    // Tore
-    F.goals.blue.forEach((g, i) => drawGoal(g, -1, '#2563eb', false));
-    F.goals.red.forEach((g, i) => drawGoal(g, 1, '#e11d48', isGoalHighlighted(i, now), i));
+    ctx.fillStyle = 'rgba(37,99,235,.07)'; ctx.fillRect(X(0), Y(0), Mm(F.ZONE), Mm(F.H));
+    ctx.fillStyle = 'rgba(225,29,72,.07)'; ctx.fillRect(X(F.W - F.ZONE), Y(0), Mm(F.ZONE), Mm(F.H));
+    F.goals.blue.forEach((g) => drawGoal(g, -1, '#2563eb', false));
+    F.goals.red.forEach((g, i) => drawGoal(g, 1, '#e11d48', isGoalHighlighted(i)));
   }
   function isGoalHighlighted(i) {
     if (hintView && hintView.goal === i) return 'hint';
@@ -128,107 +130,156 @@
     const depth = 1.1, w = F.GOAL_W;
     const x = dir < 0 ? g.x - depth : g.x;
     ctx.fillStyle = 'rgba(255,255,255,.18)';
-    ctx.fillRect(X(x), Y(g.y - w / 2), M(depth), M(w));
-    ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = M(0.05);
+    ctx.fillRect(X(x), Y(g.y - w / 2), Mm(depth), Mm(w));
+    ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = Mm(0.05);
     for (let k = 0.3; k < w; k += 0.4) { ctx.beginPath(); ctx.moveTo(X(x), Y(g.y - w / 2 + k)); ctx.lineTo(X(x + depth), Y(g.y - w / 2 + k)); ctx.stroke(); }
-    ctx.strokeStyle = col; ctx.lineWidth = M(0.2);
-    ctx.strokeRect(X(x), Y(g.y - w / 2), M(depth), M(w));
+    ctx.strokeStyle = col; ctx.lineWidth = Mm(0.2);
+    ctx.strokeRect(X(x), Y(g.y - w / 2), Mm(depth), Mm(w));
     if (hl) {
       const p = 0.5 + 0.5 * Math.sin(performance.now() / 180);
       ctx.strokeStyle = hl === 'hint' ? `rgba(255,214,10,${0.6 + 0.4 * p})` : `rgba(255,255,255,${0.5 + 0.5 * p})`;
-      ctx.lineWidth = M(0.22); ctx.setLineDash([M(0.4), M(0.3)]);
-      ctx.beginPath(); ctx.arc(X(g.x), Y(g.y), M(2.3 + p * 0.3), 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
+      ctx.lineWidth = Mm(0.22); ctx.setLineDash([Mm(0.4), Mm(0.3)]);
+      ctx.beginPath(); ctx.arc(X(g.x), Y(g.y), Mm(2.3 + p * 0.3), 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
     }
   }
 
+  function ring(x, y, r, color, width, dash) {
+    ctx.strokeStyle = color; ctx.lineWidth = Mm(width);
+    if (dash) ctx.setLineDash([Mm(0.35), Mm(0.25)]);
+    ctx.beginPath(); ctx.arc(X(x), Y(y), Mm(r), 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
   function drawPlayers(v, opts) {
-    const now = performance.now();
-    const pulse = 0.5 + 0.5 * Math.sin(now / 170);
+    const pulse = 0.5 + 0.5 * Math.sin(performance.now() / 170);
     const cand = opts.candidates || [];
-    // Schatten
     for (const p of v.players) {
       ctx.fillStyle = 'rgba(0,0,0,.18)';
-      ctx.beginPath(); ctx.ellipse(X(p.x + 0.15), Y(p.y + 0.35), M(0.85), M(0.55), 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(X(p.x + 0.15), Y(p.y + 0.35), Mm(0.85), Mm(0.55), 0, 0, Math.PI * 2); ctx.fill();
     }
     for (const p of v.players) {
       const r = 0.85;
       if (v.owner === p.id) {
         ctx.fillStyle = 'rgba(255,255,255,.35)';
-        ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), M(r + 0.45), 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), Mm(r + 0.45), 0, Math.PI * 2); ctx.fill();
       }
-      if (cand.includes(p.id)) {
-        ctx.strokeStyle = `rgba(255,255,255,${0.55 + 0.45 * pulse})`; ctx.lineWidth = M(0.16);
-        ctx.setLineDash([M(0.35), M(0.25)]);
-        ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), M(r + 0.55 + pulse * 0.2), 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
-      }
-      if (hintView && hintView.ids && hintView.ids.includes(p.id)) {
-        ctx.strokeStyle = `rgba(255,214,10,${0.6 + 0.4 * pulse})`; ctx.lineWidth = M(0.24);
-        ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), M(r + 0.75 + pulse * 0.25), 0, Math.PI * 2); ctx.stroke();
-      }
-      if (opts.selected === p.id) {
-        ctx.strokeStyle = '#ffd60a'; ctx.lineWidth = M(0.26);
-        ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), M(r + 0.45), 0, Math.PI * 2); ctx.stroke();
-      }
-      const g = ctx.createRadialGradient(X(p.x - 0.3), Y(p.y - 0.35), M(0.1), X(p.x), Y(p.y), M(r));
+      if (cand.includes(p.id)) ring(p.x, p.y, r + 0.55 + pulse * 0.2, `rgba(255,255,255,${0.55 + 0.45 * pulse})`, 0.16, true);
+      if (hintView && hintView.ids && hintView.ids.includes(p.id)) ring(p.x, p.y, r + 0.75 + pulse * 0.25, `rgba(255,214,10,${0.6 + 0.4 * pulse})`, 0.24);
+      if (opts.good && opts.good.includes(p.id)) ring(p.x, p.y, r + 0.6 + pulse * 0.25, `rgba(34,197,94,${0.7 + 0.3 * pulse})`, 0.26);
+      if (opts.bad && opts.bad.includes(p.id)) ring(p.x, p.y, r + 0.6 + pulse * 0.35, `rgba(255,59,48,${0.7 + 0.3 * pulse})`, 0.28);
+      if (opts.selected === p.id) ring(p.x, p.y, r + 0.45, '#ffd60a', 0.26);
+      const g = ctx.createRadialGradient(X(p.x - 0.3), Y(p.y - 0.35), Mm(0.1), X(p.x), Y(p.y), Mm(r));
       if (p.team === 'blue') { g.addColorStop(0, '#60a5fa'); g.addColorStop(1, '#1d4ed8'); }
       else { g.addColorStop(0, '#fb7185'); g.addColorStop(1, '#be123c'); }
       ctx.fillStyle = g;
-      ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), M(r), 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = M(0.13); ctx.stroke();
-      ctx.fillStyle = '#fff';
-      ctx.font = `800 ${M(0.95)}px ui-rounded, "SF Pro Rounded", "Nunito", system-ui, sans-serif`;
+      ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), Mm(r), 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = Mm(0.13); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.font = FONT(Mm(0.95));
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(String(p.num), X(p.x), Y(p.y) + M(0.04));
+      ctx.fillText(String(p.num), X(p.x), Y(p.y) + Mm(0.04));
     }
-    // Ball
     const b = v.ball;
     ctx.fillStyle = 'rgba(0,0,0,.25)';
-    ctx.beginPath(); ctx.ellipse(X(b.x + 0.1), Y(b.y + 0.22), M(0.36), M(0.22), 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.strokeStyle = '#111'; ctx.lineWidth = M(0.07);
-    ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), M(0.38), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(X(b.x + 0.1), Y(b.y + 0.22), Mm(0.36), Mm(0.22), 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.strokeStyle = '#111'; ctx.lineWidth = Mm(0.07);
+    ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), Mm(0.38), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#111';
-    ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), M(0.13), 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), Mm(0.13), 0, Math.PI * 2); ctx.fill();
   }
 
   function drawMarker(pt, color) {
     const p = 0.5 + 0.5 * Math.sin(performance.now() / 160);
-    ctx.strokeStyle = color; ctx.lineWidth = M(0.16);
-    ctx.beginPath(); ctx.arc(X(pt.x), Y(pt.y), M(0.7 + p * 0.25), 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = color; ctx.lineWidth = Mm(0.16);
+    ctx.beginPath(); ctx.arc(X(pt.x), Y(pt.y), Mm(0.7 + p * 0.25), 0, Math.PI * 2); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(X(pt.x - 0.4), Y(pt.y)); ctx.lineTo(X(pt.x + 0.4), Y(pt.y));
     ctx.moveTo(X(pt.x), Y(pt.y - 0.4)); ctx.lineTo(X(pt.x), Y(pt.y + 0.4)); ctx.stroke();
   }
 
+  /** Pfeil von a nach b (geplanter Weg, Ballweg) */
+  function arrow(a, b, color, width, dashed) {
+    const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy);
+    if (L < 0.5) return;
+    const ux = dx / L, uy = dy / L;
+    const end = { x: b.x - ux * 0.9, y: b.y - uy * 0.9 };
+    const start = { x: a.x + ux * 1.0, y: a.y + uy * 1.0 };
+    ctx.strokeStyle = color; ctx.lineWidth = Mm(width); ctx.lineCap = 'round';
+    if (dashed) ctx.setLineDash([Mm(0.55), Mm(0.4)]);
+    ctx.beginPath(); ctx.moveTo(X(start.x), Y(start.y)); ctx.lineTo(X(end.x), Y(end.y)); ctx.stroke();
+    ctx.setLineDash([]);
+    const h = 0.9;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(X(end.x + ux * 0.3), Y(end.y + uy * 0.3));
+    ctx.lineTo(X(end.x - ux * h - uy * h * 0.55), Y(end.y - uy * h + ux * h * 0.55));
+    ctx.lineTo(X(end.x - ux * h + uy * h * 0.55), Y(end.y - uy * h - ux * h * 0.55));
+    ctx.closePath(); ctx.fill();
+  }
+
+  /** Erklärung der Konsequenz: grüner/roter Weg + entscheidender Gegenspieler (Review Punkt 1 & 6) */
+  function drawExplain(ex) {
+    if (!ex) return;
+    if (ex.threat) arrow(ex.threat.from, ex.threat.to, 'rgba(255,59,48,.75)', 0.22, true);
+    if (ex.pass && !ex.ok) arrow(ex.pass.from, ex.pass.to, 'rgba(255,59,48,.8)', 0.2, true);
+    arrow(ex.from, ex.to, ex.ok ? 'rgba(34,197,94,.95)' : 'rgba(255,59,48,.95)', 0.3, false);
+  }
+  function explainIds(ex) {
+    if (!ex || !ex.key) return { good: [], bad: [] };
+    return ex.keyGood ? { good: [ex.key], bad: [] } : { good: [], bad: [ex.key] };
+  }
+
+  function drawTrail(frames, upto) {
+    ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = Mm(0.12);
+    ctx.setLineDash([Mm(0.2), Mm(0.25)]);
+    ctx.beginPath();
+    for (let i = 0; i <= Math.min(upto, frames.length - 1); i++) {
+      const f = frames[i]; const bx = f[f.length - 3], by = f[f.length - 2];
+      if (i === 0) ctx.moveTo(X(bx), Y(by)); else ctx.lineTo(X(bx), Y(by));
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+
+  function label(text) {
+    ctx.font = FONT(Mm(1.15));
+    const tw = ctx.measureText(text).width + Mm(1.6);
+    ctx.fillStyle = 'rgba(15,23,42,.78)';
+    roundRect(X(F.W / 2) - tw / 2, Y(0.4), tw, Mm(2), Mm(1)); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(text, X(F.W / 2), Y(1.4));
+  }
+
   function render() {
-    const now = performance.now();
-    drawField(now);
-    let v;
+    drawField();
+    let v, opts = { candidates: [], selected: null, good: [], bad: [] };
     if (mode === 'replay' && replay) {
       const item = replay.queue[replay.i];
-      v = viewFromFrame(item.frames[Math.min(replay.f, item.frames.length - 1)], viewFromState(S));
+      const fi = Math.min(replay.f, item.frames.length - 1);
+      v = viewFromFrame(item.frames[fi], viewFromState(S));
+      drawTrail(item.frames, fi);
+      if (replay.f >= item.frames.length - 1 && item.explain) { drawExplain(item.explain); Object.assign(opts, explainIds(item.explain)); }
     } else if (S) v = viewFromState(S);
     if (!v) return;
-    let candidates = [];
-    let selected = null;
+    const c = E.carrier(S);
+    if (mode === 'look') {
+      opts.candidates = lookView && lookView.done ? [] : S.players.filter((p) => p.team === 'blue' && p !== c).map((p) => p.id);
+      if (lookView) {
+        if (lookView.right) opts.good.push(lookView.right);
+        if (lookView.key) opts.bad.push(lookView.key);
+        if (lookView.lane) arrow(lookView.lane.from, lookView.lane.to, lookView.lane.ok ? 'rgba(34,197,94,.9)' : 'rgba(255,59,48,.85)', 0.24, true);
+      }
+    }
     if (mode === 'decide' && sel) {
-      selected = sel.playerId || null;
-      const c = E.carrier(S);
-      if (sel.action === 'passen') candidates = S.players.filter((p) => p.team === 'blue' && p !== c).map((p) => p.id);
-      if ((sel.action === 'freilaufen') && sel.step === 1) candidates = S.players.filter((p) => p.team === 'blue' && p !== c).map((p) => p.id);
-      if ((sel.action === 'erobern' || sel.action === 'raum') && sel.step === 1) candidates = S.players.filter((p) => p.team === 'blue').map((p) => p.id);
+      opts.selected = sel.playerId || null;
+      if (sel.action === 'passen' || (sel.action === 'freilaufen' && sel.step === 1)) opts.candidates = S.players.filter((p) => p.team === 'blue' && p !== c).map((p) => p.id);
+      if ((sel.action === 'erobern' || sel.action === 'raum') && sel.step === 1) opts.candidates = S.players.filter((p) => p.team === 'blue').map((p) => p.id);
     }
     if (hintView && hintView.point && mode === 'decide') drawMarker(hintView.point, 'rgba(255,214,10,.95)');
-    if (marker && mode === 'anim') drawMarker(marker, 'rgba(255,255,255,.9)');
-    drawPlayers(v, { candidates, selected });
-    // Laufweg-Vorschau bei Auswahl
-    if (mode === 'replay' && replay) {
-      const lab = replay.queue[replay.i].label;
-      ctx.font = `800 ${M(1.2)}px ui-rounded, system-ui, sans-serif`;
-      const tw = ctx.measureText(lab).width + M(1.6);
-      ctx.fillStyle = 'rgba(15,23,42,.75)';
-      roundRect(X(F.W / 2) - tw / 2, Y(0.4), tw, M(2), M(1)); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(lab, X(F.W / 2), Y(1.4));
+    if (marker && mode === 'anim') {
+      if (marker.from && marker.planned) arrow(marker.from, marker, 'rgba(255,255,255,.75)', 0.18, true);
+      drawMarker(marker, 'rgba(255,255,255,.9)');
     }
+    if (mode === 'feedback' && explainView) { drawExplain(explainView); Object.assign(opts, explainIds(explainView)); }
+    drawPlayers(v, opts);
+    if (mode === 'replay' && replay) label(replay.queue[replay.i].label);
   }
   function roundRect(x, y, w, h, r) {
     ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
@@ -254,10 +305,10 @@
       }
     } else if (mode === 'replay' && replay) {
       replay.acc += dt * SIM_SPEED * 30;
-      while (replay.acc >= 1) {
+      while (replay && replay.acc >= 1) {
         replay.acc -= 1; replay.f++;
         const item = replay.queue[replay.i];
-        if (replay.f >= item.frames.length + 20) {
+        if (replay.f >= item.frames.length + 75) { // ~2,5 s Standbild mit Erklärung
           replay.i++; replay.f = 0;
           if (replay.i >= replay.queue.length) { const done = replay.onDone; replay = null; done(); break; }
           Voice.say(replay.queue[replay.i].say || '');
@@ -274,27 +325,85 @@
 
   // ------------------------------------------------------------ Ablauf der Mission
   function startMission() {
-    S = E.newState(); dec = 0; hist = []; hintView = null; marker = null;
+    S = E.newState(); M = E.newMission(); dec = 0; hist = [];
+    hintView = null; marker = null; explainView = null;
     $('startScreen').hidden = true; $('endScreen').hidden = true;
     updateScore(); beginDecision(null);
   }
 
   function beginDecision(last) {
-    if (dec >= MISSION.decisions) return endMission();
+    if (M.done) return endMission();
     const c = E.context(S, last);
     const prev = hist[dec];
-    hist[dec] = { snap: E.clone(S), ctx: c, last, attempts: prev ? prev.attempts : [], final: null };
+    hist[dec] = { snap: E.clone(S), mission: E.clone(M), ctx: c, last, attempts: prev ? prev.attempts : [], final: null, look: prev ? prev.look : null };
     hist.length = dec + 1;
-    mode = 'decide'; sel = null; hintView = null; marker = null;
+    sel = null; hintView = null; marker = null; explainView = null; lookView = null;
     updateProgress();
-    $('tag').textContent = c.tag;
-    $('tag').className = 'tag ' + (c.type === 'verteidigung' ? 'def' : 'att');
-    $('title').textContent = c.title;
-    $('decNo').textContent = `${dec + 1}/${MISSION.decisions}`;
+    setPrompt(c.tag, c.type === 'verteidigung' ? 'def' : 'att', c.title);
+    if (LOOK_STEP && c.type === 'angriff' && !hist[dec].look) return beginLook(c);
+    startDecide(c, true);
+  }
+
+  function setPrompt(tag, cls, title) {
+    $('tag').textContent = tag; $('tag').className = 'tag ' + cls;
+    $('title').textContent = title;
     $('prompt').hidden = false;
+  }
+
+  function startDecide(c, speak) {
+    mode = 'decide';
+    setPrompt(c.tag, c.type === 'verteidigung' ? 'def' : 'att', c.title);
     renderActions(c);
-    Voice.say(c.say);
+    setStepText('');
+    if (speak) Voice.say(c.say);
     if (c.actions.length === 1) chooseAction(c.actions[0], true);
+    armIdle();
+  }
+
+  // ---------- Schau-Schritt: „Erst schauen, dann entscheiden“ (Review Punkt 8)
+  function beginLook(c) {
+    mode = 'look';
+    lookView = { tries: 0 };
+    setPrompt('Schau hin', 'look', 'Welcher Freund steht frei?');
+    $('actions').innerHTML = ''; $('cancel').hidden = true;
+    const t = 'Schau dich um! Welcher Freund steht frei? Tippe ihn an.';
+    setStepText('👀 Tippe auf einen blauen Freund.');
+    Voice.say(t);
+    armIdle();
+  }
+  function onLookTap(p) {
+    const c = E.carrier(S);
+    const opts = E.passOptions(S);
+    const o = opts.find((x) => x.id === p.id);
+    const free = opts.filter((x) => x.margin > E.CFG.passLaneOk).sort((a, b) => b.margin - a.margin);
+    const name = E.nameOf(S, p.id);
+    lookView.tries++;
+    lookView.lane = { from: { x: c.x, y: c.y }, to: { x: p.x, y: p.y }, ok: o.margin > E.CFG.passLaneOk };
+    lookView.key = null; lookView.right = null;
+    let t, right = false, finish = false;
+    if (o.margin > E.CFG.passLaneOk) {
+      right = true; finish = true; lookView.right = p.id;
+      t = `Ja! ${name} steht frei. Zwischen euch ist kein Gegner.`;
+      Sfx.good();
+    } else if (!free.length) {
+      finish = true;
+      t = 'Gut geschaut: Gerade steht keiner richtig frei. Das ist schwierig!';
+    } else {
+      const k = E.laneKey(S, c, p, 'red');
+      lookView.key = k;
+      if (lookView.tries >= 2) {
+        finish = true; lookView.right = free[0].id;
+        t = `${E.nameOf(S, k)} steht im Weg zu ${name}. Schau mal: ${E.nameOf(S, free[0].id)} steht frei.`;
+      } else t = `Schau genau: ${E.nameOf(S, k)} steht ganz nah am Weg zu ${name}. Probier's nochmal!`;
+      Sfx.soft();
+    }
+    setStepText((right ? '✅ ' : '👀 ') + t);
+    Voice.say(t);
+    if (finish) {
+      lookView.done = true;
+      hist[dec].look = { right: right || (!free.length), tries: lookView.tries };
+      setTimeout(() => { if (mode === 'look') { lookView = null; startDecide(hist[dec].ctx, false); Voice.say('Und jetzt: Was machst du mit dem Ball?'); } }, 3200);
+    }
   }
 
   function renderActions(c) {
@@ -324,23 +433,50 @@
   };
   function chooseAction(k, silent) {
     if (mode !== 'decide') return;
+    hideHand();
     if (sel && sel.action === k && !silent) { sel = null; renderActions(hist[dec].ctx); setStepText(''); return; }
     sel = { action: k, step: 1, playerId: null };
     renderActions(hist[dec].ctx);
-    const t = STEP_SAY[k][0];
-    setStepText(t);
-    if (!silent) Voice.say(t);
+    setStepText(STEP_SAY[k][0]);
+    if (!silent) Voice.say(STEP_SAY[k][0]);
+    armIdle();
   }
   function setStepText(t) { $('step').textContent = t; $('step').hidden = !t; }
 
   function showHint() {
     const c = hist[dec].ctx;
-    const k = sel ? sel.action : c.actions[0];
-    if (!sel) chooseAction(k, true);
+    const k = E.recommend(S, c.actions);
+    if (!sel || sel.action !== k) chooseAction(k, true);
     hintView = E.hint(S, k);
     Voice.say(hintView.say);
     setStepText('💡 ' + hintView.say);
+    hist[dec].usedHint = true;
   }
+
+  // ---------- Fingerzeig für das Bedienprinzip (Review Punkt 5)
+  function armIdle() {
+    clearTimeout(idleTimer); hideHand();
+    if (!firstRun && dec > 0) return;
+    idleTimer = setTimeout(showHand, dec === 0 ? 3500 : 6000);
+  }
+  function showHand() {
+    const hand = $('hand');
+    let targets = [];
+    if (mode === 'decide' && !sel) targets = [...document.querySelectorAll('#actions .act:not(.hint)')].map((b) => { const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; });
+    else if (mode === 'look' || (mode === 'decide' && sel)) {
+      const c = E.carrier(S);
+      const r = cv.getBoundingClientRect();
+      const list = mode === 'look' || sel.action === 'passen' || sel.action === 'freilaufen' ? S.players.filter((p) => p.team === 'blue' && p !== c) : sel.action === 'schiessen' ? F.goals.red : [];
+      targets = list.map((p) => ({ x: r.left + (p.x - VIEW.x0) * scale, y: r.top + (p.y - VIEW.y0) * scale }));
+    }
+    if (!targets.length) return;
+    let i = 0;
+    hand.hidden = false;
+    const move = () => { const t = targets[i % targets.length]; hand.style.left = t.x + 'px'; hand.style.top = t.y + 'px'; i++; };
+    move();
+    clearInterval(hand._iv); hand._iv = setInterval(move, 1400);
+  }
+  function hideHand() { const h = $('hand'); h.hidden = true; clearInterval(h._iv); }
 
   // ------------------------------------------------------------ Eingabe aufs Spielfeld
   function worldFromEvent(ev) {
@@ -348,38 +484,45 @@
     return { x: (ev.clientX - r.left) / scale + VIEW.x0, y: (ev.clientY - r.top) / scale + VIEW.y0 };
   }
   function hitPlayer(pt, filter) {
-    let best = null, bd = 1.9;
+    let best = null, bd = Math.max(1.9, MIN_TAP_PX / scale);
     for (const p of S.players) { if (filter && !filter(p)) continue; const d = E.dist(p, pt); if (d < bd) { bd = d; best = p; } }
     return best;
   }
   cv.addEventListener('pointerdown', (ev) => {
-    if (mode !== 'decide' || !sel) {
-      if (mode === 'decide' && !sel) { Voice.say('Tippe zuerst unten auf einen Knopf.'); pulseActions(); }
+    const pt = worldFromEvent(ev);
+    const c = S && E.carrier(S);
+    if (mode === 'look') {
+      if (lookView && lookView.done) return;
+      const p = hitPlayer(pt, (q) => q.team === 'blue' && q !== c);
+      hideHand();
+      if (p) onLookTap(p); else Voice.say('Tippe auf einen blauen Spieler.');
       return;
     }
-    const pt = worldFromEvent(ev);
-    const c = E.carrier(S);
+    if (mode !== 'decide') return;
+    if (!sel) { Voice.say('Tippe zuerst unten auf einen Knopf.'); pulseActions(); return; }
+    hideHand();
     const inField = pt.x > 0.3 && pt.x < F.W - 0.3 && pt.y > 0.3 && pt.y < F.H - 0.3;
     const k = sel.action;
     if (k === 'passen') {
       const p = hitPlayer(pt, (q) => q.team === 'blue' && q !== c);
-      if (p) return act({ kind: 'pass', id: p.id }, p);
-      if (inField && E.dist(pt, c) > 2) return act({ kind: 'pass', x: pt.x, y: pt.y }, pt);
+      if (p) return act({ kind: 'pass', id: p.id }, p, c);
+      if (inField && E.dist(pt, c) > 2) return act({ kind: 'pass', x: pt.x, y: pt.y }, pt, c);
     } else if (k === 'dribbeln') {
-      if (inField && E.dist(pt, c) > 1) return act({ kind: 'dribble', x: pt.x, y: pt.y }, pt);
+      if (inField && E.dist(pt, c) > 1) return act({ kind: 'dribble', x: pt.x, y: pt.y }, pt, c);
     } else if (k === 'schiessen') {
       const gi = F.goals.red.map((g) => E.dist(g, pt)).reduce((bi, d, i, arr) => (d < arr[bi] ? i : bi), 0);
-      if (E.dist(F.goals.red[gi], pt) < 5 || pt.x > F.W - 4) return act({ kind: 'shoot', goal: gi }, F.goals.red[gi]);
+      if (E.dist(F.goals.red[gi], pt) < 5 || pt.x > F.W - 4) return act({ kind: 'shoot', goal: gi }, F.goals.red[gi], c);
       Voice.say('Tippe auf eines der roten Tore rechts.');
     } else if (k === 'freilaufen' || k === 'raum') {
+      const filt = (q) => q.team === 'blue' && (k === 'raum' || q !== c);
       if (sel.step === 1) {
-        const p = hitPlayer(pt, (q) => q.team === 'blue' && (k === 'raum' || q !== c));
-        if (p) { Sfx.tap(); sel.playerId = p.id; sel.step = 2; const t = STEP_SAY[k][1]; setStepText(t); Voice.say(t); }
+        const p = hitPlayer(pt, filt);
+        if (p) { Sfx.tap(); sel.playerId = p.id; sel.step = 2; setStepText(STEP_SAY[k][1]); Voice.say(STEP_SAY[k][1]); }
         return;
       }
-      const p = hitPlayer(pt, (q) => q.team === 'blue' && (k === 'raum' || q !== c));
+      const p = hitPlayer(pt, filt);
       if (p && E.dist(p, pt) < 1.1 && p.id !== sel.playerId) { sel.playerId = p.id; Sfx.tap(); return; }
-      if (inField) return act({ kind: k === 'raum' ? 'cover' : 'run', id: sel.playerId, x: pt.x, y: pt.y }, pt);
+      if (inField) return act({ kind: k === 'raum' ? 'cover' : 'run', id: sel.playerId, x: pt.x, y: pt.y }, pt, E.P(S, sel.playerId));
     } else if (k === 'erobern') {
       const p = hitPlayer(pt, (q) => q.team === 'blue');
       if (p) return act({ kind: 'press', id: p.id }, null);
@@ -387,11 +530,10 @@
   });
   function pulseActions() { const a = $('actions'); a.classList.remove('wiggle'); void a.offsetWidth; a.classList.add('wiggle'); }
 
-  function act(a, mark) {
-    Voice.stop(); Sfx.tap();
+  function act(a, mark, from) {
+    Voice.stop(); Sfx.tap(); hideHand(); clearTimeout(idleTimer);
     hintView = null;
-    marker = mark ? { x: mark.x, y: mark.y } : null;
-    hist[dec].action = a;
+    marker = mark ? { x: mark.x, y: mark.y, from: from ? { x: from.x, y: from.y } : null, planned: true } : null;
     E.startAction(S, a);
     mode = 'anim'; sel = null; acc = 0;
     $('actions').innerHTML = ''; $('cancel').hidden = true; setStepText('');
@@ -400,21 +542,32 @@
 
   function finishEpisode() {
     const fb = E.feedback(S);
-    const attempt = { frames: S.ep.frames, fb, a: S.ep.a, endState: E.clone(S) };
+    const ctxType = hist[dec].ctx.type;
+    const attempt = { frames: S.ep.frames, fb, a: S.ep.a, endState: null, missionAfter: null };
+    E.missionAfter(M, S, ctxType);               // kann bei „Ball im Aus“ einen Neustart auslösen
+    attempt.endState = E.clone(S); attempt.missionAfter = E.clone(M);
     const h = hist[dec];
     h.attempts.push(attempt); h.final = attempt;
     mode = 'feedback'; marker = null;
+    explainView = fb.explain;
     $('prompt').classList.remove('dim');
     showFeedback(fb, h);
   }
 
+  function chip(el, part, label) {
+    el.textContent = `${part.good ? '✓' : '✗'} ${label}: ${part.why}`;
+    el.className = 'chip ' + (part.good ? 'good' : 'bad');
+    el.hidden = !part.why;
+  }
   function showFeedback(fb, h) {
     $('fbIcon').textContent = fb.icon;
     $('fbText').textContent = fb.text;
-    $('fbWhy').textContent = (fb.good ? '⭐ ' : '💭 ') + fb.why;
-    $('fbWhy').className = 'why ' + (fb.good ? 'good' : 'think');
+    $('fbStar').textContent = fb.good ? '⭐' : '💭';
+    $('fbStar').className = 'bigstar ' + (fb.good ? 'on' : '');
+    chip($('fbRec'), fb.rec, '👀 Entscheidung');
+    chip($('fbExe'), fb.exe, '🎯 Ausführung');
     $('fbCompare').hidden = h.attempts.length < 2;
-    $('fbNext').querySelector('.lbl').textContent = dec + 1 >= MISSION.decisions ? 'Fertig' : 'Weiterspielen';
+    $('fbNext').querySelector('.lbl').textContent = M.done ? 'Fertig' : 'Weiterspielen';
     $('feedback').hidden = false;
     if (fb.good) Sfx.good();
     updateProgress();
@@ -424,17 +577,27 @@
   function retry() {
     $('feedback').hidden = true;
     const h = hist[dec];
-    S = E.clone(h.snap);
-    h.final = null;
+    S = E.clone(h.snap); M = E.clone(h.mission);
+    h.final = null; explainView = null;
     updateScore();
     Voice.say('Gleiche Situation – probier etwas anderes!');
-    beginDecision(h.last);
+    setTimeout(() => beginDecision(h.last), 900);
   }
   function next() {
     $('feedback').hidden = true;
+    explainView = null;
     const h = hist[dec];
     const last = { kind: h.final.a.kind, success: h.final.fb.success, team: 'blue' };
+    E.missionApply(M, S);
     dec++;
+    if (M.note === 'aus') {
+      Sfx.whistle();
+      Voice.say('Der Ball ist im Aus. Jetzt haben die Roten den Ball. Pass gut auf unsere Tore auf!');
+      setStepText('🏳️ Ball im Aus – jetzt hat Rot den Ball.');
+      M.note = null;
+      setTimeout(() => beginDecision(last), 2600);
+      return;
+    }
     beginDecision(last);
   }
   function compare() {
@@ -442,55 +605,61 @@
     const n = h.attempts.length;
     const a1 = h.attempts[n - 2], a2 = h.attempts[n - 1];
     $('feedback').hidden = true;
+    const say = (pre, at) => `${pre}: ${at.fb.text} ${at.fb.why}`;
     startReplay([
-      { frames: a1.frames, label: 'Vorher', say: 'Vorher. ' + a1.fb.text },
-      { frames: a2.frames, label: 'Jetzt', say: 'Jetzt. ' + a2.fb.text },
-    ], () => { S = E.clone(h.final.endState); $('feedback').hidden = false; mode = 'feedback'; });
-    Voice.say('Vorher. ' + a1.fb.text);
+      { frames: a1.frames, label: 'Vorher', explain: a1.fb.explain, say: say('Vorher', a1) },
+      { frames: a2.frames, label: 'Jetzt', explain: a2.fb.explain, say: say('Jetzt', a2) },
+    ], () => { S = E.clone(h.final.endState); explainView = h.final.fb.explain; $('feedback').hidden = false; mode = 'feedback'; });
   }
   function startReplay(queue, onDone) {
     mode = 'replay';
-    replay = { queue, i: 0, f: 0, acc: 0, onDone };
-    $('prompt').hidden = true;
-    $('skip').hidden = false;
-    const done = replay.onDone;
-    replay.onDone = () => { $('skip').hidden = true; $('prompt').hidden = mode === 'end'; done(); };
+    replay = { queue, i: 0, f: 0, acc: 0, onDone: null };
+    $('prompt').hidden = true; $('skip').hidden = false; setStepText('');
+    replay.onDone = () => { $('skip').hidden = true; onDone(); $('prompt').hidden = mode === 'end'; };
+    Voice.say(queue[0].say || '');
   }
 
   function endMission() {
     mode = 'end';
+    hideHand(); clearTimeout(idleTimer);
     updateProgress();
-    const good = hist.filter((h) => h.final && h.final.fb.good).length;
-    $('stars').innerHTML = Array.from({ length: MISSION.decisions }, (_, i) => `<span class="${i < good ? 'on' : ''}">★</span>`).join('');
-    $('endScore').textContent = `Blau ${S.score.blue} : ${S.score.red} Rot`;
-    const lines = [];
-    const types = hist.map((h) => h.ctx.type);
-    let msg = good >= 4 ? 'Super gespielt!' : good >= 2 ? 'Gut gemacht!' : 'Toll, dass du es probiert hast!';
-    if (types.includes('verteidigung') && types.some((t) => t !== 'verteidigung')) msg += ' Ihr habt angegriffen und eure Tore beschützt.';
-    msg += ' Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!';
+    const done = hist.filter((h) => h.final);
+    const good = done.filter((h) => h.final.fb.good).length;
+    const looks = hist.filter((h) => h.look);
+    $('stars').innerHTML = done.map((h) => `<span class="${h.final.fb.good ? 'on' : ''}">★</span>`).join('');
+    $('endScore').textContent = `Blau ${S.score.blue} : ${S.score.red} Rot` + (looks.length ? `  ·  👀 ${looks.filter((l) => l.right && l.tries === 1).length}/${looks.length} sofort erkannt` : '');
+    let msg = good >= done.length - 1 ? 'Super gespielt!' : good >= 2 ? 'Gut gemacht!' : 'Toll, dass du es probiert hast!';
+    msg += ' Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!';
     $('endMsg').textContent = msg;
-    $('endList').innerHTML = hist.map((h, i) => `<li class="${h.final.fb.good ? 'good' : ''}"><b>${i + 1}</b> ${h.ctx.title} <span>${h.final.fb.good ? '⭐' : '💭'}</span></li>`).join('');
-    $('prompt').hidden = true;
+    $('endList').innerHTML = done.map((h, i) => `<li class="${h.final.fb.good ? 'good' : ''}"><b>${h.ctx.type === 'verteidigung' ? '🛡️' : '⚽'}</b> ${h.ctx.title} <span>${h.final.fb.good ? '⭐' : '💭'}</span></li>`).join('');
+    $('prompt').hidden = true; setStepText('');
     $('endScreen').hidden = false;
-    Voice.say(msg + ` Du hast ${good} von ${MISSION.decisions} Sternen.`);
+    firstRun = false;
+    Voice.say(msg + ` Du hast ${good} von ${done.length} Sternen.`);
   }
   function highlights() {
     $('endScreen').hidden = true;
-    const q = hist.map((h, i) => ({ frames: h.final.frames, label: `${i + 1}. ${h.ctx.title}`, say: '' }));
-    startReplay(q, () => { mode = 'end'; $('endScreen').hidden = false; $('prompt').hidden = true; });
-    mode = 'replay';
+    const q = hist.filter((h) => h.final).map((h) => ({ frames: h.final.frames, label: h.ctx.title, explain: h.final.fb.explain, say: h.final.fb.text }));
+    startReplay(q, () => { mode = 'end'; $('endScreen').hidden = false; });
   }
 
   // ------------------------------------------------------------ Anzeigen
   function updateProgress() {
     const box = $('progress'); box.innerHTML = '';
-    for (let i = 0; i < MISSION.decisions; i++) {
-      const d = document.createElement('span');
-      const h = hist[i];
-      d.className = 'dot' + (i === dec && mode !== 'end' ? ' cur' : '') + (h && h.final ? (h.final.fb.good ? ' star' : ' done') : '');
-      d.textContent = h && h.final ? (h.final.fb.good ? '★' : '✓') : String(i + 1);
-      box.appendChild(d);
-    }
+    const mk = (cls, txt) => { const d = document.createElement('span'); d.className = cls; d.textContent = txt; box.appendChild(d); };
+    const items = hist.map((h, i) => ({ h, i }));
+    const att = items.filter((x) => x.h.ctx.type !== 'verteidigung');
+    const def = items.filter((x) => x.h.ctx.type === 'verteidigung');
+    const dot = (x) => {
+      const fin = x.h.final;
+      mk('dot' + (x.i === dec && mode !== 'end' && !fin ? ' cur' : '') + (fin ? (fin.fb.good ? ' star' : ' done') : ''), fin ? (fin.fb.good ? '★' : '✓') : '•');
+    };
+    mk('phase' + (M && M.phase === 'attack' && mode !== 'end' ? ' on' : ''), '⚽');
+    att.forEach(dot);
+    mk('phase' + (M && M.phase === 'defense' && mode !== 'end' ? ' on' : ''), '🛡️');
+    def.forEach(dot);
+    const open = M ? Math.max(0, M.defense - def.length) : 2;
+    for (let i = 0; i < open && !(M && M.done); i++) mk('dot', '');
   }
   function updateScore() { if (S) $('score').textContent = `${S.score.blue} : ${S.score.red}`; }
 
@@ -499,10 +668,9 @@
     const cols = teamName === 'blue' ? ['#2563eb', '#60a5fa', '#ffd60a', '#fff'] : ['#e11d48', '#fb7185', '#fff'];
     for (let i = 0; i < 60; i++) {
       const s = document.createElement('i');
-      s.style.left = Math.random() * 100 + '%';
+      s.style.left = (i * 37) % 100 + '%';
       s.style.background = cols[i % cols.length];
-      s.style.animationDelay = Math.random() * 0.4 + 's';
-      s.style.transform = `rotate(${Math.random() * 360}deg)`;
+      s.style.animationDelay = (i % 8) * 0.05 + 's';
       box.appendChild(s);
     }
     $('goalBanner').textContent = teamName === 'blue' ? 'TOOOR! ⚽' : 'Tor für Rot';
@@ -513,25 +681,27 @@
   // ------------------------------------------------------------ Verdrahtung
   $('play').onclick = () => { Sfx.ctx(); Voice.init(); Voice.say('Los geht\'s! Du spielst mit den Blauen.'); setTimeout(startMission, 50); };
   $('again').onclick = () => startMission();
-  $('home').onclick = () => { Voice.stop(); mode = 'start'; $('feedback').hidden = true; $('endScreen').hidden = true; $('startScreen').hidden = false; };
+  $('home').onclick = () => { Voice.stop(); hideHand(); mode = 'start'; $('feedback').hidden = true; $('endScreen').hidden = true; $('startScreen').hidden = false; };
   $('home2').onclick = $('home').onclick;
   $('hl').onclick = () => highlights();
   $('fbRetry').onclick = () => retry();
   $('fbNext').onclick = () => next();
   $('fbCompare').onclick = () => compare();
   $('cancel').onclick = () => { sel = null; hintView = null; renderActions(hist[dec].ctx); setStepText(''); };
-  $('repeat').onclick = () => Voice.say(hist[dec] ? hist[dec].ctx.say : '');
+  $('repeat').onclick = () => Voice.say(mode === 'look' ? 'Welcher Freund steht frei? Tippe ihn an.' : hist[dec] ? hist[dec].ctx.say : '');
   $('skip').onclick = () => { if (replay) { const d = replay.onDone; replay = null; d(); } };
   $('sound').onclick = () => { Voice.on = !Voice.on; $('sound').textContent = Voice.on ? '🔊' : '🔇'; if (!Voice.on) Voice.stop(); };
 
   window.addEventListener('resize', resize);
+  try { new ResizeObserver(() => resize()).observe(wrap); } catch (e) {}
   resize();
-  S = E.newState(); // Hintergrund auf dem Startbildschirm
+  S = E.newState(); M = E.newMission();
   updateScore(); updateProgress();
   requestAnimationFrame(loop);
 
-  // PWA: Service Worker (funktioniert nur bei eigenem Hosting, nicht in eingebetteten Vorschauen)
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
   }
+  // Testzugriff (nur lesend) für automatisierte Oberflächentests
+  window.__fiq = { get mode() { return mode; }, get S() { return S; }, get M() { return M; } };
 })();

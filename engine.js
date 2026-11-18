@@ -16,7 +16,7 @@
   // ---------------------------------------------------------------- Parameter (Einsteiger)
   const CFG = {
     dt: 1 / 60,
-    blueRun: 4.4, blueDribble: 3.4,
+    blueRun: 4.4, blueDribble: 3.4, blueCover: 2.8,
     redRun: 3.5, redPress: 3.0, redMark: 2.6, redDribble: 3.2, redSupport: 2.4,
     passSpeed: 9, shotSpeed: 13,
     reach: 0.75, blockReach: 1.0,
@@ -163,9 +163,19 @@
     return Math.min(...team(s, other(teamName)).map((o) => dist(o, pt)));
   }
 
+  /** Welche der angebotenen Aktionen passt zur Situation? (für die Hilfe) */
+  function recommend(s, actions) {
+    if (s.poss !== 'blue') return actions[0];
+    const sit = situation(s);
+    const map = { schiessen: 'shoot', passen: 'pass', dribbeln: 'dribble' };
+    for (const k of ['schiessen', 'passen', 'dribbeln']) if (actions.includes(k) && sit.ok[map[k]]) return k;
+    return actions[0];
+  }
+
   /** Empfohlene Lösung für die Orientierungshilfe (Tutorial). */
   function hint(s, actionKey) {
     const c = carrier(s);
+    if (s.poss === 'red') redPlan(s);
     if (actionKey === 'passen') {
       const o = passOptions(s).sort((a, b) => b.margin - a.margin)[0];
       return { ids: [o.id], say: 'Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner.' };
@@ -224,48 +234,86 @@
     return best;
   }
 
-  /** Qualität der Entscheidung, unabhängig vom Ergebnis (Konzept Kap. 11, Punkt 3). */
+  /** Was bietet die Situation dem Ballführenden? (Grundlage für "Erkennen") */
+  function dribbleBest(s) {
+    const c = carrier(s);
+    let best = null;
+    for (let a = -80; a <= 80; a += 10) {
+      const r = (a * Math.PI) / 180;
+      const pt = clampP({ x: c.x + Math.cos(r) * 5, y: c.y + Math.sin(r) * 5 });
+      const m = dribbleLane(s, c, pt).margin;
+      if (!best || m > best.m) best = { m, pt };
+    }
+    return best;
+  }
+  function situation(s) {
+    const c = carrier(s);
+    const passes = passOptions(s);
+    const pBest = Math.max(...passes.map((o) => o.margin));
+    const inZone = c.x >= F.W - F.ZONE - 0.3;
+    const shots = inZone ? shotOptions(s) : [];
+    const sBest = shots.length ? Math.max(...shots.map((o) => o.margin)) : -9;
+    const dBest = dribbleBest(s).m;
+    return { passes, pBest, shots, sBest, dBest, inZone,
+      ok: { pass: pBest > CFG.passLaneOk, shoot: sBest > CFG.shotLaneOk, dribble: dBest > 0.2 } };
+  }
+  const nameOf = (s, id) => { const p = P(s, id); return (p.team === 'blue' ? 'Blau ' : 'Rot ') + p.num; };
+  /** Gegner, der einem Weg am nächsten steht (für Erklärungen) */
+  function laneKey(s, from, to, teamName) {
+    let best = null;
+    for (const o of team(s, teamName)) { const d = segDist(o, from, to).d; if (!best || d < best.d) best = { id: o.id, d }; }
+    return best ? best.id : null;
+  }
+
+  /** Bewertung in drei Teilen (Review V0.1, Punkt 2):
+   *  erkennen  – war die Art der Entscheidung sinnvoll? (Passen / Dribbeln / Schießen …)
+   *  ausfuehren – war das gewählte Ziel sinnvoll? (welcher Mitspieler, welches Tor, welcher Raum)
+   *  Das Ergebnis (Tor, Ballverlust …) wird getrennt davon in outcome() ermittelt.
+   *  Stern nur, wenn erkennen UND ausfuehren gut sind. */
   function evaluate(s, a) {
     const c = carrier(s);
-    switch (a.kind) {
-      case 'pass': {
-        const opts = passOptions(s);
-        const best = Math.max(...opts.map((o) => o.margin));
-        let m;
-        if (a.id) m = opts.find((o) => o.id === a.id).margin;
-        else m = lane(c, a, CFG.passSpeed, team(s, 'red'), CFG.redReact, CFG.reach).margin;
-        const good = m > CFG.passLaneOk || m >= best - 0.05;
-        return { good, why: good ? 'Der Passweg war frei.' : 'Ein Gegner stand nah am Passweg.' };
-      }
-      case 'shoot': {
-        const opts = shotOptions(s);
-        const best = Math.max(...opts.map((o) => o.margin));
-        const m = opts[a.goal].margin;
-        const good = m > CFG.shotLaneOk || m >= best - 0.05;
-        return { good, why: good ? 'Du hast das freie Tor gewählt.' : 'Vor diesem Tor stand ein Gegner.' };
-      }
-      case 'dribble': {
+    const R = (good, why) => ({ good, why });
+    let rec = R(true, ''), exe = R(true, '');
+    if (a.kind === 'pass' || a.kind === 'shoot' || a.kind === 'dribble') {
+      const sit = situation(s);
+      const anyOk = sit.ok.pass || sit.ok.shoot || sit.ok.dribble;
+      if (sit.ok[a.kind]) rec = R(true, a.kind === 'shoot' ? 'Du hast die Torchance erkannt.' : a.kind === 'pass' ? 'Du hast gesehen, dass ein Freund frei war.' : 'Du hast den freien Platz gesehen.');
+      else if (!anyOk) rec = R(true, 'Eine schwierige Lage – nirgends war es richtig frei.');
+      else if (sit.ok.shoot) rec = R(false, 'Ein Tor war frei – Schießen wäre gut gewesen.');
+      else if (sit.ok.pass) rec = R(false, a.kind === 'shoot' ? 'Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.' : 'Ein Freund stand frei – ein Pass wäre besser gewesen.');
+      else rec = R(false, a.kind === 'shoot' ? 'Beide Tore waren zugestellt. Vor dir war aber Platz zum Dribbeln.' : 'Vor dir war Platz zum Dribbeln.');
+
+      if (a.kind === 'pass') {
+        const m = a.id ? sit.passes.find((o) => o.id === a.id).margin : lane(c, a, CFG.passSpeed, team(s, 'red'), CFG.redReact, CFG.reach).margin;
+        const target = a.id ? nameOf(s, a.id) : 'die freie Stelle';
+        if (m > CFG.passLaneOk) exe = R(true, `Der Weg zu ${target} war frei.`);
+        else if (!sit.ok.pass && m >= sit.pBest - 0.05) exe = R(true, 'Das war noch der beste Passweg.');
+        else { const o = a.id ? sit.passes.find((x) => x.id === a.id) : null; const k = (o && o.hit && o.hit.id) || laneKey(s, c, a.id ? P(s, a.id) : a, 'red'); exe = R(false, `${k ? nameOf(s, k) : 'Ein Gegner'} stand nah am Weg zu ${target}.` + (sit.ok.pass ? ' Ein anderer Freund stand freier.' : '')); }
+      } else if (a.kind === 'shoot') {
+        const m = sit.shots[a.goal].margin;
+        if (m > CFG.shotLaneOk) exe = R(true, 'Du hast das freie Tor gewählt.');
+        else { const h = sit.shots[a.goal].hit; const k = (h && h.id) || laneKey(s, c, F.goals.red[a.goal], 'red'); exe = R(false, `Vor diesem Tor stand ${k ? nameOf(s, k) : 'ein Gegner'}.` + (sit.shots[1 - a.goal].margin > CFG.shotLaneOk ? ' Das andere Tor war frei.' : '')); }
+      } else {
         const m = dribbleLane(s, c, a).margin;
-        const good = m > 0.2;
-        return { good, why: good ? 'Du bist in den freien Raum gedribbelt.' : 'Du bist direkt auf einen Gegner zugelaufen.' };
+        exe = m > 0.2 ? R(true, 'Du bist in den freien Raum gedribbelt.') : R(false, 'Du bist direkt auf einen Gegner zugelaufen.');
       }
-      case 'run': {
-        const sc = runSpotScore(s, c, P(s, a.id), a);
-        return { good: sc.ok, why: sc.ok ? 'Du bist in einen freien Raum gelaufen.' : sc.open < 3.2 ? 'Dort stand schon ein Gegner.' : sc.d < 3.5 ? 'Das war zu nah am Ball – dein Freund braucht Platz.' : 'Von dort war der Passweg versperrt.' };
-      }
-      case 'press': {
-        const blues = team(s, 'blue').sort((x, y) => dist(x, c) - dist(y, c));
-        const good = a.id === blues[0].id || dist(P(s, a.id), c) - dist(blues[0], c) < 1;
-        return { good, why: good ? 'Der Spieler am nächsten am Ball greift an.' : 'Der Weg war weit. Der Spieler, der am nächsten am Ball ist, sollte angreifen.' };
-      }
-      case 'cover': {
-        const g = F.goals.blue[s.ai.goal];
-        const sd = segDist(a, c, g);
-        const good = sd.d < 2.2 && sd.t > 0.15 && sd.t < 0.92;
-        return { good, why: good ? 'Du stehst zwischen Gegner und Tor.' : 'Der Weg zum Tor blieb offen.' };
-      }
+    } else if (a.kind === 'run') {
+      const sc = runSpotScore(s, c, P(s, a.id), a);
+      rec = R(true, 'Du hast deinem Freund geholfen, statt stehen zu bleiben.');
+      exe = sc.ok ? R(true, 'Du bist in einen freien Raum gelaufen.') : R(false, sc.open < 3.2 ? 'Dort stand schon ein Gegner.' : sc.d < 3.5 ? 'Das war zu nah am Ball – dein Freund braucht Platz.' : 'Von dort war der Passweg versperrt.');
+    } else if (a.kind === 'press') {
+      const blues = team(s, 'blue').sort((x, y) => dist(x, c) - dist(y, c));
+      rec = dist(blues[0], c) < 8 ? R(true, 'Angreifen war richtig – ein Spieler war nah genug.') : R(false, 'Der Gegner war weit weg. Besser erst den Weg zum Tor versperren.');
+      const okP = a.id === blues[0].id || dist(P(s, a.id), c) - dist(blues[0], c) < 1;
+      exe = okP ? R(true, 'Der Spieler am nächsten am Ball greift an.') : R(false, `Der Weg war weit. ${nameOf(s, blues[0].id)} war näher am Ball.`);
+    } else if (a.kind === 'cover') {
+      const g = F.goals.blue[s.ai.goal];
+      const sd = segDist(a, c, g);
+      rec = R(true, 'Du hast an unser Tor gedacht.');
+      exe = sd.d < 2.2 && sd.t > 0.15 && sd.t < 0.92 ? R(true, 'Du stehst zwischen Gegner und Tor.') : R(false, 'Der Weg zum Tor blieb offen.');
     }
-    return { good: false, why: '' };
+    const good = rec.good && exe.good;
+    return { good, rec, exe, why: !rec.good ? rec.why : exe.why };
   }
 
   // ---------------------------------------------------------------- Aktionen starten
@@ -307,6 +355,7 @@
     s.ball.flight.from = c.id;
     s.ball.flight.recv = recv.id;
     if (isAI) event(s, c.team === 'red' ? 'redPass' : 'pass');
+    else if (s.ep && !s.ep.explain) s.ep.explain = { from: { x: c.x, y: c.y }, to: { x: to.x, y: to.y }, ok: !hit, key: hit ? hit.id : null };
   }
 
   function doShot(s, c, goalIdx) {
@@ -323,6 +372,7 @@
     }
     s.ball.flight.from = c.id;
     s.ball.flight.goal = goalIdx;
+    if (c.team === 'blue' && s.ep && !s.ep.explain) s.ep.explain = { from: { x: c.x, y: c.y }, to: { x: g.x, y: g.y }, ok: !r.hit, key: r.hit ? r.hit.id : null };
   }
 
   function startAction(s, a) {
@@ -339,11 +389,25 @@
         const d = dist(c, to);
         if (d > 8) to = { x: c.x + ((to.x - c.x) / d) * 8, y: c.y + ((to.y - c.y) / d) * 8 };
         c.ctrl = 'dribble'; c.tx = to.x; c.ty = to.y;
+        s.ep.explain = { from: { x: c.x, y: c.y }, to: { x: to.x, y: to.y }, ok: true, key: ev.exe.good ? null : laneKey(s, c, to, 'red') };
         break;
       }
-      case 'run': { const p = P(s, a.id); p.ctrl = 'run'; const t = clampP(a); p.tx = t.x; p.ty = t.y; break; }
-      case 'press': { const p = P(s, a.id); p.ctrl = 'press'; break; }
-      case 'cover': { const p = P(s, a.id); p.ctrl = 'run'; const t = clampP(a); p.tx = t.x; p.ty = t.y; break; }
+      case 'run': {
+        const p = P(s, a.id); p.ctrl = 'run'; const t = clampP(a); p.tx = t.x; p.ty = t.y;
+        s.ep.explain = { from: { x: p.x, y: p.y }, to: t, ok: ev.good, key: ev.good ? null : laneKey(s, c, t, 'red'), pass: { from: { x: c.x, y: c.y }, to: t } };
+        break;
+      }
+      case 'press': {
+        const p = P(s, a.id); p.ctrl = 'press';
+        s.ep.explain = { from: { x: p.x, y: p.y }, to: { x: c.x, y: c.y }, ok: ev.good, key: ev.good ? null : team(s, 'blue').sort((x, y) => dist(x, c) - dist(y, c))[0].id, keyGood: !ev.good };
+        break;
+      }
+      case 'cover': {
+        const p = P(s, a.id); p.ctrl = 'run'; const t = clampP(a); p.tx = t.x; p.ty = t.y;
+        const g = F.goals.blue[s.ai.goal];
+        s.ep.explain = { from: { x: p.x, y: p.y }, to: t, ok: ev.good, key: c.id, threat: { from: { x: c.x, y: c.y }, to: { x: g.x, y: g.y } } };
+        break;
+      }
     }
     return ev;
   }
@@ -406,6 +470,7 @@
     const fl = s.ball.flight;
     const ballPt = c ? c : fl ? { x: fl.tx, y: fl.ty } : s.ball;
     if (s.poss === 'blue') {
+      for (const b of team(s, 'blue')) b.role = null;
       const reds = team(s, 'red').filter((p) => !p.ctrl);
       if (!reds.length) return;
       const presser = reds.slice().sort((a, b) => dist(a, ballPt) - dist(b, ballPt))[0];
@@ -437,13 +502,25 @@
         if (fl && fl.recv === r.id) continue;
         r.tx = Math.max(7, ballPt.x - 5); r.ty = r.y; r.role = 'support';
       }
-      // Blaue ohne Auftrag bleiben stehen (Kind steuert die Verteidigung).
+      // Blaue ohne Auftrag sichern ab: torseitig zum nächsten freien Gegner (nicht zum Ball).
+      const free = team(s, 'red').filter((r) => r !== c && !(fl && fl.recv === r.id && fl.result === 'ok'));
+      const taken = new Set();
+      for (const b of team(s, 'blue')) {
+        if (b.ctrl) { b.role = null; continue; }
+        const cand = free.filter((r) => !taken.has(r.id)).sort((x, y) => dist(x, b) - dist(y, b))[0];
+        if (!cand) { b.role = null; b.tx = b.x; b.ty = b.y; continue; }
+        taken.add(cand.id);
+        const g = dist(cand, F.goals.blue[0]) < dist(cand, F.goals.blue[1]) ? F.goals.blue[0] : F.goals.blue[1];
+        const v = unit(g.x - cand.x, g.y - cand.y);
+        const t = clampP({ x: cand.x + v.x * 2.4, y: cand.y + v.y * 2.4 });
+        b.tx = t.x; b.ty = t.y; b.role = 'cover';
+      }
     }
   }
 
   function speedOf(s, p) {
     const owner = s.ball.owner === p.id;
-    if (p.team === 'blue') return owner ? CFG.blueDribble : CFG.blueRun;
+    if (p.team === 'blue') return owner ? CFG.blueDribble : p.role === 'cover' && !p.ctrl ? CFG.blueCover : CFG.blueRun;
     if (owner) return CFG.redDribble;
     if (p.ctrl === 'intercept') return CFG.redRun;
     if (p.role === 'press' || p.role === 'guard') return CFG.redPress;
@@ -537,6 +614,7 @@
     // Ballverlierer wird kurz "abgeschüttelt"
     const u = unit(c.x - d.x, c.y - d.y); c.tx = c.x + u.x * 1.2; c.ty = c.y + u.y * 1.2;
     event(s, 'steal', { by: d.id, from: c.id });
+    if (s.ep && s.ep.a.kind === 'dribble' && s.ep.explain && c.team === 'blue') { s.ep.explain.ok = false; s.ep.explain.key = d.id; }
     if (d.team === 'red') redPlan(s);
   }
 
@@ -590,6 +668,7 @@
       if (ep.t > 8 && ep.endT == null) ep.endT = ep.t;
     } else { // press / cover
       if (possChanged || has('turn')) ep.endT = ep.t + 0.7;
+      else if (a.kind === 'cover' && has('evade') && ep.t > 1) ep.endT = ep.t + 0.6;
       else if (evs.some((e) => e.type === 'received' && e.team === 'red') || has('blocked')) ep.endT = ep.t + 0.4;
       else if (ep.t > 7) ep.endT = ep.t;
     }
@@ -602,13 +681,15 @@
     const goal = find('goal');
     let success = false, text = '', icon = '';
     if (a.kind === 'pass') {
-      if (find('intercepted')) { text = 'Schau mal! Der rote Spieler stand im Weg und hat den Ball bekommen.'; icon = '😮'; }
+      const ic = find('intercepted');
+      if (ic) { text = `Schau mal! ${nameOf(s, ic.by)} stand im Weg und hat den Ball bekommen.`; icon = '😮'; }
       else { success = true; text = 'Der Pass ist angekommen!'; icon = '👍'; }
     } else if (a.kind === 'shoot') {
       if (goal) { success = true; text = 'Toooor! Der Weg war frei.'; icon = '🎉'; }
-      else { text = 'Der Schuss wurde geblockt – vor dem Tor stand ein Gegner.'; icon = '🧤'; }
+      else { const bl = find('blocked'); text = `Geblockt! ${bl ? nameOf(s, bl.by) : 'Ein Gegner'} stand vor dem Tor.`; icon = '🧤'; }
     } else if (a.kind === 'dribble') {
-      if (find('steal')) { text = 'Der Gegner stand im Weg und hat dir den Ball abgenommen.'; icon = '😮'; }
+      const st = find('steal');
+      if (st) { text = `${nameOf(s, st.by)} stand im Weg und hat dir den Ball abgenommen.`; icon = '😮'; }
       else { success = true; text = 'Gut gedribbelt – du hast den Ball behalten!'; icon = '👍'; }
     } else if (a.kind === 'run') {
       if (find('steal')) { text = 'Oh, der Gegner hat den Ball erobert.'; icon = '😮'; }
@@ -619,7 +700,7 @@
       else if (find('steal') && s.poss === 'blue') { success = true; text = 'Ball erobert! Jetzt greifen wir an.'; icon = '💪'; }
       else if (find('blocked')) { success = true; text = 'Geblockt! Du hast im Weg gestanden.'; icon = '🧱'; }
       else if (find('intercepted') && s.poss === 'blue') { success = true; text = 'Abgefangen! Der Ball gehört uns.'; icon = '💪'; }
-      else if (find('turn')) { success = true; text = 'Klasse! Der Gegner kommt nicht vorbei und muss die Richtung ändern.'; icon = '🛡️'; }
+      else if (find('turn') || (a.kind === 'cover' && find('evade') && ep.eval.good)) { success = true; text = 'Klasse! Der Gegner kommt nicht vorbei und muss die Richtung ändern.'; icon = '🛡️'; }
       else if (a.kind === 'press' && (find('redPass') || find('evade'))) { success = true; text = 'Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen.'; icon = '💨'; }
       else if (a.kind === 'cover' && find('redPass') && ep.eval.good) { success = true; text = 'Der Gegner kam nicht durch und musste quer spielen.'; icon = '🛡️'; }
       else if (a.kind === 'cover' && find('redPass')) { success = true; text = 'Der Gegner hat abgespielt.'; icon = '👀'; }
@@ -633,9 +714,9 @@
     let say;
     if (ev.good && out.success) say = out.text + ' ' + ev.why;
     else if (ev.good && !out.success) say = out.text + ' Aber deine Idee war gut! ' + ev.why;
-    else if (!ev.good && out.success) say = out.text + ' Das war aber knapp. ' + ev.why + ' Probier doch mal einen anderen Weg.';
+    else if (!ev.good && out.success) say = out.text + ' Hat geklappt – aber schau nochmal: ' + ev.why;
     else say = out.text + ' ' + ev.why;
-    return { good: ev.good, success: out.success, icon: out.icon, text: out.text, why: ev.why, say, goal: out.goal };
+    return { good: ev.good, success: out.success, icon: out.icon, text: out.text, why: ev.why, rec: ev.rec, exe: ev.exe, say, goal: out.goal, explain: s.ep.explain || null };
   }
 
   // ---------------------------------------------------------------- Aufnahme für Wiederholung / Vergleich
@@ -646,5 +727,22 @@
     return f;
   }
 
-  root.FIQ = { F, CFG, ACTIONS, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions };
+  // ---------------------------------------------------------------- Lernmission (Review V0.1, Punkt 4)
+  // Angriffsphase: endet bei Ballverlust/Tor, spätestens nach maxAttack Entscheidungen (dann Ball im Aus -> Rot).
+  // Verteidigungsphase: defense Entscheidungen, endet früher bei Balleroberung oder Gegentor.
+  // So enthält jede Mission sicher Angriff UND Verteidigung, ohne frühere Entscheidungen zu verändern.
+  function newMission() { return { phase: 'attack', att: 0, def: 0, maxAttack: 4, defense: 2, done: false, note: null }; }
+  function missionAfter(m, s, ctxType) {
+    m.note = null;
+    if (ctxType === 'verteidigung') m.def++; else m.att++;
+    if (m.phase === 'attack') {
+      if (s.poss === 'red') m.phase = 'defense';
+      else if (m.att >= m.maxAttack) { m.pending = 'red'; m.phase = 'defense'; m.note = 'aus'; }
+    } else if (m.def >= m.defense || s.poss === 'blue') m.done = true;
+    return m;
+  }
+  /** Ausstehenden Neustart (Ball im Aus) ausführen – erst wenn das Kind weiterspielt. */
+  function missionApply(m, s) { if (m.pending) { restart(s, m.pending); m.pending = null; } }
+
+  root.FIQ = { F, CFG, ACTIONS, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

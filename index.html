@@ -33,7 +33,7 @@
   .round:active { transform: scale(.94); }
   .mtitle { font-weight: 800; font-size: 17px; line-height: 1.1; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mtitle small { display: block; font-weight: 600; font-size: 12px; opacity: .75; }
-  #progress { display: flex; gap: 6px; }
+  #progress { display: flex; gap: 6px; align-items: center; margin-left: auto; }
   .dot { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.18); display: grid; place-items: center; font-size: 14px; font-weight: 800; color: rgba(255,255,255,.8); }
   .dot.cur { background: #fff; color: var(--blue-d); box-shadow: 0 0 0 3px rgba(255,214,10,.8); }
   .dot.done { background: rgba(255,255,255,.4); color: #fff; }
@@ -43,21 +43,23 @@
   #score::after { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #fb7185; margin-left: 6px; vertical-align: 1px; }
 
   /* Spielfeld */
+  #main { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   #fieldWrap { position: relative; flex: 1; min-height: 0; margin: 0 8px; }
   #field { position: absolute; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); touch-action: none; }
-  #prompt { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 10px;
-    background: rgba(255,253,246,.96); padding: 6px 8px 6px 14px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.25); max-width: calc(100% - 16px); transition: opacity .2s; }
+  #prompt { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; justify-content: center; margin: 0 auto; max-width: 620px;
+    background: rgba(255,253,246,.97); padding: 5px 6px 5px 12px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.25); transition: opacity .2s; }
+  .spacer { flex: 1; }
   #prompt.dim { opacity: .55; }
-  #prompt h2 { margin: 0; font-size: clamp(16px, 2.6vw, 22px); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #prompt h2 { margin: 0; font-size: clamp(15px, 2.3vw, 21px); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
   .tag { font-size: 12px; font-weight: 800; padding: 2px 10px; border-radius: 999px; color: #fff; white-space: nowrap; }
   .tag.att { background: var(--blue); } .tag.def { background: var(--red); }
-  #decNo { font-weight: 700; font-size: 13px; opacity: .55; }
   #repeat { width: 38px; height: 38px; border-radius: 50%; background: #eef2ff; font-size: 18px; flex: none; }
-  #step { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 3; background: rgba(15,23,42,.82); color: #fff; padding: 6px 16px; border-radius: 999px; font-weight: 700; font-size: clamp(14px, 2.2vw, 18px); max-width: calc(100% - 20px); text-align: center; }
-  #portraitTip { position: absolute; left: 10px; top: calc(50% + 31vw); white-space: nowrap; z-index: 3; background: rgba(0,0,0,.5); color: #fff; font-size: 13px; padding: 4px 10px; border-radius: 999px; }
+  #step { flex: 1 1 220px; max-width: 360px; background: rgba(15,23,42,.55); color: #fff; padding: 8px 14px; border-radius: 16px; font-weight: 700; font-size: clamp(13px, 1.9vw, 17px); line-height: 1.25; }
+  #portraitTip { pointer-events: none; position: absolute; left: 10px; top: calc(50% + 31vw); white-space: nowrap; z-index: 3; background: rgba(0,0,0,.5); color: #fff; font-size: 13px; padding: 4px 10px; border-radius: 999px; }
 
   /* Aktionsleiste */
-  #bar { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 12px 12px; min-height: 92px; }
+  #bar { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px 12px 10px; min-height: 92px; flex-wrap: wrap; }
+  .sheet:not([hidden]) ~ #step { display: none !important; }
   #actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
   #actions.wiggle { animation: wig .45s; }
   @keyframes wig { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
@@ -70,16 +72,27 @@
   #cancel { background: rgba(255,255,255,.18); color: #fff; }
 
   /* Rückmeldung */
-  .sheet { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 6; width: min(640px, calc(100% - 20px));
-    background: var(--paper); border-radius: 26px; padding: 14px 16px 16px; box-shadow: 0 18px 50px rgba(0,0,0,.45); animation: up .25s ease-out; }
-  @keyframes up { from { transform: translate(-50%, 30px); opacity: 0; } }
+  .sheet { width: min(760px, 100%); background: var(--paper); border-radius: 22px; padding: 10px 14px 12px; box-shadow: 0 10px 30px rgba(0,0,0,.35); animation: up .25s ease-out;
+    display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+  @keyframes up { from { transform: translateY(20px); opacity: 0; } }
+  .sheet:not([hidden]) ~ #actions, .sheet:not([hidden]) ~ #cancel { display: none !important; }
   .fbTop { display: flex; gap: 12px; align-items: center; }
-  #fbIcon { font-size: 46px; line-height: 1; }
-  #fbText { margin: 0; font-size: clamp(17px, 2.6vw, 22px); font-weight: 800; line-height: 1.2; }
-  .why { margin: 6px 0 0; font-size: 15px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; }
-  .why.good { background: #fff3b0; color: #6b4e00; } .why.think { background: #e0e7ff; color: #3730a3; }
-  .fbBtns { display: flex; gap: 10px; margin-top: 12px; }
-  .fbBtns button { flex: 1; height: 64px; border-radius: 18px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  #fbIcon { font-size: 40px; line-height: 1; }
+  #fbText { margin: 0; font-size: clamp(16px, 2.3vw, 20px); font-weight: 800; line-height: 1.2; }
+  .fbBody { flex: 1; min-width: 0; }
+  .chips2 { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  .chip { font-size: 14px; font-weight: 700; padding: 3px 10px; border-radius: 10px; line-height: 1.25; }
+  .chip.good { background: #dcfce7; color: #166534; } .chip.bad { background: #fee2e2; color: #991b1b; }
+  .bigstar { font-size: 38px; line-height: 1; filter: grayscale(1) opacity(.5); }
+  .bigstar.on { filter: none; animation: pop2 .5s ease-out; }
+  @keyframes pop2 { 40% { transform: scale(1.4) rotate(-12deg); } }
+  .phase { font-size: 16px; opacity: .45; margin-left: 4px; }
+  .phase.on { opacity: 1; }
+  .tag.look { background: #7c3aed; }
+  #hand { position: fixed; z-index: 7; font-size: 46px; pointer-events: none; transform: translate(-30%, -10%); transition: left .6s ease, top .6s ease; animation: tapme 1.4s ease-in-out infinite; filter: drop-shadow(0 4px 6px rgba(0,0,0,.4)); }
+  @keyframes tapme { 0%, 100% { margin-top: 18px; } 50% { margin-top: 4px; } 60% { transform: translate(-30%, -10%) scale(.88); } }
+  .fbBtns { display: flex; flex-direction: column; gap: 6px; }
+  .fbBtns button { min-width: 190px; height: 50px; padding: 0 14px; border-radius: 18px; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .fbBtns .ico { font-size: 26px; }
   #fbRetry { background: #e0e7ff; color: #3730a3; box-shadow: 0 4px 0 #a5b4fc; }
   #fbCompare { background: #fce7f3; color: #9d174d; box-shadow: 0 4px 0 #f9a8d4; }
@@ -129,42 +142,58 @@
 
   [hidden] { display: none !important; }
   @media (max-height: 460px) {
-    header { padding: 4px 10px; } .round { width: 38px; height: 38px; font-size: 18px; }
+    header { padding: 4px 10px; } .round { width: 36px; height: 36px; font-size: 17px; } #repeat { width: 32px; height: 32px; font-size: 15px; } #score { font-size: 16px; }
     #bar { min-height: 70px; padding: 6px 10px 8px; } .act { height: 60px; min-width: 84px; font-size: 14px; } .act .ico { font-size: 24px; }
     .dot { width: 24px; height: 24px; font-size: 12px; }
-    .fbBtns button { height: 52px; }
+    .fbBtns button { height: 40px; min-width: 160px; font-size: 14px; } .chip { font-size: 12px; padding: 2px 8px; } #fbIcon { font-size: 30px; }
   }
-  @media (max-width: 560px) { .mtitle { display: none; } }
+  /* Handy quer: Bedienleiste rechts neben dem Spielfeld, damit das Feld die volle Höhe bekommt */
+  @media (max-height: 500px) and (min-aspect-ratio: 3/2) {
+    #main { flex-direction: row; }
+    #bar { width: 300px; flex: none; flex-direction: column; justify-content: center; align-items: stretch; min-height: 0; padding: 4px 10px 8px 2px; gap: 8px; }
+    #step { flex: none; max-width: none; font-size: 13px; padding: 6px 10px; }
+    #actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    #actions .act, #cancel { min-width: 0; width: 100%; height: 62px; }
+    .sheet { grid-template-columns: 1fr; padding: 8px 10px; gap: 6px; }
+    .fbTop { gap: 8px; } #fbIcon { font-size: 26px; } .bigstar { font-size: 28px; }
+    #fbText { font-size: 15px; } .chip { font-size: 11.5px; }
+    .fbBtns { flex-direction: row; } .fbBtns button { min-width: 0; flex: 1; height: 44px; font-size: 13px; padding: 0 6px; } .fbBtns .ico { font-size: 18px; }
+  }
+  @media (max-width: 640px) { header { flex-wrap: wrap; } #prompt { order: 10; flex-basis: 100%; } }
+  @media (max-width: 700px) { .sheet { grid-template-columns: 1fr; } .fbBtns { flex-direction: row; } .fbBtns button { min-width: 0; flex: 1; font-size: 13px; } }
 </style>
 </head>
 <body>
 <div id="app">
   <header>
     <button class="round" id="home" aria-label="Start">🏠</button>
-    <div class="mtitle">Mission 1: Zusammen sind wir stark!<small>3 gegen 3 · Einsteiger</small></div>
+    <div id="prompt" hidden>
+      <span class="tag att" id="tag">Angriff</span>
+      <h2 id="title">…</h2>
+      <button id="repeat" aria-label="Nochmal hören">🔈</button>
+    </div>
     <div id="progress"></div>
     <div id="score">0 : 0</div>
     <button class="round" id="sound" aria-label="Ton an/aus">🔊</button>
   </header>
 
+  <div id="main">
   <div id="fieldWrap">
     <canvas id="field"></canvas>
-    <div id="prompt" hidden>
-      <span class="tag att" id="tag">Angriff</span>
-      <h2 id="title">…</h2>
-      <span id="decNo"></span>
-      <button id="repeat" aria-label="Nochmal hören">🔈</button>
-    </div>
-    <div id="step" hidden></div>
     <div id="portraitTip" hidden>📱↻ Quer halten macht's größer</div>
 
+    <button id="skip" hidden>Überspringen ⏭</button>
+  </div>
+
+  <div id="bar">
     <div class="sheet" id="feedback" hidden>
       <div class="fbTop">
         <div id="fbIcon">👍</div>
-        <div>
+        <div class="fbBody">
           <p id="fbText"></p>
-          <p class="why" id="fbWhy"></p>
+          <div class="chips2"><span class="chip" id="fbRec"></span><span class="chip" id="fbExe"></span></div>
         </div>
+        <div class="bigstar" id="fbStar">⭐</div>
       </div>
       <div class="fbBtns">
         <button id="fbRetry"><span class="ico">↩️</span><span>Anders probieren</span></button>
@@ -172,12 +201,10 @@
         <button id="fbNext"><span class="ico">▶️</span><span class="lbl">Weiterspielen</span></button>
       </div>
     </div>
-    <button id="skip" hidden>Überspringen ⏭</button>
-  </div>
-
-  <div id="bar">
+    <div id="step" hidden></div>
     <div id="actions"></div>
     <button class="act" id="cancel" hidden><span class="ico">✖</span><span>Zurück</span></button>
+  </div>
   </div>
 </div>
 
@@ -190,8 +217,8 @@
       <div class="num">1</div>
       <div>
         <b>Zusammen sind wir stark!</b>
-        <small>Fünf Entscheidungen · Angriff und Verteidigung</small>
-        <div class="chips"><span>3 gegen 3</span><span>4 Minitore</span><span>Einsteiger</span></div>
+        <small>Erst schauen, dann entscheiden</small>
+        <div class="chips"><span>3 gegen 3</span><span>4 Minitore</span><span>Angriff + Verteidigung</span></div>
       </div>
     </div>
     <button class="big" id="play">▶ Los geht's</button>
@@ -219,6 +246,7 @@
   </div>
 </div>
 
+<div id="hand" hidden>👆</div>
 <div id="confetti"></div>
 <div class="goalBanner" id="goalBanner"></div>
 
