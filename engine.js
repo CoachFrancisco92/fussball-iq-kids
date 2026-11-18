@@ -744,5 +744,6 @@
   /** Ausstehenden Neustart (Ball im Aus) ausführen – erst wenn das Kind weiterspielt. */
   function missionApply(m, s) { if (m.pending) { restart(s, m.pending); m.pending = null; } }
 
-  root.FIQ = { F, CFG, ACTIONS, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+  root.FIQ = {
+    VERSION: '0.2.1', F, CFG, ACTIONS, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

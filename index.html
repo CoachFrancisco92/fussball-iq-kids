@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Fußball-IQ Kids</title>
 <meta name="theme-color" content="#1e3a8a">
+<meta name="app-version" content="0.2.1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fußball-IQ">
@@ -103,7 +104,18 @@
   /* Vollbild-Screens */
   .screen { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 20px;
     background: radial-gradient(100% 80% at 50% 10%, rgba(37,99,235,.92), rgba(30,58,138,.97)); color: #fff; text-align: center; }
-  .screen .inner { max-width: 560px; width: 100%; }
+  .screen { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .screen .inner { max-width: 560px; width: 100%; margin: auto 0; }
+  @media (max-height: 500px) {
+    .screen { padding: 10px 16px; place-items: start center; }
+    .screen .logo { font-size: 34px; } .screen h1 { font-size: 30px; }
+    .sub { margin: 2px 0 8px; font-size: 14px; }
+    #stars { font-size: 30px; margin: 2px 0; } #endMsg { font-size: 14px; margin: 4px 0; }
+    #endList { display: none; }
+    .big { margin-top: 10px; height: 54px; font-size: 20px; }
+    .row .big { height: 50px; font-size: 17px; padding: 0 18px; }
+    .how { margin-top: 10px; } .ver { margin-top: 6px; }
+  }
   .logo { font-size: 64px; line-height: 1; animation: bob 2s ease-in-out infinite; }
   @keyframes bob { 50% { transform: translateY(-8px) rotate(12deg); } }
   .screen h1 { margin: 6px 0 0; font-size: clamp(34px, 7vw, 52px); font-weight: 800; letter-spacing: -.5px; line-height: 1; }
@@ -140,6 +152,7 @@
   .goalBanner.blue { color: var(--sun); }
   @keyframes pop { 15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } 30% { transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1); } }
 
+  .ver { margin-top: 18px; font-size: 12px; opacity: .55; font-weight: 600; }
   [hidden] { display: none !important; }
   @media (max-height: 460px) {
     header { padding: 4px 10px; } .round { width: 36px; height: 36px; font-size: 17px; } #repeat { width: 32px; height: 32px; font-size: 15px; } #score { font-size: 16px; }
@@ -227,6 +240,7 @@
       <div><i>👆</i>Knopf, dann Feld</div>
       <div><i>↩️</i>Nochmal probieren</div>
     </div>
+    <p class="ver" id="ver">Version 0.2.1</p>
   </div>
 </div>
 
@@ -250,7 +264,7 @@
 <div id="confetti"></div>
 <div class="goalBanner" id="goalBanner"></div>
 
-<script src="engine.js"></script>
-<script src="app.js"></script>
+<script src="engine.js?v=0.2.1"></script>
+<script src="app.js?v=0.2.1"></script>
 </body>
 </html>

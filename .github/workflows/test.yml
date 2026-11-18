@@ -1,4 +1,4 @@
-name: Simulation-Tests
+name: Tests
 on: [push, pull_request]
 jobs:
   test:
@@ -7,4 +7,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
-      - run: npm test
+      - run: npm install --no-audit --no-fund
+      - name: Simulation & Oberflächen-Konsistenz
+        run: npm test
+      - run: npx playwright install --with-deps chromium
+      - name: Browser-Durchlauf (Ende-zu-Ende)
+        run: npm run test:e2e
