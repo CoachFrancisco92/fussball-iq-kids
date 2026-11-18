@@ -682,7 +682,7 @@
     let success = false, text = '', icon = '';
     if (a.kind === 'pass') {
       const ic = find('intercepted');
-      if (ic) { text = `Schau mal! ${nameOf(s, ic.by)} stand im Weg und hat den Ball bekommen.`; icon = '😮'; }
+      if (ic) { text = `Oh! ${nameOf(s, ic.by)} stand im Weg und hat den Ball bekommen.`; icon = '😮'; }
       else { success = true; text = 'Der Pass ist angekommen!'; icon = '👍'; }
     } else if (a.kind === 'shoot') {
       if (goal) { success = true; text = 'Toooor! Der Weg war frei.'; icon = '🎉'; }
@@ -709,14 +709,21 @@
     return { success, text, icon, goal: goal ? goal.team : null };
   }
 
+  const IDEA = { pass: 'den Ball abzuspielen', shoot: 'aufs Tor zu schießen', dribble: 'zu dribbeln', run: 'dich freizulaufen', press: 'den Gegner anzugreifen', cover: 'dich in den Weg zu stellen' };
+  /** Kindgerechte Rückmeldung (Review V0.2.1, Punkt B): die dreiteilige Bewertung bleibt intern,
+   *  gesprochen wird ein kurzer Satz in Kindersprache. */
   function feedback(s) {
-    const ev = s.ep.eval, out = outcome(s);
-    let say;
-    if (ev.good && out.success) say = out.text + ' ' + ev.why;
-    else if (ev.good && !out.success) say = out.text + ' Aber deine Idee war gut! ' + ev.why;
-    else if (!ev.good && out.success) say = out.text + ' Hat geklappt – aber schau nochmal: ' + ev.why;
-    else say = out.text + ' ' + ev.why;
-    return { good: ev.good, success: out.success, icon: out.icon, text: out.text, why: ev.why, rec: ev.rec, exe: ev.exe, say, goal: out.goal, explain: s.ep.explain || null };
+    const ev = s.ep.eval, out = outcome(s), a = s.ep.a;
+    let tip;
+    if (ev.rec.good && ev.exe.good) tip = out.success ? 'Super gemacht!' : 'Das war trotzdem eine gute Idee! Manchmal klappt es nicht.';
+    else if (ev.rec.good) tip = `Gute Idee, ${IDEA[a.kind]}! Aber schau mal: ${ev.exe.why}`;
+    else tip = (out.success ? 'Hat geklappt! Aber schau mal: ' : 'Schau mal: ') + ev.rec.why;
+    const say = out.text + ' ' + tip;
+    const tags = {
+      rec: { good: ev.rec.good, label: ev.rec.good ? 'Gute Idee' : 'Andere Idee besser' },
+      exe: { good: ev.exe.good, label: ev.exe.good ? (a.kind === 'shoot' ? 'Freies Tor' : a.kind === 'press' ? 'Richtiger Spieler' : a.kind === 'cover' ? 'Gut gestellt' : 'Weg frei') : (a.kind === 'press' ? 'Anderer Spieler näher' : a.kind === 'cover' ? 'Weg offen' : 'Gegner im Weg') },
+    };
+    return { good: ev.good, success: out.success, icon: out.icon, text: out.text, tip, tags, why: ev.why, rec: ev.rec, exe: ev.exe, say, goal: out.goal, explain: s.ep.explain || null };
   }
 
   // ---------------------------------------------------------------- Aufnahme für Wiederholung / Vergleich

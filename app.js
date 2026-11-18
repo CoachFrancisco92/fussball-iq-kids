@@ -368,49 +368,60 @@
     armIdle();
   }
 
-  // ---------- Schau-Schritt: „Erst schauen, dann entscheiden“ (Review Punkt 8)
+  // ---------- Schau-Schritt: „Erst schauen, dann entscheiden“ (Review V0.1 Punkt 8, V0.2.1 Punkt A)
+  // Das Kind tippt den freien Freund an – oder sagt „Keiner ist frei!“. Beides kann richtig sein.
   function beginLook(c) {
     mode = 'look';
     lookView = { tries: 0 };
-    setPrompt('Schau hin', 'look', 'Welcher Freund steht frei?');
-    $('actions').innerHTML = ''; $('cancel').hidden = true;
-    const t = 'Schau dich um! Welcher Freund steht frei? Tippe ihn an.';
-    setStepText('👀 Tippe auf einen blauen Freund.');
-    Voice.say(t);
+    setPrompt('Schau hin', 'look', 'Wer steht frei?');
+    const box = $('actions'); box.innerHTML = ''; $('cancel').hidden = true;
+    const b = document.createElement('button');
+    b.className = 'act'; b.id = 'lookNone';
+    b.innerHTML = '<span class="ico">🙅</span><span>Keiner ist frei</span>';
+    b.onclick = () => { if (mode === 'look' && !(lookView && lookView.done)) { Sfx.tap(); hideHand(); onLookAnswer(null); } };
+    box.appendChild(b);
+    setStepText('👀 Tippe auf den freien Freund – oder auf „Keiner ist frei“.');
+    Voice.say('Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.');
     armIdle();
   }
-  function onLookTap(p) {
+  /** p = angetippter Mitspieler oder null für „Keiner ist frei“ */
+  function onLookAnswer(p) {
     const c = E.carrier(S);
     const opts = E.passOptions(S);
-    const o = opts.find((x) => x.id === p.id);
     const free = opts.filter((x) => x.margin > E.CFG.passLaneOk).sort((a, b) => b.margin - a.margin);
-    const name = E.nameOf(S, p.id);
     lookView.tries++;
-    lookView.lane = { from: { x: c.x, y: c.y }, to: { x: p.x, y: p.y }, ok: o.margin > E.CFG.passLaneOk };
-    lookView.key = null; lookView.right = null;
+    lookView.key = null; lookView.right = null; lookView.lane = null;
     let t, right = false, finish = false;
-    if (o.margin > E.CFG.passLaneOk) {
-      right = true; finish = true; lookView.right = p.id;
-      t = `Ja! ${name} steht frei. Zwischen euch ist kein Gegner.`;
-      Sfx.good();
+    if (p) {
+      const o = opts.find((x) => x.id === p.id);
+      const name = E.nameOf(S, p.id);
+      lookView.lane = { from: { x: c.x, y: c.y }, to: { x: p.x, y: p.y }, ok: o.margin > E.CFG.passLaneOk };
+      if (o.margin > E.CFG.passLaneOk) {
+        right = finish = true; lookView.right = p.id;
+        t = `Ja! ${name} steht frei. Zwischen euch ist kein Gegner.`;
+      } else {
+        const k = E.laneKey(S, c, p, 'red'); lookView.key = k;
+        t = `Schau genau: ${E.nameOf(S, k)} steht im Weg zu ${name}.`;
+        if (lookView.tries >= 2) { finish = true; t += free.length ? ` ${E.nameOf(S, free[0].id)} steht frei.` : ' Gerade ist keiner frei.'; if (free.length) lookView.right = free[0].id; }
+        else t += ' Probier\'s nochmal!';
+      }
     } else if (!free.length) {
-      finish = true;
-      t = 'Gut geschaut: Gerade steht keiner richtig frei. Das ist schwierig!';
+      right = finish = true;
+      t = 'Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln.';
+      const h = E.hint(S, 'dribbeln'); hintView = { point: h.point };
     } else {
-      const k = E.laneKey(S, c, p, 'red');
-      lookView.key = k;
-      if (lookView.tries >= 2) {
-        finish = true; lookView.right = free[0].id;
-        t = `${E.nameOf(S, k)} steht im Weg zu ${name}. Schau mal: ${E.nameOf(S, free[0].id)} steht frei.`;
-      } else t = `Schau genau: ${E.nameOf(S, k)} steht ganz nah am Weg zu ${name}. Probier's nochmal!`;
-      Sfx.soft();
+      const f = free[0];
+      t = `Schau nochmal genau: ${E.nameOf(S, f.id)} steht frei.`;
+      if (lookView.tries >= 2) { finish = true; lookView.right = f.id; } else { t = 'Schau nochmal genau. Ist wirklich keiner frei?'; }
     }
+    if (right) Sfx.good(); else Sfx.soft();
     setStepText((right ? '✅ ' : '👀 ') + t);
     Voice.say(t);
     if (finish) {
       lookView.done = true;
-      hist[dec].look = { right: right || (!free.length), tries: lookView.tries };
-      setTimeout(() => { if (mode === 'look') { lookView = null; startDecide(hist[dec].ctx, false); Voice.say('Und jetzt: Was machst du mit dem Ball?'); } }, 3200);
+      const b = $('lookNone'); if (b) b.disabled = true;
+      hist[dec].look = { right, tries: lookView.tries };
+      setTimeout(() => { if (mode === 'look') { lookView = null; const hv = hintView; startDecide(hist[dec].ctx, false); hintView = hv; Voice.say('Und jetzt: Was machst du mit dem Ball?'); } }, 3400);
     }
   }
 
@@ -503,7 +514,7 @@
       if (lookView && lookView.done) return;
       const p = hitPlayer(pt, (q) => q.team === 'blue' && q !== c);
       hideHand();
-      if (p) onLookTap(p); else Voice.say('Tippe auf einen blauen Spieler.');
+      if (p) onLookAnswer(p); else Voice.say('Tippe auf einen blauen Spieler – oder auf: Keiner ist frei.');
       return;
     }
     if (mode !== 'decide') return;
@@ -562,18 +573,19 @@
     showFeedback(fb, h);
   }
 
-  function chip(el, part, label) {
-    el.textContent = `${part.good ? '✓' : '✗'} ${label}: ${part.why}`;
-    el.className = 'chip ' + (part.good ? 'good' : 'bad');
-    el.hidden = !part.why;
+  function chip(el, tag, icon, detail) {
+    el.textContent = `${tag.good ? '✓' : '✗'} ${icon} ${tag.label}`;
+    el.title = detail || '';
+    el.className = 'chip ' + (tag.good ? 'good' : 'bad');
   }
   function showFeedback(fb, h) {
     $('fbIcon').textContent = fb.icon;
     $('fbText').textContent = fb.text;
+    $('fbTip').textContent = fb.tip;
     $('fbStar').textContent = fb.good ? '⭐' : '💭';
     $('fbStar').className = 'bigstar ' + (fb.good ? 'on' : '');
-    chip($('fbRec'), fb.rec, '👀 Entscheidung');
-    chip($('fbExe'), fb.exe, '🎯 Ausführung');
+    chip($('fbRec'), fb.tags.rec, '💡', fb.rec.why);
+    chip($('fbExe'), fb.tags.exe, '🎯', fb.exe.why);
     $('fbCompare').hidden = h.attempts.length < 2;
     $('fbNext').querySelector('.lbl').textContent = M.done ? 'Fertig' : 'Weiterspielen';
     $('feedback').hidden = false;
@@ -587,6 +599,7 @@
     const h = hist[dec];
     S = E.clone(h.snap); M = E.clone(h.mission);
     h.final = null; explainView = null;
+    if (h.look && !h.look.right) h.look = null; // Wahrnehmung war falsch -> auch das Schauen wiederholen
     updateScore();
     Voice.say('Gleiche Situation – probier etwas anderes!');
     setTimeout(() => beginDecision(h.last), 900);
@@ -613,7 +626,7 @@
     const n = h.attempts.length;
     const a1 = h.attempts[n - 2], a2 = h.attempts[n - 1];
     $('feedback').hidden = true;
-    const say = (pre, at) => `${pre}: ${at.fb.text} ${at.fb.why}`;
+    const say = (pre, at) => `${pre}: ${at.fb.say}`;
     startReplay([
       { frames: a1.frames, label: 'Vorher', explain: a1.fb.explain, say: say('Vorher', a1) },
       { frames: a2.frames, label: 'Jetzt', explain: a2.fb.explain, say: say('Jetzt', a2) },

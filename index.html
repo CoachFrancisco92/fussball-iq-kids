@@ -81,7 +81,8 @@
   #fbIcon { font-size: 40px; line-height: 1; }
   #fbText { margin: 0; font-size: clamp(16px, 2.3vw, 20px); font-weight: 800; line-height: 1.2; }
   .fbBody { flex: 1; min-width: 0; }
-  .chips2 { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  #fbTip { margin: 3px 0 0; font-size: clamp(14px, 1.9vw, 17px); font-weight: 700; color: #334155; line-height: 1.25; }
+  .chips2 { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
   .chip { font-size: 14px; font-weight: 700; padding: 3px 10px; border-radius: 10px; line-height: 1.25; }
   .chip.good { background: #dcfce7; color: #166534; } .chip.bad { background: #fee2e2; color: #991b1b; }
   .bigstar { font-size: 38px; line-height: 1; filter: grayscale(1) opacity(.5); }
@@ -169,7 +170,7 @@
     #actions .act, #cancel { min-width: 0; width: 100%; height: 62px; }
     .sheet { grid-template-columns: 1fr; padding: 8px 10px; gap: 6px; }
     .fbTop { gap: 8px; } #fbIcon { font-size: 26px; } .bigstar { font-size: 28px; }
-    #fbText { font-size: 15px; } .chip { font-size: 11.5px; }
+    #fbText { font-size: 15px; } #fbTip { font-size: 13px; } .chip { font-size: 11.5px; }
     .fbBtns { flex-direction: row; } .fbBtns button { min-width: 0; flex: 1; height: 44px; font-size: 13px; padding: 0 6px; } .fbBtns .ico { font-size: 18px; }
   }
   @media (max-width: 640px) { header { flex-wrap: wrap; } #prompt { order: 10; flex-basis: 100%; } }
@@ -204,6 +205,7 @@
         <div id="fbIcon">👍</div>
         <div class="fbBody">
           <p id="fbText"></p>
+          <p id="fbTip"></p>
           <div class="chips2"><span class="chip" id="fbRec"></span><span class="chip" id="fbExe"></span></div>
         </div>
         <div class="bigstar" id="fbStar">⭐</div>

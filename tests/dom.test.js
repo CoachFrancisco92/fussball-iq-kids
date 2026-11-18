@@ -14,7 +14,8 @@ const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'))
 test('alle von app.js verwendeten Element-IDs existieren in index.html', () => {
   const ids = [...new Set([...app.matchAll(/\$\('([\w-]+)'\)/g)].map((m) => m[1]))];
   assert.ok(ids.length > 10);
-  const missing = ids.filter((id) => !html.includes(`id="${id}"`));
+  const created = new Set([...app.matchAll(/\.id = '([\w-]+)'/g)].map((m) => m[1])); // zur Laufzeit erzeugte Elemente
+  const missing = ids.filter((id) => !html.includes(`id="${id}"`) && !created.has(id));
   assert.deepStrictEqual(missing, [], 'fehlende IDs: ' + missing.join(', '));
 });
 

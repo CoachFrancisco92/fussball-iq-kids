@@ -20,7 +20,7 @@ const base = `http://localhost:${server.address().port}/`;
 const errors = [];
 const fail = (msg) => { throw new Error(msg + (errors.length ? '\nJS-Fehler: ' + errors.join('\n') : '')); };
 
-async function run(viewport, label) {
+async function run(viewport, label, strategy = 'hint') {
   const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH, args: ['--no-sandbox'] } : {});
   const page = await browser.newPage({ viewport });
   page.on('pageerror', (e) => errors.push(`[${label}] ${e.message}`));
@@ -39,6 +39,23 @@ async function run(viewport, label) {
     if (plan.h.point) await tap(plan.h.point.x, plan.h.point.y);
     if (plan.h.goal != null) await tap(36, plan.h.goal === 0 ? 6 : 18);
     if (process.env.DEBUG) console.log('   hint', JSON.stringify(plan), await page.evaluate(() => JSON.stringify({ mode: window.__fiq.mode })));
+  };
+
+  // Ein Kind, das bewusst ungünstig entscheidet: zugestellter Mitspieler, verteidigtes Tor, falscher Verteidiger, falscher Ort
+  const badChoice = async () => {
+    const plan = await page.evaluate(() => {
+      const S = window.__fiq.S, c = FIQ.carrier(S), ctx = window.__fiq.ctx, k = ctx.actions[0];
+      const blues = FIQ.team(S, 'blue'), reds = FIQ.team(S, 'red');
+      if (k === 'passen') { const o = FIQ.passOptions(S).sort((a, b) => a.margin - b.margin)[0]; const p = FIQ.P(S, o.id); return { k, taps: [[p.x, p.y]] }; }
+      if (k === 'schiessen') { const o = FIQ.shotOptions(S).sort((a, b) => a.margin - b.margin)[0]; return { k, taps: [[36, o.goal === 0 ? 6 : 18]] }; }
+      if (k === 'freilaufen') { const r = blues.find((b) => b !== c); const near = reds.sort((a, b) => FIQ.dist(a, r) - FIQ.dist(b, r))[0]; return { k, taps: [[r.x, r.y], [near.x + 0.4, near.y + 1.6]] }; }
+      if (k === 'erobern') { const far = blues.sort((a, b) => FIQ.dist(b, c) - FIQ.dist(a, c))[0]; return { k, taps: [[far.x, far.y]] }; }
+      if (k === 'raum') { const b = blues[0]; return { k, taps: [[b.x, b.y], [33, 21]] }; }
+      return { k, taps: [[c.x + 3, c.y]] };
+    });
+    const label = await page.evaluate((k) => FIQ.ACTIONS[k].label, plan.k);
+    if (!(await page.locator('#actions .act.on').count())) await page.locator('#actions .act', { hasText: label }).click();
+    for (const t of plan.taps) { await tap(...t); await page.waitForTimeout(150); }
   };
 
   await page.click('#play');
@@ -62,14 +79,20 @@ async function run(viewport, label) {
     let m = await mode();
     for (let w = 0; w < 60 && !['decide', 'look', 'end'].includes(m); w++) { await page.waitForTimeout(100); m = await mode(); }
     if (m === 'end') break;
-    if (m === 'look') { const id = await page.evaluate(() => { const S = window.__fiq.S; const o = FIQ.passOptions(S).sort((a, b) => b.margin - a.margin)[0]; return o.id; }); const p = await page.evaluate((id) => { const q = FIQ.P(window.__fiq.S, id); return [q.x, q.y]; }, id); await tap(...p); await waitMode('decide'); }
-    types.push(await page.evaluate(() => window.__fiq.S.poss)); console.log('  decision', i, types[types.length-1]);
-    await followHint();
+    if (m === 'look') {
+      if (strategy === 'bad') { await page.click('#lookNone'); await page.waitForTimeout(150); if ((await mode()) === 'look' && (await page.isEnabled('#lookNone'))) await page.click('#lookNone'); }
+      else { const id = await page.evaluate(() => { const S = window.__fiq.S; const o = FIQ.passOptions(S).sort((a, b) => b.margin - a.margin)[0]; return o.id; }); const p = await page.evaluate((id) => { const q = FIQ.P(window.__fiq.S, id); return [q.x, q.y]; }, id); await tap(...p); }
+      await waitMode('decide');
+    }
+    types.push(await page.evaluate(() => window.__fiq.S.poss));
+    if (strategy === 'bad') await badChoice(); else await followHint();
     await waitMode('feedback');
     await page.click('#fbNext');
   }
   await waitMode('end');
   if (!types.includes('red')) fail(`[${label}] Mission enthielt keine Verteidigung`);
+  const stars = await page.$$eval('#stars span.on', (x) => x.length);
+  if (strategy === 'bad' && stars > 2) fail(`[${label}] ungünstige Entscheidungen bekamen ${stars} Sterne`);
   await page.click('#hl'); await waitMode('replay'); await page.click('#skip'); await waitMode('end');
   await browser.close();
   console.log(`✓ ${label}: Mission vollständig (${types.length + 1} Entscheidungen, Verteidigung enthalten)`);
@@ -79,6 +102,8 @@ const browsers = [];
 try {
   await run({ width: 1024, height: 700 }, 'Tablet quer');
   await run({ width: 844, height: 390 }, 'Handy quer');
+  await run({ width: 1024, height: 700 }, 'Ungünstige Entscheidungen', 'bad');
+  await run({ width: 390, height: 844 }, 'Handy hochkant', 'bad');
   if (errors.length) fail('JS-Fehler aufgetreten');
   console.log('✓ keine JavaScript-Fehler');
 } catch (e) { console.error(e.message); process.exitCode = 1; }
