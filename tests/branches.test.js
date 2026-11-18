@@ -103,7 +103,8 @@ test('Schau-Schritt: Situation ohne freien Mitspieler wird erkannt', () => {
   for (const [id, x, y] of [['r1', 19, 9.5], ['r3', 16.5, 16], ['r2', 22, 7]]) { const p = E.P(s, id); p.x = p.tx = x; p.y = p.ty = y; }
   const free = E.passOptions(s).filter((o) => o.margin > E.CFG.passLaneOk);
   assert.strictEqual(free.length, 0, 'keiner frei');
-  assert.strictEqual(E.situation(s).ok.pass, false);
+  // Seit E1 zählt „Passen“ auch, wenn ein sicherer Pass in den Raum möglich ist – hier geht es um Mitspieler.
+  assert.strictEqual(E.situation(s).ok.mate, false);
   // Ein Pass wird dann nicht als „gute Idee“ gewertet, wenn eine andere Aktion möglich wäre
   const ev = E.evaluate(s, { kind: 'pass', id: 'b2' });
   assert.ok(ev.rec.why.length > 0);

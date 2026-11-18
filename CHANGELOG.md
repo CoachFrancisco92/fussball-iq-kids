@@ -1,5 +1,18 @@
 # Changelog
 
+## V0.3.0 – Engine-Paket E1–E6 (Bewertung Raumpass, Hilfe-Lernweg, optionale Abwehrphase)
+Fachlich freigegeben. Spielverlauf von Mission 1 unverändert; geändert sind Bewertung und Rückmeldetexte in 153 Entscheidungen und 3 Ansagen im Schau-Schritt (vollständig mit Begründung: `docs/bewertungsaenderungen-e1.md`). Nach dem Hotfix gegen v0.2.5 neu gemessen: identisch. Neue Referenzen `tests/golden/mission1.v0.3.0.json`, `ui-transcript.v0.3.0.json` (nur diese Änderungen, geprüft); Vorgänger und Abweichungslisten unter `tests/golden/historie/`.
+- **E1 Pass in den Raum:** gut, wenn der Passweg frei ist **und** der Mitspieler vor dem nächsten Gegner ankommt: ab 0,3 s „frei“ (`CFG.spaceReserve`, Hilfe), ab 0,1 s „knapp, aber gut“ (`CFG.spaceReserveMin`, in der Simulation robust gegen 0,1 s schnellere Gegner), darunter „zu knapp“. Keine pauschale 3-m-Regel, Rückpässe nicht abgewertet. Gleiche Zeitrechnung wie die Simulation (`spaceContest`). Rückmeldung nennt den schnelleren Gegner. Folge in Mission 1: 9 Raumpässe ohne Stern (alle mit Ballverlust, v0.2.4 gab dafür einen Stern), 2 mit neuem Stern.
+- **E2 Hilfe:** Reihenfolge je Mission (`hilfe.reihenfolge`), optional Alternativen nennen (`hilfe.alternativenNennen`). Empfiehlt nur sinnvolle Aktionen. Mission 1: Reihenfolge wie bisher, Empfehlung in allen 614 geprüften Lagen gleich. Korrigiert: Hilfe zeigte in 2 Lagen auf einen gedeckten Mitspieler und in 2 Lagen einen versperrten Dribbelpunkt.
+- **E3 Abwehrphase optional:** `phasen.verteidigung: 0` beendet die Mission nach dem Angriff.
+- **E4 Grammatik:** „zur freien Stelle“.
+- **E5 Bewertung missionsunabhängig** (Test über alle Lagen).
+- **E6 Testlader** lädt Skripte in der Reihenfolge von `index.html`.
+- Dribbeln bleibt gut, wenn nur ein Raumpass sicher gewesen wäre (neuer Text, Stern bleibt).
+- **Begriffe getrennt:** „steht frei“ (Mitspieler) / „freier Raum“ (dorthin laufen) / „freier Platz“ (dribbeln). Schau-Schritt nennt bei „Keiner ist frei“ den freien Raum, wenn es ihn gibt. Rückmeldung nennt beim Ballverlust den Gegner, der den Ball bekommen hat.
+- Analysen: `tests/analysis/lost-stars.js`, `thresholds.js`, `lane-cases.js`; Oberflächen-Abweichungen: `tests/golden/historie/v0.3.0-e1-abweichungen-ui.json`.
+- Neue Tests `tests/pass-evaluation.test.js` (13), Analyse `tests/analysis/pass-reserve.js`, Abweichungsbericht `tests/golden/diff.js`.
+
 ## V0.2.5 – Hotfix: Szene endet nie (Pass-Pingpong der Gegner)
 Behebt einen Fehler aus v0.2.4: Unter Druck spielten sich zwei Gegner den Ball endlos zu; weil das Szenenende wartet, solange der Ball fliegt, blieb die App in der Szene hängen (z. B. Pass von der Startposition auf 17/11, mehrere Verteidigungsszenen). Details: `docs/hotfix-endlosszene.md`.
 - Gegner spielen nicht sofort an den zurück, von dem sie den Ball bekommen haben; nach eingeleitetem Szenenende spielt jeder Gegner höchstens noch einmal ab.

@@ -28,6 +28,10 @@
       verteidigungFern: { title: 'Wer hält den Gegner auf?', tag: 'Verteidigung', say: 'Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?' },
     },
 
+    // Begriffe (bewusst getrennt, damit sich Aussagen nicht widersprechen):
+    //   „steht frei“   = ein Mitspieler, zu dem der Passweg JETZT frei ist (Schau-Schritt, Pass zum Mitspieler)
+    //   „freier Raum“  = eine Stelle, zu der ein Mitspieler HINLAUFEN kann und vor dem Gegner da ist (Pass in den Raum)
+    //   „freier Platz“ = Platz zum Dribbeln
     // Orientierungshilfe (💡)
     hilfe: {
       passen: 'Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner.',
@@ -35,6 +39,8 @@
       dribbeln: 'Dribbel dorthin, wo kein Gegner im Weg ist.',
       freilaufen: 'Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.',
       erobern: 'Der Spieler, der am nächsten am Ball ist, greift an.',
+      passenRaum: 'Gerade steht keiner frei. Spiel den Ball in den freien Raum – dein Freund läuft hin und ist zuerst da.',
+      auchGut: (wege) => ` Auch gut: ${[].concat(wege).join(' oder ')}.`,
       raum: 'Stell dich zwischen den Gegner und unser Tor.',
     },
 
@@ -42,11 +48,16 @@
     erkennen: {
       torchance: 'Du hast die Torchance erkannt.',
       freund: 'Du hast gesehen, dass ein Freund frei war.',
+      raum: 'Du hast den freien Raum gesehen, in den dein Freund laufen kann.',
+      abspielen: 'Abspielen war eine gute Idee.',
       platz: 'Du hast den freien Platz gesehen.',
       schwierig: 'Eine schwierige Lage – nirgends war es richtig frei.',
       besserSchiessen: 'Ein Tor war frei – Schießen wäre gut gewesen.',
       besserPassStattSchuss: 'Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.',
       besserPass: 'Ein Freund stand frei – ein Pass wäre besser gewesen.',
+      besserRaum: 'Ein Pass in den freien Raum, in den dein Freund laufen kann, wäre besser gewesen.',
+      dribbelnRaumAuch: 'Den Ball zu behalten war gut. Du hättest ihn auch in den freien Raum spielen können, dein Freund wäre hingelaufen.',
+      besserRaumStattSchuss: 'Beide Tore waren zugestellt. Ein Pass in den freien Raum, in den dein Freund laufen kann, wäre besser gewesen.',
       besserDribbelnStattSchuss: 'Beide Tore waren zugestellt. Vor dir war aber Platz zum Dribbeln.',
       besserDribbeln: 'Vor dir war Platz zum Dribbeln.',
       geholfen: 'Du hast deinem Freund geholfen, statt stehen zu bleiben.',
@@ -57,13 +68,18 @@
 
     // Bewertung, Teil 2: War das gewählte Ziel sinnvoll? (🎯 Ausführung)
     ausfuehren: {
-      freieStelle: 'die freie Stelle',
       wegFrei: (ziel) => `Der Weg zu ${ziel} war frei.`,
       besterPassweg: 'Das war noch der beste Passweg.',
       einGegner: 'Ein Gegner',
       einGegnerKlein: 'ein Gegner',
       wegNah: (gegner, ziel) => `${gegner} stand nah am Weg zu ${ziel}.`,
       andererFreier: ' Ein anderer Freund stand freier.',
+      raumWaereGegangen: ' In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.',
+      raumFrei: (freund) => `Der Weg zur freien Stelle war frei – ${freund} kam zuerst hin.`,
+      raumKnapp: (gegner, freund) => `Knapp, aber ${freund} kam zuerst hin. ${gegner} war fast genauso schnell.`,
+      raumZuKnapp: (gegner) => `Zu knapp! ${gegner} war fast gleichzeitig da.`,
+      raumGegnerZuerst: (gegner, freund) => `Dort war ${gegner} schneller als ${freund}.`,
+      raumWegNah: (gegner) => `${gegner} stand nah am Weg zur freien Stelle.`,
       freiesTor: 'Du hast das freie Tor gewählt.',
       vorDemTor: (gegner) => `Vor diesem Tor stand ${gegner}.`,
       anderesTorFrei: ' Das andere Tor war frei.',
@@ -130,8 +146,10 @@
       imWeg: (gegner, freund) => `Schau genau: ${gegner} steht im Weg zu ${freund}.`,
       zeigeFrei: (freund) => ` ${freund} steht frei.`,
       keinerFreiZusatz: ' Gerade ist keiner frei.',
+      keinerFreiRaumZusatz: ' Gerade steht keiner frei. Aber ein Freund kann in den freien Raum laufen.',
       nochmal: ' Probier\'s nochmal!',
       richtigKeiner: 'Richtig! Gerade ist keiner frei. Dann kannst du mit dem Ball in den freien Platz dribbeln.',
+      richtigKeinerRaum: 'Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin.',
       dochFrei: (freund) => `Schau nochmal genau: ${freund} steht frei.`,
       wirklichKeiner: 'Schau nochmal genau. Ist wirklich keiner frei?',
       weiter: 'Und jetzt: Was machst du mit dem Ball?',

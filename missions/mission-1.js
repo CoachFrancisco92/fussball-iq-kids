@@ -52,6 +52,10 @@
     // „Erst schauen, dann entscheiden“ vor diesen Entscheidungsmomenten
     schauSchritt: ['angriff'],
 
+    // Lernweg der Hilfe: Zusammenspiel – freier Mitspieler vor Dribbling (wie bisher). Andere gute Wege werden
+    // trotzdem als gut bewertet; die Hilfe nennt sie in dieser Mission (noch) nicht, um Mission 1 unverändert zu lassen.
+    hilfe: { reihenfolge: ['schiessen', 'passen', 'dribbeln'], alternativenNennen: false },
+
     // Missionseigene Texte (ergänzen bzw. überschreiben content/texte.js)
     texte: {
       ende: {

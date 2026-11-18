@@ -18,7 +18,8 @@ Seit V0.2.4 sind Spielinhalte von der Simulation getrennt. **Für eine neue Miss
   lernwelt: 3, lernziele: ['…', '…'],
   start:    { ballbesitz: 'b1', spieler: [{ id: 'b1', x, y }, … { id: 'r3', x, y }], ball: { x, y } /* optional */ },
   neustart: { red: { ballbesitz: 'r1', spieler: [...] }, blue: { ballbesitz: 'b1', spieler: [...] } },
-  phasen:   { maxAngriff: 4, verteidigung: 2 },
+  phasen:   { maxAngriff: 4, verteidigung: 2 },   // verteidigung: 0 = keine Abwehrphase, Ende nach dem Angriff
+  hilfe:    { reihenfolge: ['schiessen', 'passen', 'dribbeln'], alternativenNennen: false }, // optional: Lernweg der Hilfe
   schauSchritt: ['angriff'],          // vor welchen Momenten „Erst schauen“ kommt; [] = aus
   texte:    { … }                     // optional: überschreibt Einträge aus content/texte.js
 });
@@ -38,3 +39,8 @@ Seit V0.2.4 sind Spielinhalte von der Simulation getrennt. **Für eine neue Miss
 ## Texte ändern
 - Texte stehen ausschließlich in `content/texte.js` (bzw. im Feld `texte` einer Mission).
 - **Jede Textänderung an Mission 1 ist eine Verhaltensänderung:** Die Referenztests (`tests/golden.test.js`, `tests/e2e/transcript.mjs`) schlagen an. Das ist gewollt. Nach Freigabe werden die Referenzen bewusst neu erzeugt (`tests/golden/trace.js` bzw. `transcript.mjs --write`) und die Änderung im CHANGELOG benannt.
+
+## Hilfe und Bewertung
+- `hilfe.reihenfolge` legt fest, welche **gute** Aktion die Hilfe zuerst empfiehlt (Lernweg). Ohne Angabe: Schießen, Passen, Dribbeln. Passen steht dabei zuerst für einen freien Mitspieler; ein Pass in den Raum wird nur empfohlen, wenn in der Reihenfolge sonst nichts Sinnvolles geht.
+- `hilfe.alternativenNennen: true` ergänzt „Auch gut: …“ mit den anderen guten Aktionen.
+- Die **Bewertung** ist davon unabhängig und für alle Missionen gleich.

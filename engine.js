@@ -30,6 +30,12 @@
     blueTackleDist: 1.2, blueTackleTime: 0.45,
     markOff: 3.0,            // Einsteiger: lockere Deckung
     shotLaneOk: 0.15, passLaneOk: 0.2,
+    // Pass in den Raum: Mindest-Vorsprung (s) des Empfängers vor dem schnellsten Gegner am Zielpunkt.
+    // 0,3 s ≈ Puffer für einen Gegner, der 1 m besser steht oder 0,1 s schneller reagiert
+    // (Analyse: tests/analysis/pass-reserve.js – ab 0,3 s in 100 % der Fälle robust, 0,2–0,3 s nur 62 %).
+    spaceReserve: 0.3,      // ab hier „frei“: klar sicher, nur solche Punkte zeigt die Hilfe bevorzugt
+    spaceReserveMin: 0.1,   // ab hier „knapp, aber gut“ (Stern): in der Simulation robust gegen 0,1 s schnellere Gegner
+    spaceMinDist: 2, // nur technische Untergrenze (entspricht der Bedienung: Tipp > 2 m vom Ballführenden), keine fachliche Regel
   };
 
   // ---------------------------------------------------------------- Helfer
@@ -129,7 +135,8 @@
       if (m.neustart && m.neustart[t] && m.start) need((m.neustart[t].ballbesitz || '')[0] === (t === 'red' ? 'r' : 'b'), `neustart.${t}: Ball muss beim Team ${t} sein`);
     }
     need(m.phasen && Number.isInteger(m.phasen.maxAngriff) && m.phasen.maxAngriff >= 1, 'phasen.maxAngriff fehlt');
-    need(m.phasen && Number.isInteger(m.phasen.verteidigung) && m.phasen.verteidigung >= 1, 'phasen.verteidigung fehlt');
+    need(m.phasen && Number.isInteger(m.phasen.verteidigung) && m.phasen.verteidigung >= 0, 'phasen.verteidigung fehlt (0 = keine Abwehrphase)');
+    if (m.hilfe) need(Array.isArray(m.hilfe.reihenfolge) && m.hilfe.reihenfolge.every((k) => ['schiessen', 'passen', 'dribbeln'].includes(k)), 'hilfe.reihenfolge: nur schiessen, passen, dribbeln');
     need(Array.isArray(m.schauSchritt), 'schauSchritt fehlt (leere Liste = aus)');
     return err;
   }
@@ -218,12 +225,25 @@
     return Math.min(...team(s, other(teamName)).map((o) => dist(o, pt)));
   }
 
-  /** Welche der angebotenen Aktionen passt zur Situation? (für die Hilfe) */
+  /** E2: Welche der angebotenen Aktionen empfiehlt die Hilfe? Nur Aktionen, die in der Lage sinnvoll sind;
+   *  unter mehreren sinnvollen entscheidet der Lernweg der Mission (hilfe.reihenfolge). Die Bewertung bleibt davon
+   *  unberührt – andere sinnvolle Aktionen werden weiterhin als gut bewertet. */
+  const DEFAULT_HELP_ORDER = ['schiessen', 'passen', 'dribbeln'];
+  const helpOrder = (s) => { const h = mission(s.missionId).hilfe; return (h && h.reihenfolge) || DEFAULT_HELP_ORDER; };
+  const ACT_OK = { schiessen: 'shoot', passen: 'pass', dribbeln: 'dribble' };
+  function goodActions(s, actions) {
+    if (s.poss !== 'blue') return [];
+    const sit = situation(s);
+    return actions.filter((k) => ACT_OK[k] && sit.ok[ACT_OK[k]]);
+  }
   function recommend(s, actions) {
     if (s.poss !== 'blue') return actions[0];
-    const sit = situation(s);
-    const map = { schiessen: 'shoot', passen: 'pass', dribbeln: 'dribble' };
-    for (const k of ['schiessen', 'passen', 'dribbeln']) if (actions.includes(k) && sit.ok[map[k]]) return k;
+    const sit = situation(s), order = helpOrder(s);
+    // 1. Durchgang: Lernweg der Mission; „Passen“ hier nur, wenn ein Mitspieler frei steht.
+    const direct = (k) => (k === 'passen' ? sit.ok.mate : sit.ok[ACT_OK[k]]);
+    for (const k of order) if (actions.includes(k) && ACT_OK[k] && direct(k)) return k;
+    // 2. Durchgang: sonst auch der sichere Pass in den Raum (Ausweg statt Ballverlust).
+    for (const k of order) if (actions.includes(k) && ACT_OK[k] && sit.ok[ACT_OK[k]]) return k;
     return actions[0];
   }
 
@@ -233,11 +253,15 @@
     if (s.poss === 'red') redPlan(s);
     if (actionKey === 'passen') {
       const o = passOptions(s).sort((a, b) => b.margin - a.margin)[0];
-      return { ids: [o.id], say: texts(s).hilfe.passen };
+      if (o.margin <= CFG.passLaneOk) {
+        const sp = bestSpacePass(s);
+        if (sp) return withAlternatives(s, actionKey, { ids: [sp.info.recv], point: sp.pt, say: texts(s).hilfe.passenRaum });
+      }
+      return withAlternatives(s, actionKey, { ids: [o.id], say: texts(s).hilfe.passen });
     }
     if (actionKey === 'schiessen') {
       const o = shotOptions(s).sort((a, b) => b.margin - a.margin)[0];
-      return { goal: o.goal, say: texts(s).hilfe.schiessen };
+      return withAlternatives(s, actionKey, { goal: o.goal, say: texts(s).hilfe.schiessen });
     }
     if (actionKey === 'dribbeln') {
       let best = null;
@@ -247,7 +271,19 @@
         const m = dribbleLane(s, c, pt).margin + pt.x * 0.02;
         if (!best || m > best.m) best = { m, pt };
       }
-      return { point: best.pt, say: texts(s).hilfe.dribbeln };
+      // Korrektur: Die Hilfe darf nur zu einem Dribbling raten, das die Bewertung als gut einstuft.
+      // Bisheriger Vorschlag bleibt, wenn er gut ist; sonst der beste gute Punkt (gleicher Suchbereich wie die Bewertung).
+      if (!(dribbleLane(s, c, best.pt).margin > 0.2)) {
+        let alt = null;
+        for (let a = -80; a <= 80; a += 10) {
+          const r = (a * Math.PI) / 180;
+          const pt = clampP({ x: c.x + Math.cos(r) * 5, y: c.y + Math.sin(r) * 5 });
+          const lm = dribbleLane(s, c, pt).margin;
+          if (lm > 0.2 && (!alt || lm + pt.x * 0.02 > alt.m)) alt = { m: lm + pt.x * 0.02, pt };
+        }
+        if (alt) best = alt;
+      }
+      return withAlternatives(s, actionKey, { point: best.pt, say: texts(s).hilfe.dribbeln });
     }
     if (actionKey === 'freilaufen') {
       const best = bestRunSpot(s);
@@ -265,6 +301,17 @@
       return { ids: [b.id], point: pt, say: texts(s).hilfe.raum };
     }
     return {};
+  }
+
+  /** Hilfe nennt auf Wunsch der Mission weitere gute Wege (hilfe.alternativenNennen), ohne sie abzuwerten. */
+  function withAlternatives(s, shown, h) {
+    const m = mission(s.missionId);
+    if (!(m.hilfe && m.hilfe.alternativenNennen) || s.poss !== 'blue') return h;
+    const ctxActions = ['schiessen', 'passen', 'dribbeln'];
+    const others = goodActions(s, ctxActions).filter((k) => k !== shown);
+    if (!others.length) return h;
+    const T = texts(s);
+    return Object.assign({}, h, { alsoGood: others, say: h.say + T.hilfe.auchGut(others.map((k) => T.aktionen[k].label)) });
   }
 
   function runSpotScore(s, c, runner, pt) {
@@ -289,6 +336,44 @@
     return best;
   }
 
+  /** E1: Ist ein Pass in diesen Raum fußballerisch sinnvoll? Kriterien (situationsabhängig, ohne Pauschalregeln
+   *  zu Abstand oder Richtung – auch Rückpässe können gut sein):
+   *   1. Ballweg: kein Gegner kann den Ball unterwegs erreichen (gleicher Maßstab wie Pässe zum Mitspieler),
+   *   2. Erreichbarkeit: der Empfänger ist mit Reserve vor dem schnellsten Gegner am Zielpunkt (CFG.spaceReserve),
+   *  Kein Mindestabstand zum Gegner, keine Richtungsregel – das tatsächliche Risiko steckt in 1. und 2.
+   *  Gleiche Zeitrechnung wie die Simulation (spaceContest). */
+  function spacePassInfo(s, c, to) {
+    const defs = team(s, other(c.team)), react = c.team === 'blue' ? CFG.redReact : CFG.blueReact;
+    const lr = lane(c, to, CFG.passSpeed, defs, react, CFG.reach);
+    const sc = spaceContest(s, c, to, defs, react);
+    let status;
+    if (lr.hit) status = 'abgefangen';
+    else if (lr.margin <= CFG.passLaneOk) status = 'wegNah';
+    else if (sc.reserve <= -0.05) status = 'gegnerZuerst';
+    else if (sc.reserve < CFG.spaceReserveMin) status = 'zuKnapp';
+    else if (sc.reserve < CFG.spaceReserve) status = 'knapp';
+    else status = 'frei';
+    const key = lr.hit ? lr.hit.id : status === 'wegNah' ? laneKey(s, c, to, other(c.team)) : sc.first ? sc.first.id : null;
+    return { ok: status === 'frei' || status === 'knapp', status, recv: sc.recv.id, reserve: sc.reserve, lane: lr.margin, key };
+  }
+  /** Sinnvoller Pass in den Raum für die Hilfe (Raster 1,5 m) oder null. Ob es einen gibt, ist für die Bewertung
+   *  entscheidend; welcher Punkt gezeigt wird, nur für die Hilfe (Sicherheit + Raumgewinn). */
+  function bestSpacePass(s) {
+    const c = carrier(s);
+    let best = null;
+    for (let x = 1.5; x < F.W - 1; x += 1.5) for (let y = 1.5; y < F.H - 1; y += 1.5) {
+      const pt = { x, y };
+      if (dist(c, pt) < CFG.spaceMinDist) continue;
+      const r = spacePassInfo(s, c, pt);
+      if (!r.ok) continue;
+      // Auswahl für die Hilfe: sicher (gedeckelt, damit „weit weg vom Gegner“ nicht alles schlägt) und mit Raumgewinn
+      const fwd = c.team === 'blue' ? x - c.x : c.x - x;
+      const v = Math.min(r.lane, r.reserve, 1) + 0.03 * fwd + (r.status === 'frei' ? 10 : 0); // „frei“ vor „knapp“
+      if (!best || v > best.v) best = { v, pt, info: r };
+    }
+    return best;
+  }
+
   /** Was bietet die Situation dem Ballführenden? (Grundlage für "Erkennen") */
   function dribbleBest(s) {
     const c = carrier(s);
@@ -309,8 +394,10 @@
     const shots = inZone ? shotOptions(s) : [];
     const sBest = shots.length ? Math.max(...shots.map((o) => o.margin)) : -9;
     const dBest = dribbleBest(s).m;
-    return { passes, pBest, shots, sBest, dBest, inZone,
-      ok: { pass: pBest > CFG.passLaneOk, shoot: sBest > CFG.shotLaneOk, dribble: dBest > 0.2 } };
+    const mate = pBest > CFG.passLaneOk;
+    const space = bestSpacePass(s);
+    return { passes, pBest, shots, sBest, dBest, inZone, space,
+      ok: { pass: mate || !!space, mate, space: !!space, shoot: sBest > CFG.shotLaneOk, dribble: dBest > 0.2 } };
   }
   const nameOf = (s, id) => { const p = P(s, id); return texts(s).teams[p.team] + ' ' + p.num; };
   /** Gegner, der einem Weg am nächsten steht (für Erklärungen) */
@@ -325,6 +412,9 @@
    *  ausfuehren – war das gewählte Ziel sinnvoll? (welcher Mitspieler, welches Tor, welcher Raum)
    *  Das Ergebnis (Tor, Ballverlust …) wird getrennt davon in outcome() ermittelt.
    *  Stern nur, wenn erkennen UND ausfuehren gut sind. */
+  /** Merkt sich, welchen Gegner die Ziel-Rückmeldung nennt, damit feedback() nach der Simulation denselben Gegner
+   *  nennt, der den Ball tatsächlich bekommen hat (nicht aufzählbar → ändert keine Bewertung und keine Aufzeichnung). */
+  function named(r, id, txt) { Object.defineProperty(r, 'named', { value: { id, txt }, enumerable: false }); return r; }
   function evaluate(s, a) {
     const c = carrier(s);
     const E = texts(s).erkennen, X = texts(s).ausfuehren;
@@ -333,18 +423,39 @@
     if (a.kind === 'pass' || a.kind === 'shoot' || a.kind === 'dribble') {
       const sit = situation(s);
       const anyOk = sit.ok.pass || sit.ok.shoot || sit.ok.dribble;
-      if (sit.ok[a.kind]) rec = R(true, a.kind === 'shoot' ? E.torchance : a.kind === 'pass' ? E.freund : E.platz);
+      const raumGewaehlt = a.kind === 'pass' && !a.id;
+      const passText = () => {
+        if (sit.ok.mate && !raumGewaehlt) return E.freund;                                     // wie bisher (Pass zum Mitspieler)
+        if (raumGewaehlt && spacePassInfo(s, c, clampP(a)).ok) return E.raum;                  // genau diesen Raum gesehen
+        return E.abspielen;                                                                    // Abspielen richtig, Ziel nicht
+      };
+      if (sit.ok[a.kind]) rec = R(true, a.kind === 'shoot' ? E.torchance : a.kind === 'pass' ? passText() : E.platz);
       else if (!anyOk) rec = R(true, E.schwierig);
+      // Nur ein Pass in den Raum wäre sicher gewesen: Ball behalten (Dribbeln) bleibt eine sinnvolle Entscheidung
+      // wie in v0.2.4 – der Raumpass wird genannt, aber das Dribbeln nicht abgewertet (E2: andere Wege nicht abwerten).
+      else if (a.kind === 'dribble' && sit.ok.space && !sit.ok.mate && !sit.ok.shoot) rec = R(true, E.dribbelnRaumAuch);
       else if (sit.ok.shoot) rec = R(false, E.besserSchiessen);
-      else if (sit.ok.pass) rec = R(false, a.kind === 'shoot' ? E.besserPassStattSchuss : E.besserPass);
+      else if (sit.ok.mate) rec = R(false, a.kind === 'shoot' ? E.besserPassStattSchuss : E.besserPass);
+      else if (sit.ok.space) rec = R(false, a.kind === 'shoot' ? E.besserRaumStattSchuss : E.besserRaum);
       else rec = R(false, a.kind === 'shoot' ? E.besserDribbelnStattSchuss : E.besserDribbeln);
 
-      if (a.kind === 'pass') {
-        const m = a.id ? sit.passes.find((o) => o.id === a.id).margin : lane(c, a, CFG.passSpeed, team(s, 'red'), CFG.redReact, CFG.reach).margin;
-        const target = a.id ? nameOf(s, a.id) : X.freieStelle;
+      if (a.kind === 'pass' && a.id) {
+        const o = sit.passes.find((x) => x.id === a.id), m = o.margin, target = nameOf(s, a.id);
         if (m > CFG.passLaneOk) exe = R(true, X.wegFrei(target));
         else if (!sit.ok.pass && m >= sit.pBest - 0.05) exe = R(true, X.besterPassweg);
-        else { const o = a.id ? sit.passes.find((x) => x.id === a.id) : null; const k = (o && o.hit && o.hit.id) || laneKey(s, c, a.id ? P(s, a.id) : a, 'red'); exe = R(false, X.wegNah(k ? nameOf(s, k) : X.einGegner, target) + (sit.ok.pass ? X.andererFreier : '')); }
+        else {
+          const k = (o.hit && o.hit.id) || laneKey(s, c, P(s, a.id), 'red');
+          const txt = (id) => X.wegNah(id ? nameOf(s, id) : X.einGegner, target) + (sit.ok.mate ? X.andererFreier : sit.ok.space ? X.raumWaereGegangen : '');
+          exe = named(R(false, txt(k)), k, txt);
+        }
+      } else if (a.kind === 'pass') {
+        const info = spacePassInfo(s, c, clampP(a));
+        const f = nameOf(s, info.recv), gn = (id) => (id ? nameOf(s, id) : X.einGegner), g = gn(info.key);
+        if (info.status === 'frei') exe = R(true, X.raumFrei(f));
+        else if (info.status === 'knapp') exe = R(true, X.raumKnapp(g, f));
+        else if (info.status === 'zuKnapp') exe = named(R(false, X.raumZuKnapp(g)), info.key, (id) => X.raumZuKnapp(gn(id)));
+        else if (info.status === 'gegnerZuerst') exe = named(R(false, X.raumGegnerZuerst(g, f)), info.key, (id) => X.raumGegnerZuerst(gn(id), f));
+        else { const txt = (id) => X.raumWegNah(gn(id)) + (sit.ok.mate ? X.andererFreier : ''); exe = named(R(false, txt(info.key)), info.key, txt); }
       } else if (a.kind === 'shoot') {
         const m = sit.shots[a.goal].margin;
         if (m > CFG.shotLaneOk) exe = R(true, X.freiesTor);
@@ -380,6 +491,20 @@
     s.ball.flight = { fx: from.x, fy: from.y, tx: to.x, ty: to.y, t: 0, dur: Math.max(0.15, L / speed), kind, team: teamName, target: targetId, result };
   }
 
+  /** Pass in den Raum: Wer ist zuerst am Zielpunkt? Einzige Rechnung dafür – die Simulation (doPass)
+   *  und die Bewertung (spacePassInfo) verwenden sie gemeinsam, damit sie sich nie widersprechen.
+   *  Empfänger ist der nächste Mitspieler. reserve = Vorsprung (s) des Empfängers vor dem schnellsten Gegner. */
+  function spaceContest(s, c, to, defs, react) {
+    const recv = team(s, c.team).filter((p) => p !== c).sort((x, y) => dist(x, to) - dist(y, to))[0];
+    const tArr = Math.max(dist(c, to) / CFG.passSpeed, 0.15 + dist(recv, to) / runSpeed(recv));
+    let first = null, reserve = 9;
+    for (const d of defs) {
+      const td = react + Math.max(0, dist(d, to) - CFG.reach) / runSpeed(d);
+      if (td - tArr < reserve) { reserve = td - tArr; first = d; }
+    }
+    return { recv, tArr, reserve, first };
+  }
+
   function doPass(s, c, a, isAI) {
     const defs = team(s, other(c.team));
     const react = c.team === 'blue' ? CFG.redReact : CFG.blueReact;
@@ -387,18 +512,18 @@
     if (a.id) { recv = P(s, a.id); to = { x: recv.x, y: recv.y }; recv.ctrl = 'wait'; recv.tx = recv.x; recv.ty = recv.y; }
     else {
       to = clampP(a);
-      recv = team(s, c.team).filter((p) => p !== c).sort((x, y) => dist(x, to) - dist(y, to))[0];
-      recv.ctrl = 'run'; recv.tx = to.x; recv.ty = to.y; recv.delay = 0.15;
+      recv = spaceContest(s, c, to, defs, react).recv;
     }
     const r = lane(c, to, CFG.passSpeed, defs, react, CFG.reach);
     let hit = r.hit;
     if (!hit && !a.id) { // Pass in den Raum: Wer ist zuerst am Ball?
-      const tArr = Math.max(dist(c, to) / CFG.passSpeed, 0.15 + dist(recv, to) / runSpeed(recv));
+      const sc = spaceContest(s, c, to, defs, react);
       for (const d of defs) {
         const td = react + Math.max(0, dist(d, to) - CFG.reach) / runSpeed(d);
-        if (td < tArr - 0.05) { hit = { id: d.id, x: to.x, y: to.y, t: tArr }; break; }
+        if (td < sc.tArr - 0.05) { hit = { id: d.id, x: to.x, y: to.y, t: sc.tArr }; break; }
       }
     }
+    if (!a.id) { recv.ctrl = 'run'; recv.tx = to.x; recv.ty = to.y; recv.delay = 0.15; }
     if (hit) {
       const icp = P(s, hit.id);
       icp.ctrl = 'intercept'; icp.tx = hit.x; icp.ty = hit.y; icp.delay = Math.min(react, 0.25);
@@ -778,7 +903,13 @@
   /** Kindgerechte Rückmeldung (Review V0.2.1, Punkt B): die dreiteilige Bewertung bleibt intern,
    *  gesprochen wird ein kurzer Satz in Kindersprache. */
   function feedback(s) {
-    const ev = s.ep.eval, out = outcome(s), a = s.ep.a, T = texts(s).rueckmeldung;
+    let ev = s.ep.eval; const out = outcome(s), a = s.ep.a, T = texts(s).rueckmeldung;
+    // Ergebnis und Ziel-Rückmeldung nennen denselben Gegner: den, der den Ball bekommen hat (Wertung bleibt gleich)
+    const ic = a.kind === 'pass' && s.ep.events.find((e) => e.type === 'intercepted');
+    if (ic && ev.exe.named && ev.exe.named.id !== ic.by) {
+      const exe = { good: ev.exe.good, why: ev.exe.named.txt(ic.by) };
+      ev = { good: ev.good, rec: ev.rec, exe, why: !ev.rec.good ? ev.rec.why : exe.why };
+    }
     let tip;
     if (ev.rec.good && ev.exe.good) tip = out.success ? T.super : T.trotzdemGut;
     else if (ev.rec.good) tip = T.guteIdeeAber(T.idee[a.kind], ev.exe.why);
@@ -807,11 +938,12 @@
       else {
         const k = laneKey(s, c, p, 'red'); r.key = k;
         r.say = T.imWeg(nameOf(s, k), name);
-        if (tries >= 2) { r.finish = true; r.say += free.length ? T.zeigeFrei(nameOf(s, free[0].id)) : T.keinerFreiZusatz; if (free.length) r.reveal = free[0].id; }
+        if (tries >= 2) { r.finish = true; r.say += free.length ? T.zeigeFrei(nameOf(s, free[0].id)) : situation(s).ok.space ? T.keinerFreiRaumZusatz : T.keinerFreiZusatz; if (free.length) r.reveal = free[0].id; }
         else r.say += T.nochmal;
       }
     } else if (!free.length) {
-      r.right = r.finish = true; r.say = T.richtigKeiner;
+      // „Keiner steht frei“ ist richtig – aber ein Pass in den freien Raum kann trotzdem gehen (kein Widerspruch zur Bewertung)
+      r.right = r.finish = true; r.say = situation(s).ok.space ? T.richtigKeinerRaum : T.richtigKeiner;
       r.dribblePoint = hint(s, 'dribbeln').point;
     } else {
       const f = free[0];
@@ -843,7 +975,9 @@
     m.note = null;
     if (ctxType === 'verteidigung') m.def++; else m.att++;
     if (m.phase === 'attack') {
-      if (s.poss === 'red') m.phase = 'defense';
+      const over = s.poss === 'red' || m.att >= m.maxAttack;
+      if (over && m.defense === 0) m.done = true; // E3: Mission ohne Verteidigungsphase endet mit dem Angriff
+      else if (s.poss === 'red') m.phase = 'defense';
       else if (m.att >= m.maxAttack) { m.pending = 'red'; m.phase = 'defense'; m.note = 'aus'; }
     } else if (m.def >= m.defense || s.poss === 'blue') m.done = true;
     return m;
@@ -852,5 +986,5 @@
   function missionApply(m, s) { if (m.pending) { restart(s, m.pending); m.pending = null; } }
 
   root.FIQ = {
-    VERSION: '0.2.5', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.3.0', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);
