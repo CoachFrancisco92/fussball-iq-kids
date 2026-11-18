@@ -7,7 +7,7 @@ const fs = require('node:fs'), path = require('node:path');
 const E = require('./helpers/load.js');
 const { traceAll, hash } = require('./golden/trace.js');
 const REF = require('./golden/referenz.js');
-const REF_HASH = '375fa6db8f84a28a';
+const REF_HASH = '5d38afd32007dff1';
 const ref = require('./golden/' + REF.file);
 const now = traceAll(E);
 

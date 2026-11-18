@@ -1,7 +1,7 @@
 # Bewertungsänderungen Mission 1 durch das Engine-Paket E1–E6
 
-Stand: Branch `engine-paket-e1-e6`, gemessen gegen die Referenz v0.2.3 (= v0.2.4 live). **Zur fachlichen Freigabe – Referenzaufnahmen noch nicht aktualisiert.**
-Erzeugt mit `node tests/golden/diff.js`; die Tests lassen genau diese Abweichungen zu (`tests/golden/abweichungen-e1.json`, Oberfläche: `tests/golden/abweichungen-e1-ui.json`), jede weitere schlägt an.
+**Fachlich freigegeben vom Product Owner (18.11.2026), veröffentlicht als V0.3.0.** Gemessen gegen die Referenz v0.2.3 und nach dem Hotfix erneut gegen v0.2.5: dieselben 153 Entscheidungen und 3 Ansagen, inhaltlich identisch. Neue Referenzen `tests/golden/mission1.v0.3.0.json` und `ui-transcript.v0.3.0.json` enthalten genau diese Änderungen.
+Erzeugt mit `node tests/golden/diff.js`; die vorgelegten Listen liegen unter `tests/golden/historie/` (`v0.3.0-e1-abweichungen*.json`, Messung gegen v0.2.3: `v0.3.0-e1-abweichungen-gegen-v0.2.3.json`).
 
 ## Kurzfassung
 - **153 geänderte Entscheidungsbewertungen** in 117 von 200 Kinder-Abfolgen und im festen Ablauf „dribbling“.
@@ -9,6 +9,7 @@ Erzeugt mit `node tests/golden/diff.js`; die Tests lassen genau diese Abweichung
 - **Sterne:** 9 verloren – **ausschließlich Pässe, bei denen der Gegner den Ball bekommen hat** (v0.2.4 gab dafür fälschlich einen Stern) –, 2 gewonnen.
 - **Oberfläche:** 3 Einträge der Mitschrift „Keiner ist frei“ – der Schau-Schritt nennt jetzt zusätzlich den freien Raum.
 - **Hilfe** (614 Angriffslagen): empfohlene Aktion überall gleich; 4 Lagen mit anderem Inhalt (Fehlerkorrekturen).
+- **Entscheidungen des Product Owners:** 0,3 s als Startwert; mildes Dribbling beibehalten; Stufe „knapp, aber gut“ ab 0,1 s (vorläufiger Modellparameter); die 5 knappen Rückpässe Richtung eigenes Tor behalten ihren Stern – keine Richtungs- oder Tornähe-Regel.
 
 ## Bewertung eines Passes in den Raum (Stand nach Prüfung 1)
 | Status | Bedingung | Bewertung Ziel | Rückmeldung |
@@ -50,7 +51,7 @@ Die Hilfe zeigt bevorzugt „frei“-Punkte (0,3 s bleibt der Wert für „klar 
 - Ein Pass in den Raum wird nie mehr mit „Du hast gesehen, dass ein Freund frei war“ kommentiert; Texte, die einen freien Mitspieler behaupten, kommen nur, wenn wirklich einer frei steht (Test über alle Lagen).
 - Korrigiert: In 3 von 155 Ballverlusten nannte die Rückmeldung zwei verschiedene Gegner („Rot 1 hat den Ball bekommen … Rot 3 war schneller“). Jetzt immer der, der den Ball bekam (Wertung unverändert).
 
-## Gefundener Fehler aus v0.2.4 (nicht behoben, eigene Freigabe nötig)
+## Gefundener Fehler aus v0.2.4 (behoben in V0.2.5, `docs/hotfix-endlosszene.md`)
 Pass von der Startposition auf bestimmte Punkte (z. B. 17/11): Rot fängt ab und spielt danach endlos hin und her – die Szene endet nie, die App bleibt hängen. 203 von 25 179 geprüften Raumpässen. Ursache: Das Szenenende wird verschoben, solange der Ball fliegt, und Rot passt weiter. Liegt in v0.2.4 live vor.
 
 ## Offene Risiken

@@ -13,7 +13,7 @@ Du bist die Qualitätssicherung für „Fußball-IQ Kids“. Verbindlich sind di
 | `tests/golden.test.js` | **Verhaltensgleichheit Mission 1** mit der gültigen Referenz (`tests/golden/referenz.js`; Abläufe, Hilfe, 200 Abfolgen – Texte, Bewertung, Positionen) |
 | `tests/missions.test.js` | Trennung Engine/Inhalte, Missionsprüfung, Testmission ohne Engine-Änderung |
 | `tests/look.test.js` | Wahrnehmungslogik (`E.lookAnswer`) |
-| `tests/e2e/transcript.mjs` | Oberflächen-Mitschrift: Ansagen und Anzeigen identisch zu v0.2.3 |
+| `tests/e2e/transcript.mjs` | Oberflächen-Mitschrift: Ansagen und Anzeigen identisch zur gültigen Referenz (`tests/golden/referenz.js`) |
 | `tests/dom.test.js` | jede in `app.js` verwendete Element-ID existiert; Engine-Exporte; Versionsgleichheit |
 | `tests/release.test.js` | Auslieferungspaket vollständig, keine Tests öffentlich, CHANGELOG-Eintrag, Veröffentlichung nur über CI nach Tests |
 | `tests/e2e/play.mjs` | Browser: Tablet, Handy quer/hoch, Hilfe-Durchlauf und Fehlentscheidungen, Wiederholen, Vergleichen, keine JS-Fehler. `SLOW=4` simuliert langsame Geräte. |

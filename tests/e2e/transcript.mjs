@@ -1,6 +1,6 @@
 // Oberflächen-Mitschrift: Was sagt und zeigt die App in festen Abläufen?
 // Nachweis, dass Mission 1 nach Umbauten für das Kind identisch bleibt.
-//   node tests/e2e/transcript.mjs            -> vergleicht mit tests/golden/ui-transcript.v0.2.3.json
+//   node tests/e2e/transcript.mjs            -> vergleicht mit der gültigen Referenz (tests/golden/referenz.js)
 //   node tests/e2e/transcript.mjs --write F  -> schreibt die Mitschrift nach F (Referenz erzeugen)
 //   ROOT=/pfad/zum/stand                     -> anderen Stand ausliefern (z. B. alte Version)
 import { chromium } from 'playwright';
@@ -8,10 +8,12 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = process.env.ROOT || path.join(here, '..', '..');
-const golden = path.join(here, '..', 'golden', 'ui-transcript.v0.2.3.json');
+const REF = createRequire(import.meta.url)('../golden/referenz.js');
+const golden = path.join(here, '..', 'golden', REF.ui);
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 const server = http.createServer((req, res) => {
   const p = path.join(root, decodeURIComponent(new URL(req.url, 'http://x').pathname));
@@ -111,8 +113,8 @@ try {
       }
       fs.writeFileSync(process.argv[pi + 1], JSON.stringify(out, null, 1) + '\n'); console.log('Abweichungen geschrieben:', process.argv[pi + 1]);
     }
-    const pfile = path.join(here, '..', 'golden', 'abweichungen-e1-ui.json');
-    const pending = pi < 0 && fs.existsSync(pfile) ? JSON.parse(fs.readFileSync(pfile, 'utf8')) : {};
+    const gdir = path.join(here, '..', 'golden'), pending = {};
+    if (pi < 0) for (const f of fs.readdirSync(gdir).filter((n) => /^abweichungen-.*-ui\.json$/.test(n))) for (const [k, v] of Object.entries(JSON.parse(fs.readFileSync(path.join(gdir, f), 'utf8')))) pending[k] = (pending[k] || []).concat(v);
     for (const name of Object.keys(ref)) {
       const ra = ref[name], rb = result[name] || [], listed = new Map((pending[name] || []).map((d) => [d.eintrag, d]));
       const bad = [];
@@ -123,7 +125,7 @@ try {
       if (bad.length) {
         const i = bad[0];
         console.error(`✗ ${name}: Abweichung bei Eintrag ${i}${listed.has(i) ? ' (anders als vorgelegt)' : ''}\n  Referenz: ${J(ra[i])}\n  jetzt:    ${J(rb[i])}`); exit = 1;
-      } else console.log(`✓ ${name}: identisch zur Referenz v0.2.3${listed.size ? ` bis auf ${listed.size} vorgelegte Abweichung(en)` : ''} (${ra.length} Einträge)`);
+      } else console.log(`✓ ${name}: identisch zur Referenz ${REF.seit}${listed.size ? ` bis auf ${listed.size} vorgelegte Abweichung(en)` : ''} (${ra.length} Einträge)`);
     }
   }
 } catch (e) { console.error('✗', e.message); exit = 1; }
