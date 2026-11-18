@@ -1,7 +1,7 @@
 /* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen (V0.2) */
 (function () {
   'use strict';
-  const APP_VERSION = '0.2.1';
+  const APP_VERSION = '0.2.3';
   // Schutz gegen gemischte Cache-Stände (neue Seite + altes Skript oder umgekehrt)
   try {
     const htmlV = (document.querySelector('meta[name="app-version"]') || {}).content;
@@ -724,5 +724,5 @@
     try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
   }
   // Testzugriff (nur lesend) für automatisierte Oberflächentests
-  window.__fiq = { get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; } };
+  window.__fiq = { get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; } };
 })();

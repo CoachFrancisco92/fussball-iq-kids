@@ -23,6 +23,7 @@ const fail = (msg) => { throw new Error(msg + (errors.length ? '\nJS-Fehler: ' +
 async function run(viewport, label, strategy = 'hint') {
   const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH, args: ['--no-sandbox'] } : {});
   const page = await browser.newPage({ viewport });
+  if (process.env.SLOW) { const cdp = await page.context().newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: Number(process.env.SLOW) }); } // langsame Geräte/CI simulieren
   page.on('pageerror', (e) => errors.push(`[${label}] ${e.message}`));
   page.on('console', (m) => { if (m.type() === 'error' && !/fonts\.g/.test(m.text()) && !/Failed to load resource/.test(m.text())) errors.push(`[${label}] console: ${m.text()}`); });
   await page.goto(base + 'index.html', { waitUntil: 'domcontentloaded' });
@@ -32,12 +33,30 @@ async function run(viewport, label, strategy = 'hint') {
     const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; });
     const s = b[2] / 40.4; await page.mouse.click(b[0] + (x + 2.2) * s, b[1] + (y + 1.6) * s);
   };
+  // Zustandsbasiertes Warten statt fester Pausen (stabil auch auf langsamen CI-Rechnern)
+  const until = async (fn, what, ms = 4000) => { const t = Date.now(); while (Date.now() - t < ms) { if (await page.evaluate(fn)) return; await page.waitForTimeout(50); } fail(`[${label}] Zustand nicht erreicht: ${what}`); };
+  const actionStarted = async (what) => {
+    const t = Date.now();
+    while (Date.now() - t < 4000) { if ((await mode()) !== 'decide') return; await page.waitForTimeout(50); }
+    const diag = await page.evaluate(() => ({ ctx: window.__fiq.ctx && window.__fiq.ctx.type, sel: window.__fiq.sel, players: window.__fiq.S.players.map((p) => p.id + '@' + p.x.toFixed(1) + ',' + p.y.toFixed(1)) }));
+    fail(`[${label}] Tipp ohne Wirkung (${what}): ${JSON.stringify(diag)}`);
+  };
+  const doTaps = async (taps, what) => {
+    for (let i = 0; i < taps.length; i++) {
+      await tap(...taps[i]);
+      if (i < taps.length - 1) await until(() => window.__fiq.sel && window.__fiq.sel.step === 2, `${what}: Spieler ausgewählt`);
+    }
+    await actionStarted(what);
+  };
   const followHint = async () => {
     const plan = await page.evaluate(() => { const S = window.__fiq.S; const c = window.__fiq.ctx; const k = FIQ.recommend(S, c.actions); return { k, h: FIQ.hint(S, k), label: FIQ.ACTIONS[k].label }; });
     await page.click('#actions .hint');
-    if (plan.h.ids) { const p = await page.evaluate((id) => { const q = FIQ.P(window.__fiq.S, id); return [q.x, q.y]; }, plan.h.ids[0]); await tap(...p); await page.waitForTimeout(120); }
-    if (plan.h.point) await tap(plan.h.point.x, plan.h.point.y);
-    if (plan.h.goal != null) await tap(36, plan.h.goal === 0 ? 6 : 18);
+    await until(() => !!window.__fiq.sel, 'Hilfe wählt Aktion');
+    const taps = [];
+    if (plan.h.ids) taps.push(await page.evaluate((id) => { const q = FIQ.P(window.__fiq.S, id); return [q.x, q.y]; }, plan.h.ids[0]));
+    if (plan.h.point) taps.push([plan.h.point.x, plan.h.point.y]);
+    if (plan.h.goal != null) taps.push([36, plan.h.goal === 0 ? 6 : 18]);
+    await doTaps(taps, 'Hilfe ' + plan.k);
     if (process.env.DEBUG) console.log('   hint', JSON.stringify(plan), await page.evaluate(() => JSON.stringify({ mode: window.__fiq.mode })));
   };
 
@@ -53,29 +72,23 @@ async function run(viewport, label, strategy = 'hint') {
       if (k === 'raum') { const b = blues[0]; return { k, taps: [[b.x, b.y], [33, 21]] }; }
       return { k, taps: [[c.x + 3, c.y]] };
     });
-    const label = await page.evaluate((k) => FIQ.ACTIONS[k].label, plan.k);
-    if (!(await page.locator('#actions .act.on').count())) await page.locator('#actions .act', { hasText: label }).click();
-    for (const t of plan.taps) { await tap(...t); await page.waitForTimeout(250); }
-    // Diagnose: hat der Tipp keine Aktion ausgelöst, Zustand ausgeben und bewusst mit der Hilfe weitermachen
-    for (let w = 0; w < 20 && (await mode()) === 'decide'; w++) await page.waitForTimeout(100);
-    if ((await mode()) === 'decide') {
-      const diag = await page.evaluate(() => ({ ctx: window.__fiq.ctx.type, actions: window.__fiq.ctx.actions, players: window.__fiq.S.players.map((p) => p.id + '@' + p.x.toFixed(1) + ',' + p.y.toFixed(1)) }));
-      console.log(`  ⚠ [${label}] Tipp ohne Wirkung: ${JSON.stringify(plan)} ${JSON.stringify(diag)}`);
-      await followHint();
-    }
+    const actLabel = await page.evaluate((k) => FIQ.ACTIONS[k].label, plan.k);
+    if (!(await page.evaluate(() => !!window.__fiq.sel))) await page.locator('#actions .act', { hasText: actLabel }).click();
+    await until(() => !!window.__fiq.sel, 'Aktion gewählt');
+    await doTaps(plan.taps, 'Fehlentscheidung ' + plan.k);
   };
 
   await page.click('#play');
   // 1) Schau-Schritt: erst falsch (Blau 3), dann richtig (Blau 2)
-  await waitMode('look'); await tap(19, 19.5); await page.waitForTimeout(200); await tap(24, 6);
+  await waitMode('look'); await tap(19, 19.5); await until(() => window.__fiq.look && window.__fiq.look.tries === 1, 'Schau-Schritt 1. Antwort'); await tap(24, 6);
   await waitMode('decide');
   // 2) Pass auf zugestellten Spieler -> Rückmeldung mit Erklärung
-  await page.locator('#actions .act', { hasText: 'Passen' }).click(); await tap(19, 19.5);
+  await page.locator('#actions .act', { hasText: 'Passen' }).click(); await until(() => !!window.__fiq.sel, 'Passen gewählt'); await doTaps([[19, 19.5]], 'Pass zu Blau 3');
   await waitMode('feedback');
   if (!(await page.isVisible('#fbRec')) || !(await page.isVisible('#fbExe'))) fail('Bewertungs-Chips fehlen');
   // 3) Anders probieren + Vergleichen
   await page.click('#fbRetry'); await waitMode('decide');
-  await page.locator('#actions .act', { hasText: 'Passen' }).click(); await tap(24, 6);
+  await page.locator('#actions .act', { hasText: 'Passen' }).click(); await until(() => !!window.__fiq.sel, 'Passen gewählt'); await doTaps([[24, 6]], 'Pass zu Blau 2');
   await waitMode('feedback');
   if (!(await page.isVisible('#fbCompare'))) fail('Vergleichen-Knopf fehlt');
   await page.click('#fbCompare'); await waitMode('replay'); await page.click('#skip'); await waitMode('feedback');
@@ -87,7 +100,11 @@ async function run(viewport, label, strategy = 'hint') {
     for (let w = 0; w < 60 && !['decide', 'look', 'end'].includes(m); w++) { await page.waitForTimeout(100); m = await mode(); }
     if (m === 'end') break;
     if (m === 'look') {
-      if (strategy === 'bad') { await page.click('#lookNone'); await page.waitForTimeout(150); if ((await mode()) === 'look' && (await page.isEnabled('#lookNone'))) await page.click('#lookNone'); }
+      if (strategy === 'bad') {
+        await page.click('#lookNone');
+        await until(() => window.__fiq.look && window.__fiq.look.tries === 1, 'Schau-Schritt: Keiner ist frei');
+        if (!(await page.evaluate(() => window.__fiq.look.done))) await page.click('#lookNone');
+      }
       else { const id = await page.evaluate(() => { const S = window.__fiq.S; const o = FIQ.passOptions(S).sort((a, b) => b.margin - a.margin)[0]; return o.id; }); const p = await page.evaluate((id) => { const q = FIQ.P(window.__fiq.S, id); return [q.x, q.y]; }, id); await tap(...p); }
       await waitMode('decide');
     }

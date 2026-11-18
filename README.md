@@ -7,7 +7,7 @@ entscheidet per Antippen, und der nächste Spielzustand ergibt sich aus dieser E
 **Stand:** V0.2 – Mission 1 „Zusammen sind wir stark!“ (Angriffs- und Verteidigungsphase, „Erst schauen, dann entscheiden“). Änderungen: [CHANGELOG.md](CHANGELOG.md).
 
 ## Spielen
-- Online: GitHub Pages dieses Repos (Settings → Pages → Branch `main`, Ordner `/`).
+- Online: https://coachfrancisco92.github.io/fussball-iq-kids/ (Version steht auf dem Startbildschirm)
 - Lokal: `npm start` und http://localhost:8080 öffnen.
 - Als App installieren: im Browser „Zum Startbildschirm hinzufügen“ – läuft danach offline.
 
@@ -21,8 +21,15 @@ Erkennen → Entscheiden → Erleben → Verstehen → Wiederholen
 | `app.js` | Oberfläche: Canvas-Spielfeld, Tipp-Steuerung, deutsche Sprachausgabe, Rückmeldung, Wiederholen & Vergleichen, Missionsende |
 | `index.html` | Layout & Styles |
 | `sw.js`, `manifest.webmanifest`, `icon*` | PWA (offline, installierbar) |
-| `tests/` | Szenario-Tests der Simulation (`npm test`) |
-| `.claude/agents/` | Spezialisierte Entwicklungs-Agenten (Simulations-QA, Missions-Designer) |
+| `tests/` | Simulation, Fehlabfolgen, Oberflächen-/Release-Konsistenz (`npm test`), Browser-Durchlauf (`npm run test:e2e`) |
+| `scripts/` | Auslieferungspaket, Versionierung, Live-Prüfung |
+| `.claude/agents/` | Entwicklungs-Agenten `simulation-qa`, `mission-designer` |
+
+## Entwicklung
+- **Regeln, Rollen, Definition of Done:** [CLAUDE.md](CLAUDE.md)
+- **Release, Rollback, Live-Prüfung:** [docs/RELEASE.md](docs/RELEASE.md)
+- **Grundlagenentscheidungen:** [docs/bestandsaufnahme-2026-11.md](docs/bestandsaufnahme-2026-11.md)
+- Alle Tests: `npm install` einmalig, dann `npm run test:all`
 
 ## Leitplanken (aus dem Spielkonzept V1.0)
 1. **Keine Zufallswerte.** Ob ein Pass ankommt, folgt aus Passweg, Entfernung, Tempo und Positionen. Gleiche Lage + gleiche Entscheidung = gleiches Ergebnis.

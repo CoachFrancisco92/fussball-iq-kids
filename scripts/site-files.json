@@ -1,0 +1,4 @@
+{
+  "comment": "Einzige Liste der Dateien, die als App ausgeliefert werden (GitHub Pages). Tests prüfen, dass Service Worker und index.html dazu passen.",
+  "files": ["index.html", "engine.js", "app.js", "sw.js", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png"]
+}

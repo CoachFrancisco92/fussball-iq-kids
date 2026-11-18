@@ -1,5 +1,16 @@
 # Changelog
 
+## V0.2.3 – Entwicklungsprozess & Qualitätssicherung (Phase 1)
+Keine Änderung am Spielverhalten. Ziel: verlässliche Freigabe und Auslieferung.
+- **Veröffentlichung nur nach grünen Tests:** neuer Workflow `CI` (Tests → Paket bauen → Veröffentlichen → Live-Prüfung). Ersetzt den bisherigen Test-Workflow und – nach Umstellung von *Pages → Source* auf „GitHub Actions“ – die testunabhängige Veröffentlichung „Deploy from a branch“.
+- **Auslieferung nur der App-Dateien** (`scripts/site-files.json`); Tests, Skripte und Doku sind nicht mehr öffentlich.
+- **Versionierung:** `npm run version:set -- X.Y.Z` setzt alle Stellen; Test verlangt einen CHANGELOG-Abschnitt. Korrigiert: V0.2.2 war mit Versionsnummer 0.2.1 veröffentlicht.
+- **Rollback:** Workflow „CI“ manuell mit Release-Tag starten; erster Tag wird `v0.2.3`.
+- **Live-Prüfung:** `npm run check:live` (auch automatisch nach jeder Veröffentlichung) prüft Version von HTML, Skripten und Service Worker.
+- **Stabilere Browser-Tests:** Warten auf Spielzustände statt fester Pausen; Abbruch mit Diagnose statt stillem Ausweichen; auch mit 4-fach gedrosselter CPU grün (`SLOW=4`).
+- **Neue Tests:** Auslieferungspaket vollständig/ohne Testdateien, CHANGELOG-Pflicht, nur ein veröffentlichender Workflow mit Test-Abhängigkeit, Probelauf des Versionierungsskripts.
+- **Doku:** `CLAUDE.md` (Regeln, Rollen, Definition of Done, Freigabe), `docs/RELEASE.md`, `docs/bestandsaufnahme-2026-11.md`; Agenten `simulation-qa` und `mission-designer` an die tatsächliche Architektur angepasst.
+
 ## V0.2.1 – Auslieferung absichern (18.11.2026)
 Anlass: Review V0.2 meldete Abstürze (`decNo`, `fbWhy`) und nicht angeschlossene Missionslogik/Hilfe/Schau-Schritt.
 **Befund:** Der Code im Repo (Commit 80dcdf0) war korrekt – die gemeldeten Stellen stammen aus V0.1. Geprüft wurde offenbar eine Mischung aus neuer `index.html` und zwischengespeicherter alter `app.js` (passt zu Review-Punkt 4: Live-Seite ≠ Repo). Genau das kann auch auf einem Gerät passieren, deshalb strukturell abgesichert:
