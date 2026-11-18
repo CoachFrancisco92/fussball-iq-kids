@@ -287,7 +287,8 @@
     }
     if (actionKey === 'freilaufen') {
       const best = bestRunSpot(s);
-      return { ids: [best.id], point: best.pt, say: texts(s).hilfe.freilaufen };
+      if (!best) return { ids: [], say: texts(s).hilfe.freilaufenKeinPlatz };
+      return { ids: [best.id], point: best.pt, eng: best.eng, say: best.eng ? texts(s).hilfe.freilaufenEng : texts(s).hilfe.freilaufen };
     }
     if (actionKey === 'erobern') {
       const b = team(s, 'blue').sort((a, b2) => dist(a, c) - dist(b2, c))[0];
@@ -320,20 +321,46 @@
     const d = dist(c, pt);
     return { open, l, d, ok: open >= 3.2 && l > CFG.passLaneOk && d >= 3.5 && d <= 15 };
   }
+  /** Hilfe „Freilaufen“ (K1): Laufziel nach Laufqualität wählen und mit einer deterministischen Vorausrechnung
+   *  der Szene prüfen, ob der Läufer am Szenenende (= Rückmeldebild) wirklich anspielbar ist.
+   *  Bewertet wird dabei nichts neu: Kandidaten sind nur Ziele, die die bestehende Bewertung ohnehin als gut einstuft.
+   *  1. Wahl: gutes Laufziel UND am Ende anspielbar, gewichtet nach Laufqualität (Platz, Raumgewinn, Passweg) und
+   *  Tipp-Toleranz (Nachbarpunkte klappen auch). Gibt es keines: bestes gutes Laufziel mit
+   *  ehrlichem Hinweis „die Gegner laufen mit“ (eng: true). */
+  function runQuality(s, c, p, pt, sc) {
+    const gain = Math.max(-4, Math.min(8, pt.x - c.x));           // Raumgewinn Richtung gegnerisches Tor
+    return Math.min(sc.open, 6) * 0.5 + gain * 0.15 + Math.min(sc.l, 1) * 0.5 - dist(p, pt) * 0.03;
+  }
+  function runEndFree(s, id, pt) {
+    const t = clone(s); startAction(t, { kind: 'run', id, x: pt.x, y: pt.y });
+    let n = 0; while (!t.ep.done && n++ < 1200) tick(t);
+    if (!t.ep.done || t.ep.events.some((e) => e.type === 'steal')) return null;
+    const a = arrivalCheck(t, P(t, id));
+    return a && a.free ? passOptions(t).find((o) => o.id === id).margin : null;
+  }
   function bestRunSpot(s) {
-    const c = carrier(s);
-    let best = null;
+    const c = carrier(s), cands = [];
     for (const p of team(s, 'blue')) {
       if (p === c) continue;
       for (let x = 2; x < F.W - 1; x += 1.5) for (let y = 2; y < F.H - 1; y += 1.5) {
         const pt = { x, y };
         if (dist(p, pt) > 9) continue;
         const sc = runSpotScore(s, c, p, pt);
-        const v = (sc.ok ? 10 : 0) + Math.min(sc.open, 6) + Math.min(sc.l, 1) * 2 + (x - c.x) * 0.4 - dist(p, pt) * 0.05;
-        if (!best || v > best.v) best = { v, id: p.id, pt };
+        if (sc.ok) cands.push({ id: p.id, pt, q: runQuality(s, c, p, pt, sc) });
       }
     }
-    return best;
+    if (!cands.length) return null;
+    cands.sort((a, b) => b.q - a.q || (a.id < b.id ? -1 : 1) || a.pt.x - b.pt.x || a.pt.y - b.pt.y);
+    let best = null;
+    for (const k of cands) {                                         // alle guten Laufziele vorausrechnen
+      const m = runEndFree(s, k.id, k.pt);
+      if (m == null) continue;
+      // nicht „zentimetergenau“: bevorzugt Ziele, bei denen auch ein etwas daneben getippter Punkt (±0,75 m) noch klappt
+      const near = [[0.75, 0], [-0.75, 0], [0, 0.75], [0, -0.75]].filter(([dx, dy]) => runEndFree(s, k.id, clampP({ x: k.pt.x + dx, y: k.pt.y + dy })) != null).length;
+      const v = k.q + Math.min(m, 1) * 0.5 + near * 0.3;
+      if (!best || v > best.v) best = { v, id: k.id, pt: k.pt, eng: false };
+    }
+    return best || { id: cands[0].id, pt: cands[0].pt, eng: true };
   }
 
   /** E1: Ist ein Pass in diesen Raum fußballerisch sinnvoll? Kriterien (situationsabhängig, ohne Pauschalregeln

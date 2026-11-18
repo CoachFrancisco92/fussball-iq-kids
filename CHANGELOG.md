@@ -6,7 +6,7 @@
 - Ergebnis beim Freilaufen aus der Lage am Szenenende (= Bild): „Jetzt steht Rot N im Passweg.“ statt „Du bist frei“, wenn der Passweg zu ist.
 - Etiketten nach Grund (Guter Platz / Gegner dort / Zu nah am Ball / Zu weit weg / Passweg zu).
 - Erklärbild: Laufpfeil zeigt das Laufziel, Passlinie (grün/rot) den Passweg im gezeigten Bild, markiert wird der genannte Gegner.
-- Tests `tests/freilaufen.test.js`; Abweichungen vorgelegt in `tests/golden/abweichungen-a*.json`. Offener Punkt K1 (Hilfe-Punkte beim Freilaufen) zur Entscheidung.
+- Tests `tests/freilaufen.test.js`; Abweichungen vorgelegt in `tests/golden/abweichungen-a*.json`. - **Hilfe beim Freilaufen (K1):** wählt nur gut bewertete Laufziele, rechnet die Szene deterministisch voraus und bevorzugt Ziele, die am Ende anspielbar und nicht zentimetergenau sind. Gibt es keines, sagt sie ehrlich, dass die Gegner mitlaufen. In den 53 Freilauf-Lagen sind jetzt 47 statt 9 Empfehlungen am Ende anspielbar. Spielverlauf ändert sich nur beim Befolgen der Hilfe (Hilfe-Durchlauf von Mission 1).
 
 ## V0.3.0 – Engine-Paket E1–E6 (Bewertung Raumpass, Hilfe-Lernweg, optionale Abwehrphase)
 Fachlich freigegeben. Spielverlauf von Mission 1 unverändert; geändert sind Bewertung und Rückmeldetexte in 153 Entscheidungen und 3 Ansagen im Schau-Schritt (vollständig mit Begründung: `docs/bewertungsaenderungen-e1.md`). Nach dem Hotfix gegen v0.2.5 neu gemessen: identisch. Neue Referenzen `tests/golden/mission1.v0.3.0.json`, `ui-transcript.v0.3.0.json` (nur diese Änderungen, geprüft); Vorgänger und Abweichungslisten unter `tests/golden/historie/`.

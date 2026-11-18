@@ -39,8 +39,11 @@ Grundlage: Analyse vom 18.11.2026, Freigabe „A“ durch den Product Owner.
    - **Markierter Gegner:** der Gegner, der im Ergebnistext genannt wird (im Passweg); bei „Gegner dort“ der Gegner am Ziel; bei „zu weit“ und „zu nah“ keiner.
 
 ## Auswirkungen auf Mission 1
-- Engine-Referenz: 112 Freilauf-Entscheidungen in 101 von 200 Abfolgen. Betroffen sind auch die festen Abläufe „musterweg“ und „geblockt“ sowie der Durchlauf mit der Hilfe, dort nur Ergebnistext, Etikett und Erklärbild. Vorgelegt in `tests/golden/abweichungen-a.json`.
-- Oberflächen-Mitschrift: 2 Einträge (Ablauf „Rest mit Hilfe“), vorgelegt in `tests/golden/abweichungen-a-ui.json`.
+- Engine-Referenz: 115 Entscheidungen.
+  - 112 Freilauf-Entscheidungen in 101 von 200 Abfolgen sowie in den festen Abläufen „musterweg“ und „geblockt“; dort ändern sich nur Ergebnistext, Etikett und Erklärbild.
+  - Im **Durchlauf mit der Hilfe** ändert sich der Spielverlauf ab Schritt 2 (K1, siehe unten). Alle Sterne bleiben gleich.
+  - Vorgelegt in `tests/golden/abweichungen-a.json`.
+- Oberflächen-Mitschrift: 2 Einträge (Ablauf „Rest mit Hilfe“): Hilfetext mit Warnhinweis und Ergebnis „Jetzt steht Rot 2 im Passweg“. Vorgelegt in `tests/golden/abweichungen-a-ui.json`.
 
 ### Gesprochene Rückmeldung vorher → nachher (alle 112 Entscheidungen, zusammengefasst)
 | Anzahl | vorher | nachher |
@@ -61,18 +64,34 @@ Grundlage: Analyse vom 18.11.2026, Freigabe „A“ durch den Product Owner.
 | 1 | Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne. Super gemacht! | Jetzt steht Rot 1 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee! Manchmal klappt es nicht. |
 
 ## Konflikte, die ohne weitere Änderung nicht lösbar sind (zur Entscheidung)
-**K1 – Die Hilfe 💡 zeigt beim Freilaufen oft Punkte, die am Ende nicht anspielbar sind.**
-- Bisher sagte die App in diesen Fällen fälschlich „Du bist frei“.
-- Mit der korrekten Rückmeldung hört ein Kind, das der Hilfe folgt, in **44 von 53** Freilauf-Lagen „Jetzt steht Rot N im Passweg … trotzdem eine gute Idee“. Das betrifft auch die Oberflächen-Mitschrift (Ablauf „Rest mit Hilfe“).
-- Ursache: Die Hilfe wählt ihren Punkt nach derselben Momentaufnahme wie die Bewertung.
-- Lösung: Die Hilfe wählt nur Punkte, die am Szenenende anspielbar sind, berechnet als deterministische Vorausrechnung. Das ändert **nicht die Bewertung**, aber den Spielverlauf, wenn ein Kind der Hilfe folgt (Hilfe-Durchlauf von Mission 1). **Noch nicht umgesetzt – Entscheidung nötig.**
+**K1 – Hilfe 💡 beim Freilaufen: behoben (Entscheidung des Product Owners: jetzt korrigieren).**
+- **Vorher:** Die Hilfe wählte ihren Punkt nach der Momentaufnahme mit starkem Vorwärtsdrang. Wer ihr folgte, war in 44 von 53 Freilauf-Lagen am Szenenende nicht anspielbar.
+- **Jetzt** – Auswahl in zwei Stufen, ohne neue Bewertungsregel:
+  1. **Kandidaten:** nur Laufziele, die die bestehende Bewertung ohnehin als gut einstuft (Stern). Die Hilfe kann also keinen Stern „herbeiführen“.
+  2. **Rangfolge:** Laufqualität, also Platz zum nächsten Gegner, Raumgewinn Richtung Tor und Passweg. Jeder Kandidat wird **deterministisch vorausgerechnet**, das heißt die Szene wird auf einer Kopie zu Ende simuliert. Bevorzugt werden Ziele, an denen der Läufer **am Szenenende anspielbar** ist und an denen auch ein um 0,75 m daneben getippter Punkt noch klappt (kein „zentimetergenauer“ Punkt).
+  3. **Gibt es kein solches Ziel**, empfiehlt die Hilfe das beste gute Laufziel und sagt ehrlich: „Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen.“ Gibt es gar kein gutes Laufziel: „Gerade ist es überall eng. Such dir eine Stelle mit Platz – weg von den Gegnern.“
+- **Ergebnis über die 53 Freilauf-Lagen der Kinder-Abfolgen:**
 
-**K2 – Stern, aber das Ergebnis klappt nicht.**
+  | | vorher | jetzt |
+  |---|---|---|
+  | Empfehlung am Szenenende anspielbar | 9 | **47** |
+  | ehrlicher Hinweis „Gegner laufen mit“ | 0 | 6, jedes Mal zutreffend |
+  | Empfehlung ohne Stern | 0 | 0 |
+
+  Bei 44 der 47 Empfehlungen klappen auch alle vier Nachbarpunkte (±0,75 m), bei 3 drei von vier. Rechenzeit je Hilfe etwa 20 ms (Desktop).
+- **Weiterhin nicht möglich (6 Lagen):**
+  - 4-mal steht der Ballführende am oberen Rand unter Druck (Gegner 3–6 m entfernt), dribbelt nach dem Lauf los, und sein Gegenspieler läuft neben ihm mit. Am Szenenende steht dieser bei **jedem** guten Laufziel im Passweg (0 von 100–270 Zielen anspielbar). Dazu gehört die **Standardlage des Musterwegs** (Blau 2 auf 24/6, Rot 2 auf 2,1 m): nur 2 von 413 guten Zielen im 0,5-m-Raster sind am Ende anspielbar, eine Lücke von etwa 0,5 m.
+  - 2-mal steht der Ballführende in der Ecke bzw. am Rand, und die Gegner schließen alle Passwege (0 von 13 bzw. 0 von 102).
+  - Ursache ist in beiden Fällen der Ablauf beim Freilaufen (Paket B4, K3), nicht die Hilfe.
+- **Hinweis zur Standardlage:** Im Musterweg schafft der Lauf Platz für das Dribbling von Blau 2. Das ist ein echter Erfolg des Freilaufens („Raum schaffen“), den die App heute nur als „Dein Freund dribbelt dafür nach vorne“ erwähnt. Ob das künftig als eigenes Ergebnis zählt, gehört zu Paket B3/B4.
+- **Wirkung:** Der Spielverlauf ändert sich **nur, wenn ein Kind der Hilfe folgt**. In Mission 1 betrifft das den Durchlauf mit der Hilfe: In Schritt 2 empfiehlt die Hilfe jetzt Blau 1 → (14/8) mit Warnhinweis statt Blau 3 → (23/14). Danach folgen dieselben Entscheidungen und Ergebnisse, nur mit anderen Positionen: Tor, Druck, Ballgewinn, alle mit Stern. Die 200 Kinder-Abfolgen und die festen Abläufe sind davon nicht betroffen.
+
+**K2 – Stern, aber das Ergebnis klappt nicht** (vorläufig beibehalten, Entscheidung des Product Owners).
 - Das betrifft 32 % der Läufe mit Stern: 2120 Stern-Läufe im Raster, am Szenenende anspielbar sind 68 %.
 - Das widerspricht sich nicht (Idee und Laufziel gut, Ergebnis nicht), kommt aber häufig vor.
 - Ursache ist die Momentaufnahme in der Bewertung. Gelöst wird das mit B3 (Laufweg und Anspielbarkeit getrennt bewerten), nicht hier.
 
-**K3 – „Jetzt“ bezieht sich auf das Ende der Szene.**
+**K3 – „Jetzt“ bezieht sich auf das Ende der Szene** (vorläufig beibehalten).
 - Dribbelt der Ballführende nach der Ankunft los, steht am Ende oft sein Gegenspieler direkt neben ihm im Passweg. Bei der Ankunft wären 86 % anspielbar gewesen, am Ende sind es 68 %.
 - Gewählt habe ich das Szenenende, weil nur dann Text, Bild und nächste Entscheidung übereinstimmen.
 - Eine Prüfung bei der Ankunft würde ein anderes Bild als das gezeigte beschreiben.
@@ -84,6 +103,7 @@ Grundlage: Analyse vom 18.11.2026, Freigabe „A“ durch den Product Owner.
   - Ziel (21/15): Stern, aber am Ende zugestellt – Text, Etikett, Bild und genannter Gegner stimmen überein;
   - Ziel (24/15): frei, grüne Linie;
   - **Eigenschaftstest über alle Freilauf-Szenen** (über 1500 aus den 200 Abfolgen): Stern = Bewertung vor der Aktion; Laufpfeil = Laufziel; Etikett = Grund; Ergebnis und Passlinie = Lage im Bild; Linie verbindet die gezeigten Positionen; genannter = markierter Gegner; nie „versperrt“ bei „zu weit“; nie „anspielbar“, wenn der Passweg zu ist;
-  - keine Vorwegnahme: Kontext und Hilfe enthalten kein Erklärbild.
+  - keine Vorwegnahme: Kontext und Hilfe enthalten kein Erklärbild;
+  - **K1:** In allen 53 Freilauf-Lagen ist das Hilfe-Ziel gut bewertet. Die Empfehlung ist reproduzierbar und verändert die Lage nicht. „Anspielen“ in der Hilfe bedeutet: am Ende anspielbar, mit mindestens 3 von 4 Nachbarpunkten. Der Warnhinweis kommt nur, wenn es wirklich nicht klappt. Mindestens 45 Lagen haben eine anspielbare Empfehlung (vorher 9). Die Standardlage des Musterwegs erhält den ehrlichen Warnhinweis.
 - Referenzen: unverändert; die Abweichungen sind vorgelegt (s. o.).
 - Sichtprüfung: Rückmeldebilder für (21/15), (24/15) und (10/22) im Browser aufgenommen.

@@ -103,3 +103,49 @@ test('Erklärbild entsteht erst durch die Entscheidung (keine Vorwegnahme)', () 
   const ctx = E.context(s, null); assert.ok(!('explain' in ctx));
   const h = E.hint(s, 'freilaufen'); assert.ok(!('explain' in h));
 });
+
+// K1: Hilfe „Freilaufen“ empfiehlt gute Laufziele, die am Szenenende tatsächlich anspielbar sind – oder sagt ehrlich, dass es eng ist
+function hintLagen() {
+  const out = [], seen = new Set();
+  for (let seed = 1; seed <= 200; seed++) {
+    const rnd = lcg(seed);
+    playMission(E, (E2, s, ctx) => {
+      if (ctx.actions.includes('freilaufen')) { const k = JSON.stringify(s.players.map((p) => [p.x.toFixed(1), p.y.toFixed(1)])); if (!seen.has(k)) { seen.add(k); out.push({ s: E2.clone(s), seed }); } }
+      const F = E2.F, c = E2.carrier(s), blues = E2.team(s, 'blue'), pick = (x) => x[Math.floor(rnd() * x.length)], spot = () => ({ x: -5 + rnd() * (F.W + 10), y: -5 + rnd() * (F.H + 10) }), k = pick(ctx.actions);
+      if (k === 'passen') { if (rnd() < 0.6) return { kind: 'pass', id: pick(blues.filter((b) => b !== c)).id }; return Object.assign({ kind: 'pass' }, spot()); }
+      if (k === 'dribbeln') return Object.assign({ kind: 'dribble' }, spot()); if (k === 'schiessen') return { kind: 'shoot', goal: rnd() < 0.5 ? 0 : 1 };
+      if (k === 'freilaufen') return Object.assign({ kind: 'run', id: pick(blues.filter((b) => b !== c)).id }, spot()); if (k === 'erobern') return { kind: 'press', id: pick(blues).id };
+      return Object.assign({ kind: 'cover', id: pick(blues).id }, spot());
+    });
+  }
+  return out;
+}
+const LAGEN = hintLagen();
+
+test('K1: Hilfe beim Freilaufen – Empfehlung und spätere Rückmeldung passen in allen Lagen zusammen', () => {
+  const H = T().hilfe; let frei = 0, eng = 0;
+  for (const { s: s0 } of LAGEN) {
+    const before = JSON.stringify(s0), h = E.hint(s0, 'freilaufen');
+    assert.strictEqual(JSON.stringify(s0), before, 'Hilfe verändert die Lage nicht');
+    assert.deepStrictEqual(E.hint(s0, 'freilaufen'), h, 'reproduzierbar');
+    const a = { kind: 'run', id: h.ids[0], x: h.point.x, y: h.point.y };
+    const { fb } = play(s0, a);
+    assert.strictEqual(fb.good, true, 'empfohlen werden nur Laufziele, die die bestehende Bewertung als gut einstuft (keine neue Regel)');
+    if (h.eng) { eng++; assert.strictEqual(h.say, H.freilaufenEng); assert.strictEqual(fb.success, false, 'Warnung nur, wenn es wirklich nicht klappt'); assert.match(fb.say, /trotzdem eine gute Idee/); }
+    else {
+      frei++; assert.strictEqual(h.say, H.freilaufen);
+      assert.strictEqual(fb.success, true, 'Hilfe sagt „anspielen“ → am Ende anspielbar'); assert.doesNotMatch(fb.text, /im Passweg/);
+      const near = [[0.75, 0], [-0.75, 0], [0, 0.75], [0, -0.75]].filter(([dx, dy]) => play(s0, { kind: 'run', id: a.id, x: a.x + dx, y: a.y + dy }).fb.success).length;
+      assert.ok(near >= 3, `kein zentimetergenauer Punkt (${near}/4 Nachbarn klappen)`);
+    }
+  }
+  assert.strictEqual(frei + eng, LAGEN.length);
+  assert.ok(frei >= 45, `${frei} von ${LAGEN.length} Lagen mit anspielbarer Empfehlung (vor K1: 9)`);
+});
+
+test('K1: Standardlage (Musterweg) – kein sicher anspielbarer Platz, die Hilfe sagt das ehrlich', () => {
+  const s0 = runState(), h = E.hint(s0, 'freilaufen');
+  assert.strictEqual(h.eng, true);
+  const { fb } = play(s0, { kind: 'run', id: h.ids[0], x: h.point.x, y: h.point.y });
+  assert.ok(fb.good && !fb.success && /im Passweg/.test(fb.text), fb.say);
+});

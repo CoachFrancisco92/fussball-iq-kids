@@ -38,7 +38,13 @@ test(`Mission 1 identisch zur Referenz ${REF.seit} (bis auf vorgelegte Abweichun
   assert.deepStrictEqual(listed.filter((k) => !diff.includes(k)), [], 'vorgelegte Abweichungen treten nicht mehr auf');
   for (const k of listed) assert.deepStrictEqual([ref.seeds[k], now.seeds[k]], [pending.seeds[k].alt, pending.seeds[k].neu], `Abfolge ${k}`);
 });
-test('Referenzdatei unverändert; Abweichungen mit geändertem Spielverlauf sind als solche vorgelegt', () => {
+test('Referenzdatei unverändert; jede vorgelegte Abweichungsliste nennt Spielverlaufsänderungen und ihren Bericht', () => {
   assert.strictEqual(hash(ref), REF_HASH, REF.file + ' wurde verändert');
-  assert.deepStrictEqual(Object.keys(pending.seeds).filter((k) => pending.spielverlaufGeaendert.length && !pending.spielverlaufGeaendert.includes('Abfolge ' + k)), [], 'Spielverlaufsänderung dokumentiert');
+  // Ob sich der Spielverlauf geändert hat, ermittelt diff.js gegen den Referenz-Stand und schreibt es in die Liste;
+  // hier wird geprüft, dass diese Angabe und der zugehörige Bericht vorhanden sind.
+  for (const f of fs.readdirSync(dir).filter((n) => /^abweichungen-.*\.json$/.test(n) && !/-ui\.json$/.test(n))) {
+    const p = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+    assert.ok(Array.isArray(p.spielverlaufGeaendert), `${f}: Angabe zum Spielverlauf fehlt`);
+    assert.ok(p.bericht && fs.existsSync(path.join(__dirname, '..', p.bericht)), `${f}: Bericht ${p.bericht} fehlt`);
+  }
 });

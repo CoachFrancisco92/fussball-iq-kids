@@ -1,8 +1,10 @@
 {
- "grund": "Korrektur A (Freilaufen: Texte und Anzeige, V0.3.1) – zur Freigabe vorgelegt",
+ "grund": "Korrektur A inkl. K1 (Freilaufen: Texte, Anzeige, Hilfe; V0.3.1) – zur Freigabe vorgelegt",
  "bericht": "docs/korrektur-a-freilaufen.md",
- "geaenderteEntscheidungen": 112,
- "spielverlaufGeaendert": [],
+ "geaenderteEntscheidungen": 115,
+ "spielverlaufGeaendert": [
+  "Hilfe-Durchlauf"
+ ],
  "scripted": {
   "musterweg": {
    "alt": "06b600fd15f72574",
@@ -15,7 +17,7 @@
  },
  "hinted": {
   "alt": "4950481751ceb84b",
-  "neu": "f50d957e09e76161"
+  "neu": "2b00887fb8fa34ab"
  },
  "seeds": {
   "2": {

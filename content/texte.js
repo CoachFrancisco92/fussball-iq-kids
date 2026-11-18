@@ -38,6 +38,8 @@
       schiessen: 'Vor diesem Tor steht kein Gegner im Weg.',
       dribbeln: 'Dribbel dorthin, wo kein Gegner im Weg ist.',
       freilaufen: 'Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.',
+      freilaufenEng: 'Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen.',
+      freilaufenKeinPlatz: 'Gerade ist es überall eng. Such dir eine Stelle mit Platz – weg von den Gegnern.',
       erobern: 'Der Spieler, der am nächsten am Ball ist, greift an.',
       passenRaum: 'Gerade steht keiner frei. Spiel den Ball in den freien Raum – dein Freund läuft hin und ist zuerst da.',
       auchGut: (wege) => ` Auch gut: ${[].concat(wege).join(' oder ')}.`,
