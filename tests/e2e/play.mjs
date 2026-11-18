@@ -23,21 +23,38 @@ const fail = (msg) => { throw new Error(msg + (errors.length ? '\nJS-Fehler: ' +
 async function run(viewport, label, strategy = 'hint') {
   const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH, args: ['--no-sandbox'] } : {});
   const page = await browser.newPage({ viewport });
+  // Prüft die Zusage „wenn die App auf eine Eingabe wartet, liegt das Spielfeld fest“:
+  // Ändert sich das Spielfeld zwischen zwei Frames im Modus decide/look, ohne dass dazwischen
+  // eine Eingabe erfolgte, ist das ein Anwendungsfehler (Tipps würden danebengehen).
+  await page.addInitScript(() => {
+    window.__layoutShifts = [];
+    let input = 0, prev = null;
+    for (const ev of ['pointerdown', 'click', 'keydown']) addEventListener(ev, () => { input++; }, true);
+    const frame = () => {
+      const f = document.getElementById('field');
+      if (f && window.__fiq) {
+        const r = f.getBoundingClientRect();
+        const cur = { mode: window.__fiq.mode, x: Math.round(r.left), y: Math.round(r.top), w: Math.round(r.width), input, vw: innerWidth, vh: innerHeight };
+        if (prev && ['decide', 'look'].includes(cur.mode) && cur.mode === prev.mode && cur.input === prev.input && cur.vw === prev.vw && cur.vh === prev.vh && (cur.x !== prev.x || cur.y !== prev.y || cur.w !== prev.w))
+          window.__layoutShifts.push({ mode: cur.mode, from: [prev.x, prev.y, prev.w], to: [cur.x, cur.y, cur.w] });
+        prev = cur;
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  });
   if (process.env.SLOW) { const cdp = await page.context().newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: Number(process.env.SLOW) }); } // langsame Geräte/CI simulieren
   page.on('pageerror', (e) => errors.push(`[${label}] ${e.message}`));
   page.on('console', (m) => { if (m.type() === 'error' && !/fonts\.g/.test(m.text()) && !/Failed to load resource/.test(m.text())) errors.push(`[${label}] console: ${m.text()}`); });
   await page.goto(base + 'index.html', { waitUntil: 'domcontentloaded' });
   const mode = () => page.evaluate(() => window.__fiq.mode);
   const waitMode = async (m, ms = 25000) => { const t = Date.now(); while (Date.now() - t < ms) { if (errors.length) fail('Abbruch'); if ((await mode()) === m) return; await page.waitForTimeout(80); } fail(`[${label}] Zeitüberschreitung: warte auf ${m}, ist ${await mode()}`); };
-  // Tippen erst, wenn das Spielfeld ruhig liegt (nach dem Ausblenden der Rückmeldung ändert sich das Layout kurz)
-  const fieldRect = () => page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; });
   const tap = async (x, y) => {
-    let b = await fieldRect();
-    for (let i = 0; i < 40; i++) { await page.waitForTimeout(60); const n = await fieldRect(); if (n.every((v, k) => Math.abs(v - b[k]) < 0.5)) break; b = n; }
+    const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; });
     const s = b[2] / 40.4; await page.mouse.click(b[0] + (x + 2.2) * s, b[1] + (y + 1.6) * s);
   };
   // Zustandsbasiertes Warten statt fester Pausen (stabil auch auf langsamen CI-Rechnern)
-  const until = async (fn, what, ms = 8000) => { const t = Date.now(); while (Date.now() - t < ms) { if (await page.evaluate(fn)) return; await page.waitForTimeout(50); } fail(`[${label}] Zustand nicht erreicht: ${what}`); };
+  const until = async (fn, what, ms = 4000) => { const t = Date.now(); while (Date.now() - t < ms) { if (await page.evaluate(fn)) return; await page.waitForTimeout(50); } fail(`[${label}] Zustand nicht erreicht: ${what}`); };
   const actionStarted = async (what) => {
     const t = Date.now();
     while (Date.now() - t < 4000) { if ((await mode()) !== 'decide') return; await page.waitForTimeout(50); }
@@ -121,6 +138,8 @@ async function run(viewport, label, strategy = 'hint') {
   const stars = await page.$$eval('#stars span.on', (x) => x.length);
   if (strategy === 'bad' && stars > 2) fail(`[${label}] ungünstige Entscheidungen bekamen ${stars} Sterne`);
   await page.click('#hl'); await waitMode('replay'); await page.click('#skip'); await waitMode('end');
+  const shifts = await page.evaluate(() => window.__layoutShifts);
+  if (shifts.length) fail(`[${label}] Spielfeld verschiebt sich, während die App auf Eingaben wartet: ${JSON.stringify(shifts.slice(0, 3))}`);
   await browser.close();
   console.log(`✓ ${label}: Mission vollständig (${types.length + 1} Entscheidungen, Verteidigung enthalten)`);
 }

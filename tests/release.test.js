@@ -39,6 +39,8 @@ test('Veröffentlichung nur über einen Workflow und nur nach bestandenen Tests'
   assert.match(deployJob, /needs: test/, 'Veröffentlichen muss von den Tests abhängen');
   assert.match(deployJob, /refs\/heads\/main/, 'automatisch nur von main');
   assert.match(ci, /check-live\.mjs/, 'Live-Prüfung nach dem Veröffentlichen');
+  assert.match(ci, /if: failure\(\)[\s\S]*Wiederherstellen/, 'bei roter Live-Prüfung Anleitung zur Wiederherstellung');
+  assert.match(ci, /path: \.release-tools/, 'Rollback auch für ältere Stände (Werkzeuge aus main)');
 });
 
 test('set-version ändert alle Stellen konsistent (Probelauf in Kopie)', () => {

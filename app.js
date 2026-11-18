@@ -82,6 +82,10 @@
   const VIEW = { x0: -2.2, y0: -1.6, w: 40.4, h: 27.2 };
   let scale = 20, dpr = 1;
 
+  /** Nach jeder Änderung, die die Höhe von Kopf- oder Bedienleiste ändert, sofort neu vermessen.
+   *  Sonst zeigt das Spielfeld bis zum nächsten Frame die alte Größe, obwohl die App schon bereit
+   *  für Eingaben ist – ein Tipp in diesem Moment landet daneben (Ursache des roten CI-Laufs e7cb504). */
+  function syncLayout() { resize(); }
   function resize() {
     const r = wrap.getBoundingClientRect();
     dpr = Math.min(window.devicePixelRatio || 1, 2.5);
@@ -440,6 +444,7 @@
     h.onclick = () => showHint();
     box.appendChild(h);
     $('cancel').hidden = !sel;
+    syncLayout();
   }
 
   const STEP_SAY = {
@@ -460,7 +465,7 @@
     if (!silent) Voice.say(STEP_SAY[k][0]);
     armIdle();
   }
-  function setStepText(t) { $('step').textContent = t; $('step').hidden = !t; }
+  function setStepText(t) { $('step').textContent = t; $('step').hidden = !t; syncLayout(); }
 
   function showHint() {
     const c = hist[dec].ctx;
@@ -589,13 +594,14 @@
     $('fbCompare').hidden = h.attempts.length < 2;
     $('fbNext').querySelector('.lbl').textContent = M.done ? 'Fertig' : 'Weiterspielen';
     $('feedback').hidden = false;
+    syncLayout();
     if (fb.good) Sfx.good();
     updateProgress();
     Voice.say(fb.say);
   }
 
   function retry() {
-    $('feedback').hidden = true;
+    $('feedback').hidden = true; syncLayout();
     const h = hist[dec];
     S = E.clone(h.snap); M = E.clone(h.mission);
     h.final = null; explainView = null;
@@ -630,13 +636,13 @@
     startReplay([
       { frames: a1.frames, label: 'Vorher', explain: a1.fb.explain, say: say('Vorher', a1) },
       { frames: a2.frames, label: 'Jetzt', explain: a2.fb.explain, say: say('Jetzt', a2) },
-    ], () => { S = E.clone(h.final.endState); explainView = h.final.fb.explain; $('feedback').hidden = false; mode = 'feedback'; });
+    ], () => { S = E.clone(h.final.endState); explainView = h.final.fb.explain; $('feedback').hidden = false; mode = 'feedback'; syncLayout(); });
   }
   function startReplay(queue, onDone) {
     mode = 'replay';
     replay = { queue, i: 0, f: 0, acc: 0, onDone: null };
     $('prompt').hidden = true; $('skip').hidden = false; setStepText('');
-    replay.onDone = () => { $('skip').hidden = true; onDone(); $('prompt').hidden = mode === 'end'; };
+    replay.onDone = () => { $('skip').hidden = true; onDone(); $('prompt').hidden = mode === 'end'; syncLayout(); };
     Voice.say(queue[0].say || '');
   }
 

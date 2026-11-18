@@ -18,10 +18,24 @@ Arbeitspaket-Branch ──► Tests grün (CI) ──► Freigabe Product Owner 
 5. **Merge nach `main`** → CI veröffentlicht nur, wenn alle Tests grün sind, und prüft danach die Live-Seite (HTML, Skripte und Service Worker mit derselben Version; keine Test-/Doku-Dateien öffentlich).
 6. **Tag setzen**, sobald die Live-Prüfung grün ist: `git tag vX.Y.Z && git push origin vX.Y.Z`.
 
-## Rollback
-- **Schnell:** Actions → Workflow „CI“ → *Run workflow* (Branch `main`) → Feld *ref* = letzter guter Tag, z. B. `v0.2.3`. Der Tag wird erneut getestet, veröffentlicht und live geprüft.
-- **Dauerhaft:** den fehlerhaften Commit auf `main` per `git revert` zurücknehmen (neuer, normaler Release).
-- Rollback ist erst ab dem ersten Tag (`v0.2.3`) möglich; davor nur per `git revert`.
+## Wiederherstellung (Rollback)
+
+| Situation | Was passiert | Was tun |
+|---|---|---|
+| Tests rot | nichts wird veröffentlicht, alte Seite bleibt | Ursache auf Branch beheben |
+| Veröffentlichen schlägt fehl | GitHub Pages behält den letzten erfolgreichen Stand | erneut versuchen bzw. Ursache beheben |
+| **Live-Prüfung rot** | neuer Stand ist online, entspricht aber nicht der Erwartung | **sofort letzten Tag erneut veröffentlichen** (s. u.) – die Zusammenfassung des fehlgeschlagenen Laufs nennt den Tag |
+
+**Letzten freigegebenen Stand erneut veröffentlichen:**
+1. Actions → Workflow **CI** → *Run workflow* (Branch `main`)
+2. Feld *ref* = letzter Tag, z. B. `v0.2.3` → *Run workflow*
+3. Der Lauf testet diesen Stand, veröffentlicht ihn und prüft ihn live.
+4. Danach die Ursache auf einem eigenen Branch beheben.
+
+Hinweise:
+- Erlaubt sind nur Release-Tags (`vX.Y.Z`). Auch Stände vor Phase 1 lassen sich so veröffentlichen, weil Paketliste und Live-Prüfung immer vom aktuellen `main` kommen.
+- Ältester wiederherstellbarer Stand: `v0.2.2` (Commit `42fe009`, letzter Stand vor Phase 1; trägt intern die Versionsnummer 0.2.1).
+- **Nicht** per `git revert` auf vor Phase 1 zurückgehen: Das entfernt den Workflow selbst, danach würde nichts mehr veröffentlicht.
 
 ## Live-Prüfung manuell
 `npm run check:live` – prüft https://coachfrancisco92.github.io/fussball-iq-kids/ gegen die Version aus `package.json`.

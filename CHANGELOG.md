@@ -7,7 +7,8 @@ Keine Änderung am Spielverhalten. Ziel: verlässliche Freigabe und Auslieferung
 - **Versionierung:** `npm run version:set -- X.Y.Z` setzt alle Stellen; Test verlangt einen CHANGELOG-Abschnitt. Korrigiert: V0.2.2 war mit Versionsnummer 0.2.1 veröffentlicht.
 - **Rollback:** Workflow „CI“ manuell mit Release-Tag starten; erster Tag wird `v0.2.3`.
 - **Live-Prüfung:** `npm run check:live` (auch automatisch nach jeder Veröffentlichung) prüft Version von HTML, Skripten und Service Worker.
-- **Stabilere Browser-Tests:** Tippen erst, wenn das Spielfeld nach Layoutwechseln ruhig liegt (Ursache des ersten roten Laufs auf `main`); Warten auf Spielzustände statt fester Pausen; Abbruch mit Diagnose statt stillem Ausweichen; auch mit 4-fach gedrosselter CPU grün (`SLOW=4`).
+- **Korrektur (Ursache des ersten roten Laufs auf `main`):** Nach „Weiterspielen“ war die App schon bereit für Eingaben, das Spielfeld hatte aber noch einen Frame lang die alte Größe – ein Tipp in diesem Moment lag ~40 px daneben. Das Spielfeld wird jetzt bei jeder Änderung der Bedienleiste sofort neu vermessen. Neuer Browser-Test erkennt solche Verschiebungen.
+- **Stabilere Browser-Tests:** Warten auf Spielzustände statt fester Pausen; Abbruch mit Diagnose statt stillem Ausweichen; auch mit 4-fach gedrosselter CPU grün (`SLOW=4`).
 - **Neue Tests:** Auslieferungspaket vollständig/ohne Testdateien, CHANGELOG-Pflicht, nur ein veröffentlichender Workflow mit Test-Abhängigkeit, Probelauf des Versionierungsskripts.
 - **Doku:** `CLAUDE.md` (Regeln, Rollen, Definition of Done, Freigabe), `docs/RELEASE.md`, `docs/bestandsaufnahme-2026-11.md`; Agenten `simulation-qa` und `mission-designer` an die tatsächliche Architektur angepasst.
 
