@@ -56,5 +56,5 @@ Ein Arbeitspaket ist fertig, wenn:
 
 ## Freigabekriterien
 - **Merge nach `main`:** Definition of Done erfüllt + ausdrückliche Freigabe des Product Owners.
-- **Live:** automatisch durch die CI, nur nach grünen Tests; danach muss die Live-Prüfung grün sein, dann Tag `vX.Y.Z` setzen.
+- **Live:** automatisch durch die CI, nur nach grünen Tests; danach Live-Prüfung; bei Grün setzt die CI den Tag `vX.Y.Z`. Bei roter Live-Prüfung: Wiederherstellung laut `docs/RELEASE.md`.
 - **Kindertest:** Kriterien in `docs/RELEASE.md`.

@@ -6,7 +6,7 @@ Schlank, aber verbindlich. Die Live-Seite wird **ausschließlich** über den Wor
 
 ```
 Arbeitspaket-Branch ──► Tests grün (CI) ──► Freigabe Product Owner ──► Merge nach main
-      ──► CI: Tests ──► Paket bauen ──► Veröffentlichen ──► Live-Prüfung ──► Tag vX.Y.Z
+      ──► CI: Tests ──► Paket bauen ──► Veröffentlichen ──► Live-Prüfung ──► Tag vX.Y.Z (automatisch)
 ```
 
 1. **Entwickeln** auf einem eigenen Branch (`phase-…`, `fix-…`, `mission-…`). Die CI testet jeden Push, veröffentlicht aber nichts.
@@ -16,7 +16,7 @@ Arbeitspaket-Branch ──► Tests grün (CI) ──► Freigabe Product Owner 
 3. **Lokal prüfen:** `npm run test:all` (Simulation, Konsistenz, Release-Regeln, Browser-Durchlauf).
 4. **Freigabe** durch den Product Owner anhand der Zusammenfassung (was, warum, Tests, Risiken).
 5. **Merge nach `main`** → CI veröffentlicht nur, wenn alle Tests grün sind, und prüft danach die Live-Seite (HTML, Skripte und Service Worker mit derselben Version; keine Test-/Doku-Dateien öffentlich).
-6. **Tag setzen**, sobald die Live-Prüfung grün ist: `git tag vX.Y.Z && git push origin vX.Y.Z`.
+6. **Tag `vX.Y.Z`** setzt die CI automatisch, sobald die Live-Prüfung grün ist. Er ist der Wiederherstellungspunkt für spätere Rollbacks.
 
 ## Wiederherstellung (Rollback)
 
@@ -46,6 +46,7 @@ Auf dem Gerät: Startbildschirm zeigt „Version X.Y.Z“.
 |---|---|---|
 | Settings → Pages → *Source* | **GitHub Actions** | schaltet die alte, testunabhängige Veröffentlichung „Deploy from a branch“ ab |
 | Settings → Branches → Regel für `main` *(empfohlen)* | „Require status checks to pass“: **Tests** | verhindert Merges mit roten Tests |
+| Releases → *Draft a new release* → Tag **`v0.2.2`**, Ziel: Commit `42fe009` *(einmalig, vor dem ersten Release nach Phase 1)* | Wiederherstellungspunkt | Claude-Sitzungen können keine Tags anlegen; ab `v0.2.3` setzt die CI sie selbst |
 
 ## Freigabekriterien für einen Kindertest
 Ein Stand darf vor ein Kind, wenn: Live-Prüfung grün · Version auf dem Startbildschirm stimmt · auf dem Testgerät einmal komplett durchgespielt (inkl. Ton) · keine offenen Fehler mit Absturz oder Hängenbleiben.

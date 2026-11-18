@@ -106,3 +106,27 @@ jobs:
             echo ""
             echo "Details: docs/RELEASE.md, Abschnitt *Wiederherstellung*."
           } >> "$GITHUB_STEP_SUMMARY"
+
+  tag:
+    name: Release-Tag setzen
+    needs: live-check
+    # nur für reguläre Releases von main (nicht beim erneuten Veröffentlichen eines alten Tags)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tag vX.Y.Z setzen (falls noch nicht vorhanden)
+        run: |
+          V="v$(node -p "require('./package.json').version")"
+          if git rev-parse -q --verify "refs/tags/$V" >/dev/null; then
+            echo "Tag $V existiert bereits – nichts zu tun."
+          else
+            git config user.name "github-actions"; git config user.email "github-actions@users.noreply.github.com"
+            git tag -a "$V" -m "Release $V (Tests, Veröffentlichung und Live-Prüfung grün)"
+            git push origin "$V"
+            echo "## ✅ Release $V veröffentlicht und getaggt" >> "$GITHUB_STEP_SUMMARY"
+          fi
