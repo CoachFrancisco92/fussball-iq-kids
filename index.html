@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Fußball-IQ Kids</title>
 <meta name="theme-color" content="#1e3a8a">
-<meta name="app-version" content="0.4.0">
+<meta name="app-version" content="0.5.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fußball-IQ">
@@ -130,6 +130,8 @@
   .mcard .num { width: 54px; height: 54px; border-radius: 16px; background: var(--sun); color: #6b4e00; font-size: 26px; font-weight: 800; display: grid; place-items: center; flex: none; }
   .mcard b { font-size: 20px; display: block; line-height: 1.1; }
   .mcard small { opacity: .8; font-size: 14px; font-weight: 600; }
+  .mcard .art { margin-left: auto; align-self: flex-start; font-style: normal; font-size: 13px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.18); white-space: nowrap; }
+  .mcard .art:empty { display: none; } .mcard .art[data-art="spiel"] { background: rgba(255,214,10,.28); }
   .chips { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
   .chips span { background: rgba(255,255,255,.18); padding: 1px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; }
   .big { margin-top: 20px; height: 76px; padding: 0 44px; border-radius: 999px; background: var(--sun); color: #3d2e00; font-size: 26px; font-weight: 800; box-shadow: 0 6px 0 #b89600, 0 12px 30px rgba(0,0,0,.3); }
@@ -141,7 +143,7 @@
   #stars span { color: rgba(255,255,255,.25); } #stars span.on { color: var(--sun); text-shadow: 0 0 18px rgba(255,214,10,.6); }
   #endScore { font-weight: 800; font-size: 18px; opacity: .85; }
   #endMsg { font-size: 18px; font-weight: 600; margin: 10px 0; }
-  #endList { list-style: none; padding: 0; margin: 10px auto; max-width: 420px; text-align: left; font-weight: 700; }
+  #endList { list-style: none; padding: 0; margin: 10px auto; max-width: 420px; text-align: left; font-weight: 700; max-height: 34vh; overflow-y: auto; } /* lange Missionen (bis 15 Entscheidungen): Knöpfe bleiben sichtbar */
   #endList li { background: rgba(255,255,255,.1); margin: 4px 0; padding: 6px 12px; border-radius: 12px; display: flex; gap: 10px; }
   #endList li span { margin-left: auto; } #endList b { opacity: .6; }
   .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -239,7 +241,7 @@
       <div><i>👆</i>Knopf, dann Feld</div>
       <div><i>↩️</i>Nochmal probieren</div>
     </div>
-    <p class="ver" id="ver">Version 0.4.0</p>
+    <p class="ver" id="ver">Version 0.5.0</p>
   </div>
 </div>
 
@@ -263,10 +265,11 @@
 <div id="confetti"></div>
 <div class="goalBanner" id="goalBanner"></div>
 
-<script src="content/texte.js?v=0.4.0"></script>
-<script src="missions/mission-1.js?v=0.4.0"></script>
-<script src="missions/welches-tor-ist-frei.js?v=0.4.0"></script>
-<script src="engine.js?v=0.4.0"></script>
-<script src="app.js?v=0.4.0"></script>
+<script src="content/texte.js?v=0.5.0"></script>
+<script src="missions/mission-1.js?v=0.5.0"></script>
+<script src="missions/welches-tor-ist-frei.js?v=0.5.0"></script>
+<script src="missions/freie-bahn.js?v=0.5.0"></script>
+<script src="engine.js?v=0.5.0"></script>
+<script src="app.js?v=0.5.0"></script>
 </body>
 </html>

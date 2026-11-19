@@ -1,0 +1,135 @@
+diff --git a/content/texte.js b/content/texte.js
+index 7d14819..3a12531 100644
+--- a/content/texte.js
++++ b/content/texte.js
+@@ -87,6 +87,11 @@
+       anderesTorFrei: ' Das andere Tor war frei.',
+       freierRaum: 'Du bist in den freien Raum gedribbelt.',
+       inGegner: 'Du bist direkt auf einen Gegner zugelaufen.',
++      ballGesichert: 'Nach vorn war kein Platz – du hast den Ball gesichert.',
++      keinRaumgewinn: 'Du hast den Ball behalten, aber nach vorn war Platz.',
++      besserFreund: 'Du hast den Ball behalten. Aber ein Freund stand frei – ein Pass hätte euch weitergebracht.',
++      dribbelKnapp: (g) => `Das war knapp: ${g} war ganz nah. Mit mehr Abstand ist es sicherer.`,
++      gegnerHolt: (g) => `${g} konnte dir den Ball abnehmen.`,
+       gelaufenFrei: 'Du bist in einen freien Raum gelaufen.',
+       gelaufenBesetzt: 'Dort stand schon ein Gegner.',
+       gelaufenZuNah: 'Das war zu nah am Ball – dein Freund braucht Platz.',
+diff --git a/engine.js b/engine.js
+index 70be924..5c04865 100644
+--- a/engine.js
++++ b/engine.js
+@@ -302,6 +302,15 @@
+       const o = shotOptions(s).sort((a, b) => b.margin - a.margin)[0];
+       return withAlternatives(s, actionKey, { goal: o.goal, say: texts(s).hilfe.schiessen });
+     }
++    if (actionKey === 'dribbeln' && s.poss === 'blue') {
++      const o = dribbleOptions(s), pool = o.fwd.length ? o.fwd : o.good;
++      if (pool.length) {
++        const free = (j) => { if (!j.zone) return 0; const sh = F.goals.red.map((g) => lane(j.end, g, CFG.shotSpeed, team(s, 'red'), CFG.redReact, CFG.blockReach).margin); return Math.max(...sh) > CFG.shotLaneOk ? 1 : 0; };
++        const score = (j) => j.gain + 6 * free(j) + Math.min(j.open, 3) * 0.5 + j.kept * 0.3 - Math.abs(j.end.y - F.H / 2) * 0.05;
++        const b = pool.slice().sort((x, y) => score(y) - score(x))[0];
++        return withAlternatives(s, actionKey, { point: { x: b.tgt.x, y: b.tgt.y }, say: texts(s).hilfe.dribbeln });
++      }
++    }
+     if (actionKey === 'dribbeln') {
+       let best = null;
+       for (let a = -70; a <= 70; a += 10) {
+@@ -444,6 +453,64 @@
+     return best;
+   }
+ 
++  // ---- PAKET-D-PROTOTYP (Wegwerf): Dribbelbewertung über deterministische Vorausrechnung ----
++  let probeDepth = 0;
++  const PROBE_EV = { good: true, rec: { good: true, why: '' }, exe: { good: true, why: '' } };
++  const D_TOL = 0.5, D_GAIN = 1;
++  const capTo = (c, to) => { to = clampP(to); const d = dist(c, to); return d > 8 ? { x: c.x + ((to.x - c.x) / d) * 8, y: c.y + ((to.y - c.y) / d) * 8 } : to; };
++  function dribbleProbe(s, to) {
++    const t = clone(s), c0 = carrier(t), from = { x: c0.x, y: c0.y };
++    probeDepth++;
++    try {
++      startAction(t, { kind: 'dribble', x: to.x, y: to.y });
++      let n = 0; while (!t.ep.done && n++ < 1500) tick(t);
++    } finally { probeDepth--; }
++    const st = t.ep.events.find((e) => e.type === 'steal'), c = P(t, c0.id);
++    return { lost: !!st, by: st ? st.by : null, end: { x: c.x, y: c.y }, gain: c.x - from.x,
++      zone: !st && c.x >= F.W - F.ZONE - 0.3, open: Math.min(...team(t, 'red').map((r) => dist(r, c))) };
++  }
++  const judgeCache = new Map();
++  function dribbleJudge(s, to) {
++    const c = carrier(s), tgt = capTo(c, to);
++    const key = stateKey(s) + '|' + tgt.x.toFixed(3) + ',' + tgt.y.toFixed(3);
++    if (judgeCache.has(key)) return judgeCache.get(key);
++    const main = dribbleProbe(s, tgt);
++    let kept = 0;
++    if (!main.lost) for (const [dx, dy] of [[D_TOL, 0], [-D_TOL, 0], [0, D_TOL], [0, -D_TOL]]) if (!dribbleProbe(s, capTo(c, { x: tgt.x + dx, y: tgt.y + dy })).lost) kept++;
++    const into = team(s, 'red').some((r) => { const sd = segDist(r, c, tgt); return sd.t > 0.02 && sd.d < 1.0; });
++    const r = Object.assign(main, { tgt, safe: !main.lost && kept >= 3, knapp: !main.lost && kept < 3, kept, into });
++    if (judgeCache.size > 4000) judgeCache.clear();
++    judgeCache.set(key, r);
++    return r;
++  }
++  const stateKey = (s) => s.players.map((p) => p.id + p.x.toFixed(4) + ',' + p.y.toFixed(4) + ',' + (p.vx || 0).toFixed(3) + ',' + (p.vy || 0).toFixed(3)).join(';') + '|' + s.ball.owner + '|' + s.missionId;
++  const optCache = new Map();
++  /** Kandidaten: Richtungen −90…90° (15°), Strecken 3/5/8 m. forwardSafe: sicheres Dribbling mit Raumgewinn ≥ 1 m. */
++  function dribbleOptions(s) {
++    const key = stateKey(s);
++    if (optCache.has(key)) return optCache.get(key);
++    const c = carrier(s), cands = [];
++    for (let a = -90; a <= 90; a += 15) for (const d of [3, 5, 8]) {
++      const r = (a * Math.PI) / 180; cands.push(capTo(c, { x: c.x + Math.cos(r) * d, y: c.y + Math.sin(r) * d }));
++    }
++    const back = []; for (let a = 105; a <= 255; a += 30) { const r = (a * Math.PI) / 180; back.push(capTo(c, { x: c.x + Math.cos(r) * 4, y: c.y + Math.sin(r) * 4 })); }
++    const judged = [];
++    for (const t of cands.concat(back)) { const j = dribbleJudge(s, t); judged.push(j); }
++    const good = judged.filter((j) => j.safe);
++    const fwd = good.filter((j) => j.gain >= D_GAIN);
++    const mate = Math.max(-9, ...passOptions(s).map((o) => o.margin)) > CFG.passLaneOk;
++    const res = { forwardSafe: fwd.length > 0, anySafe: good.length > 0, mate, good, fwd,
++      // Dribbeln ist sinnvoll: sicher mit Raumgewinn – oder Ball sichern, wenn weder nach vorn Platz noch ein Freund frei ist
++      sinnvoll: fwd.length > 0 || (good.length > 0 && !mate) };
++    if (optCache.size > 500) optCache.clear();
++    optCache.set(key, res);
++    return res;
++  }
++  /** Ist das Dribbling zu diesem Ziel sinnvoll? sicher (Ziel + ≥3 von 4 Nachbarpunkten behalten den Ball) und
++   *  Raumgewinn ≥ 1 m Richtung Tor – oder, falls nach vorn kein sicherer Weg existiert, Ball sichern. */
++  const D1B = !(typeof process !== 'undefined' && process.env && process.env.D1B === '0'); // Prototyp-Schalter: Raumgewinn-Regel
++  function dribbleGood(s, j) { const o = dribbleOptions(s); return j.safe && (!D1B || j.gain >= D_GAIN || (!o.forwardSafe && !o.mate)); }
++
+   /** Was bietet die Situation dem Ballführenden? (Grundlage für "Erkennen") */
+   function dribbleBest(s) {
+     const c = carrier(s);
+@@ -463,7 +530,7 @@
+     const inZone = c.x >= F.W - F.ZONE - 0.3;
+     const shots = inZone ? shotOptions(s) : [];
+     const sBest = shots.length ? Math.max(...shots.map((o) => o.margin)) : -9;
+-    const dBest = dribbleBest(s).m;
++    const dOpt = dribbleOptions(s), dBest = (D1B ? dOpt.sinnvoll : dOpt.anySafe) ? 1 : -1;
+     const mate = pBest > CFG.passLaneOk;
+     const space = bestSpacePass(s);
+     return { passes, pBest, shots, sBest, dBest, inZone, space,
+@@ -531,8 +598,13 @@
+         if (m > CFG.shotLaneOk) exe = R(true, X.freiesTor);
+         else { const h = sit.shots[a.goal].hit; const k = (h && h.id) || laneKey(s, c, F.goals.red[a.goal], 'red'); exe = R(false, X.vorDemTor(k ? nameOf(s, k) : X.einGegnerKlein) + (sit.shots[1 - a.goal].margin > CFG.shotLaneOk ? X.anderesTorFrei : '')); }
+       } else {
+-        const m = dribbleLane(s, c, a).margin;
+-        exe = m > 0.2 ? R(true, X.freierRaum) : R(false, X.inGegner);
++        const j = dribbleJudge(s, a), nm = (id) => (id ? nameOf(s, id) : X.einGegner);
++        const near = j.by || laneKey(s, c, j.tgt, 'red');
++        if (dribbleGood(s, j)) exe = R(true, j.gain >= D_GAIN || !D1B ? X.freierRaum : X.ballGesichert);
++        else if (j.safe) exe = R(false, dribbleOptions(s).forwardSafe ? X.keinRaumgewinn : X.besserFreund);
++        else if (j.knapp) exe = named(R(false, X.dribbelKnapp(nm(near))), near, (id) => X.dribbelKnapp(nm(id)));
++        else if (j.into) exe = R(false, X.inGegner);
++        else exe = named(R(false, X.gegnerHolt(nm(near))), near, (id) => X.gegnerHolt(nm(id)));
+       }
+     } else if (a.kind === 'run') {
+       const sc = runSpotScore(s, c, P(s, a.id), a);
+@@ -636,7 +708,7 @@
+   function startAction(s, a) {
+     const c = carrier(s);
+     if (s.poss === 'red') redPlan(s);
+-    const ev = evaluate(s, a);
++    const ev = probeDepth ? PROBE_EV : evaluate(s, a);
+     s.players.forEach((p) => { p.ctrl = null; p.tackleT = 0; p.tx = p.x; p.ty = p.y; });
+     s.ep = { a, t: 0, endT: null, events: [], frames: [], startPoss: s.poss, eval: ev, phase: 'main', restart: null };
+     switch (a.kind) {

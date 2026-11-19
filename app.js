@@ -1,7 +1,7 @@
 /* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen (V0.2) */
 (function () {
   'use strict';
-  const APP_VERSION = '0.4.0';
+  const APP_VERSION = '0.5.0';
   // Schutz gegen gemischte Cache-Stände (neue Seite + altes Skript oder umgekehrt)
   try {
     const htmlV = (document.querySelector('meta[name="app-version"]') || {}).content;
@@ -713,7 +713,9 @@
       card.type = 'button'; card.className = 'mcard' + (m.id === curId ? ' sel' : ''); card.dataset.id = m.id;
       card.setAttribute('aria-pressed', m.id === curId ? 'true' : 'false');
       // Nummer = Platz im empfohlenen Weg (1, 2, 3 …), damit die Reihenfolge ohne Lesen erkennbar ist
-      card.innerHTML = `<div class="num">${m.symbol || i + 1}</div><div><b></b><small></small><div class="chips"></div></div>`;
+      card.innerHTML = `<div class="num">${m.symbol || i + 1}</div><div><b></b><small></small><div class="chips"></div></div><i class="art"></i>`;
+      // Missionsart (Lernen/Spiel): nur Kennzeichnung, kein Einfluss auf den Ablauf
+      if (m.art) { const t = T().bedienung.missionsart[m.art]; card.querySelector('.art').textContent = t; card.querySelector('.art').dataset.art = m.art; }
       card.querySelector('b').textContent = m.titel;
       card.querySelector('small').textContent = m.untertitel || '';
       for (const c of m.merkmale || []) { const sp = document.createElement('span'); sp.textContent = c; card.querySelector('.chips').appendChild(sp); }

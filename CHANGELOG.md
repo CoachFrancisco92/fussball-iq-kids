@@ -1,5 +1,25 @@
 # Changelog
 
+## V0.5.0 – Mission „Freie Bahn!“, A4 und Paket D
+### Meilenstein 4: „Freie Bahn!“ und A4
+Details: `docs/meilenstein-4.md`.
+- Neue Lernmission `missions/freie-bahn.js` (Lernwelt 1, Platz 2 im Lernweg, 🏃): 1 gegen 1 / 1 gegen 2, nur Dribbeln und in der Schusszone Schießen; Situationen B3 (Verfolger hinten), B4 (Gegner frontal), B2 (große Lücke: hindurch **oder** außen herum), B6 (enge Lücke: außen herum, neu), B5 (viel Platz, freies Tor wählen); B1 entfällt (keine eigene Entscheidung mehr). 5 Durchläufe à 3 Situationen.
+- „Welches Tor ist frei?“: Situation **A4** (erst in die Schusszone dribbeln, dann schießen; 4 Angriffsentscheidungen, damit auch der Weg über den Pass noch im Torschuss endet), eigene Ansage „Noch zu weit fürs Tor!“ außerhalb der Schusszone, 5 Durchläufe (Durchlauf 1 unverändert).
+- Missionsart auf der Karte: 🎓 Lernen / 🏆 Spiel (Datenfeld `art`, nur Kennzeichnung).
+- Endbildschirm: Liste der Entscheidungen scrollt bei langen Missionen, „Nochmal“ bleibt ohne Scrollen erreichbar (iPad quer).
+- Referenzen (freigegeben 19.11.2026): „Freie Bahn!“ erstmals (`freie-bahn.v0.5.0.json`, `ui-freie-bahn.v0.5.0.json`); Mission A mit A4 neu (`mission-a.v0.5.0.json`, `ui-mission-a.v0.5.0.json`; Vorgänger ohne A4 und Abweichungsliste in `tests/golden/historie/`, geprüft mit `tests/analysis/a4-referenzwechsel-pruefen.js`); Mission 1 unverändert gegenüber der Paket-D-Referenz.
+
+### Meilenstein 3b: Paket D (Dribbelbewertung und -hilfe, E1–E6)
+Abgenommen; Referenzen v0.5.0 nach Freigabe neu erzeugt (Vorgänger und Abweichungslisten in `tests/golden/historie/`, geprüft mit `tests/analysis/paket-d/referenzwechsel-pruefen.js`). Details: `docs/meilenstein-3b.md`.
+- Mindeststrecke 1 m bezieht sich auf die tatsächlich ausgeführte Bewegung.
+- E1/E2: Dribbelbewertung per deterministischer Vorausrechnung des tatsächlich ausgeführten Wegs (max. 8 m) mit Toleranz ±0,5 m.
+- E3 (R2): ⭐ nur mit Grund – Raumgewinn ≥ 1 m, Anschluss in der Folgesituation (Freund bzw. Tor jetzt frei) oder Ball sichern ohne Alternative; Mindeststrecke 1 m.
+- E4: Erklärungen und Etiketten nach Ursache, kurz, ohne Doppelungen.
+- E5-a/-b: Dribbeln sinnvoll, wenn ein gutes Dribbling existiert; Torchance-Vorrang für den Pass zum freien Freund vor dem Tor.
+- E6: Dribbelhilfe nur mit guten, robusten Zielen Richtung Tor; ohne guten Weg ehrlicher Hinweis („eng“ / „genau dorthin“).
+- Spielverlauf von Mission 1 und Mission A unverändert; Mission 1: 26 Bewertungen geändert (Sterne −4, Ablauf „dribbling“/„Keiner ist frei“ 2 statt 5 von 6 Sternen), Mission A: 12 (Sterne ±0).
+- Tests: `tests/dribbeln.test.js`, `tests/e2e/rechenzeit.mjs` (4× CPU-Drosselung, ≤ 150 ms); Abweichungslisten für Mission A (`missionA-abweichungen-*.json`).
+
 ## V0.4.0 – Mission „Welches Tor ist frei?“ und Missionsauswahl (Meilenstein 1 + 2, zur Abnahme, unveröffentlicht)
 ### Meilenstein 2: Mission A „Welches Tor ist frei?“ (Lernwelt 1)
 Details, Prüfungen und Robustheit: `docs/meilenstein-2.md`. Keine Änderung an `engine.js`/`app.js` außer der Versionsnummer.

@@ -45,33 +45,36 @@ async function open(withTest) {
 }
 
 try {
-  // 1) Nur die echten Missionen: zwei Karten in Lernpfad-Reihenfolge, die erste ist vorausgewählt; Mission 1 bleibt wählbar
+  // 1) Nur die echten Missionen: drei Karten in Lernpfad-Reihenfolge, die erste ist vorausgewählt; alle wählbar; Missionsart sichtbar
   {
     const H = await open(false);
-    const cards = await H.page.$$eval('#missionList .mcard', (cs) => cs.map((c) => ({ id: c.dataset.id, t: c.querySelector('b').textContent, num: c.querySelector('.num').textContent, sel: c.classList.contains('sel') })));
-    const want = [{ id: 'welches-tor-ist-frei', t: 'Welches Tor ist frei?', num: '🥅', sel: true }, { id: 'mission-1', t: 'Zusammen sind wir stark!', num: '2', sel: false }];
+    const cards = await H.page.$$eval('#missionList .mcard', (cs) => cs.map((c) => ({ id: c.dataset.id, t: c.querySelector('b').textContent, num: c.querySelector('.num').textContent, art: c.querySelector('.art').textContent, sel: c.classList.contains('sel') })));
+    const want = [{ id: 'welches-tor-ist-frei', t: 'Welches Tor ist frei?', num: '🥅', art: '🎓 Lernen', sel: true }, { id: 'freie-bahn', t: 'Freie Bahn!', num: '🏃', art: '🎓 Lernen', sel: false }, { id: 'mission-1', t: 'Zusammen sind wir stark!', num: '3', art: '🏆 Spiel', sel: false }];
     if (JSON.stringify(cards) !== JSON.stringify(want)) fail('Startbildschirm: ' + JSON.stringify(cards));
-    for (const id of ['welches-tor-ist-frei', 'mission-1']) {
+    for (const id of ['welches-tor-ist-frei', 'freie-bahn', 'mission-1']) {
       const box = await H.page.locator(`#missionList .mcard[data-id="${id}"]`).boundingBox();
       if (box.height < 70) fail(`Karte ${id} zu klein zum Antippen: ` + box.height);
     }
     await H.touch('#missionList .mcard[data-id="welches-tor-ist-frei"]');
     const sA = (await H.said()).join(' ');
     if (!/Welches Tor ist frei\?/.test(sA) || !/Vor welchem Tor steht kein Roter/.test(sA) || !/Los geht's/.test(sA)) fail('Antippen Mission A liest nicht vor: ' + sA);
+    await H.touch('#missionList .mcard[data-id="freie-bahn"]');
+    const sF = (await H.said()).join(' ');
+    if (!/Freie Bahn!/.test(sF) || !/Schau, wo kein Roter ist/.test(sF) || !/Los geht's/.test(sF)) fail('Antippen Freie Bahn liest nicht vor: ' + sF);
     await H.touch('#missionList .mcard[data-id="mission-1"]');
     const s1 = (await H.said()).join(' ');
     if (!/Zusammen sind wir stark!/.test(s1) || !/Los geht's/.test(s1)) fail('Antippen liest nicht vor: ' + s1);
     await H.touch('#play'); await H.waitMode('look');
     if ((await H.page.evaluate(() => window.__fiq.S.missionId)) !== 'mission-1') fail('Gewählte Mission 1 nicht gestartet');
     if (H.errors.length) fail('JS-Fehler: ' + H.errors.join('; '));
-    console.log('✓ Zwei Missionen: „Welches Tor ist frei?“ (🥅) vor „Zusammen sind wir stark!“ (2), Karten groß, Antippen liest Titel und Einladung vor, gewählte Mission 1 startet mit Schau-Schritt');
+    console.log('✓ Drei Missionen: „Welches Tor ist frei?“ (🥅), „Freie Bahn!“ (🏃), „Zusammen sind wir stark!“ (3); Missionsart 🎓 Lernen / 🏆 Spiel; Karten groß; Antippen liest Titel und Einladung vor (separat geprüft); gewählte Mission 1 startet mit Schau-Schritt');
     await H.page.context().close();
   }
   // 2) Mit Testmission: Auswahl, Situationswechsel, M2, Nochmal
   {
     const H = await open(true);
     const titles = await H.page.$$eval('#missionList .mcard b', (bs) => bs.map((b) => b.textContent));
-    if (titles.join('|') !== 'Welches Tor ist frei?|Test Situationen|Zusammen sind wir stark!') fail('Reihenfolge der Karten (Lernwelt, Nummer): ' + titles.join('|'));
+    if (titles.join('|') !== 'Welches Tor ist frei?|Freie Bahn!|Test Situationen|Zusammen sind wir stark!') fail('Reihenfolge der Karten (Lernwelt, Nummer): ' + titles.join('|'));
     await H.touch('#missionList .mcard[data-id="mission-1"]');
     const selected = await H.page.$eval('#missionList .mcard.sel', (c) => [c.dataset.id, c.getAttribute('aria-pressed')]);
     if (selected.join() !== 'mission-1,true') fail('Auswahl nicht übernommen: ' + selected);

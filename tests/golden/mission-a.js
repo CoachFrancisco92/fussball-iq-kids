@@ -30,8 +30,8 @@ const STYLES = {
   immerPass: (E, s, ctx) => (ctx.actions.includes('passen') ? { kind: 'pass', id: E.team(s, 'blue').find((b) => b !== E.carrier(s)).id } : hintAction(E, s, ctx)),
 };
 
-function play(E, durchlauf, chooser) {
-  const s = E.newState(ID, durchlauf), m = E.newMission(ID, durchlauf), out = [];
+function play(E, durchlauf, chooser, id = ID) {
+  const s = E.newState(id, durchlauf), m = E.newMission(id, durchlauf), out = [];
   let last = null;
   for (let i = 0; !m.done && i < 16; i++) {
     const ctx = E.context(s, last);
@@ -62,9 +62,18 @@ function traceMissionA(E) {
 module.exports = { traceMissionA, play, STYLES, hintAction, childAction, ID };
 
 if (require.main === module) {
-  const i = process.argv.indexOf('--write');
-  if (i < 0) { console.error('Aufruf: node tests/golden/mission-a.js --write <datei>'); process.exit(1); }
-  const E = require('../helpers/load.js');
-  require('node:fs').writeFileSync(process.argv[i + 1], JSON.stringify(traceMissionA(E), null, 1));
-  console.log('geschrieben:', process.argv[i + 1]);
+  // --write <datei>: Referenz erzeugen (nur nach Freigabe).
+  // --abweichungen <datei>: Abweichungen gegen die gültige Referenz vorlegen (tests/golden/missionA-abweichungen-<paket>.json);
+  //   der Referenztest lässt dann genau diese zu. Ändert keine Referenz.
+  const fs = require('node:fs'), E = require('../helpers/load.js');
+  const i = process.argv.indexOf('--write'), j = process.argv.indexOf('--abweichungen');
+  if (i > 0) { fs.writeFileSync(process.argv[i + 1], JSON.stringify(traceMissionA(E), null, 1)); console.log('geschrieben:', process.argv[i + 1]); }
+  else if (j > 0) {
+    const REF = require('./referenz.js'), ref = require('./' + REF.missionA.file);
+    const now = JSON.parse(JSON.stringify(traceMissionA(E))), out = { grund: process.env.GRUND || 'zur Freigabe vorgelegt', bericht: process.env.BERICHT || '', styles: {}, seeds: {} };
+    for (const k of Object.keys(ref.styles)) if (JSON.stringify(ref.styles[k]) !== JSON.stringify(now.styles[k])) out.styles[k] = { alt: hash(ref.styles[k]), neu: hash(now.styles[k]) };
+    for (const k of Object.keys(ref.seeds)) if (ref.seeds[k] !== now.seeds[k]) out.seeds[k] = { alt: ref.seeds[k], neu: now.seeds[k] };
+    fs.writeFileSync(process.argv[j + 1], JSON.stringify(out, null, 1) + '\n');
+    console.log(`Mission A: Spielweisen geändert ${Object.keys(out.styles).length}, Kinder-Abfolgen geändert ${Object.keys(out.seeds).length}/200 → ${process.argv[j + 1]}`);
+  } else { console.error('Aufruf: node tests/golden/mission-a.js --write <datei> | --abweichungen <datei>'); process.exit(1); }
 }

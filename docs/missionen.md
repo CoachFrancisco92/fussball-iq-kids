@@ -48,8 +48,11 @@ Seit V0.2.4 sind Spielinhalte von der Simulation getrennt. **Für eine neue Miss
 ### Vorhandene Missionen
 | Lernweg | Datei | Titel | Art |
 |---|---|---|---|
-| 1 (🥅) | `missions/welches-tor-ist-frei.js` | Welches Tor ist frei? (Lernwelt 1) | Situationsmission: A1, A2, A3, A5 · 2 gegen 2 · 4 Durchläufe à 3 Situationen |
-| 2 | `missions/mission-1.js` | Zusammen sind wir stark! (Lernwelt 2) | Angriff + Verteidigung · 3 gegen 3 |
+| 1 (🥅) | `missions/welches-tor-ist-frei.js` | Welches Tor ist frei? (Lernwelt 1, 🎓 Lernen) | Situationsmission: A1–A5 · 2 gegen 2 · 5 Durchläufe à 3 Situationen |
+| 2 (🏃) | `missions/freie-bahn.js` | Freie Bahn! (Lernwelt 1, 🎓 Lernen) | Situationsmission: B3, B4, B2, B6, B5 · 1 gegen 1 / 1 gegen 2 · 5 Durchläufe à 3 Situationen |
+| 3 | `missions/mission-1.js` | Zusammen sind wir stark! (Lernwelt 2, 🏆 Spiel) | Angriff + Verteidigung · 3 gegen 3 |
+
+Optionales Feld `art: 'lernen' | 'spiel'` kennzeichnet die Missionsart auf der Karte (kein Einfluss auf den Ablauf). Je Situation optional `phasen.maxAngriff` (z. B. A4: 4).
 
 Die Engine-Standardmission (`E.mission()` ohne Id) ist die zuerst registrierte (`mission-1`, Ladereihenfolge in `index.html`); die Auswahl in der App sortiert nach Lernwelt und Nummer und wählt die erste Karte vor.
 

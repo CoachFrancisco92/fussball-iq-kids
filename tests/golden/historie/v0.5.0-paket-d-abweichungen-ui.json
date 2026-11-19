@@ -1,0 +1,228 @@
+{
+ "Keiner ist frei, Ball im Aus, Verteidigung": [
+  {
+   "eintrag": 4,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Tippe dorthin, wohin du dribbeln willst.",
+     "Gut gedribbelt – du hast den Ball behalten! Hat geklappt! Aber schau mal: Ein Freund stand frei – ein Pass wäre besser gewesen."
+    ],
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Tippe dorthin, wohin du dribbeln willst.",
+     "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor."
+    ],
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 5,
+   "alt": {
+    "fb": [
+     "Gut gedribbelt – du hast den Ball behalten!",
+     "Hat geklappt! Aber schau mal: Ein Freund stand frei – ein Pass wäre besser gewesen.",
+     "✗ 💡 Andere Idee besser",
+     "✓ 🎯 Weg frei",
+     "💭"
+    ],
+    "compare": false
+   },
+   "neu": {
+    "fb": [
+     "Gut gedribbelt – du hast den Ball behalten!",
+     "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "✓ 💡 Gute Idee",
+     "✗ 🎯 Vorn war Platz",
+     "💭"
+    ],
+    "compare": false
+   }
+  },
+  {
+   "eintrag": 8,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Tippe dorthin, wohin du dribbeln willst.",
+     "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+    ],
+    "title": "Wem spiele ich den Ball zu?",
+    "tag": "Angriff",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Tippe dorthin, wohin du dribbeln willst.",
+     "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor."
+    ],
+    "title": "Wem spiele ich den Ball zu?",
+    "tag": "Angriff",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 9,
+   "alt": {
+    "fb": [
+     "Gut gedribbelt – du hast den Ball behalten!",
+     "Super gemacht!",
+     "✓ 💡 Gute Idee",
+     "✓ 🎯 Weg frei",
+     "⭐"
+    ],
+    "compare": false
+   },
+   "neu": {
+    "fb": [
+     "Gut gedribbelt – du hast den Ball behalten!",
+     "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "✓ 💡 Gute Idee",
+     "✗ 🎯 Vorn war Platz",
+     "💭"
+    ],
+    "compare": false
+   }
+  },
+  {
+   "eintrag": 12,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Tippe dorthin, wohin du dribbeln willst.",
+     "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+    ],
+    "title": "Wem spiele ich den Ball zu?",
+    "tag": "Angriff",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Tippe dorthin, wohin du dribbeln willst.",
+     "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor."
+    ],
+    "title": "Wem spiele ich den Ball zu?",
+    "tag": "Angriff",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 13,
+   "alt": {
+    "fb": [
+     "Gut gedribbelt – du hast den Ball behalten!",
+     "Super gemacht!",
+     "✓ 💡 Gute Idee",
+     "✓ 🎯 Weg frei",
+     "⭐"
+    ],
+    "compare": false
+   },
+   "neu": {
+    "fb": [
+     "Gut gedribbelt – du hast den Ball behalten!",
+     "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "✓ 💡 Gute Idee",
+     "✗ 🎯 Vorn war Platz",
+     "💭"
+    ],
+    "compare": false
+   }
+  },
+  {
+   "eintrag": 16,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Tippe dorthin, wohin du dribbeln willst.",
+     "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+    ],
+    "title": "Wem spiele ich den Ball zu?",
+    "tag": "Angriff",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Tippe dorthin, wohin du dribbeln willst.",
+     "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor."
+    ],
+    "title": "Wem spiele ich den Ball zu?",
+    "tag": "Angriff",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 17,
+   "alt": {
+    "fb": [
+     "Gut gedribbelt – du hast den Ball behalten!",
+     "Super gemacht!",
+     "✓ 💡 Gute Idee",
+     "✓ 🎯 Weg frei",
+     "⭐"
+    ],
+    "compare": false
+   },
+   "neu": {
+    "fb": [
+     "Gut gedribbelt – du hast den Ball behalten!",
+     "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "✓ 💡 Gute Idee",
+     "✗ 🎯 Vorn war Platz",
+     "💭"
+    ],
+    "compare": false
+   }
+  },
+  {
+   "eintrag": 24,
+   "alt": {
+    "where": "ende",
+    "said": [
+     "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 5 von 6 Sternen."
+    ],
+    "title": "Wer hält den Gegner auf?",
+    "tag": "Verteidigung",
+    "step": ""
+   },
+   "neu": {
+    "where": "ende",
+    "said": [
+     "Gut gemacht! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 2 von 6 Sternen."
+    ],
+    "title": "Wer hält den Gegner auf?",
+    "tag": "Verteidigung",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 25,
+   "alt": {
+    "end": [
+     "★★★★★★",
+     "Blau 0 : 0 Rot  ·  👀 0/4 sofort erkannt",
+     "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+     "⚽ Was machst du mit dem Ball? 💭⚽ Wem spiele ich den Ball zu? ⭐⚽ Wem spiele ich den Ball zu? ⭐⚽ Wem spiele ich den Ball zu? ⭐🛡️ Wer hält den Gegner auf? ⭐🛡️ Wer hält den Gegner auf? ⭐"
+    ]
+   },
+   "neu": {
+    "end": [
+     "★★★★★★",
+     "Blau 0 : 0 Rot  ·  👀 0/4 sofort erkannt",
+     "Gut gemacht! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+     "⚽ Was machst du mit dem Ball? 💭⚽ Wem spiele ich den Ball zu? 💭⚽ Wem spiele ich den Ball zu? 💭⚽ Wem spiele ich den Ball zu? 💭🛡️ Wer hält den Gegner auf? ⭐🛡️ Wer hält den Gegner auf? ⭐"
+    ]
+   }
+  }
+ ]
+}

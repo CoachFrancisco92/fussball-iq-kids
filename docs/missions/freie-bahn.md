@@ -173,3 +173,6 @@ Ende einer Situation: Tor, Ballverlust oder Angriffsgrenze (5) → Rückmeldung 
 1. B-E1 und B-E2 entscheiden – ohne sie trainiert B eher „kurz dribbeln“ als „Richtung und Strecke wählen“.
 2. B2 zurückstellen oder bis zur Klärung als „kurze Stücke durch die Lücke“ umdeuten?
 3. M2 wie im Prototyp (7 Zeilen) freigeben; Mission 1 bleibt im Prototyp unverändert (76/76 Tests grün).
+
+
+> **Umsetzung Meilenstein 4 (v0.5.0):** mit der Paket-D-Bewertung neu geprüft (`tests/analysis/freie-bahn/pruefung.js`). Übernommen: B3, B4, B2, B5; neu B6 (enge Lücke → außen herum); B1 entfällt (keine eigene Entscheidung mehr: jede Vorwärtsrichtung ohne Gegner ist gut). B2 „Lücke oder außen herum“ funktioniert jetzt (beides ⭐). Details: `docs/meilenstein-4.md`.

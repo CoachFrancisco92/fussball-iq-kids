@@ -1,0 +1,575 @@
+{
+ "Schau falsch/richtig, Fehlpass, Wiederholen, Vergleichen, Rest mit Hilfe": [
+  {
+   "start": [
+    "Fußball-IQ Kids",
+    "Zusammen sind wir stark!",
+    "Erst schauen, dann entscheiden",
+    "3 gegen 34 MinitoreAngriff + Verteidigung"
+   ]
+  },
+  {
+   "where": "schau",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei."
+   ],
+   "title": "Wer steht frei?",
+   "tag": "Schau hin",
+   "step": "👀 Tippe auf den freien Freund – oder auf „Keiner ist frei“."
+  },
+  {
+   "where": "schau falsch",
+   "said": [
+    "Schau genau: Rot 3 steht im Weg zu Blau 3. Probier's nochmal!"
+   ],
+   "title": "Wer steht frei?",
+   "tag": "Schau hin",
+   "step": "👀 Schau genau: Rot 3 steht im Weg zu Blau 3. Probier's nochmal!"
+  },
+  {
+   "where": "schau richtig → entscheiden",
+   "said": [
+    "Ja! Blau 2 steht frei. Zwischen euch ist kein Gegner.",
+    "Und jetzt: Was machst du mit dem Ball?"
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "where": "Passen gewählt",
+   "said": [
+    "Tippe auf einen Mitspieler. Oder auf eine freie Stelle."
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": "Tippe auf einen Mitspieler. Oder auf eine freie Stelle."
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 3 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier."
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Oh! Rot 3 stand im Weg und hat den Ball bekommen.",
+    "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 3 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Gegner im Weg",
+    "💭"
+   ],
+   "compare": false
+  },
+  {
+   "where": "anders probieren",
+   "said": [
+    "Gleiche Situation – probier etwas anderes!",
+    "Du hast den Ball! Schau dich um. Passen oder dribbeln?"
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Tippe auf einen Mitspieler. Oder auf eine freie Stelle.",
+    "Der Pass ist angekommen! Super gemacht!"
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Der Pass ist angekommen!",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Weg frei",
+    "⭐"
+   ],
+   "compare": true
+  },
+  {
+   "where": "nach Vergleich",
+   "said": [
+    "Vorher: Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 3 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier."
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball."
+   ],
+   "title": "Wo kann ich helfen?",
+   "tag": "Bewegung ohne Ball",
+   "step": "Wähle einen blauen Spieler ohne Ball."
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen.",
+    "Wohin soll er laufen? Tippe auf eine freie Stelle.",
+    "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee! Manchmal klappt es nicht."
+   ],
+   "title": "Wo kann ich helfen?",
+   "tag": "Bewegung ohne Ball",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne.",
+    "Das war trotzdem eine gute Idee! Manchmal klappt es nicht.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Guter Platz",
+    "⭐"
+   ],
+   "compare": false
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Vor diesem Tor steht kein Gegner im Weg.",
+    "Toooor! Der Weg war frei. Super gemacht!"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "compare": false
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Der Spieler, der am nächsten am Ball ist, greift an.",
+    "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen. Super gemacht!"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Richtiger Spieler",
+    "⭐"
+   ],
+   "compare": false
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Der Spieler, der am nächsten am Ball ist, greift an.",
+    "Ball erobert! Jetzt greifen wir an. Super gemacht!"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Ball erobert! Jetzt greifen wir an.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Richtiger Spieler",
+    "⭐"
+   ],
+   "compare": false
+  },
+  {
+   "where": "ende",
+   "said": [
+    "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 5 von 5 Sternen.",
+    "Der Pass ist angekommen!"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "end": [
+    "★★★★★",
+    "Blau 1 : 0 Rot  ·  👀 0/1 sofort erkannt",
+    "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+    "⚽ Was machst du mit dem Ball? ⭐⚽ Wo kann ich helfen? ⭐⚽ Welches Tor ist frei? ⭐🛡️ Wer hält den Gegner auf? ⭐🛡️ Wer hält den Gegner auf? ⭐"
+   ]
+  }
+ ],
+ "Keiner ist frei, Ball im Aus, Verteidigung": [
+  {
+   "start": [
+    "Fußball-IQ Kids",
+    "Zusammen sind wir stark!",
+    "Erst schauen, dann entscheiden",
+    "3 gegen 34 MinitoreAngriff + Verteidigung"
+   ]
+  },
+  {
+   "where": "keiner frei 1",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+    "Schau nochmal genau. Ist wirklich keiner frei?"
+   ],
+   "title": "Wer steht frei?",
+   "tag": "Schau hin",
+   "step": "👀 Schau nochmal genau. Ist wirklich keiner frei?"
+  },
+  {
+   "where": "keiner frei 2",
+   "said": [
+    "Schau nochmal genau: Blau 2 steht frei."
+   ],
+   "title": "Wer steht frei?",
+   "tag": "Schau hin",
+   "step": "👀 Schau nochmal genau: Blau 2 steht frei."
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Und jetzt: Was machst du mit dem Ball?"
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Tippe dorthin, wohin du dribbeln willst.",
+    "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor."
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Gut gedribbelt – du hast den Ball behalten!",
+    "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Vorn war Platz",
+    "💭"
+   ],
+   "compare": false
+  },
+  {
+   "where": "keiner frei 1",
+   "said": [
+    "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+    "Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+   ],
+   "title": "Wer steht frei?",
+   "tag": "Schau hin",
+   "step": "✅ Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Und jetzt: Was machst du mit dem Ball?"
+   ],
+   "title": "Wem spiele ich den Ball zu?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Tippe dorthin, wohin du dribbeln willst.",
+    "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor."
+   ],
+   "title": "Wem spiele ich den Ball zu?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Gut gedribbelt – du hast den Ball behalten!",
+    "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Vorn war Platz",
+    "💭"
+   ],
+   "compare": false
+  },
+  {
+   "where": "keiner frei 1",
+   "said": [
+    "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+    "Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+   ],
+   "title": "Wer steht frei?",
+   "tag": "Schau hin",
+   "step": "✅ Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Und jetzt: Was machst du mit dem Ball?"
+   ],
+   "title": "Wem spiele ich den Ball zu?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Tippe dorthin, wohin du dribbeln willst.",
+    "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor."
+   ],
+   "title": "Wem spiele ich den Ball zu?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Gut gedribbelt – du hast den Ball behalten!",
+    "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Vorn war Platz",
+    "💭"
+   ],
+   "compare": false
+  },
+  {
+   "where": "keiner frei 1",
+   "said": [
+    "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+    "Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+   ],
+   "title": "Wer steht frei?",
+   "tag": "Schau hin",
+   "step": "✅ Richtig! Gerade steht keiner frei. Du kannst in den freien Platz dribbeln. Oder spiel den Ball in den freien Raum – dein Freund läuft hin."
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Und jetzt: Was machst du mit dem Ball?"
+   ],
+   "title": "Wem spiele ich den Ball zu?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Tippe dorthin, wohin du dribbeln willst.",
+    "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor."
+   ],
+   "title": "Wem spiele ich den Ball zu?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Gut gedribbelt – du hast den Ball behalten!",
+    "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Vorn war Platz",
+    "💭"
+   ],
+   "compare": false
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Der Ball ist im Aus. Jetzt haben die Roten den Ball. Pass gut auf unsere Tore auf!",
+    "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Der Spieler, der am nächsten am Ball ist, greift an.",
+    "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen. Super gemacht!"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Richtiger Spieler",
+    "⭐"
+   ],
+   "compare": false
+  },
+  {
+   "where": "entscheiden",
+   "said": [
+    "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Der Spieler, der am nächsten am Ball ist, greift an.",
+    "Ball erobert! Jetzt greifen wir an. Super gemacht!"
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Ball erobert! Jetzt greifen wir an.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Richtiger Spieler",
+    "⭐"
+   ],
+   "compare": false
+  },
+  {
+   "where": "ende",
+   "said": [
+    "Gut gemacht! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 2 von 6 Sternen."
+   ],
+   "title": "Wer hält den Gegner auf?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "end": [
+    "★★★★★★",
+    "Blau 0 : 0 Rot  ·  👀 0/4 sofort erkannt",
+    "Gut gemacht! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+    "⚽ Was machst du mit dem Ball? 💭⚽ Wem spiele ich den Ball zu? 💭⚽ Wem spiele ich den Ball zu? 💭⚽ Wem spiele ich den Ball zu? 💭🛡️ Wer hält den Gegner auf? ⭐🛡️ Wer hält den Gegner auf? ⭐"
+   ]
+  }
+ ],
+ "Falscher Verteidiger und falscher Ort": [
+  {
+   "start": [
+    "Fußball-IQ Kids",
+    "Zusammen sind wir stark!",
+    "Erst schauen, dann entscheiden",
+    "3 gegen 34 MinitoreAngriff + Verteidigung"
+   ]
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+    "Ja! Blau 2 steht frei. Zwischen euch ist kein Gegner.",
+    "Und jetzt: Was machst du mit dem Ball?",
+    "Tippe auf einen Mitspieler. Oder auf eine freie Stelle.",
+    "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 3 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier."
+   ],
+   "title": "Was machst du mit dem Ball?",
+   "tag": "Angriff",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Oh! Rot 3 stand im Weg und hat den Ball bekommen.",
+    "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 3 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Gegner im Weg",
+    "💭"
+   ],
+   "compare": false
+  },
+  {
+   "where": "verteidigung 1",
+   "said": [
+    "Der Gegner will zu unserem Tor! Wo muss dein Spieler stehen, damit er nicht einfach schießen kann?"
+   ],
+   "title": "Wie schützen wir unser Tor?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "where": "feedback",
+   "said": [
+    "Welcher blaue Spieler soll den Gegner angreifen? Tippe ihn an.",
+    "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, den Gegner anzugreifen! Aber schau mal: Der Weg war weit. Blau 1 war näher am Ball."
+   ],
+   "title": "Wie schützen wir unser Tor?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "fb": [
+    "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen.",
+    "Gute Idee, den Gegner anzugreifen! Aber schau mal: Der Weg war weit. Blau 1 war näher am Ball.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Anderer Spieler näher",
+    "💭"
+   ],
+   "compare": false
+  },
+  {
+   "where": "ende",
+   "said": [
+    "Toll, dass du es probiert hast! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 0 von 2 Sternen."
+   ],
+   "title": "Wie schützen wir unser Tor?",
+   "tag": "Verteidigung",
+   "step": ""
+  },
+  {
+   "end": [
+    "★★",
+    "Blau 0 : 1 Rot  ·  👀 0/1 sofort erkannt",
+    "Toll, dass du es probiert hast! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+    "⚽ Was machst du mit dem Ball? 💭🛡️ Wie schützen wir unser Tor? 💭"
+   ]
+  }
+ ]
+}
