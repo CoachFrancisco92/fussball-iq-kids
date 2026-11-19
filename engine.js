@@ -481,7 +481,7 @@
     // Freund frei bzw. (in der Schusszone) ein Tor frei? Gleiches Modell wie die Pass- und Schussbewertung (E3: Anschluss nutzbar).
     const passFree = !st && t.poss === 'blue' && Math.max(-9, ...passOptions(t).map((o) => o.margin)) > CFG.passLaneOk;
     const shotFree = zone && Math.max(...shotOptions(t).map((o) => o.margin)) > CFG.shotLaneOk;
-    const r = { lost: !!st, by: st ? st.by : null, end: { x: c.x, y: c.y }, gain: c.x - from.x, zone, passFree, shotFree,
+    const r = { lost: !!st, by: st ? st.by : null, end: { x: c.x, y: c.y }, gain: c.x - from.x, moved: dist(from, c), zone, passFree, shotFree,
       open: Math.min(...team(t, 'red').map((q) => dist(q, c))) };
     if (probeCache.size > 3000) probeCache.clear();
     probeCache.set(k, r);
@@ -494,7 +494,8 @@
     let kept = 0;
     if (!main.lost) for (const [dx, dy] of D_NB) if (!dribbleProbe(s, dribbleTarget(c, { x: tgt.x + dx, y: tgt.y + dy }), k).lost) kept++;
     const into = team(s, 'red').some((r) => { const sd = segDist(r, c, tgt); return sd.t > 0.02 && sd.d < 1.0; });
-    return Object.assign({}, main, { tgt, kept, into, len: dist(c, tgt), safe: !main.lost && kept >= 3, knapp: !main.lost && kept < 3 });
+    // len = tatsächlich ausgeführte Bewegung bis zum Szenenende (nicht die Entfernung zum angetippten Ziel)
+    return Object.assign({}, main, { tgt, kept, into, len: main.moved, safe: !main.lost && kept >= 3, knapp: !main.lost && kept < 3 });
   }
   // ---- E3/E5: Wann ist ein sicheres Dribbling sinnvoll? Wann ist Dribbeln eine gute Entscheidung?
   const D_GAIN = 1;
@@ -541,7 +542,7 @@
    *  raum: ≥ 1 m Raumgewinn Richtung Tor · anschluss: in der Folgesituation ist ein Freund frei (vorher keiner) oder das
    *  Tor frei (vorher nicht) · sichern: nach vorn kein sicherer Weg und kein Freund frei. */
   function dribbleReason(facts, j) {
-    if (!j.safe || j.len < 1) return null; // unter 1 m ist es kein Dribbling (z. B. Tipp in die Ecke, an der man schon steht)
+    if (!j.safe || j.len < 1) return null; // unter 1 m tatsächlicher Bewegung ist es kein Dribbling (z. B. Tipp in die Ecke, in der man schon steht)
     if (j.gain >= D_GAIN) return 'raum';
     if (j.shotFree && !facts.shot0) return 'anschlussTor';
     if (j.passFree && !facts.mate) return 'anschlussPass';

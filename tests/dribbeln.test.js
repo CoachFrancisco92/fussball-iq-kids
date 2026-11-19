@@ -232,3 +232,12 @@ test('E6-Ausweg: ohne guten Dribbelweg sagt die Hilfe ehrlich „eng“, zeigt k
     if (h.point) assert.ok(!E.evaluate(s, dribble(h.point)).good);
   }
 });
+
+test('Mindeststrecke: zählt die tatsächlich ausgeführte Bewegung, nicht die Entfernung zum angetippten Ziel', () => {
+  const P = (id, x, y) => ({ id, x, y });
+  const s = probeState(E, [P('b1', 1.2, 12), P('r1', 12, 4)]);
+  // 4 m weit angetippt, aber ins Aus: Der Spieler bewegt sich nur bis zum Rand (0,5 m) → kein Dribbling
+  const ev = E.evaluate(s, dribble({ x: -3, y: 12 }));
+  assert.deepStrictEqual([ev.exe.good, ev.exe.why], [false, T.dribbelZuKurz]);
+  assert.ok(E.evaluate(s, dribble({ x: 6, y: 12 })).exe.good, 'nach vorn ⭐');
+});
