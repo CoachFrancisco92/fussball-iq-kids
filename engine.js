@@ -114,6 +114,7 @@
     need(m && typeof m.id === 'string' && m.id, 'id fehlt');
     need(typeof m.titel === 'string' && m.titel, 'titel fehlt');
     need(Array.isArray(m.lernziele) && m.lernziele.length >= 1, 'lernziele fehlen');
+    need(m.art == null || m.art === 'lernen' || m.art === 'spiel', 'art: lernen oder spiel');
     const lineup = (L, where) => {
       need(L && Array.isArray(L.spieler), `${where}: spieler fehlen`);
       if (!L || !Array.isArray(L.spieler)) return;
@@ -1262,5 +1263,5 @@
   }
 
   root.FIQ = {
-    VERSION: '0.4.0', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.5.0', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

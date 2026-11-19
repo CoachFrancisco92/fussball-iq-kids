@@ -1,0 +1,1616 @@
+[
+ {
+  "start": [
+   [
+    "welches-tor-ist-frei",
+    "🥅",
+    "Welches Tor ist frei?",
+    "Erst schauen, dann schießen",
+    true
+   ],
+   [
+    "freie-bahn",
+    "🏃",
+    "Freie Bahn!",
+    "Freie Wege finden",
+    false
+   ],
+   [
+    "mission-1",
+    "3",
+    "Zusammen sind wir stark!",
+    "Erst schauen, dann entscheiden",
+    false
+   ]
+  ]
+ },
+ {
+  "gewaehlt": [
+   "Freie Bahn! Heute dribbelst du! Schau, wo kein Roter ist, und dribbel dorthin. Nah am Tor schießt du aufs freie Tor. Tippe auf Los geht's!"
+  ]
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B3",
+  "said": [
+   "Los geht's! Du spielst mit den Blauen.",
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B3 weiter",
+  "sit": "B3",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B3 weiter",
+  "sit": "B3",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "wechsel": [
+   "B3",
+   "B4"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B4",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B4 weiter",
+  "sit": "B4",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B4 weiter",
+  "sit": "B4",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "wechsel": [
+   "B4",
+   "B2"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B2",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "end": "Durchlauf 1",
+  "said": [
+   "Super gespielt! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor. Du hast 10 von 10 Sternen."
+  ],
+  "stars": "★★★★★★★★★★",
+  "score": "Blau 3 : 0 Rot",
+  "msg": "Super gespielt! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B4",
+  "said": [
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "said": [
+   "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Du bist direkt auf einen Gegner zugelaufen."
+  ],
+  "fb": [
+   "Rot 1 stand im Weg und hat dir den Ball abgenommen.",
+   "Gute Idee, zu dribbeln! Aber schau mal: Du bist direkt auf einen Gegner zugelaufen.",
+   "✓ 💡 Gute Idee",
+   "✗ 🎯 Gegner im Weg",
+   "💭"
+  ]
+ },
+ {
+  "wechsel": [
+   "B4",
+   "B5"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B5",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "said": [
+   "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+  ],
+  "fb": [
+   "Geblockt! Rot 2 stand vor dem Tor.",
+   "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+   "✓ 💡 Gute Idee",
+   "✗ 🎯 Gegner im Weg",
+   "💭"
+  ]
+ },
+ {
+  "wechsel": [
+   "B5",
+   "B6"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B6",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "said": [
+   "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Dribbel weiter weg von Rot 1."
+  ],
+  "fb": [
+   "Rot 1 stand im Weg und hat dir den Ball abgenommen.",
+   "Gute Idee, zu dribbeln! Aber schau mal: Dribbel weiter weg von Rot 1.",
+   "✓ 💡 Gute Idee",
+   "✗ 🎯 Gegner kam dazu",
+   "💭"
+  ]
+ },
+ {
+  "end": "Durchlauf 2",
+  "said": [
+   "Gut gemacht! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor. Du hast 3 von 6 Sternen."
+  ],
+  "stars": "☆★★★☆☆",
+  "score": "Blau 0 : 0 Rot",
+  "msg": "Gut gemacht! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B2",
+  "said": [
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "wechsel": [
+   "B2",
+   "B6"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B6",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B6 weiter",
+  "sit": "B6",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B6 weiter",
+  "sit": "B6",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B6 weiter",
+  "sit": "B6",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "wechsel": [
+   "B6",
+   "B3"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B3",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B3 weiter",
+  "sit": "B3",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B3 weiter",
+  "sit": "B3",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "end": "Durchlauf 3",
+  "said": [
+   "Super gespielt! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor. Du hast 11 von 11 Sternen."
+  ],
+  "stars": "★★★★★★★★★★★",
+  "score": "Blau 3 : 0 Rot",
+  "msg": "Super gespielt! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B5",
+  "said": [
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "wechsel": [
+   "B5",
+   "B3"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B3",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B3 weiter",
+  "sit": "B3",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B3 weiter",
+  "sit": "B3",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "wechsel": [
+   "B3",
+   "B4"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B4",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B4 weiter",
+  "sit": "B4",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B4 weiter",
+  "sit": "B4",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "end": "Durchlauf 4",
+  "said": [
+   "Super gespielt! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor. Du hast 10 von 10 Sternen."
+  ],
+  "stars": "★★★★★★★★★★",
+  "score": "Blau 3 : 0 Rot",
+  "msg": "Super gespielt! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B6",
+  "said": [
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B6 weiter",
+  "sit": "B6",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B6 weiter",
+  "sit": "B6",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B6 weiter",
+  "sit": "B6",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "wechsel": [
+   "B6",
+   "B2"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B2",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B2 weiter",
+  "sit": "B2",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "wechsel": [
+   "B2",
+   "B5"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B5",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Gut gedribbelt – du hast den Ball behalten! Super gemacht!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ]
+ },
+ {
+  "where": "B5 weiter",
+  "sit": "B5",
+  "said": [
+   "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Toooor! Der Weg war frei. Super gemacht!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ]
+ },
+ {
+  "end": "Durchlauf 5",
+  "said": [
+   "Super gespielt! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor. Du hast 12 von 12 Sternen."
+  ],
+  "stars": "★★★★★★★★★★★★",
+  "score": "Blau 3 : 0 Rot",
+  "msg": "Super gespielt! Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "B3",
+  "said": [
+   "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+  ],
+  "title": "Wohin dribbelst du?",
+  "tag": "Dribbeln",
+  "actions": [
+   "🏃Dribbeln"
+  ]
+ }
+]

@@ -1,5 +1,6 @@
 // Rechenzeit der Dribbel-Vorausrechnung (Paket D) im Browser mit gedrosselter CPU (Standard 4×, wie ein langsames Tablet).
-// Gemessen je Lage, in der „Dribbeln“ angeboten wird (Mission 1 mit Hilfe und mit Kinder-Abfolgen, Mission A,
+// Gemessen je Lage, in der „Dribbeln“ angeboten wird (Mission 1 mit Hilfe und mit Kinder-Abfolgen, Mission A inkl. A4,
+// „Freie Bahn!“ (alle Durchläufe mit Hilfe und Kinder-Abfolgen),
 // Entwurfslagen B1–B5 und A4):
 //   – Bewertung eines Dribblings (erste Entscheidung in einer neuen Lage = „kalt“),
 //   – Hilfe 💡 „Dribbeln“ (kalt, also ohne vorher bewertete Ziele),
@@ -42,7 +43,8 @@ try {
       return k === 'erobern' ? { kind: 'press', id: blues[0].id } : { kind: 'cover', id: blues[0].id, x: 8, y: 12 }; };
     play('mission-1', 0, hint);
     for (let i = 0; i < 8; i++) play('mission-1', 0, kid);
-    for (let d = 0; d < 4; d++) play('welches-tor-ist-frei', d, kid);
+    for (let d = 0; d < 5; d++) { play('welches-tor-ist-frei', d, kid); play('welches-tor-ist-frei', d, hint); }
+    for (let d = 0; d < 5; d++) { play('freie-bahn', d, kid); play('freie-bahn', d, hint); }
     const P = (id, x, y) => ({ id, x, y });
     const ent = [[P('b1', 17, 14), P('r1', 22, 9)], [P('b1', 18, 12), P('r1', 15.5, 12)], [P('b1', 17, 12), P('r1', 23, 12)], [P('b1', 12, 12), P('r1', 19, 7), P('r2', 19, 17)], [P('b1', 12, 13), P('r1', 23, 3), P('r2', 32, 17)], [P('b1', 26, 12), P('b2', 21, 19), P('r1', 24, 9.5), P('r2', 34.4, 7.9)],
       // ungünstigste Fälle: kein sicherer Weg (alle Kandidaten werden geprüft), Torchance-Vorrang

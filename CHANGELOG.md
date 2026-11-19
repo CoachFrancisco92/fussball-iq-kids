@@ -1,7 +1,17 @@
 # Changelog
 
-## Unveröffentlicht – Meilenstein 3b: Paket D (Dribbelbewertung und -hilfe, E1–E6)
-Zur Abnahme; Referenzen nicht neu erzeugt (Abweichungen vorgelegt). Details: `docs/meilenstein-3b.md`. Veröffentlichung geplant gemeinsam mit „Freie Bahn!“ als V0.5.0.
+## V0.5.0 – Mission „Freie Bahn!“, A4 und Paket D (zur Abnahme, unveröffentlicht)
+### Meilenstein 4: „Freie Bahn!“ und A4
+Details: `docs/meilenstein-4.md`.
+- Neue Lernmission `missions/freie-bahn.js` (Lernwelt 1, Platz 2 im Lernweg, 🏃): 1 gegen 1 / 1 gegen 2, nur Dribbeln und in der Schusszone Schießen; Situationen B3 (Verfolger hinten), B4 (Gegner frontal), B2 (große Lücke: hindurch **oder** außen herum), B6 (enge Lücke: außen herum, neu), B5 (viel Platz, freies Tor wählen); B1 entfällt (keine eigene Entscheidung mehr). 5 Durchläufe à 3 Situationen.
+- „Welches Tor ist frei?“: Situation **A4** (erst in die Schusszone dribbeln, dann schießen; 4 Angriffsentscheidungen, damit auch der Weg über den Pass noch im Torschuss endet), eigene Ansage „Noch zu weit fürs Tor!“ außerhalb der Schusszone, 5 Durchläufe (Durchlauf 1 unverändert).
+- Missionsart auf der Karte: 🎓 Lernen / 🏆 Spiel (Datenfeld `art`, nur Kennzeichnung).
+- Endbildschirm: Liste der Entscheidungen scrollt bei langen Missionen, „Nochmal“ bleibt ohne Scrollen erreichbar (iPad quer).
+- Referenzen: „Freie Bahn!“ erstmals (`freie-bahn.v0.5.0.json`, `ui-freie-bahn.v0.5.0.json`); Mission A mit A4 vorgelegt (`missionA-abweichungen-a4.json`, `ui-mission-a.v0.5.0-a4.json`); Mission 1 unverändert gegenüber v0.5.0-Referenz.
+
+### Meilenstein 3b: Paket D (Dribbelbewertung und -hilfe, E1–E6)
+Abgenommen; Referenzen v0.5.0 nach Freigabe neu erzeugt (Vorgänger und Abweichungslisten in `tests/golden/historie/`, geprüft mit `tests/analysis/paket-d/referenzwechsel-pruefen.js`). Details: `docs/meilenstein-3b.md`.
+- Mindeststrecke 1 m bezieht sich auf die tatsächlich ausgeführte Bewegung.
 - E1/E2: Dribbelbewertung per deterministischer Vorausrechnung des tatsächlich ausgeführten Wegs (max. 8 m) mit Toleranz ±0,5 m.
 - E3 (R2): ⭐ nur mit Grund – Raumgewinn ≥ 1 m, Anschluss in der Folgesituation (Freund bzw. Tor jetzt frei) oder Ball sichern ohne Alternative; Mindeststrecke 1 m.
 - E4: Erklärungen und Etiketten nach Ursache, kurz, ohne Doppelungen.

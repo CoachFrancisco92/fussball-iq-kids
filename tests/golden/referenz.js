@@ -11,5 +11,8 @@
 // Mission „Welches Tor ist frei?“: eigene Referenzen (v0.4.0 in historie/, seit v0.5.0 mit Paket D).
 module.exports = {
   file: 'mission1.v0.5.0.json', ui: 'ui-transcript.v0.5.0.json', tag: '707e9ace6aaecdf70b35d647c729acd88c6aaa7f', seit: 'v0.5.0',
-  missionA: { file: 'mission-a.v0.5.0.json', hash: 'c53a4cd03ff008fc', ui: 'ui-mission-a.v0.5.0.json' },
+  // uiVorgelegt: Mitschrift mit A4 (Meilenstein 4), zur Freigabe vorgelegt; Engine-Abweichungen in missionA-abweichungen-a4.json
+  missionA: { file: 'mission-a.v0.5.0.json', hash: 'c53a4cd03ff008fc', ui: 'ui-mission-a.v0.5.0.json', uiVorgelegt: 'ui-mission-a.v0.5.0-a4.json' },
+  // „Freie Bahn!“ (Meilenstein 4): Erstaufnahme v0.5.0, zur Freigabe vorgelegt
+  freieBahn: { file: 'freie-bahn.v0.5.0.json', hash: 'cff2bdfcccb06a4b', ui: 'ui-freie-bahn.v0.5.0.json' },
 };

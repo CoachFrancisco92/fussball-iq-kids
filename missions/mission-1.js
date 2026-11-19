@@ -11,6 +11,7 @@
     untertitel: 'Erst schauen, dann entscheiden',
     merkmale: ['3 gegen 3', '4 Minitore', 'Angriff + Verteidigung'],
     lernwelt: 2, // „Wir spielen zusammen“ (mit Verteidigungsanteil)
+    art: 'spiel', // Spielmission: mehrere Fähigkeiten im zusammenhängenden Spiel (nur Kennzeichnung auf der Karte)
     lernziele: [
       'Einen freien Mitspieler erkennen und anspielen',
       'Sich ohne Ball freilaufen und ein freies Tor wählen',

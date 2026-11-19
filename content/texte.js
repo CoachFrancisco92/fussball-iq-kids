@@ -196,6 +196,7 @@
       ballImAus: 'Der Ball ist im Aus. Jetzt haben die Roten den Ball. Pass gut auf unsere Tore auf!',
       ballImAusAnzeige: '🏳️ Ball im Aus – jetzt hat Rot den Ball.',
       neueSituation: 'Neue Situation! Schau genau hin.',
+      missionsart: { lernen: '🎓 Lernen', spiel: '🏆 Spiel' },
       neueSituationAnzeige: '🔄 Neue Situation',
       missionGewaehlt: (titel, einfuehrung) => `${titel}${/[.!?]$/.test(titel) ? '' : '.'} ${einfuehrung} Tippe auf Los geht's!`,
       weiterspielen: 'Weiterspielen',

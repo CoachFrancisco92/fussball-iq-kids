@@ -1,7 +1,7 @@
 /* Mission „Welches Tor ist frei?“ (Lernwelt 1, Meilenstein 2) – reine Inhaltsdatei, keine Spiellogik.
  * Situationsmission (M1): 2 gegen 2, keine Verteidigungsphase, je Durchlauf 3 Situationen in fester Rotation.
  * Entwurf und Prüfwerte: docs/missions/welches-tor-ist-frei.md; Robustheit A3: tests/analysis/a3-robustheit.js.
- * A4 (Dribbeln bis in die Torzone) ist bewusst nicht enthalten – erst nach Paket D.
+ * A4 (erst näher ran dribbeln, dann schießen) seit Meilenstein 4 – mit der Dribbelbewertung aus Paket D.
  */
 (function (root) {
   'use strict';
@@ -20,10 +20,12 @@
     untertitel: 'Erst schauen, dann schießen',
     merkmale: ['2 gegen 2', '4 Minitore', 'Torschuss'],
     lernwelt: 1, // „Ich und der Ball“
+    art: 'lernen', // Lernmission: eine Entscheidung üben (nur Kennzeichnung auf der Karte)
     lernziele: [
       'Vor dem Schuss schauen, vor welchem Tor kein Gegner steht',
       'Auf das freie Tor schießen',
       'Wenn beide Tore zugestellt sind, zu einem freien Freund passen',
+      'Wenn das Tor noch zu weit ist, erst näher ran dribbeln und dann schießen',
     ],
     einfuehrung: 'Heute schießt du Tore! Schau vor jedem Schuss genau: Vor welchem Tor steht kein Roter? Dorthin schießt du.',
 
@@ -36,11 +38,16 @@
       // A3: beide Tore zugestellt → Pass zu Blau 2, der in der Torzone steht und schießt.
       // Lage auf Robustheit optimiert (±0,5 m je Spieler: 16/16, ±1 m: 14/16) – siehe docs/meilenstein-2.md.
       { id: 'A3', start: lage([32, 8], [30.5, 19.5], [33.9, 11.4], [34.2, 7]) },
+      // A4: noch zu weit fürs Tor – erst in die Schusszone dribbeln (Rot 1 seitlich vorn), dann aufs freie Tor schießen
+      // 4 statt 3 Angriffsentscheidungen: auch der andere gute Weg (Pass zu Blau 2 → Freilaufen → Dribbling) endet noch mit dem
+      // Torschuss, statt direkt nach der gelungenen Vorbereitung abzubrechen (Vorgabe PO, Meilenstein 4)
+      { id: 'A4', start: lage([26, 12], [21, 19], [24, 9.5], [34.4, 7.9]), phasen: { maxAngriff: 4 } },
       // A5: beide Tore frei – beide Schüsse sind gleich gut
       { id: 'A5', start: lage([30.5, 13], [24, 6], [28.5, 13], [34, 12]) },
     ],
-    // Jede Situation 3-mal in 4 Durchläufen, jeder Durchlauf beginnt anders; danach wieder von vorn.
-    durchlaeufe: [['A1', 'A2', 'A5'], ['A2', 'A3', 'A1'], ['A5', 'A1', 'A3'], ['A3', 'A5', 'A2']],
+    // Jede Situation 3-mal in 5 Durchläufen, jeder Durchlauf beginnt anders; danach wieder von vorn.
+    // Durchlauf 1 unverändert (A1 · A2 · A5); A4 kommt ab Durchlauf 2 dazu.
+    durchlaeufe: [['A1', 'A2', 'A5'], ['A2', 'A3', 'A4'], ['A4', 'A5', 'A1'], ['A3', 'A1', 'A2'], ['A5', 'A4', 'A3']],
 
     phasen: { maxAngriff: 3, verteidigung: 0, abschlussNachGrenze: true },
 
@@ -54,6 +61,9 @@
       kontext: {
         // neutral, weil in A3 der Pass die richtige Lösung ist; kurz, weil beim Wechsel schon „Schau genau hin“ kommt
         abschluss: { say: 'Welches Tor ist frei? Schießen oder passen?' },
+        // A4: außerhalb der Schusszone – erst näher ran (Standardtexte würden nur zum Passen auffordern)
+        angriffFrei: { title: 'Noch zu weit fürs Tor', say: 'Noch zu weit fürs Tor! Dribbel näher ran – oder pass zu deinem Freund.' },
+        angriffDruck: { title: 'Noch zu weit fürs Tor', say: 'Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.' },
       },
       ende: {
         merksatz: ' Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund.',

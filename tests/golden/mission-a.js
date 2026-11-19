@@ -30,8 +30,8 @@ const STYLES = {
   immerPass: (E, s, ctx) => (ctx.actions.includes('passen') ? { kind: 'pass', id: E.team(s, 'blue').find((b) => b !== E.carrier(s)).id } : hintAction(E, s, ctx)),
 };
 
-function play(E, durchlauf, chooser) {
-  const s = E.newState(ID, durchlauf), m = E.newMission(ID, durchlauf), out = [];
+function play(E, durchlauf, chooser, id = ID) {
+  const s = E.newState(id, durchlauf), m = E.newMission(id, durchlauf), out = [];
   let last = null;
   for (let i = 0; !m.done && i < 16; i++) {
     const ctx = E.context(s, last);

@@ -1,6 +1,6 @@
 // Offline-Cache für Fußball-IQ Kids: erst Netz (immer aktueller Stand), ohne Netz aus dem Cache.
-const CACHE = 'fiq-v0.4.0';
-const FILES = ['./', './index.html', './content/texte.js?v=0.4.0', './missions/mission-1.js?v=0.4.0', './missions/welches-tor-ist-frei.js?v=0.4.0', './engine.js?v=0.4.0', './app.js?v=0.4.0', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
+const CACHE = 'fiq-v0.5.0';
+const FILES = ['./', './index.html', './content/texte.js?v=0.5.0', './missions/mission-1.js?v=0.5.0', './missions/welches-tor-ist-frei.js?v=0.5.0', './missions/freie-bahn.js?v=0.5.0', './engine.js?v=0.5.0', './app.js?v=0.5.0', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k))))); self.clients.claim(); });
 self.addEventListener('fetch', (e) => {
