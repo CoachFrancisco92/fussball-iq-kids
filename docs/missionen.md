@@ -45,11 +45,20 @@ Seit V0.2.4 sind Spielinhalte von der Simulation getrennt. **Für eine neue Miss
 - `abschlussNachGrenze: true` (gilt für jede Mission, Standard aus): Bringt die letzte erlaubte Entscheidung den Ball in die Torschusszone, darf noch geschossen werden.
 - `start`/`neustart` entfallen bei Situationsmissionen; Situationsmissionen haben (vorerst) keine Abwehrphase (`verteidigung: 0`, wird geprüft).
 
+### Vorhandene Missionen
+| Lernweg | Datei | Titel | Art |
+|---|---|---|---|
+| 1 (🥅) | `missions/welches-tor-ist-frei.js` | Welches Tor ist frei? (Lernwelt 1) | Situationsmission: A1, A2, A3, A5 · 2 gegen 2 · 4 Durchläufe à 3 Situationen |
+| 2 | `missions/mission-1.js` | Zusammen sind wir stark! (Lernwelt 2) | Angriff + Verteidigung · 3 gegen 3 |
+
+Die Engine-Standardmission (`E.mission()` ohne Id) ist die zuerst registrierte (`mission-1`, Ladereihenfolge in `index.html`); die Auswahl in der App sortiert nach Lernwelt und Nummer und wählt die erste Karte vor.
+
 ## Neue Mission einbinden (Checkliste)
 1. Entwurf durch `mission-designer` (`docs/missions/<id>.md`): Lernziele, Startlage, Musterweg + 2 Alternativen.
 2. `missions/<id>.js` anlegen; Startlage per headless Durchlauf prüfen.
 3. `<script src="missions/<id>.js?v=…">` in `index.html` **vor** `engine.js`, Datei in `scripts/site-files.json` und im Service Worker.
-4. Szenario-Tests für Musterweg und Alternativen (`simulation-qa`); bestehende Tests für Mission 1 bleiben unverändert grün.
+4. Szenario-Tests für Musterweg und Alternativen (`simulation-qa`, Muster: `tests/mission-a.test.js`), eigene Referenzaufnahmen (Engine wie `tests/golden/mission-a.js`, Oberfläche wie `tests/e2e/mission-a.mjs`) mit Eintrag in `tests/golden/referenz.js`; bestehende Tests für Mission 1 bleiben unverändert grün.
+   Liegt die neue Mission im Lernweg vor Mission 1, wählen die Browser-Tests von Mission 1 deren Karte gezielt (schon so umgesetzt).
 5. Die Missionsauswahl zeigt jede registrierte Mission als Karte (M3); Antippen wählt und liest vor, „Los geht's“ startet.
 
 ## Texte ändern

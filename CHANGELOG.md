@@ -1,7 +1,17 @@
 # Changelog
 
-## Unveröffentlicht – Meilenstein 1: Testabdeckung und Grundlage M1–M3
-Wird gemeinsam mit Mission A „Welches Tor ist frei?“ veröffentlicht (Version folgt dann). Mission 1 unverändert in Spielverlauf, Bewertung, Hilfe und Oberflächen-Mitschrift (Referenzen v0.3.1 bit-gleich; 17 496 Bewertungen, 710 Kontexte und 1 420 Hilfen gegen v0.3.1 verglichen: 0 Abweichungen).
+## V0.4.0 – Mission „Welches Tor ist frei?“ und Missionsauswahl (Meilenstein 1 + 2, zur Abnahme, unveröffentlicht)
+### Meilenstein 2: Mission A „Welches Tor ist frei?“ (Lernwelt 1)
+Details, Prüfungen und Robustheit: `docs/meilenstein-2.md`. Keine Änderung an `engine.js`/`app.js` außer der Versionsnummer.
+- Neue Datei `missions/welches-tor-ist-frei.js`: 2 gegen 2, Situationen **A1** (oben zu, unten frei), **A2** (unten zu, oben frei), **A3** (beide zu → Pass zum freien Freund, er schießt), **A5** (beide frei, beide Schüsse gleich gut). A4 erst nach Paket D. 4 Durchläufe à 3 Situationen, feste Rotation, jede Situation 3-mal.
+- A3-Startlage gegenüber dem Entwurf verschoben (Blau 2 (30,5|19,5), Rot 1 (33,9|11,4)): Ablauf Pass → Annahme → Schuss hält bei jeder Abweichung um ±0,5 m (16/16), ±1 m 14/16.
+- Missionseigene Texte: Einführung, Merksatz, kurze neutrale Abschluss-Ansage „Welches Tor ist frei? Schießen oder passen?“ (nur diese Mission).
+- Startbildschirm: zwei Karten, „Welches Tor ist frei?“ (🥅) vorausgewählt, Mission 1 als zweite Karte (Platz 2 im Lernweg).
+- Bedientext `missionGewaehlt`: kein doppeltes Satzzeichen nach Titeln mit „?“/„!“ („Welches Tor ist frei?.“ → „Welches Tor ist frei?“; ebenso bei Mission 1). Nur die Ansage beim Antippen einer Karte.
+- Tests: `tests/mission-a.test.js` (12), Referenzen `tests/golden/mission-a.v0.4.0.json` und `ui-mission-a.v0.4.0.json` (neu), Browser `tests/e2e/mission-a.mjs` (Touch, alle Durchläufe, auch mit `SLOW=6`), Analyse `tests/analysis/a3-robustheit.js`. Browser-Tests von Mission 1 wählen deren Karte jetzt gezielt; Mission-1-Referenzen v0.3.1 unverändert und identisch.
+
+### Meilenstein 1: Testabdeckung und Grundlage M1–M3
+Mission 1 unverändert in Spielverlauf, Bewertung, Hilfe und Oberflächen-Mitschrift (Referenzen v0.3.1 bit-gleich; 17 496 Bewertungen, 710 Kontexte und 1 420 Hilfen gegen v0.3.1 verglichen: 0 Abweichungen). Mission 1 unverändert in Spielverlauf, Bewertung, Hilfe und Oberflächen-Mitschrift (Referenzen v0.3.1 bit-gleich; 17 496 Bewertungen, 710 Kontexte und 1 420 Hilfen gegen v0.3.1 verglichen: 0 Abweichungen).
 - **M1 Situationen:** `situationen`, `durchlaeufe`, nahtloser Wechsel ohne Neustart-Bild, feste Rotation je Durchlauf; `phasen.abschlussNachGrenze` (Standard aus).
 - **M2 Aktionen nach Mitspielern:** ab 1 gegen 1; ohne Mitspieler kein „Passen“ und kein Pass in den Raum; „Auch gut“ nennt nur angebotene Aktionen.
 - **M3 Missionsauswahl:** große Karten, Antippen wählt und liest Titel und Einladung vor, empfohlene Reihenfolge (Lernwelt, Nummer), keine Sperren, nichts gespeichert; „Nochmal“ bringt die nächsten Situationen.

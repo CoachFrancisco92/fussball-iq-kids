@@ -44,7 +44,12 @@ async function flow(browser, name, steps) {
   const pos = (id) => page.evaluate((i) => { const p = FIQ.P(window.__fiq.S, i); return [p.x, p.y]; }, id);
   const H = { page, waitMode, until, tap, taps, choose, fb, flush, pos, mode };
 
-  log.push({ start: [await text('#startScreen h1'), await text('.mcard b'), await text('.mcard small'), await text('.chips')] });
+  // Seit Meilenstein 2 mehrere Missionen: die Mitschrift gilt Mission 1 – deren Karte wird gelesen und gewählt.
+  // Die Ansage beim Antippen der Karte prüft e2e/auswahl.mjs; sie wird hier verworfen, damit die Mitschrift ab „Los geht's“
+  // mit der Referenz vergleichbar bleibt. Ältere Stände (ROOT=…) haben nur eine Karte ohne data-id.
+  const card = (await page.$('.mcard[data-id="mission-1"]')) ? '.mcard[data-id="mission-1"]' : '.mcard';
+  log.push({ start: [await text('#startScreen h1'), await text(card + ' b'), await text(card + ' small'), await text(card + ' .chips')] });
+  if (card !== '.mcard') { await page.click(card); await page.evaluate(() => window.__said.splice(0)); }
   await page.click('#play');
   for (const st of steps) await st(H);
   await flush('ende');

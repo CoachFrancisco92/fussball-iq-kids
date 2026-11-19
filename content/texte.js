@@ -183,7 +183,7 @@
       ballImAusAnzeige: '🏳️ Ball im Aus – jetzt hat Rot den Ball.',
       neueSituation: 'Neue Situation! Schau genau hin.',
       neueSituationAnzeige: '🔄 Neue Situation',
-      missionGewaehlt: (titel, einfuehrung) => `${titel}. ${einfuehrung} Tippe auf Los geht's!`,
+      missionGewaehlt: (titel, einfuehrung) => `${titel}${/[.!?]$/.test(titel) ? '' : '.'} ${einfuehrung} Tippe auf Los geht's!`,
       weiterspielen: 'Weiterspielen',
       fertig: 'Fertig',
       vorher: 'Vorher',

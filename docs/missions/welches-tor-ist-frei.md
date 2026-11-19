@@ -159,3 +159,5 @@ Jede Situation kommt in 5 Durchläufen genau 3-mal vor; kein Durchlauf gleicht d
 1. A3 im schmalen Band akzeptieren (Lage ist geprüft) – oder A3 durch eine Variante „beide zu, Freund frei, Pass ist die Lösung“ ohne anschließenden Abschluss ersetzen?
 2. A5 als „beide frei – du darfst wählen“ (statt „Abwägen bei zugestelltem Tor“) bestätigen.
 3. E3/E5 entscheiden (betreffen auch Mission 1 und stark Mission B).
+
+> **Umsetzung Meilenstein 2 (v0.4.0):** A3-Startlage für Robustheit verschoben auf b2 (30,5|19,5), r1 (33,9|11,4) – Ablauf hält bei ±0,5 m 16/16 (Entwurf 11/16). Neustarts entfallen (M1), A4 nicht umgesetzt (Paket D), Rotation mit 4 Durchläufen ohne A4. Abschluss-Ansage missionseigen: „Welches Tor ist frei? Schießen oder passen?“. Details: `docs/meilenstein-2.md`.
