@@ -3,4 +3,5 @@
 //   v0.2.3 – Trennung Inhalte/Engine (Engine + Oberfläche)
 //   v0.2.5 – Hotfix Endlosszene: 10 Abfolgen (docs/hotfix-endlosszene.md)
 //   v0.3.0 – Engine-Paket E1–E6: 153 Bewertungen, 3 Ansagen (docs/bewertungsaenderungen-e1.md)
-module.exports = { file: 'mission1.v0.3.0.json', ui: 'ui-transcript.v0.3.0.json', tag: 'v0.3.0', seit: 'v0.3.0' };
+//   v0.3.1 – Korrektur A Freilaufen: 115 Rückmeldungen/Anzeigen, Hilfe-Durchlauf, 2 Ansagen (docs/korrektur-a-freilaufen.md)
+module.exports = { file: 'mission1.v0.3.1.json', ui: 'ui-transcript.v0.3.1.json', tag: 'v0.3.1', seit: 'v0.3.1' };

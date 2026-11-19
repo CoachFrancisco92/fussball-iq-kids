@@ -1,0 +1,428 @@
+{
+ "grund": "Korrektur A inkl. K1 (Freilaufen: Texte, Anzeige, Hilfe; V0.3.1) – zur Freigabe vorgelegt",
+ "bericht": "docs/korrektur-a-freilaufen.md",
+ "geaenderteEntscheidungen": 115,
+ "spielverlaufGeaendert": [
+  "Hilfe-Durchlauf"
+ ],
+ "scripted": {
+  "musterweg": {
+   "alt": "06b600fd15f72574",
+   "neu": "e24e0f7c674c2039"
+  },
+  "geblockt": {
+   "alt": "2a5b4d7ceae66576",
+   "neu": "de8dc93850fafc87"
+  }
+ },
+ "hinted": {
+  "alt": "4950481751ceb84b",
+  "neu": "2b00887fb8fa34ab"
+ },
+ "seeds": {
+  "2": {
+   "alt": "45545b89fc8c037d",
+   "neu": "9a20b1a0ade16064"
+  },
+  "5": {
+   "alt": "e79f023b19828666",
+   "neu": "cd23fe978a137500"
+  },
+  "8": {
+   "alt": "a3dbca844cba2dce",
+   "neu": "5c79c2b7a482b0bd"
+  },
+  "11": {
+   "alt": "b5a0b042df3242f2",
+   "neu": "78a9357d9066bce4"
+  },
+  "12": {
+   "alt": "cda1a038bae3837f",
+   "neu": "59689438ada8c875"
+  },
+  "14": {
+   "alt": "201a5b4c4434e706",
+   "neu": "19f4ee9f7430f6c4"
+  },
+  "15": {
+   "alt": "9457dd0c4d415426",
+   "neu": "2a02f690b4baaac4"
+  },
+  "17": {
+   "alt": "63328eabf90876d0",
+   "neu": "eea2a7f6bcff7219"
+  },
+  "18": {
+   "alt": "1bdfd3b21005ac75",
+   "neu": "579bf966b75d2dff"
+  },
+  "21": {
+   "alt": "7332ae4ac0f3b5c3",
+   "neu": "b0af012f66ef940e"
+  },
+  "24": {
+   "alt": "b6dfff716c05629e",
+   "neu": "d3da8c5a842d503b"
+  },
+  "26": {
+   "alt": "462e70733215d3ba",
+   "neu": "db397cff1954e3be"
+  },
+  "27": {
+   "alt": "fe55acb0f5e9db28",
+   "neu": "12f4a9b3b9dbada5"
+  },
+  "30": {
+   "alt": "e9ce38033d6739a0",
+   "neu": "a4913a73bf2ab012"
+  },
+  "31": {
+   "alt": "82a0d82ab181fce0",
+   "neu": "b7b6fa6d43001d58"
+  },
+  "33": {
+   "alt": "84d26d02128fa4b2",
+   "neu": "10ed1363414a3d4b"
+  },
+  "34": {
+   "alt": "906e2ee01fc1e21a",
+   "neu": "7c2f6d88fb6ad2f3"
+  },
+  "36": {
+   "alt": "eeeaf61febbdc247",
+   "neu": "4ba76dcb9461f0b1"
+  },
+  "37": {
+   "alt": "61186c8a9def4d9e",
+   "neu": "4ec2542e53b2a876"
+  },
+  "39": {
+   "alt": "081a52910ec4a0f1",
+   "neu": "cfc00a026bddaf4f"
+  },
+  "40": {
+   "alt": "a51766e6ff6030a5",
+   "neu": "7ee5ae163506448c"
+  },
+  "41": {
+   "alt": "941c28eada736f20",
+   "neu": "f4cf12208b0e99cc"
+  },
+  "43": {
+   "alt": "30ef72a16df2e482",
+   "neu": "e9be18e0d6ad3867"
+  },
+  "46": {
+   "alt": "e68e09f4b4e07008",
+   "neu": "6736212b78bbde4d"
+  },
+  "47": {
+   "alt": "7ddffc3d9abfb45f",
+   "neu": "c1a9aef38e693b02"
+  },
+  "50": {
+   "alt": "11b15e75c7cdb76b",
+   "neu": "c1dafa29b4167b5a"
+  },
+  "53": {
+   "alt": "3064df912407988a",
+   "neu": "3797a6a85ccf1f99"
+  },
+  "55": {
+   "alt": "88ec928b06aa46ec",
+   "neu": "2e4a7a7ba7a6d4e4"
+  },
+  "56": {
+   "alt": "ee8a99bbc1ac6a95",
+   "neu": "f09a155d5ea5c8da"
+  },
+  "59": {
+   "alt": "513ff9b77c21e440",
+   "neu": "ca64835a467384ea"
+  },
+  "62": {
+   "alt": "98311f89b591fc7f",
+   "neu": "29aaf1ee5f7b26e7"
+  },
+  "65": {
+   "alt": "3ea2cd691689c90a",
+   "neu": "2ea6c296d1c1835d"
+  },
+  "66": {
+   "alt": "1e4877c92545d03c",
+   "neu": "167e01173bf26000"
+  },
+  "68": {
+   "alt": "3d561e8d764c0320",
+   "neu": "160aa1fec35ed585"
+  },
+  "69": {
+   "alt": "6840807dfd7f12c4",
+   "neu": "ef52ae99cac8561c"
+  },
+  "70": {
+   "alt": "8dcd490a0e2cbc32",
+   "neu": "f5f21cc088ff3c99"
+  },
+  "71": {
+   "alt": "57f89801327c91a5",
+   "neu": "1315d786c2d53fd4"
+  },
+  "72": {
+   "alt": "c070301f26b2a99d",
+   "neu": "c1d183ea9d43f2f8"
+  },
+  "75": {
+   "alt": "ee7b0d4ef4ef331a",
+   "neu": "2780e1d47ed7e8d6"
+  },
+  "78": {
+   "alt": "f75ed91340dbbbab",
+   "neu": "4ab159d162b2a0ee"
+  },
+  "81": {
+   "alt": "23e34a1a0752e92b",
+   "neu": "806c673a5023ab63"
+  },
+  "84": {
+   "alt": "e7c1c4c248b71d47",
+   "neu": "0453c763520d6ede"
+  },
+  "85": {
+   "alt": "b64c69a8f1544d82",
+   "neu": "41a8f7c410fb1d34"
+  },
+  "87": {
+   "alt": "a243df9406412808",
+   "neu": "3ca4b2a859386237"
+  },
+  "88": {
+   "alt": "4cf706da575b344c",
+   "neu": "cab633cec4273a7a"
+  },
+  "90": {
+   "alt": "d913e0356aa99538",
+   "neu": "d5e43f444286ac64"
+  },
+  "91": {
+   "alt": "8a2d2b9fae93d502",
+   "neu": "af47efc33bd16bb0"
+  },
+  "93": {
+   "alt": "e0ddd0b14f224dd2",
+   "neu": "a7467e230a084fd8"
+  },
+  "94": {
+   "alt": "1003aa174100051a",
+   "neu": "f99b73703e5b68cb"
+  },
+  "95": {
+   "alt": "ed5dd45573edba67",
+   "neu": "9f241830a4a2f4c0"
+  },
+  "96": {
+   "alt": "f5a9b10057c47d07",
+   "neu": "df1d9fd0af3cf06b"
+  },
+  "97": {
+   "alt": "31469941ecbf02c4",
+   "neu": "9a4049e1ba1a7770"
+  },
+  "100": {
+   "alt": "ccc9a1e428933623",
+   "neu": "a7738e31165e38ad"
+  },
+  "104": {
+   "alt": "77d298a48c6669ab",
+   "neu": "04e92c3a37a9d788"
+  },
+  "107": {
+   "alt": "6b7c34392315da34",
+   "neu": "c97d8eeb0a910d3f"
+  },
+  "109": {
+   "alt": "75183edf37c18625",
+   "neu": "01e9cef526fe691c"
+  },
+  "110": {
+   "alt": "d539ee63831deb16",
+   "neu": "257731fcf8b96428"
+  },
+  "113": {
+   "alt": "617b583d8b8de494",
+   "neu": "823bf2b77b8b4bea"
+  },
+  "116": {
+   "alt": "7f8719bca908f000",
+   "neu": "a078583b5e1747eb"
+  },
+  "118": {
+   "alt": "d18a0cffa89732f3",
+   "neu": "c0ba0038d87b263b"
+  },
+  "119": {
+   "alt": "988e013015f1ed39",
+   "neu": "49dcd0b31cb60b6c"
+  },
+  "122": {
+   "alt": "7bf36f53b8afb64a",
+   "neu": "086bd277b68b8d54"
+  },
+  "123": {
+   "alt": "a5d4ad6b86b9b98b",
+   "neu": "ba7710bffc933c1f"
+  },
+  "125": {
+   "alt": "2906b491ac6915ab",
+   "neu": "a899f777c3a58e36"
+  },
+  "126": {
+   "alt": "2449b38638f8a796",
+   "neu": "287dcd1550853900"
+  },
+  "129": {
+   "alt": "0fce1cc070456c53",
+   "neu": "95ac10cbc35a9689"
+  },
+  "132": {
+   "alt": "9eda17d1fc12d09a",
+   "neu": "e205d6d96f0fa2f7"
+  },
+  "135": {
+   "alt": "ac6b06be1ecccdd9",
+   "neu": "c66712e7cdac6207"
+  },
+  "138": {
+   "alt": "fedb97bb551bd27d",
+   "neu": "05faf7a7e8fe5dd4"
+  },
+  "141": {
+   "alt": "d4dd84d089d117cf",
+   "neu": "866eb33e988ca497"
+  },
+  "142": {
+   "alt": "17edbf500ad34b2b",
+   "neu": "08e5f96e1be06afb"
+  },
+  "144": {
+   "alt": "6f91e580e303fa66",
+   "neu": "bc17e62888917edd"
+  },
+  "145": {
+   "alt": "30bdd48f357acef0",
+   "neu": "e564b8abafb349a1"
+  },
+  "147": {
+   "alt": "98f0888e3f163efe",
+   "neu": "72a72edf28bdc487"
+  },
+  "148": {
+   "alt": "dafcd43d51d2eae6",
+   "neu": "f0087ba8d46ae995"
+  },
+  "150": {
+   "alt": "d92e37bb5b313105",
+   "neu": "f6268a96f4fbe474"
+  },
+  "151": {
+   "alt": "06a632839668b941",
+   "neu": "11d640c478c759f2"
+  },
+  "154": {
+   "alt": "83ed385cca2b8996",
+   "neu": "6d73c293bbc770ab"
+  },
+  "157": {
+   "alt": "b0671cc3bd2de5e9",
+   "neu": "d725faf4660aee82"
+  },
+  "158": {
+   "alt": "61743797e3dc4431",
+   "neu": "6568a4a0dd908556"
+  },
+  "161": {
+   "alt": "803182af248ff416",
+   "neu": "c3506b0d7643ad18"
+  },
+  "163": {
+   "alt": "ddfa49d9a80e08bc",
+   "neu": "c4774ccb1f4a474f"
+  },
+  "164": {
+   "alt": "b98db647106ddf22",
+   "neu": "50bf15cba7d35107"
+  },
+  "166": {
+   "alt": "703f4dbed1d52e7a",
+   "neu": "d00333aec56b7ee3"
+  },
+  "167": {
+   "alt": "1e5490233c10988b",
+   "neu": "1c3657c4bcd5b3d5"
+  },
+  "170": {
+   "alt": "670a86e90de4c919",
+   "neu": "3320e2a9ce9494d8"
+  },
+  "172": {
+   "alt": "85659d12ac606c37",
+   "neu": "77280c8c27150328"
+  },
+  "173": {
+   "alt": "ac9c246f4b12d1fe",
+   "neu": "df34c5e0bca61115"
+  },
+  "176": {
+   "alt": "e98727235205a27e",
+   "neu": "b34efc513bd62a6e"
+  },
+  "177": {
+   "alt": "3082c04de257bce1",
+   "neu": "ddc6763bdcecb7c5"
+  },
+  "179": {
+   "alt": "3bf4b24f92276114",
+   "neu": "5a54f783f756cc8b"
+  },
+  "180": {
+   "alt": "98075854a25c5007",
+   "neu": "fe044a1177044702"
+  },
+  "183": {
+   "alt": "c99e42e510f39614",
+   "neu": "37b27e19a97e627a"
+  },
+  "185": {
+   "alt": "26de893c6b56e42e",
+   "neu": "85f454eeb64b1636"
+  },
+  "186": {
+   "alt": "2b77b1e52d8b0633",
+   "neu": "47a29d2cf6a2fedc"
+  },
+  "189": {
+   "alt": "773cc2fa6386b432",
+   "neu": "e12730e269b728c0"
+  },
+  "192": {
+   "alt": "56cf80b48735d1c3",
+   "neu": "20128b173481e902"
+  },
+  "195": {
+   "alt": "88c31eb9b5952a64",
+   "neu": "112f7ace5846b8fd"
+  },
+  "196": {
+   "alt": "fe5f188f147dccb0",
+   "neu": "b6fbdda5281465d7"
+  },
+  "198": {
+   "alt": "45d8dc5f335bb2c1",
+   "neu": "619dfdaa07cdf64f"
+  },
+  "199": {
+   "alt": "47c46c3060ff0134",
+   "neu": "512ded9494fb15b2"
+  }
+ }
+}
