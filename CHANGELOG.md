@@ -1,5 +1,19 @@
 # Changelog
 
+## V0.5.1 – Sprachsteuerung, Navigation, Einzelaktion (zur Abnahme, unveröffentlicht)
+Grundlage: UX-Review `docs/ux-review-v0.5.md`, Maßnahmen 1.1–1.5 (freigegeben 19.11.2026). Details und Testergebnisse: `docs/v0.5.1.md`.
+**Engine, Bewertungen und Engine-Referenzen unverändert** (`engine.js` nur Versionsnummer).
+- **Zentrale Sprachsteuerung** (`sprache.js`, neu): Warteschlange statt Abbruch bei jeder Ansage. Laufende Ansagen werden nur abgebrochen, wenn das Kind etwas antippt, bei „Ton aus“, 🏠, Neustart oder Missionswechsel. Arten: Anweisung, Rückmeldung, Ansage, Hinweis (optional, wird verworfen statt zu stauen). Phasenwechsel verwerfen noch nicht begonnene Ansagen. Übergänge („Neue Situation“, „Ball im Aus“, „Anders probieren“, Schau-Schritt) warten auf das Satzende, mit Mindest- und Höchstzeit statt fester 0,9/1,8/2,6/3,4 s. Safari: Pause nach Abbruch, `resume()`, Wächter bei fehlendem Ende-Ereignis, späte Ereignisse alter Ansagen werden ignoriert. Sprechtempo 0,9, Tonhöhe 1,05.
+- **Ablauf-Taktgeber:** alle zeitgesteuerten Übergänge laufen über die Sprachsteuerung; 🏠, Neustart und Missionswechsel beenden sie vollständig (behebt den Geisterablauf hinter der Übersicht).
+- „Los geht's! …“ ist jetzt hörbar (wurde bisher nach 64 ms abgeschnitten); „Neue Situation! Schau genau hin.“ wird zu Ende gesprochen.
+- 🔈 liest die aktuell relevante Anweisung (Aufgabe, gewählter Schritt, Hilfe) bzw. die Erklärung der Rückmeldung.
+- **↺ Neu starten** in der Kopfzeile mit kindersicherer Abfrage (✔/✖, vorgelesen); während der Abfrage steht das Spiel. ✔ = gleicher Durchlauf von vorn.
+- **Missionsende:** „▶ Nächste Mission“ (nächste im Lernweg, startet direkt mit der Einführung), „🔁 Nochmal“ (nächster Durchlauf, neue Situationen), „↺ Genau so nochmal“ (gleicher Durchlauf, nur bei Missionen mit Durchläufen), „🏠 Alle Missionen“, „🎬 Szenen ansehen“. Nach der letzten Mission kein Sprung zur ersten, sondern „🏅 Das war die letzte Mission!“ (angesagt). In der Sitzung gespielte Missionen tragen ✓ auf der Karte (nichts gespeichert).
+- **Einzelaktion:** Ist nur eine Aktion möglich, entfallen Aktionsknöpfe und „Zurück“; die Hilfe bleibt sichtbar.
+- Schnelles Mehrfach-Antippen: Knöpfe wirken nur im passenden Zustand; ein Doppeltipp auf einen Knopf zählt nicht als Tipp aufs Spielfeld darunter.
+- Oberflächen-Mitschriften (vorgelegt, nicht freigegeben): Mission 1 – 3 Einträge (Schlussansage „Das war die letzte Mission …“), Mission A – 1 Eintrag, „Freie Bahn!“ – 50 Einträge (jeweils nur: keine Aktionsknöpfe bei einer Aktion). Listen: `tests/golden/abweichungen-v0.5.1-ui.json`, `ui-missionA-abweichungen-v0.5.1.json`, `ui-freieBahn-abweichungen-v0.5.1.json`.
+- Tests: `tests/sprache.test.js` (17), `tests/e2e/navigation.mjs` (Sprache mit nachgebauter Sprachausgabe inkl. Safari-Fällen, 🏠 in Übergängen, Neustart, Durchläufe, Missionswechsel, Hilfe bei Einzelaktion, Touch iPad/Handy); Mitschrift-Abweichungen für Mission A und „Freie Bahn!“ jetzt wie bei Mission 1 vorlegbar (`tests/helpers/ui-abweichungen.mjs`).
+
 ## V0.5.0 – Mission „Freie Bahn!“, A4 und Paket D
 ### Meilenstein 4: „Freie Bahn!“ und A4
 Details: `docs/meilenstein-4.md`.

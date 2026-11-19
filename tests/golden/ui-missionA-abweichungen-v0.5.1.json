@@ -1,0 +1,27 @@
+[
+ {
+  "eintrag": 54,
+  "alt": {
+   "where": "A4 weiter",
+   "sit": "A4",
+   "said": [
+    "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball."
+   ],
+   "title": "Wo kann ich helfen?",
+   "tag": "Bewegung ohne Ball",
+   "actions": [
+    "👟Freilaufen"
+   ]
+  },
+  "neu": {
+   "where": "A4 weiter",
+   "sit": "A4",
+   "said": [
+    "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball."
+   ],
+   "title": "Wo kann ich helfen?",
+   "tag": "Bewegung ohne Ball",
+   "actions": []
+  }
+ }
+]

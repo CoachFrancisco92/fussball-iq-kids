@@ -95,13 +95,17 @@ try {
     // T2: oben frei
     await H.choose('Schießen'); await H.field(36, 6); await H.waitMode('feedback'); await H.touch('#fbNext'); await H.waitMode('decide');
     // T3: 1 gegen 1 – kein Passen
-    const acts = await H.actions();
-    if (acts.some((a) => /Passen/.test(a)) || !acts.some((a) => /Dribbeln/.test(a))) fail('1 gegen 1 bietet: ' + acts.join(', '));
+    // V0.5.1: Nur eine mögliche Aktion -> keine Aktionsknöpfe, Aktion vorgewählt, Hilfe bleibt sichtbar
+    const offered = () => H.page.evaluate(() => ({ acts: window.__fiq.ctx.actions.slice(), sel: window.__fiq.sel && window.__fiq.sel.action }));
+    const single = async (want, what) => {
+      const o = await offered(), ui = await H.actions();
+      if (o.acts.join() !== want || o.sel !== want || ui.length || !(await H.page.isVisible('#actions .hint')) || (await H.page.isVisible('#cancel'))) fail(`${what}: ${JSON.stringify(o)} Knöpfe: ${ui.join(', ')}`);
+    };
+    await single('dribbeln', '1 gegen 1 bietet');
     await H.choose('Dribbeln'); await H.field(30, 12); await H.waitMode('feedback'); await H.touch('#fbNext'); await H.waitMode('decide');
-    const acts2 = await H.actions();
-    if (acts2.join() !== '🥅Schießen' && !(acts2.length === 1 && /Schießen/.test(acts2[0]))) fail('Abschluss nach der Grenze fehlt: ' + acts2.join(', '));
+    await single('schiessen', 'Abschluss nach der Grenze fehlt');
     await H.choose('Schießen'); await H.field(36, 6); await H.waitMode('feedback'); await H.touch('#fbNext'); await H.waitMode('end');
-    console.log('✓ 1 gegen 1: nur Dribbeln angeboten; nach dem letzten Dribbling in die Zone noch der Abschluss; Mission endet nach 3 Situationen');
+    console.log('✓ 1 gegen 1: nur Dribbeln möglich (vorgewählt, ohne Aktionsknöpfe, Hilfe sichtbar); nach dem letzten Dribbling in die Zone noch der Abschluss; Mission endet nach 3 Situationen');
     await H.touch('#again'); await H.waitMode('decide');
     if ((await H.page.evaluate(() => window.__fiq.S.situation)) !== 'T2') fail('„Nochmal“ bringt keine anderen Situationen');
     await H.touch('#home');

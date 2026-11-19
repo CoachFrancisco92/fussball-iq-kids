@@ -205,6 +205,10 @@
       jetzt: 'Jetzt',
       torBlau: 'TOOOR! ⚽',
       torRot: 'Tor für Rot',
+      // V0.5.1: Navigation
+      neustartFrage: 'Willst du nochmal von vorn anfangen?',
+      letzteMission: 'Das war die letzte Mission. Du kannst nochmal spielen oder eine andere Mission aussuchen.',
+      naechsteMission: (titel, einfuehrung) => `${titel}${/[.!?]$/.test(titel) ? '' : '.'} ${einfuehrung}`.trim(),
     },
 
     // Missionsende

@@ -1,0 +1,76 @@
+{
+ "Schau falsch/richtig, Fehlpass, Wiederholen, Vergleichen, Rest mit Hilfe": [
+  {
+   "eintrag": 23,
+   "alt": {
+    "where": "ende",
+    "said": [
+     "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 5 von 5 Sternen.",
+     "Der Pass ist angekommen!"
+    ],
+    "title": "Wer hält den Gegner auf?",
+    "tag": "Verteidigung",
+    "step": ""
+   },
+   "neu": {
+    "where": "ende",
+    "said": [
+     "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 5 von 5 Sternen.",
+     "Das war die letzte Mission. Du kannst nochmal spielen oder eine andere Mission aussuchen.",
+     "Der Pass ist angekommen!"
+    ],
+    "title": "Wer hält den Gegner auf?",
+    "tag": "Verteidigung",
+    "step": ""
+   }
+  }
+ ],
+ "Keiner ist frei, Ball im Aus, Verteidigung": [
+  {
+   "eintrag": 24,
+   "alt": {
+    "where": "ende",
+    "said": [
+     "Gut gemacht! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 2 von 6 Sternen."
+    ],
+    "title": "Wer hält den Gegner auf?",
+    "tag": "Verteidigung",
+    "step": ""
+   },
+   "neu": {
+    "where": "ende",
+    "said": [
+     "Gut gemacht! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 2 von 6 Sternen.",
+     "Das war die letzte Mission. Du kannst nochmal spielen oder eine andere Mission aussuchen."
+    ],
+    "title": "Wer hält den Gegner auf?",
+    "tag": "Verteidigung",
+    "step": ""
+   }
+  }
+ ],
+ "Falscher Verteidiger und falscher Ort": [
+  {
+   "eintrag": 6,
+   "alt": {
+    "where": "ende",
+    "said": [
+     "Toll, dass du es probiert hast! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 0 von 2 Sternen."
+    ],
+    "title": "Wie schützen wir unser Tor?",
+    "tag": "Verteidigung",
+    "step": ""
+   },
+   "neu": {
+    "where": "ende",
+    "said": [
+     "Toll, dass du es probiert hast! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst! Du hast 0 von 2 Sternen.",
+     "Das war die letzte Mission. Du kannst nochmal spielen oder eine andere Mission aussuchen."
+    ],
+    "title": "Wie schützen wir unser Tor?",
+    "tag": "Verteidigung",
+    "step": ""
+   }
+  }
+ ]
+}

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Fußball-IQ Kids</title>
 <meta name="theme-color" content="#1e3a8a">
-<meta name="app-version" content="0.5.0">
+<meta name="app-version" content="0.5.1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fußball-IQ">
@@ -105,7 +105,8 @@
   /* Vollbild-Screens */
   .screen { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 20px;
     background: radial-gradient(100% 80% at 50% 10%, rgba(37,99,235,.92), rgba(30,58,138,.97)); color: #fff; text-align: center; }
-  .screen { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .screen { overflow-y: auto; -webkit-overflow-scrolling: touch; grid-template-columns: minmax(0, 1fr); }
+  .screen .inner { justify-self: center; }
   .screen .inner { max-width: 560px; width: 100%; margin: auto 0; }
   @media (max-height: 500px) {
     .screen { padding: 10px 16px; place-items: start center; }
@@ -115,6 +116,7 @@
     #endList { display: none; }
     .big { margin-top: 10px; height: 54px; font-size: 20px; }
     .row .big { height: 50px; font-size: 17px; padding: 0 18px; }
+    #endFinal { font-size: 16px; margin: 2px 0; } #endScreen .logo { display: none; }
     .how { margin-top: 10px; } .ver { margin-top: 6px; }
   }
   .logo { font-size: 64px; line-height: 1; animation: bob 2s ease-in-out infinite; }
@@ -143,12 +145,30 @@
   #stars span { color: rgba(255,255,255,.25); } #stars span.on { color: var(--sun); text-shadow: 0 0 18px rgba(255,214,10,.6); }
   #endScore { font-weight: 800; font-size: 18px; opacity: .85; }
   #endMsg { font-size: 18px; font-weight: 600; margin: 10px 0; }
-  #endList { list-style: none; padding: 0; margin: 10px auto; max-width: 420px; text-align: left; font-weight: 700; max-height: 34vh; overflow-y: auto; } /* lange Missionen (bis 15 Entscheidungen): Knöpfe bleiben sichtbar */
+  #endList { list-style: none; padding: 0; margin: 10px auto; max-width: 420px; text-align: left; font-weight: 700; max-height: 24vh; overflow-y: auto; } /* lange Missionen (bis 15 Entscheidungen): Knöpfe bleiben sichtbar */
+  #endScreen .logo { font-size: 48px; } #endScreen h1 { font-size: clamp(30px, 6vw, 44px); } #endScreen #stars { margin: 2px 0; } #endScreen #endMsg { margin: 6px 0; }
   #endList li { background: rgba(255,255,255,.1); margin: 4px 0; padding: 6px 12px; border-radius: 12px; display: flex; gap: 10px; }
   #endList li span { margin-left: auto; } #endList b { opacity: .6; }
   .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   .row .big { padding: 0 26px; font-size: 20px; height: 64px; }
   .row .ghost { background: rgba(255,255,255,.16); color: #fff; box-shadow: none; }
+  .row + .row { margin-top: 0; }
+  #nextMission { display: flex; align-items: center; gap: 10px; max-width: 100%; }
+  #nextMission .lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .row .big.mid { height: 56px; font-size: 18px; margin-top: 10px; }
+  .row .big.small { height: 46px; font-size: 16px; margin-top: 10px; padding: 0 18px; }
+  #endFinal { font-size: 22px; font-weight: 800; color: var(--sun); margin: 6px 0; }
+  .confirm { z-index: 20; background: rgba(15,23,42,.88); }
+  .confirm .row { gap: 56px; }
+  .confirm .row .big { width: 140px; height: 110px; font-size: 56px; padding: 0; margin-top: 24px; }
+  .confirm .big.yes { background: #22c55e; color: #fff; box-shadow: 0 6px 0 #15803d; }
+  .confirm .big.no { background: var(--paper); color: var(--ink); box-shadow: 0 6px 0 #c9c2a5; }
+  @media (max-height: 500px) {
+    .row .big.mid { height: 44px; font-size: 15px; margin-top: 6px; } .row .big.small { height: 38px; font-size: 14px; margin-top: 6px; }
+    #endScreen h1 { font-size: 26px; } #endScreen .row #nextMission { height: 48px; margin-top: 8px; }
+    .confirm .row .big { width: 110px; height: 80px; font-size: 42px; margin-top: 12px; }
+  }
+  .mcard .num { position: relative; } .mcard.played .num::after { content: "✓"; position: absolute; top: -7px; right: -7px; font-size: 16px; background: #22c55e; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: grid; place-items: center; }
 
   /* Tor-Effekte */
   #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 8; overflow: hidden; }
@@ -186,7 +206,8 @@
 <body>
 <div id="app">
   <header>
-    <button class="round" id="home" aria-label="Start">🏠</button>
+    <button class="round" id="home" aria-label="Alle Missionen">🏠</button>
+    <button class="round" id="restart" aria-label="Nochmal von vorn" hidden>↺</button>
     <div id="prompt" hidden>
       <span class="tag att" id="tag">Angriff</span>
       <h2 id="title">…</h2>
@@ -241,7 +262,7 @@
       <div><i>👆</i>Knopf, dann Feld</div>
       <div><i>↩️</i>Nochmal probieren</div>
     </div>
-    <p class="ver" id="ver">Version 0.5.0</p>
+    <p class="ver" id="ver">Version 0.5.1</p>
   </div>
 </div>
 
@@ -252,11 +273,29 @@
     <div id="stars"></div>
     <div id="endScore"></div>
     <p id="endMsg"></p>
+    <p id="endFinal" hidden>🏅 Das war die letzte Mission!</p>
     <ul id="endList"></ul>
     <div class="row">
-      <button class="big" id="hl">🎬 Szenen ansehen</button>
-      <button class="big" id="again">🔄 Nochmal</button>
-      <button class="big ghost" id="home2">🏠</button>
+      <button class="big" id="nextMission" hidden><span class="ico">▶</span><span class="lbl"></span></button>
+    </div>
+    <div class="row">
+      <button class="big mid" id="again">🔁 Nochmal</button>
+      <button class="big mid ghost" id="same" hidden>↺ Genau so nochmal</button>
+    </div>
+    <div class="row">
+      <button class="big small ghost" id="home2">🏠 Alle Missionen</button>
+      <button class="big small ghost" id="hl">🎬 Szenen ansehen</button>
+    </div>
+  </div>
+</div>
+
+<div class="screen confirm" id="confirm" hidden role="dialog" aria-label="Nochmal von vorn?">
+  <div class="inner">
+    <div class="logo">↺</div>
+    <h1>Nochmal <span>von vorn?</span></h1>
+    <div class="row">
+      <button class="big yes" id="confirmYes" aria-label="Ja, nochmal von vorn">✔</button>
+      <button class="big no" id="confirmNo" aria-label="Nein, weiterspielen">✖</button>
     </div>
   </div>
 </div>
@@ -265,11 +304,12 @@
 <div id="confetti"></div>
 <div class="goalBanner" id="goalBanner"></div>
 
-<script src="content/texte.js?v=0.5.0"></script>
-<script src="missions/mission-1.js?v=0.5.0"></script>
-<script src="missions/welches-tor-ist-frei.js?v=0.5.0"></script>
-<script src="missions/freie-bahn.js?v=0.5.0"></script>
-<script src="engine.js?v=0.5.0"></script>
-<script src="app.js?v=0.5.0"></script>
+<script src="content/texte.js?v=0.5.1"></script>
+<script src="missions/mission-1.js?v=0.5.1"></script>
+<script src="missions/welches-tor-ist-frei.js?v=0.5.1"></script>
+<script src="missions/freie-bahn.js?v=0.5.1"></script>
+<script src="engine.js?v=0.5.1"></script>
+<script src="sprache.js?v=0.5.1"></script>
+<script src="app.js?v=0.5.1"></script>
 </body>
 </html>

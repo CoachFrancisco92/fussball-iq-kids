@@ -6,6 +6,7 @@
 //   node tests/e2e/mission-a.mjs --write F       -> Mitschrift nach F schreiben (Referenz bzw. vorgelegte Aufnahme erzeugen)
 //   SLOW=6 node tests/e2e/mission-a.mjs          -> mit 6-fach gedrosselter CPU (langsames Gerät)
 import { chromium } from 'playwright';
+import { vergleiche } from '../helpers/ui-abweichungen.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -170,11 +171,11 @@ try {
   console.log('✓ Durchlauf 5 (A5 · A4 · A3): beide Tore ⭐, A4 auch über den Pass ⭐; Rückkehr zu Durchlauf 1; keine JavaScript-Fehler' + (process.env.SLOW ? ` (CPU ${process.env.SLOW}× gedrosselt)` : ''));
 
   const wi = process.argv.indexOf('--write');
-  if (wi > 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(log, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }
+  if (wi > 0 && process.argv.indexOf('--pending-write') < 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(log, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }
   else {
-    const J = (x) => JSON.stringify(x), ref = JSON.parse(fs.readFileSync(path.join(here, '..', 'golden', REF.missionA.ui), 'utf8'));
-    for (let k = 0; k < Math.max(ref.length, log.length); k++) if (J(ref[k]) !== J(log[k])) fail(`Mitschrift weicht ab bei Eintrag ${k}\n  Referenz: ${J(ref[k])}\n  jetzt:    ${J(log[k])}`);
-    console.log(`✓ Mitschrift identisch zur Referenz ${REF.missionA.ui} (${ref.length} Einträge)`);
+    const ref = JSON.parse(fs.readFileSync(path.join(here, '..', 'golden', REF.missionA.ui), 'utf8'));
+    // vorgelegte, noch nicht freigegebene Abweichungen: tests/golden/ui-missionA-abweichungen-*.json (--pending-write F erzeugt sie)
+    console.log('✓ ' + vergleiche({ ref, log, gdir: path.join(here, '..', 'golden'), praefix: 'ui-missionA', refName: REF.missionA.ui }));
   }
   await ctx.close();
 } catch (e) { console.error('✗ Mission A:', e.message); if (process.env.DEBUG && globalThis.__log) console.error(JSON.stringify(globalThis.__log.slice(-4))); exit = 1; }

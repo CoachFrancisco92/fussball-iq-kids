@@ -10,6 +10,7 @@
 //   node tests/e2e/mission-a.mjs --write F       -> Mitschrift nach F schreiben (Referenz bzw. vorgelegte Aufnahme erzeugen)
 //   SLOW=6 node tests/e2e/mission-a.mjs          -> mit 6-fach gedrosselter CPU (langsames Gerät)
 import { chromium } from 'playwright';
+import { vergleiche } from '../helpers/ui-abweichungen.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -92,7 +93,12 @@ try {
   const end = async (what) => { await waitMode('end'); log.push({ end: what, said: await said(), stars: await page.$$eval('#stars span', (x) => x.map((s) => (s.classList.contains('on') ? '★' : '☆')).join('')), score: await text('#endScore'), msg: await text('#endMsg') }); };
 
   const dribble = async (x, y) => { await choose('Dribbeln'); await field(x, y); };
-  const onlyDribble = async (where) => { const a = await actions(); if (a.length !== 1 || !/Dribbeln/.test(a[0])) fail(`${where}: Aktionen ${a.join(', ')}`); };
+  // V0.5.1: Nur Dribbeln möglich -> Aktion vorgewählt, keine Aktionsknöpfe, Hilfe sichtbar und nutzbar
+  const onlyDribble = async (where) => {
+    const o = await page.evaluate(() => ({ acts: window.__fiq.ctx.actions.slice(), sel: window.__fiq.sel && window.__fiq.sel.action }));
+    const a = await actions();
+    if (o.acts.join() !== 'dribbeln' || o.sel !== 'dribbeln' || a.length || !(await page.isVisible('#actions .hint')) || (await page.isVisible('#cancel'))) fail(`${where}: ${JSON.stringify(o)} Knöpfe ${a.join(', ')}`);
+  };
   // Hilfe bis zum Tor dieser Situation (max. 6 Entscheidungen), nur ⭐
   const helpToGoal = async (sit) => {
     for (let i = 0; i < 6; i++) { const fb = await (async () => { await viaHint(); return feedback(); })(); expectStar(fb, true, `${sit} Hilfe ${i + 1}`);
@@ -123,7 +129,7 @@ try {
   await dribble(25, 12); const f4 = await feedback(); expectStar(f4, false, 'B4 in den Gegner');
   if (!/direkt auf einen Gegner/.test(f4.said.join(' '))) fail('B4: Erklärung fehlt: ' + f4.said); await next();
   st = await decision('entscheiden'); if (st.sit !== 'B5') fail('B5 erwartet');
-  for (let i = 0; i < 6; i++) { if ((await actions()).some((a) => /Schießen/.test(a))) break; await viaHint(); expectStar(await feedback(), true, 'B5 Hilfe'); await next(); await decision('B5 weiter'); }
+  for (let i = 0; i < 6; i++) { if ((await page.evaluate(() => window.__fiq.ctx.actions)).includes("schiessen")) break; /* V0.5.1: bei nur einer Aktion keine Knöpfe – angeboten laut Kontext */ await viaHint(); expectStar(await feedback(), true, 'B5 Hilfe'); await next(); await decision('B5 weiter'); }
   await choose('Schießen'); await field(36, 18); const f5 = await feedback(); expectStar(f5, false, 'B5 unteres Tor (zugestellt)');
   if (!/Rot 2/.test(f5.said.join(' '))) fail('B5: Erklärung fehlt: ' + f5.said); await next();
   st = await decision('entscheiden'); if (st.sit !== 'B6') fail('B6 erwartet');
@@ -146,11 +152,11 @@ try {
   console.log('✓ Durchläufe 3–5 mit der Hilfe: jede Situation endet mit Tor, nur ⭐; Rückkehr zu Durchlauf 1; keine JavaScript-Fehler' + (process.env.SLOW ? ` (CPU ${process.env.SLOW}× gedrosselt)` : ''));
 
   const wi = process.argv.indexOf('--write');
-  if (wi > 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(log, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }
+  if (wi > 0 && process.argv.indexOf('--pending-write') < 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(log, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }
   else {
-    const J = (x) => JSON.stringify(x), ref = JSON.parse(fs.readFileSync(path.join(here, '..', 'golden', REF.freieBahn.ui), 'utf8'));
-    for (let k = 0; k < Math.max(ref.length, log.length); k++) if (J(ref[k]) !== J(log[k])) fail(`Mitschrift weicht ab bei Eintrag ${k}\n  Referenz: ${J(ref[k])}\n  jetzt:    ${J(log[k])}`);
-    console.log(`✓ Mitschrift identisch zur Referenz ${REF.freieBahn.ui} (${ref.length} Einträge)`);
+    const ref = JSON.parse(fs.readFileSync(path.join(here, '..', 'golden', REF.freieBahn.ui), 'utf8'));
+    // vorgelegte, noch nicht freigegebene Abweichungen: tests/golden/ui-freieBahn-abweichungen-*.json (--pending-write F erzeugt sie)
+    console.log('✓ ' + vergleiche({ ref, log, gdir: path.join(here, '..', 'golden'), praefix: 'ui-freieBahn', refName: REF.freieBahn.ui }));
   }
   await ctx.close();
 } catch (e) { console.error('✗ Freie Bahn:', e.message); if (process.env.DEBUG && globalThis.__log) console.error(JSON.stringify(globalThis.__log.slice(-4))); exit = 1; }
