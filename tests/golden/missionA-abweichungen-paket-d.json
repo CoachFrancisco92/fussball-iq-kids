@@ -1,0 +1,27 @@
+{
+ "grund": "Paket D (E1, E2, E4, E6) – zur Freigabe vorgelegt, Referenzen NICHT aktualisiert",
+ "bericht": "docs/meilenstein-3b.md",
+ "styles": {},
+ "seeds": {
+  "74": {
+   "alt": "859fd4315ba29dd0",
+   "neu": "f6b588fd501965dc"
+  },
+  "108": {
+   "alt": "c60571c6e339bd7e",
+   "neu": "0780f987f975e0c9"
+  },
+  "127": {
+   "alt": "b4f3f328f029adf8",
+   "neu": "7ef4e9f1d72f0aee"
+  },
+  "134": {
+   "alt": "da3fa8c5eecbb86a",
+   "neu": "e732386d18d30203"
+  },
+  "150": {
+   "alt": "92dba0464bdc8534",
+   "neu": "6a2393fc740fc5ba"
+  }
+ }
+}

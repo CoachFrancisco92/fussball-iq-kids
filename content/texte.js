@@ -87,6 +87,8 @@
       anderesTorFrei: ' Das andere Tor war frei.',
       freierRaum: 'Du bist in den freien Raum gedribbelt.',
       inGegner: 'Du bist direkt auf einen Gegner zugelaufen.',
+      dribbelKnapp: (g) => `Das war knapp – ${g} war ganz nah.`,
+      gegnerDazwischen: (g) => (g ? `Dribbel weiter weg von ${g}.` : 'Dribbel weiter weg vom Gegner.'),
       gelaufenFrei: 'Du bist in einen freien Raum gelaufen.',
       gelaufenBesetzt: 'Dort stand schon ein Gegner.',
       gelaufenZuNah: 'Das war zu nah am Ball – dein Freund braucht Platz.',

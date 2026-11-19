@@ -1,5 +1,13 @@
 # Changelog
 
+## Unveröffentlicht – Meilenstein 3b: Paket D (Dribbelbewertung und -hilfe, E1/E2/E4/E6)
+Zur Abnahme; Referenzen nicht neu erzeugt (Abweichungen vorgelegt). Details: `docs/meilenstein-3b.md`.
+- Dribbelbewertung per deterministischer Vorausrechnung des tatsächlich ausgeführten Wegs (max. 8 m) mit Toleranz ±0,5 m (Ziel + ≥ 3/4 Nachbarziele behalten den Ball).
+- Erklärungen nach Ursache: „Das war knapp – Rot X war ganz nah.“, „Dribbel weiter weg von Rot X.“; „direkt auf einen Gegner“ nur noch, wenn es stimmt.
+- Dribbelhilfe: nur sichere, robuste Ziele; Raumgewinn, Schusszone mit freiem Tor, Feldmitte statt Seitenlinie.
+- Spielverlauf von Mission 1 und Mission A unverändert; 10 bzw. 5 Bewertungen geändert (alle 💭 → ⭐ bzw. neue Erklärung).
+- Tests: `tests/dribbeln.test.js`, `tests/e2e/rechenzeit.mjs` (4× CPU-Drosselung, ≤ 150 ms); Abweichungslisten für Mission A (`missionA-abweichungen-*.json`).
+
 ## V0.4.0 – Mission „Welches Tor ist frei?“ und Missionsauswahl (Meilenstein 1 + 2, zur Abnahme, unveröffentlicht)
 ### Meilenstein 2: Mission A „Welches Tor ist frei?“ (Lernwelt 1)
 Details, Prüfungen und Robustheit: `docs/meilenstein-2.md`. Keine Änderung an `engine.js`/`app.js` außer der Versionsnummer.

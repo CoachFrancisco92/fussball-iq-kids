@@ -134,13 +134,25 @@ test('Robustheit A3: jede Abweichung ±0,5 m (x/y, je Spieler) erhält Pass → 
   ]);
 });
 
-test(`Referenzaufnahme Mission A (${REF.missionA.file}): Hilfe, 5 feste Spielweisen × 4 Durchläufe, 200 Kinder-Abfolgen unverändert`, () => {
+// Vorgelegte, noch nicht freigegebene Abweichungen (tests/golden/missionA-abweichungen-*.json, erzeugt mit
+// `node tests/golden/mission-a.js --abweichungen …`): Der Test ist nur grün, wenn GENAU diese auftreten (Altwert = Referenz, Neuwert = jetzt).
+const pendingA = { styles: {}, seeds: {} };
+for (const f of fs.readdirSync(path.join(__dirname, 'golden')).filter((n) => /^missionA-abweichungen-.*\.json$/.test(n))) {
+  const p = JSON.parse(fs.readFileSync(path.join(__dirname, 'golden', f), 'utf8')); Object.assign(pendingA.styles, p.styles); Object.assign(pendingA.seeds, p.seeds);
+}
+test(`Referenzaufnahme Mission A (${REF.missionA.file}): Hilfe, 5 feste Spielweisen × 4 Durchläufe, 200 Kinder-Abfolgen unverändert (bis auf vorgelegte Abweichungen)`, () => {
   const ref = require('./golden/' + REF.missionA.file);
   assert.strictEqual(hash(ref), REF.missionA.hash, REF.missionA.file + ' wurde verändert');
   const now = JSON.parse(JSON.stringify(traceMissionA(E))); // wie gespeichert (ohne undefined-Felder)
-  for (const k of Object.keys(ref.styles)) assert.deepStrictEqual(now.styles[k], ref.styles[k], `Spielweise ${k}`);
+  for (const k of Object.keys(ref.styles)) {
+    const p = pendingA.styles[k];
+    if (!p) assert.deepStrictEqual(now.styles[k], ref.styles[k], `Spielweise ${k}`);
+    else assert.deepStrictEqual([hash(ref.styles[k]), hash(now.styles[k])], [p.alt, p.neu], `Spielweise ${k}: anders als vorgelegt`);
+  }
   const diff = Object.keys(ref.seeds).filter((k) => ref.seeds[k] !== now.seeds[k]);
-  assert.deepStrictEqual(diff, [], 'Kinder-Abfolgen');
+  assert.deepStrictEqual(diff, Object.keys(pendingA.seeds).filter((k) => diff.includes(k)), 'nicht vorgelegte Abweichungen');
+  assert.deepStrictEqual(Object.keys(pendingA.seeds).filter((k) => !diff.includes(k)), [], 'vorgelegte Abweichungen treten nicht mehr auf');
+  for (const k of Object.keys(pendingA.seeds)) assert.deepStrictEqual([ref.seeds[k], now.seeds[k]], [pendingA.seeds[k].alt, pendingA.seeds[k].neu], `Abfolge ${k}`);
 });
 
 test('Gemischte Kinder-Abfolgen: jede Szene endet, jeder Durchlauf endet nach höchstens 12 Entscheidungen, Stern = Bewertung vor der Aktion', () => {

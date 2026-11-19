@@ -302,7 +302,11 @@
       const o = shotOptions(s).sort((a, b) => b.margin - a.margin)[0];
       return withAlternatives(s, actionKey, { goal: o.goal, say: texts(s).hilfe.schiessen });
     }
-    if (actionKey === 'dribbeln') {
+    if (actionKey === 'dribbeln' && s.poss === 'blue') {
+      const pt = dribbleHelpTarget(s); // D2
+      if (pt) return withAlternatives(s, actionKey, { point: pt, say: texts(s).hilfe.dribbeln });
+    }
+    if (actionKey === 'dribbeln') { // kein sicheres Ziel gefunden: bisherige Suche (Ausweg)
       let best = null;
       for (let a = -70; a <= 70; a += 10) {
         const r = (a * Math.PI) / 180;
@@ -444,6 +448,76 @@
     return best;
   }
 
+  // ---------------------------------------------------------------- Paket D1/D2: Dribbeln vorausrechnen
+  /** Dribblings werden deterministisch vorausgerechnet – mit derselben Simulation, die das Kind danach sieht (E1), und mit
+   *  dem tatsächlich ausgeführten Weg: Tipps über 8 m werden wie in startAction auf 8 m gekappt (E2).
+   *  „Sicher“ heißt: Das Ziel behält den Ball UND mindestens 3 von 4 Nachbarzielen (±0,5 m) tun es auch – die Bewertung
+   *  hängt also nicht am Erfolg einer einzelnen Simulation (kein „zentimetergenaues Glück“). */
+  let probeDepth = 0;
+  const PROBE_EV = { good: true, rec: { good: true, why: '' }, exe: { good: true, why: '' } }; // Vorausrechnung: keine Bewertung
+  const D_TOL = 0.5, D_NB = [[D_TOL, 0], [-D_TOL, 0], [0, D_TOL], [0, -D_TOL]];
+  function dribbleTarget(c, to) {
+    const t = clampP(to), d = dist(c, t);
+    return d > 8 ? { x: c.x + ((t.x - c.x) / d) * 8, y: c.y + ((t.y - c.y) / d) * 8 } : t;
+  }
+  const probeKey = (s) => JSON.stringify([s.players.map((p) => [p.id, p.x, p.y, p.vx, p.vy, p.tx, p.ty, p.ctrl, p.delay, p.tackleT]), s.ball, s.poss, s.ai, s.t, s.missionId]);
+  const probeCache = new Map();
+  /** Ein Dribbling auf einer Kopie zu Ende simulieren (ohne Bewertung, ohne Wirkung auf s). */
+  function dribbleProbe(s, to, key) {
+    const k = key + '|' + to.x + ',' + to.y;
+    if (probeCache.has(k)) return probeCache.get(k);
+    const t = clone(s), c0 = carrier(t), from = { x: c0.x, y: c0.y };
+    probeDepth++;
+    try {
+      startAction(t, { kind: 'dribble', x: to.x, y: to.y });
+      let n = 0; while (!t.ep.done && n++ < 1500) tick(t);
+    } finally { probeDepth--; }
+    const st = t.ep.events.find((e) => e.type === 'steal'), c = P(t, c0.id);
+    const r = { lost: !!st, by: st ? st.by : null, end: { x: c.x, y: c.y }, gain: c.x - from.x,
+      zone: !st && c.x >= F.W - F.ZONE - 0.3, open: Math.min(...team(t, 'red').map((q) => dist(q, c))) };
+    if (probeCache.size > 3000) probeCache.clear();
+    probeCache.set(k, r);
+    return r;
+  }
+  /** Urteil über ein Dribbling zum (angetippten) Ziel: sicher / knapp / Ballverlust (direkt in den Gegner oder Gegner kommt dazwischen). */
+  function dribbleJudge(s, to, key) {
+    const c = carrier(s), tgt = dribbleTarget(c, to), k = key || probeKey(s);
+    const main = dribbleProbe(s, tgt, k);
+    let kept = 0;
+    if (!main.lost) for (const [dx, dy] of D_NB) if (!dribbleProbe(s, dribbleTarget(c, { x: tgt.x + dx, y: tgt.y + dy }), k).lost) kept++;
+    const into = team(s, 'red').some((r) => { const sd = segDist(r, c, tgt); return sd.t > 0.02 && sd.d < 1.0; });
+    return Object.assign({}, main, { tgt, kept, into, safe: !main.lost && kept >= 3, knapp: !main.lost && kept < 3 });
+  }
+  /** D2: Dribbelziel für die Hilfe. Nur sichere Ziele; bevorzugt Raumgewinn Richtung Tor, Ende in der Schusszone mit
+   *  freiem Tor, Abstand zum Gegner, alle Nachbarziele sicher (robust bei ungenauem Tippen), Feldmitte statt Seitenlinie.
+   *  Gesucht wird nach geschätztem Wert absteigend; abgebrochen, sobald kein weiterer Kandidat das beste Ziel noch
+   *  übertreffen kann (Rechenzeit). */
+  function dribbleHelpTarget(s) {
+    const c = carrier(s), key = probeKey(s), reds = team(s, 'red');
+    const freeShot = (p) => Math.max(...F.goals.red.map((g) => lane(p, g, CFG.shotSpeed, reds, CFG.redReact, CFG.blockReach).margin)) > CFG.shotLaneOk;
+    const inZone = (p) => p.x >= F.W - F.ZONE - 0.3;
+    const mid = (p) => Math.abs(p.y - F.H / 2) * 0.05;
+    const score = (j) => j.gain + (j.zone && freeShot(j.end) ? 6 : 0) + Math.min(j.open, 3) * 0.5 + (j.kept === 4 ? 1 : 0) - mid(j.end);
+    const cands = [];
+    for (let a = -75; a <= 75; a += 15) for (const d of [8, 5, 3]) {
+      const r = (a * Math.PI) / 180, t = dribbleTarget(c, { x: c.x + Math.cos(r) * d, y: c.y + Math.sin(r) * d });
+      const est = (t.x - c.x) + (inZone(t) ? 6 : 0) + 1.5 + 1 - mid(t); // Obergrenze des erreichbaren Werts
+      cands.push({ t, est });
+    }
+    cands.sort((x, y) => y.est - x.est);
+    // robust: auch ein um 0,5 m daneben getipptes Ziel ist sicher (mind. 3 von 4) – die Empfehlung hält ungenauem Tippen stand
+    const robust = (j) => D_NB.filter(([dx, dy]) => dribbleJudge(s, { x: j.tgt.x + dx, y: j.tgt.y + dy }, key).safe).length >= 3;
+    let best = null;
+    for (const cd of cands) {
+      if (best && cd.est <= best.v) break;
+      const j = dribbleJudge(s, cd.t, key);
+      if (!j.safe) continue;
+      const v = score(j);
+      if ((!best || v > best.v) && robust(j)) best = { v, j };
+    }
+    return best ? best.j.tgt : null;
+  }
+
   /** Was bietet die Situation dem Ballführenden? (Grundlage für "Erkennen") */
   function dribbleBest(s) {
     const c = carrier(s);
@@ -531,8 +605,13 @@
         if (m > CFG.shotLaneOk) exe = R(true, X.freiesTor);
         else { const h = sit.shots[a.goal].hit; const k = (h && h.id) || laneKey(s, c, F.goals.red[a.goal], 'red'); exe = R(false, X.vorDemTor(k ? nameOf(s, k) : X.einGegnerKlein) + (sit.shots[1 - a.goal].margin > CFG.shotLaneOk ? X.anderesTorFrei : '')); }
       } else {
-        const m = dribbleLane(s, c, a).margin;
-        exe = m > 0.2 ? R(true, X.freierRaum) : R(false, X.inGegner);
+        // D1: Ausführung nach Vorausrechnung des tatsächlich ausgeführten Wegs (E1, E2); Erklärung nach Ursache (E4).
+        const j = dribbleJudge(s, a), nm = (id) => (id ? nameOf(s, id) : X.einGegner);
+        const near = j.by || laneKey(s, c, j.tgt, 'red');
+        if (j.safe) exe = R(true, X.freierRaum);
+        else if (j.knapp) exe = named(R(false, X.dribbelKnapp(nm(near))), near, (id) => X.dribbelKnapp(nm(id)));
+        else if (j.into) exe = named(R(false, X.inGegner), near, () => X.inGegner);
+        else exe = named(R(false, X.gegnerDazwischen(near ? nameOf(s, near) : null)), near, (id) => X.gegnerDazwischen(id ? nameOf(s, id) : null));
       }
     } else if (a.kind === 'run') {
       const sc = runSpotScore(s, c, P(s, a.id), a);
@@ -636,7 +715,7 @@
   function startAction(s, a) {
     const c = carrier(s);
     if (s.poss === 'red') redPlan(s);
-    const ev = evaluate(s, a);
+    const ev = probeDepth ? PROBE_EV : evaluate(s, a);
     s.players.forEach((p) => { p.ctrl = null; p.tackleT = 0; p.tx = p.x; p.ty = p.y; });
     s.ep = { a, t: 0, endT: null, events: [], frames: [], startPoss: s.poss, eval: ev, phase: 'main', restart: null };
     switch (a.kind) {
@@ -647,7 +726,7 @@
         const d = dist(c, to);
         if (d > 8) to = { x: c.x + ((to.x - c.x) / d) * 8, y: c.y + ((to.y - c.y) / d) * 8 };
         c.ctrl = 'dribble'; c.tx = to.x; c.ty = to.y;
-        s.ep.explain = { from: { x: c.x, y: c.y }, to: { x: to.x, y: to.y }, ok: true, key: ev.exe.good ? null : laneKey(s, c, to, 'red') };
+        s.ep.explain = { from: { x: c.x, y: c.y }, to: { x: to.x, y: to.y }, ok: true, key: ev.exe.good ? null : (ev.exe.named && ev.exe.named.id) || laneKey(s, c, to, 'red') };
         break;
       }
       case 'run': {
