@@ -326,6 +326,8 @@
         const item = replay.queue[replay.i];
         // ~2,5 s Standbild mit Erklärung; weiter erst, wenn die Ansage zu Ende ist (höchstens ~10 s länger)
         if (replay.f >= item.frames.length + 75 && (Sprache.frei() || replay.f >= item.frames.length + 375)) {
+          // Höchstzeit erreicht: noch laufende Ansage der alten Szene beenden (keine verspätete Ansage)
+          if (!Sprache.frei()) Sprache.vorrang();
           replay.i++; replay.f = 0;
           if (replay.i >= replay.queue.length) { const done = replay.onDone; replay = null; done(); break; }
           say(replay.queue[replay.i].say || '', 'ansage');
@@ -505,10 +507,19 @@
   // V0.5.1: Schnelles Mehrfach-Antippen eines Knopfs (z. B. „Los geht's“, „Weiterspielen“) darf nicht als Tipp aufs
   // Spielfeld darunter zählen – sonst löst ein Doppeltipp ungewollt eine Aktion aus (bei vorgewählter Einzelaktion sofort).
   let lastButtonTap = { t: -1e9, x: 0, y: 0 };
+  const tapCount = { field: 0, ghost: 0 };   // nur für Tests (lesend über window.__fiq)
   document.addEventListener('pointerdown', (ev) => { if (ev.target && ev.target.closest && ev.target.closest('button')) lastButtonTap = { t: performance.now(), x: ev.clientX, y: ev.clientY }; }, true);
-  const isGhostTap = (ev) => performance.now() - lastButtonTap.t < 450 && Math.hypot(ev.clientX - lastButtonTap.x, ev.clientY - lastButtonTap.y) < 48;
+  // Nur ein Geistertipp, wenn (1) kurz nach dem Knopf-Tipp, (2) fast an derselben Stelle UND (3) an jener Stelle
+  // inzwischen kein Knopf mehr ist (der Knopf ist durch sein eigenes Antippen verschwunden: „Los geht's“,
+  // „Weiterspielen“, ✔ …). Steht dort noch ein Knopf (z. B. die gewählte Aktion), ist der Feld-Tipp bewusst.
+  const isGhostTap = (ev) => {
+    if (performance.now() - lastButtonTap.t >= 450 || Math.hypot(ev.clientX - lastButtonTap.x, ev.clientY - lastButtonTap.y) >= 48) return false;
+    const el = document.elementFromPoint(lastButtonTap.x, lastButtonTap.y);
+    return !(el && el.closest && el.closest('button'));
+  };
   cv.addEventListener('pointerdown', (ev) => {
-    if (isGhostTap(ev)) return;
+    if (isGhostTap(ev)) { tapCount.ghost++; return; }
+    tapCount.field++;
     const pt = worldFromEvent(ev);
     const c = S && E.carrier(S);
     if (mode === 'look') {
@@ -817,5 +828,5 @@
     try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
   }
   // Testzugriff (nur lesend) für automatisierte Oberflächentests
-  window.__fiq = { get dec() { return dec; }, get run() { return curRun; }, get id() { return curId; }, get paused() { return pausiert; }, get relevant() { return Sprache.relevant; }, get speech() { return Sprache._zustand(); }, get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; } };
+  window.__fiq = { get taps() { return { ...tapCount }; }, get replayIdx() { return replay ? replay.i : -1; }, get dec() { return dec; }, get run() { return curRun; }, get id() { return curId; }, get paused() { return pausiert; }, get relevant() { return Sprache.relevant; }, get speech() { return Sprache._zustand(); }, get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; } };
 })();

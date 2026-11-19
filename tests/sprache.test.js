@@ -272,3 +272,90 @@ test('Schnelles Mehrfach-Antippen: nur die letzte Ansage wird gesprochen, keine 
   assert.ok(gesprochen().length <= 2, `höchstens erste und letzte beginnen: ${gesprochen()}`);
   assert.strictEqual(sp._zustand().cur, null);
 });
+
+// ---------------------------------------------------------------- V0.5.1 Nachprüfung: Höchstzeit von wennFertig()
+const LANG = 'Das ist eine sehr lange Antwort im Schau-Schritt, die viel länger dauert als die Höchstzeit des Übergangs erlaubt, damit das Sicherheitsnetz greift.'; // < 200 Zeichen: eine Ansage
+
+test('Höchstzeit erreicht, Ansage läuft noch: sie wird beendet, bevor der Übergang die neue Phase beginnt', () => {
+  const { clock, sp, sy, events, gesprochen, fertig } = setup();
+  let at = null;
+  sp.sage(LANG, { art: 'rueckmeldung' });              // 10 ms je Zeichen ≈ 1,5 s
+  sp.wennFertig(() => { at = clock.now(); sp.phase(); sp.sage('Jetzt entscheide!', { art: 'anweisung' }); }, { min: 200, max: 1000 });
+  clock.tick(999); assert.strictEqual(at, null);
+  clock.tick(1);
+  assert.strictEqual(at, 1000, 'Übergang genau zur Höchstzeit');
+  const c = sy.log.find((e) => e[0] === 'cancel');
+  assert.ok(c && c[1] === LANG && c[2] === 1000, 'alte Ansage zur Höchstzeit beendet');
+  assert.ok(events.some((e) => e[0] === 'hoechstzeit-abbruch'));
+  clock.tick(10000);
+  assert.deepStrictEqual(gesprochen(), [LANG, 'Jetzt entscheide!'], 'keine Wiederaufnahme, keine Doppelung');
+  const s = sy.log.find((e) => e[0] === 'speak' && e[1] === 'Jetzt entscheide!');
+  assert.ok(s[2] >= 1000 + FIQSprache.PAUSE_NACH_ABBRUCH && s[2] <= 1000 + FIQSprache.PAUSE_NACH_ABBRUCH + 1, 'neue Anweisung sofort nach der Safari-Pause, nicht verspätet');
+  assert.ok(!fertig().includes(LANG), 'alte Ansage nicht zu Ende gelaufen');
+});
+
+test('Höchstzeit mit Safari ohne Ende-Ereignis: kein Überlappen, kein spätes Wiederauftauchen', () => {
+  const { clock, sp, sy, gesprochen } = setup({ keinEnde: () => true });
+  sp.sage('Neue Situation! Schau genau hin.', { art: 'ansage' });
+  sp.wennFertig(() => { sp.phase(); sp.sage('Wohin dribbelst du?', { art: 'anweisung' }); }, { min: 200, max: 1500 });
+  clock.tick(1500);
+  // Zur Höchstzeit ist die Ansage im Sprachsystem schon fertig (320 ms), das Ende wurde aber nie gemeldet:
+  // die App hält sie noch für laufend -> sie wird abgeräumt, die neue Anweisung kommt sofort.
+  clock.tick(100);
+  assert.deepStrictEqual(gesprochen(), ['Neue Situation! Schau genau hin.', 'Wohin dribbelst du?']);
+  // gleichzeitig spricht das (nachgebaute) Sprachsystem nie zwei Ansagen: jede beginnt erst nach dem Ende der vorigen
+  const starts = sy.log.filter((e) => e[0] === 'start'), ends = sy.log.filter((e) => e[0] === 'fertig' || (e[0] === 'cancel' && e[1]));
+  starts.slice(1).forEach((st, i) => assert.ok(ends.some((en) => en[2] <= st[2] && en[1] === starts[i][1]), `Überlappung bei ${st[1]}`));
+  clock.tick(60000);
+  assert.deepStrictEqual(gesprochen(), ['Neue Situation! Schau genau hin.', 'Wohin dribbelst du?'], 'nichts Altes später');
+  assert.strictEqual(sp._zustand().cur, null);
+});
+
+test('Höchstzeit während einer geteilten Ansage: auch der wartende Rest wird verworfen', () => {
+  const { clock, sp, gesprochen } = setup();
+  const teil = 'Ein Satz mit einigen Wörtern für das Kind.';
+  const lang = Array.from({ length: 8 }, () => teil).join(' ');   // > 200 Zeichen -> 2 Teile
+  assert.strictEqual(FIQSprache.teile(lang).length, 2);
+  sp.sage(lang, { art: 'rueckmeldung' });
+  sp.wennFertig(() => { sp.phase(); sp.sage('Weiter geht es.'); }, { min: 0, max: 500 });
+  clock.tick(20000);
+  assert.deepStrictEqual(gesprochen(), [FIQSprache.teile(lang)[0], 'Weiter geht es.']);
+});
+
+test('Höchstzeit während der Neustart-Abfrage: erst nach „weiter“, dann mit sauberem Abbruch', () => {
+  const { clock, sp, sy, gesprochen } = setup();
+  let n = 0;
+  sp.sage(LANG, { art: 'rueckmeldung' });
+  sp.wennFertig(() => { n++; sp.sage('Neu'); }, { min: 100, max: 500 });
+  sp.halt();
+  clock.tick(800);
+  assert.strictEqual(n, 0, 'Abfrage offen: Übergang wartet');
+  sp.weiter();
+  assert.strictEqual(n, 1);
+  assert.ok(sy.log.some((e) => e[0] === 'cancel' && e[1] === LANG));
+  clock.tick(10000);
+  assert.deepStrictEqual(gesprochen(), [LANG, 'Neu']);
+});
+
+test('Übergang vor der Höchstzeit (Ansage regulär zu Ende): kein Abbruch', () => {
+  const { clock, sp, sy } = setup();
+  let n = 0;
+  sp.sage('Kurze Ansage', { art: 'ansage' });
+  sp.wennFertig(() => n++, { min: 100, max: 5000 });
+  clock.tick(10000);
+  assert.strictEqual(n, 1);
+  assert.ok(!sy.log.some((e) => e[0] === 'cancel'), 'nichts abgebrochen');
+});
+
+test('vorrang() (Szenen-Wiedergabe nach Höchstzeit): beendet Laufendes, sonst nichts', () => {
+  const { clock, sp, sy, gesprochen } = setup();
+  sp.vorrang();
+  assert.ok(!sy.log.some((e) => e[0] === 'cancel'), 'nichts läuft -> kein Abbruch');
+  sp.sage(LANG, { art: 'ansage' });
+  clock.tick(300);
+  sp.vorrang();
+  sp.sage('Jetzt: zweite Szene', { art: 'ansage' });
+  clock.tick(10000);
+  assert.deepStrictEqual(gesprochen(), [LANG, 'Jetzt: zweite Szene']);
+  assert.ok(sy.log.some((e) => e[0] === 'cancel' && e[1] === LANG));
+});

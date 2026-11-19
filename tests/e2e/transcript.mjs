@@ -130,7 +130,7 @@ try {
       if (bad.length) {
         const i = bad[0];
         console.error(`✗ ${name}: Abweichung bei Eintrag ${i}${listed.has(i) ? ' (anders als vorgelegt)' : ''}\n  Referenz: ${J(ra[i])}\n  jetzt:    ${J(rb[i])}`); exit = 1;
-      } else console.log(`✓ ${name}: identisch zur Referenz ${REF.seit}${listed.size ? ` bis auf ${listed.size} vorgelegte Abweichung(en)` : ''} (${ra.length} Einträge)`);
+      } else console.log(`✓ ${name}: identisch zur Referenz ${REF.ui}${listed.size ? ` bis auf ${listed.size} vorgelegte Abweichung(en)` : ''} (${ra.length} Einträge)`);
     }
   }
 } catch (e) { console.error('✗', e.message); exit = 1; }

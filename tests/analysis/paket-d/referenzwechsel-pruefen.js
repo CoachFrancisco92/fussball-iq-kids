@@ -17,7 +17,7 @@ const bad = [];
   for (const k of Object.keys(A.seeds)) { const p = P.seeds[k]; if (p ? !(A.seeds[k] === p.alt && B.seeds[k] === p.neu) : A.seeds[k] !== B.seeds[k]) bad.push('MA Abfolge ' + k); }
   console.log(`Mission A Engine: ${Object.keys(P.seeds).length} Abfolgen laut Freigabe geändert, Rest identisch`); }
 // Oberfläche Mission 1
-{ const A = r('historie/ui-transcript.v0.3.1.json'), B = r('ui-transcript.v0.5.0.json'), P = r('historie/v0.5.0-paket-d-abweichungen-ui.json'); let n = 0;
+{ const A = r('historie/ui-transcript.v0.3.1.json'), B = r('historie/ui-transcript.v0.5.0.json'), P = r('historie/v0.5.0-paket-d-abweichungen-ui.json'); let n = 0;
   for (const k of Object.keys(A)) { if (A[k].length !== B[k].length) bad.push('UI Länge ' + k); const L = new Map((P[k] || []).map((d) => [d.eintrag, d]));
     A[k].forEach((e, i) => { const d = L.get(i), J = JSON.stringify; if (d) { n++; if (J(d.alt) !== J(e) || J(d.neu) !== J(B[k][i])) bad.push(`UI ${k} ${i}`); } else if (J(e) !== J(B[k][i])) bad.push(`UI ${k} ${i} (nicht freigegeben)`); }); }
   console.log(`Oberfläche Mission 1: ${n} Einträge laut Freigabe geändert, Rest identisch`); }

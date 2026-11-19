@@ -23,7 +23,7 @@ let exit = 0;
 /** Nachgebaute Sprachausgabe im Browser. cfg: {ms: Dauer je Zeichen, keinEnde: bool, spaet: ms} */
 function fakeSpeech(cfg) {
   const log = []; window.__sp = { log, userAt: -1e9 };
-  const mark = () => { window.__sp.userAt = performance.now(); };
+  const mark = (ev) => { window.__sp.userAt = performance.now(); window.__sp.imTipp = true; setTimeout(() => { window.__sp.imTipp = false; }, 0); if (cfg.logInput) log.push({ e: 'input:' + ev.type, at: window.__sp.userAt }); };
   ['pointerdown', 'touchstart', 'mousedown', 'click'].forEach((e) => window.addEventListener(e, mark, true));
   class Utt { constructor(t) { this.text = t; } }
   const s = {
@@ -43,7 +43,7 @@ function fakeSpeech(cfg) {
     },
     cancel() {
       const now = performance.now();
-      log.push({ e: 'cancel', t: s.cur ? s.cur.text : null, at: now, nachTipp: now - window.__sp.userAt });
+      log.push({ e: 'cancel', t: s.cur ? s.cur.text : null, at: now, nachTipp: now - window.__sp.userAt, imTipp: !!window.__sp.imTipp });
       const all = (s.cur ? [s.cur] : []).concat(s.q);
       if (s.cur) clearTimeout(s.cur._t);
       s.cur = null; s.q = []; s.speaking = false; s.pending = false;
@@ -115,10 +115,11 @@ async function open(viewport, cfg) {
   return H;
 }
 
-/** Jeder Abbruch einer laufenden Ansage muss direkt auf ein Antippen folgen (nie durch automatische Übergänge). */
+/** Jeder Abbruch einer laufenden Ansage muss in der Verarbeitung eines Antippens geschehen (nie durch Timer oder
+ *  automatische Übergänge). Geprüft wird exakt: Abbruch innerhalb desselben Ereignis-Durchlaufs wie der Tipp. */
 function nurNachTipp(log, what) {
-  const bad = log.filter((x) => x.e === 'cancel' && x.t && x.nachTipp > 60);
-  if (bad.length) fail(`${what}: Ansage ohne Antippen abgebrochen: ${JSON.stringify(bad.slice(0, 3))}`);
+  const bad = log.filter((x) => x.e === 'cancel' && x.t && !x.imTipp);
+  if (bad.length) { if (process.env.DEBUG) { const i = log.indexOf(bad[0]); console.error(JSON.stringify(log.slice(Math.max(0, i - 8), i + 3), null, 0)); } fail(`${what}: Ansage ohne Antippen abgebrochen: ${JSON.stringify(bad.slice(0, 3))}`); }
 }
 const ganz = (log, text) => log.some((x) => x.e === 'fertig' && x.t === text) && !log.some((x) => x.e === 'cancel' && x.t === text);
 
@@ -329,6 +330,93 @@ try {
     await H.touch('#home'); await H.waitMode('start');
     nurNachTipp(await H.log(), 'Navigation');
     console.log('✓ „Welches Tor ist frei?“ → „Nächste Mission“ → „Freie Bahn!“ (nächster eigener Durchlauf); 🏠 zurück zur Übersicht');
+    await H.close();
+  }
+
+  // ------------------------------------------------------------------ 3b. Ansage dauert länger als erlaubt (sehr langsame Sprachausgabe)
+  // „Anders probieren“: Höchstzeit (8 s) liegt über dem Wächter (≈ 6,9 s) -> der Wächter beendet die Ansage.
+  // Szenen-Wiedergabe: ihre Höchstzeit greift. In beiden Fällen: alte Ansage beendet, neue sofort danach (nicht
+  // verspätet), nichts überlappt, nichts Altes wird später fortgesetzt. (wennFertig-Höchstzeit selbst: tests/sprache.test.js)
+  {
+    const H = await open(IPAD, { ms: 320 });
+    const T = await H.page.evaluate(() => FIQ.texts('freie-bahn').bedienung);
+    await H.selectAndPlay('freie-bahn'); await H.waitMode('decide');
+    await H.hintStep(); await H.waitMode('feedback');
+    await H.touch('#fbRetry'); const tR = await H.now();
+    await H.waitMode('decide', 15000); const tD = await H.now();
+    const wd = await H.page.evaluate((t) => FIQSprache.dauer(t, 0.9), T.andersProbieren);
+    if (tD - tR < wd - 50 || tD - tR > wd + 600) fail(`„Anders probieren“: Übergang nach ${Math.round(tD - tR)} ms statt beim Wächter (${wd} ms)`);
+    await H.page.waitForTimeout(400);   // neue Anweisung beginnt planmäßig 80 ms nach dem Abbruch (Safari-Pause)
+    let log = await H.log();
+    const cutA = log.find((x) => x.e === 'cancel' && x.t === T.andersProbieren);
+    const ctxSay = (await H.fiq('ctx')).say;
+    const stC = log.find((x) => x.e === 'start' && x.t === ctxSay && x.at > tR);
+    if (!cutA || !stC || stC.at - cutA.at > 200 || stC.at < cutA.at) fail('„Anders probieren“ (Wächter): alte Ansage nicht beendet oder neue verspätet ' + JSON.stringify({ cutA, stC }));
+    if (log.some((x) => x.e === 'start' && x.t === T.andersProbieren && x.at > cutA.at)) fail('„Anders probieren“ wird später fortgesetzt');
+    // Vergleichen: zweite Szene beginnt, während die Ansage der ersten noch läuft (Höchstzeit der Szenen-Wiedergabe)
+    const p2 = await H.page.evaluate(() => { const c = FIQ.carrier(window.__fiq.S); return [c.x, c.y < 12 ? c.y + 5 : c.y - 5]; });
+    await H.field(...p2); await H.waitMode('feedback');
+    await H.touch('#fbCompare'); await H.waitMode('replay');
+    await H.until(() => window.__fiq.replayIdx === 1, 'zweite Szene', undefined, 40000); const t1 = await H.now();
+    await H.page.waitForTimeout(400);
+    log = await H.log();
+    const vor = log.find((x) => x.e === 'start' && /^Vorher: /.test(x.t)), jetzt = log.find((x) => x.e === 'start' && /^Jetzt: /.test(x.t));
+    const cutV = log.find((x) => x.e === 'cancel' && x.t === (vor && vor.t));
+    if (!vor || !jetzt || !cutV) fail('Szenen-Wiedergabe: ' + JSON.stringify({ vor: !!vor, jetzt: !!jetzt, cutV: !!cutV }));
+    if (Math.abs(cutV.at - t1) > 250 || jetzt.at - cutV.at > 200 || jetzt.at < cutV.at) fail(`Szenen-Wiedergabe: Abbruch ${Math.round(cutV.at - t1)} ms, neue Ansage ${Math.round(jetzt.at - cutV.at)} ms danach`);
+    if (log.some((x) => x.e === 'start' && x.t === vor.t && x.at > cutV.at)) fail('„Vorher“-Ansage später fortgesetzt');
+    // nie zwei Ansagen gleichzeitig im Sprachsystem
+    let cur = null; for (const x of log) { if (x.e === 'start') { if (cur) fail('Überlappung: ' + cur + ' / ' + x.t); cur = x.t; } if ((x.e === 'fertig' || x.e === 'cancel') && x.t) cur = null; }
+    await H.touch('#skip'); await H.waitMode('feedback'); await H.touch('#home'); await H.waitMode('start');
+    console.log(`✓ Zu lange Ansage: „Anders probieren“ (Wächter nach ${(wd / 1000).toFixed(1)} s) und Szenen-Wiedergabe (Höchstzeit) beenden die laufende Ansage, die neue folgt sofort (≤ 200 ms); kein Überlappen, nichts Altes später`);
+    await H.close();
+  }
+
+  // ------------------------------------------------------------------ 3c. Doppeltipp-Sperre: nur Geistertipps auf verschwundene Knöpfe
+  {
+    const H = await open(IPAD, { ms: 2 });
+    const taps = () => H.fiq('taps');
+    // (a) Geistertipp: „Los geht's“ verschwindet, Tipp 2 an derselben Stelle innerhalb 450 ms -> verworfen
+    await H.touch('#missionList .mcard[data-id="freie-bahn"]');
+    const pb = await H.box('#play'); const P = [pb.x + pb.width / 2, pb.y + pb.height / 2];
+    await H.page.touchscreen.tap(...P); await H.page.touchscreen.tap(P[0] + 10, P[1] + 5);
+    await H.waitMode('decide');
+    let t = await taps(); if (t.ghost !== 1 || t.field !== 0 || (await H.mode()) !== 'decide') fail('Geistertipp nach „Los geht\'s“ nicht verworfen: ' + JSON.stringify(t));
+    // (b) gleiche Stelle, aber nach mehr als 450 ms: bewusster Tipp -> verarbeitet
+    await H.page.waitForTimeout(500); await H.page.touchscreen.tap(...P);
+    t = await taps(); if (t.field !== 1) fail('Tipp nach 450 ms an derselben Stelle blockiert: ' + JSON.stringify(t));
+    await H.touch('#home'); await H.waitMode('start');
+    // (c) kurz nach dem verschwundenen Knopf, aber deutlich woanders (> 48 px): bewusster Tipp -> Dribbling startet
+    await H.touch('#missionList .mcard[data-id="freie-bahn"]');
+    const far = await H.page.evaluate(() => { const c = FIQ.newState('freie-bahn', window.__fiq.run + 0).players.find((p) => p.team === 'blue'); return [c.x + 4, c.y - 3]; });
+    await H.page.touchscreen.tap(...P);
+    const fb = await H.page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; }); const k = fb[2] / 40.4;
+    const FP = [fb[0] + (far[0] + 2.2) * k, fb[1] + (far[1] + 1.6) * k];
+    if (Math.hypot(FP[0] - P[0], FP[1] - P[1]) < 60) fail('Testaufbau: Zielpunkt zu nah am Knopf');
+    await H.page.waitForTimeout(120); await H.page.touchscreen.tap(...FP);
+    await H.waitMode(['anim', 'feedback']);
+    // (d) Knopf bleibt sichtbar (gewählte Aktion / Hilfe), Feld-Tipp direkt daneben innerhalb 450 ms -> verarbeitet
+    await H.touch('#home'); await H.waitMode('start');
+    await H.selectAndPlay('mission-1'); await H.look();
+    const nb = await H.page.evaluate(() => { const b = [...document.querySelectorAll('#actions .act:not(.hint)')].find((x) => /Dribbeln/.test(x.textContent)).getBoundingClientRect(); const c = document.getElementById('field').getBoundingClientRect(); return { bx: b.left + b.width / 2, by: b.top + 4, cb: c.bottom }; });
+    const B = [nb.bx, nb.by], C = [nb.bx, nb.cb - 3];
+    if (Math.hypot(C[0] - B[0], C[1] - B[1]) >= 48) fail('Testaufbau: Feldpunkt nicht innerhalb 48 px vom Knopf ' + JSON.stringify(nb));
+    const before = await taps();
+    await H.page.touchscreen.tap(...B); await H.page.waitForTimeout(60); await H.page.touchscreen.tap(...C);
+    t = await taps();
+    if ((await H.fiq('sel')).action !== 'dribbeln') fail('Aktionsknopf nicht gewählt');
+    if (t.field !== before.field + 1 || t.ghost !== before.ghost) fail('Bewusster Feld-Tipp direkt neben dem gewählten Aktionsknopf blockiert: ' + JSON.stringify({ before, t }));
+    // (e) Hilfe-Knopf bleibt sichtbar: Feld-Tipp daneben innerhalb 450 ms -> verarbeitet
+    // erstes Antippen der Hilfe ändert den Hinweistext und damit das Layout -> danach messen, zweites Antippen prüfen
+    const geo = () => H.page.evaluate(() => { const b = document.querySelector('#actions .hint').getBoundingClientRect(); const c = document.getElementById('field').getBoundingClientRect(); return { bx: b.left + b.width / 2, by: b.top + 4, cb: c.bottom, cl: c.left, cr: c.right }; });
+    let hb = await geo(); await H.page.touchscreen.tap(hb.bx, hb.by); await H.page.waitForTimeout(300);
+    hb = await geo();
+    if (hb.bx < hb.cl || hb.bx > hb.cr || Math.hypot(0, hb.by - (hb.cb - 3)) >= 48) fail('Testaufbau Hilfe: ' + JSON.stringify(hb));
+    const b2 = await taps();
+    await H.page.touchscreen.tap(hb.bx, hb.by); await H.page.waitForTimeout(60); await H.page.touchscreen.tap(hb.bx, hb.cb - 3);
+    t = await taps(); if (t.field !== b2.field + 1 || t.ghost !== b2.ghost) fail('Feld-Tipp nach „Hilfe“ blockiert: ' + JSON.stringify({ b2, t, hb }));
+    await H.touch('#home'); await H.waitMode('start');
+    console.log('✓ Doppeltipp-Sperre: verwirft nur Tipps auf einen gerade verschwundenen Knopf (≤ 450 ms, ≤ 48 px); bewusste Tipps danach (> 450 ms), woanders oder neben sichtbaren Knöpfen (Aktion, Hilfe) werden verarbeitet');
     await H.close();
   }
 

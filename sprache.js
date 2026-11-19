@@ -128,11 +128,15 @@
       if (halted) return;
       for (const w of waiters.slice()) if (w.minOk && frei()) ausfuehren(w);
     }
-    function ausfuehren(w) {
+    function ausfuehren(w, perHoechstzeit) {
       const i = waiters.indexOf(w); if (i < 0) return;
       waiters.splice(i, 1);
       if (w.tMin) loesche(w.tMin);
       if (w.tMax) loesche(w.tMax);
+      // Höchstzeit erreicht, aber es wird noch gesprochen (z. B. Safari meldet kein Ende, sehr lange Ansage):
+      // die alte Ansage samt Rest der Warteschlange beenden, bevor der Übergang die neue Phase beginnt –
+      // sonst käme die neue Anweisung verspätet hinter der alten.
+      if (perHoechstzeit && !frei()) { log('hoechstzeit-abbruch', cur ? cur.text : ''); stoppIntern(); }
       w.fn();
     }
 
@@ -163,6 +167,8 @@
       },
       /** Kind hat etwas getan: Sprache und Warteschlange beenden (Timer bleiben). */
       stopp() { stoppIntern(); nach(0, pruefe); },
+      /** Automatischer Übergang nach Ablauf seiner Höchstzeit: noch Laufendes beenden (Szenen-Wiedergabe). */
+      vorrang() { if (!frei()) { log('hoechstzeit-abbruch', cur ? cur.text : ''); stoppIntern(); } },
       /** Neue Phase: noch nicht begonnene Ansagen der vorigen Phase verwerfen. */
       phase() { epoch++; queue = queue.filter((i) => i.epoch === epoch); },
       /** Übersicht, Neustart, Missionswechsel: alles beenden. */
@@ -179,7 +185,7 @@
         const w = { fn, minOk: false, tMin: null, tMax: null };
         waiters.push(w);
         w.tMin = nach(o.min || 0, () => { w.tMin = null; w.minOk = true; pruefe(); });
-        w.tMax = nach(o.max != null ? o.max : 10000, () => { w.tMax = null; log('sicherheitsnetz', ''); ausfuehren(w); });
+        w.tMax = nach(o.max != null ? o.max : 10000, () => { w.tMax = null; log('sicherheitsnetz', ''); ausfuehren(w, true); });
         return w;
       },
       frei,
