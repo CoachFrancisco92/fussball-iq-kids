@@ -478,6 +478,426 @@
        "att": 0,
        "done": false,
        "note": "situation",
+       "next": "A4"
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         24,
+         9.5
+        ],
+        [
+         "r2",
+         34.4,
+         7.9
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 2,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 2,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": {
+       "k": "schiessen",
+       "say": "Vor diesem Tor steht kein Gegner im Weg.",
+       "goal": 1
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 128,
+      "mission": {
+       "att": 2,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         35.3,
+         16.685402
+        ],
+        [
+         "r2",
+         35.3,
+         8.396964
+        ]
+       ],
+       "ball": null,
+       "poss": null,
+       "score": {
+        "blue": 3,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 3,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": {
+       "k": "schiessen",
+       "say": "Vor diesem Tor steht kein Gegner im Weg.",
+       "goal": 1
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 128,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A5"
+      },
+      "afterApply": {
+       "sit": "A5",
+       "p": [
+        [
+         "b1",
+         30.5,
+         13
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         28.5,
+         13
+        ],
+        [
+         "r2",
+         34,
+         12
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": {
+       "k": "schiessen",
+       "say": "Vor diesem Tor steht kein Gegner im Weg.",
+       "goal": 1
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 134,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
        "next": "A1"
       },
       "afterApply": {
@@ -605,7 +1025,92 @@
    {
     "out": [
      {
-      "sit": "A5",
+      "sit": "A3",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": {
+       "k": "passen",
+       "say": "Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner.",
+       "ids": [
+        "b2"
+       ]
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 2 war frei."
+       },
+       "why": "Der Weg zu Blau 2 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b2"
+      ],
+      "ticks": 115,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A3",
+       "p": [
+        [
+         "b1",
+         32,
+         8
+        ],
+        [
+         "b2",
+         30.5,
+         19.5
+        ],
+        [
+         "r1",
+         31.674526,
+         16.701864
+        ],
+        [
+         "r2",
+         35.085692,
+         8.210599
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A3",
       "ctx": {
        "type": "abschluss",
        "title": "Welches Tor ist frei?",
@@ -648,7 +1153,7 @@
       "events": [
        "goal"
       ],
-      "ticks": 134,
+      "ticks": 126,
       "mission": {
        "att": 0,
        "done": false,
@@ -732,6 +1237,345 @@
        "goal"
       ],
       "ticks": 135,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A2"
+      },
+      "afterApply": {
+       "sit": "A2",
+       "p": [
+        [
+         "b1",
+         30.5,
+         14.5
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         29,
+         13
+        ],
+        [
+         "r2",
+         34,
+         16.7
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 2,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A2",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": {
+       "k": "schiessen",
+       "say": "Vor diesem Tor steht kein Gegner im Weg.",
+       "goal": 0
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 146,
+      "mission": {
+       "att": 1,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A2",
+       "p": [
+        [
+         "b1",
+         30.5,
+         14.5
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         34.369479,
+         8.054427
+        ],
+        [
+         "r2",
+         35.3,
+         15.603289
+        ]
+       ],
+       "ball": null,
+       "poss": null,
+       "score": {
+        "blue": 3,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 3,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": {
+       "k": "schiessen",
+       "say": "Vor diesem Tor steht kein Gegner im Weg.",
+       "goal": 1
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 134,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A4"
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         24,
+         9.5
+        ],
+        [
+         "r2",
+         34.4,
+         7.9
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": {
+       "k": "schiessen",
+       "say": "Vor diesem Tor steht kein Gegner im Weg.",
+       "goal": 1
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 128,
       "mission": {
        "att": 0,
        "done": false,
@@ -928,349 +1772,6 @@
          "r2",
          35.3,
          8.396935
-        ]
-       ],
-       "ball": null,
-       "poss": null,
-       "score": {
-        "blue": 3,
-        "red": 0
-       }
-      }
-     }
-    ],
-    "done": true,
-    "score": {
-     "blue": 3,
-     "red": 0
-    }
-   },
-   {
-    "out": [
-     {
-      "sit": "A3",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "pass",
-       "id": "b2"
-      },
-      "hint": {
-       "k": "passen",
-       "say": "Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner.",
-       "ids": [
-        "b2"
-       ]
-      },
-      "ev": {
-       "good": true,
-       "rec": {
-        "good": true,
-        "why": "Du hast gesehen, dass ein Freund frei war."
-       },
-       "exe": {
-        "good": true,
-        "why": "Der Weg zu Blau 2 war frei."
-       },
-       "why": "Der Weg zu Blau 2 war frei."
-      },
-      "fb": {
-       "good": true,
-       "success": true,
-       "icon": "👍",
-       "text": "Der Pass ist angekommen!",
-       "tip": "Super gemacht!",
-       "say": "Der Pass ist angekommen! Super gemacht!",
-       "goal": null
-      },
-      "events": [
-       "received:b2"
-      ],
-      "ticks": 115,
-      "mission": {
-       "att": 1,
-       "done": false,
-       "note": null,
-       "next": null
-      },
-      "afterApply": {
-       "sit": "A3",
-       "p": [
-        [
-         "b1",
-         32,
-         8
-        ],
-        [
-         "b2",
-         30.5,
-         19.5
-        ],
-        [
-         "r1",
-         31.674526,
-         16.701864
-        ],
-        [
-         "r2",
-         35.085692,
-         8.210599
-        ]
-       ],
-       "ball": "b2",
-       "poss": "blue",
-       "score": {
-        "blue": 0,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A3",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 1
-      },
-      "hint": {
-       "k": "schiessen",
-       "say": "Vor diesem Tor steht kein Gegner im Weg.",
-       "goal": 1
-      },
-      "ev": {
-       "good": true,
-       "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
-       },
-       "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
-       },
-       "why": "Du hast das freie Tor gewählt."
-      },
-      "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
-      },
-      "events": [
-       "goal"
-      ],
-      "ticks": 126,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A5"
-      },
-      "afterApply": {
-       "sit": "A5",
-       "p": [
-        [
-         "b1",
-         30.5,
-         13
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         28.5,
-         13
-        ],
-        [
-         "r2",
-         34,
-         12
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 1,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A5",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 1
-      },
-      "hint": {
-       "k": "schiessen",
-       "say": "Vor diesem Tor steht kein Gegner im Weg.",
-       "goal": 1
-      },
-      "ev": {
-       "good": true,
-       "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
-       },
-       "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
-       },
-       "why": "Du hast das freie Tor gewählt."
-      },
-      "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
-      },
-      "events": [
-       "goal"
-      ],
-      "ticks": 134,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A2"
-      },
-      "afterApply": {
-       "sit": "A2",
-       "p": [
-        [
-         "b1",
-         30.5,
-         14.5
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         29,
-         13
-        ],
-        [
-         "r2",
-         34,
-         16.7
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 2,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A2",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 0
-      },
-      "hint": {
-       "k": "schiessen",
-       "say": "Vor diesem Tor steht kein Gegner im Weg.",
-       "goal": 0
-      },
-      "ev": {
-       "good": true,
-       "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
-       },
-       "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
-       },
-       "why": "Du hast das freie Tor gewählt."
-      },
-      "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
-      },
-      "events": [
-       "goal"
-      ],
-      "ticks": 146,
-      "mission": {
-       "att": 1,
-       "done": true,
-       "note": null,
-       "next": null
-      },
-      "afterApply": {
-       "sit": "A2",
-       "p": [
-        [
-         "b1",
-         30.5,
-         14.5
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         34.369479,
-         8.054427
-        ],
-        [
-         "r2",
-         35.3,
-         15.603289
         ]
        ],
        "ball": null,
@@ -1662,30 +2163,30 @@
        "att": 0,
        "done": false,
        "note": "situation",
-       "next": "A1"
+       "next": "A4"
       },
       "afterApply": {
-       "sit": "A1",
+       "sit": "A4",
        "p": [
         [
          "b1",
-         31,
+         26,
          12
         ],
         [
          "b2",
-         24,
+         21,
          19
         ],
         [
          "r1",
-         29.5,
-         13.5
+         24,
+         9.5
         ],
         [
          "r2",
-         34.5,
-         7.8
+         34.4,
+         7.9
         ]
        ],
        "ball": "b1",
@@ -1697,7 +2198,88 @@
       }
      },
      {
-      "sit": "A1",
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
       "ctx": {
        "type": "abschluss",
        "title": "Welches Tor ist frei?",
@@ -1736,35 +2318,35 @@
       "events": [
        "blocked:r2"
       ],
-      "ticks": 58,
+      "ticks": 50,
       "mission": {
-       "att": 1,
+       "att": 2,
        "done": true,
        "note": null,
        "next": null
       },
       "afterApply": {
-       "sit": "A1",
+       "sit": "A4",
        "p": [
         [
          "b1",
-         29.384022,
-         12.455838
+         32.342791,
+         11.67101
         ],
         [
          "b2",
-         24,
+         21,
          19
         ],
         [
          "r1",
-         28.788083,
-         12.675442
+         30.552155,
+         11.385885
         ],
         [
          "r2",
-         32.03178,
-         8.303183
+         33.184652,
+         8.490121
         ]
        ],
        "ball": "r2",
@@ -1784,6 +2366,166 @@
    },
    {
     "out": [
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+       },
+       "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 2 stand vor dem Tor.",
+       "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "say": "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r2"
+      ],
+      "ticks": 50,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A5"
+      },
+      "afterApply": {
+       "sit": "A5",
+       "p": [
+        [
+         "b1",
+         30.5,
+         13
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         28.5,
+         13
+        ],
+        [
+         "r2",
+         34,
+         12
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
      {
       "sit": "A5",
       "ctx": {
@@ -1904,6 +2646,500 @@
        "blocked:r2"
       ],
       "ticks": 58,
+      "mission": {
+       "att": 1,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A1",
+       "p": [
+        [
+         "b1",
+         29.384022,
+         12.455838
+        ],
+        [
+         "b2",
+         24,
+         19
+        ],
+        [
+         "r1",
+         28.788083,
+         12.675442
+        ],
+        [
+         "r2",
+         32.03178,
+         8.303183
+        ]
+       ],
+       "ball": "r2",
+       "poss": "red",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A3",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": false,
+        "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 1."
+       },
+       "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 1 stand vor dem Tor.",
+       "tip": "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+       "say": "Geblockt! Rot 1 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r1"
+      ],
+      "ticks": 50,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A1"
+      },
+      "afterApply": {
+       "sit": "A1",
+       "p": [
+        [
+         "b1",
+         31,
+         12
+        ],
+        [
+         "b2",
+         24,
+         19
+        ],
+        [
+         "r1",
+         29.5,
+         13.5
+        ],
+        [
+         "r2",
+         34.5,
+         7.8
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A1",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+       },
+       "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 2 stand vor dem Tor.",
+       "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "say": "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r2"
+      ],
+      "ticks": 58,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A2"
+      },
+      "afterApply": {
+       "sit": "A2",
+       "p": [
+        [
+         "b1",
+         30.5,
+         14.5
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         29,
+         13
+        ],
+        [
+         "r2",
+         34,
+         16.7
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A2",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+       },
+       "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 2 stand vor dem Tor.",
+       "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "say": "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r2"
+      ],
+      "ticks": 51,
+      "mission": {
+       "att": 1,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A2",
+       "p": [
+        [
+         "b1",
+         28.842979,
+         14.225739
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         28.155327,
+         13.456165
+        ],
+        [
+         "r2",
+         31.68302,
+         16.562516
+        ]
+       ],
+       "ball": "r2",
+       "poss": "red",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 0,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 140,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A4"
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         24,
+         9.5
+        ],
+        [
+         "r2",
+         34.4,
+         7.9
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+       },
+       "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 2 stand vor dem Tor.",
+       "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "say": "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r2"
+      ],
+      "ticks": 50,
       "mission": {
        "att": 0,
        "done": false,
@@ -2014,252 +3250,6 @@
         ]
        ],
        "ball": "r1",
-       "poss": "red",
-       "score": {
-        "blue": 1,
-        "red": 0
-       }
-      }
-     }
-    ],
-    "done": true,
-    "score": {
-     "blue": 1,
-     "red": 0
-    }
-   },
-   {
-    "out": [
-     {
-      "sit": "A3",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 1
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": false,
-        "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
-       },
-       "exe": {
-        "good": false,
-        "why": "Vor diesem Tor stand Rot 1."
-       },
-       "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
-      },
-      "fb": {
-       "good": false,
-       "success": false,
-       "icon": "🧤",
-       "text": "Geblockt! Rot 1 stand vor dem Tor.",
-       "tip": "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
-       "say": "Geblockt! Rot 1 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
-       "goal": null
-      },
-      "events": [
-       "blocked:r1"
-      ],
-      "ticks": 50,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A5"
-      },
-      "afterApply": {
-       "sit": "A5",
-       "p": [
-        [
-         "b1",
-         30.5,
-         13
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         28.5,
-         13
-        ],
-        [
-         "r2",
-         34,
-         12
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 0,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A5",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 0
-      },
-      "hint": null,
-      "ev": {
-       "good": true,
-       "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
-       },
-       "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
-       },
-       "why": "Du hast das freie Tor gewählt."
-      },
-      "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
-      },
-      "events": [
-       "goal"
-      ],
-      "ticks": 140,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A2"
-      },
-      "afterApply": {
-       "sit": "A2",
-       "p": [
-        [
-         "b1",
-         30.5,
-         14.5
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         29,
-         13
-        ],
-        [
-         "r2",
-         34,
-         16.7
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 1,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A2",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 1
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
-       },
-       "exe": {
-        "good": false,
-        "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
-       },
-       "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
-      },
-      "fb": {
-       "good": false,
-       "success": false,
-       "icon": "🧤",
-       "text": "Geblockt! Rot 2 stand vor dem Tor.",
-       "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
-       "say": "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
-       "goal": null
-      },
-      "events": [
-       "blocked:r2"
-      ],
-      "ticks": 51,
-      "mission": {
-       "att": 1,
-       "done": true,
-       "note": null,
-       "next": null
-      },
-      "afterApply": {
-       "sit": "A2",
-       "p": [
-        [
-         "b1",
-         28.842979,
-         14.225739
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         28.155327,
-         13.456165
-        ],
-        [
-         "r2",
-         31.68302,
-         16.562516
-        ]
-       ],
-       "ball": "r2",
        "poss": "red",
        "score": {
         "blue": 1,
@@ -2648,6 +3638,414 @@
        "att": 0,
        "done": false,
        "note": "situation",
+       "next": "A4"
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         24,
+         9.5
+        ],
+        [
+         "r2",
+         34.4,
+         7.9
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+       },
+       "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 2 stand vor dem Tor.",
+       "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "say": "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r2"
+      ],
+      "ticks": 50,
+      "mission": {
+       "att": 2,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         32.342791,
+         11.67101
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         30.552155,
+         11.385885
+        ],
+        [
+         "r2",
+         33.184652,
+         8.490121
+        ]
+       ],
+       "ball": "r2",
+       "poss": "red",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+       },
+       "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 2 stand vor dem Tor.",
+       "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "say": "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r2"
+      ],
+      "ticks": 50,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A5"
+      },
+      "afterApply": {
+       "sit": "A5",
+       "p": [
+        [
+         "b1",
+         30.5,
+         13
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         28.5,
+         13
+        ],
+        [
+         "r2",
+         34,
+         12
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 140,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
        "next": "A1"
       },
       "afterApply": {
@@ -2771,7 +4169,7 @@
    {
     "out": [
      {
-      "sit": "A5",
+      "sit": "A3",
       "ctx": {
        "type": "abschluss",
        "title": "Welches Tor ist frei?",
@@ -2787,30 +4185,30 @@
       },
       "hint": null,
       "ev": {
-       "good": true,
+       "good": false,
        "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
+        "good": false,
+        "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
        },
        "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 2."
        },
-       "why": "Du hast das freie Tor gewählt."
+       "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
       },
       "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 2 stand vor dem Tor.",
+       "tip": "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+       "say": "Geblockt! Rot 2 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+       "goal": null
       },
       "events": [
-       "goal"
+       "blocked:r2"
       ],
-      "ticks": 140,
+      "ticks": 45,
       "mission": {
        "att": 0,
        "done": false,
@@ -2844,7 +4242,7 @@
        "ball": "b1",
        "poss": "blue",
        "score": {
-        "blue": 1,
+        "blue": 0,
         "red": 0
        }
       }
@@ -2890,6 +4288,333 @@
        "blocked:r2"
       ],
       "ticks": 58,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A2"
+      },
+      "afterApply": {
+       "sit": "A2",
+       "p": [
+        [
+         "b1",
+         30.5,
+         14.5
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         29,
+         13
+        ],
+        [
+         "r2",
+         34,
+         16.7
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A2",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 146,
+      "mission": {
+       "att": 1,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A2",
+       "p": [
+        [
+         "b1",
+         30.5,
+         14.5
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         34.369479,
+         8.054427
+        ],
+        [
+         "r2",
+         35.3,
+         15.603289
+        ]
+       ],
+       "ball": null,
+       "poss": null,
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 140,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A4"
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         24,
+         9.5
+        ],
+        [
+         "r2",
+         34.4,
+         7.9
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 0
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+       },
+       "why": "Vor diesem Tor stand Rot 2. Das andere Tor war frei."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 2 stand vor dem Tor.",
+       "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "say": "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Vor diesem Tor stand Rot 2. Das andere Tor war frei.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r2"
+      ],
+      "ticks": 50,
       "mission": {
        "att": 0,
        "done": false,
@@ -3011,252 +4736,6 @@
     "done": true,
     "score": {
      "blue": 1,
-     "red": 0
-    }
-   },
-   {
-    "out": [
-     {
-      "sit": "A3",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 0
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": false,
-        "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
-       },
-       "exe": {
-        "good": false,
-        "why": "Vor diesem Tor stand Rot 2."
-       },
-       "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
-      },
-      "fb": {
-       "good": false,
-       "success": false,
-       "icon": "🧤",
-       "text": "Geblockt! Rot 2 stand vor dem Tor.",
-       "tip": "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
-       "say": "Geblockt! Rot 2 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
-       "goal": null
-      },
-      "events": [
-       "blocked:r2"
-      ],
-      "ticks": 45,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A5"
-      },
-      "afterApply": {
-       "sit": "A5",
-       "p": [
-        [
-         "b1",
-         30.5,
-         13
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         28.5,
-         13
-        ],
-        [
-         "r2",
-         34,
-         12
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 0,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A5",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 0
-      },
-      "hint": null,
-      "ev": {
-       "good": true,
-       "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
-       },
-       "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
-       },
-       "why": "Du hast das freie Tor gewählt."
-      },
-      "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
-      },
-      "events": [
-       "goal"
-      ],
-      "ticks": 140,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A2"
-      },
-      "afterApply": {
-       "sit": "A2",
-       "p": [
-        [
-         "b1",
-         30.5,
-         14.5
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         29,
-         13
-        ],
-        [
-         "r2",
-         34,
-         16.7
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 1,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A2",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 0
-      },
-      "hint": null,
-      "ev": {
-       "good": true,
-       "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
-       },
-       "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
-       },
-       "why": "Du hast das freie Tor gewählt."
-      },
-      "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
-      },
-      "events": [
-       "goal"
-      ],
-      "ticks": 146,
-      "mission": {
-       "att": 1,
-       "done": true,
-       "note": null,
-       "next": null
-      },
-      "afterApply": {
-       "sit": "A2",
-       "p": [
-        [
-         "b1",
-         30.5,
-         14.5
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         34.369479,
-         8.054427
-        ],
-        [
-         "r2",
-         35.3,
-         15.603289
-        ]
-       ],
-       "ball": null,
-       "poss": null,
-       "score": {
-        "blue": 2,
-        "red": 0
-       }
-      }
-     }
-    ],
-    "done": true,
-    "score": {
-     "blue": 2,
      "red": 0
     }
    }
@@ -3634,6 +5113,414 @@
        "att": 0,
        "done": false,
        "note": "situation",
+       "next": "A4"
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         24,
+         9.5
+        ],
+        [
+         "r2",
+         34.4,
+         7.9
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 128,
+      "mission": {
+       "att": 2,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         35.3,
+         16.685402
+        ],
+        [
+         "r2",
+         35.3,
+         8.396964
+        ]
+       ],
+       "ball": null,
+       "poss": null,
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 128,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A5"
+      },
+      "afterApply": {
+       "sit": "A5",
+       "p": [
+        [
+         "b1",
+         30.5,
+         13
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         28.5,
+         13
+        ],
+        [
+         "r2",
+         34,
+         12
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 134,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
        "next": "A1"
       },
       "afterApply": {
@@ -3663,7 +5550,7 @@
        "ball": "b1",
        "poss": "blue",
        "score": {
-        "blue": 0,
+        "blue": 2,
         "red": 0
        }
       }
@@ -3742,7 +5629,7 @@
        "ball": null,
        "poss": null,
        "score": {
-        "blue": 1,
+        "blue": 3,
         "red": 0
        }
       }
@@ -3750,14 +5637,14 @@
     ],
     "done": true,
     "score": {
-     "blue": 1,
+     "blue": 3,
      "red": 0
     }
    },
    {
     "out": [
      {
-      "sit": "A5",
+      "sit": "A3",
       "ctx": {
        "type": "abschluss",
        "title": "Welches Tor ist frei?",
@@ -3773,30 +5660,30 @@
       },
       "hint": null,
       "ev": {
-       "good": true,
+       "good": false,
        "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
+        "good": false,
+        "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
        },
        "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 1."
        },
-       "why": "Du hast das freie Tor gewählt."
+       "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
       },
       "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 1 stand vor dem Tor.",
+       "tip": "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+       "say": "Geblockt! Rot 1 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+       "goal": null
       },
       "events": [
-       "goal"
+       "blocked:r1"
       ],
-      "ticks": 134,
+      "ticks": 50,
       "mission": {
        "att": 0,
        "done": false,
@@ -3830,7 +5717,7 @@
        "ball": "b1",
        "poss": "blue",
        "score": {
-        "blue": 1,
+        "blue": 0,
         "red": 0
        }
       }
@@ -3876,252 +5763,6 @@
        "goal"
       ],
       "ticks": 135,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A3"
-      },
-      "afterApply": {
-       "sit": "A3",
-       "p": [
-        [
-         "b1",
-         32,
-         8
-        ],
-        [
-         "b2",
-         30.5,
-         19.5
-        ],
-        [
-         "r1",
-         33.9,
-         11.4
-        ],
-        [
-         "r2",
-         34.2,
-         7
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 2,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A3",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 1
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": false,
-        "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
-       },
-       "exe": {
-        "good": false,
-        "why": "Vor diesem Tor stand Rot 1."
-       },
-       "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
-      },
-      "fb": {
-       "good": false,
-       "success": false,
-       "icon": "🧤",
-       "text": "Geblockt! Rot 1 stand vor dem Tor.",
-       "tip": "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
-       "say": "Geblockt! Rot 1 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
-       "goal": null
-      },
-      "events": [
-       "blocked:r1"
-      ],
-      "ticks": 50,
-      "mission": {
-       "att": 1,
-       "done": true,
-       "note": null,
-       "next": null
-      },
-      "afterApply": {
-       "sit": "A3",
-       "p": [
-        [
-         "b1",
-         30.433098,
-         7.554762
-        ],
-        [
-         "b2",
-         30.5,
-         19.5
-        ],
-        [
-         "r1",
-         31.71126,
-         11.596077
-        ],
-        [
-         "r2",
-         32.566993,
-         7.672866
-        ]
-       ],
-       "ball": "r1",
-       "poss": "red",
-       "score": {
-        "blue": 2,
-        "red": 0
-       }
-      }
-     }
-    ],
-    "done": true,
-    "score": {
-     "blue": 2,
-     "red": 0
-    }
-   },
-   {
-    "out": [
-     {
-      "sit": "A3",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 1
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": false,
-        "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
-       },
-       "exe": {
-        "good": false,
-        "why": "Vor diesem Tor stand Rot 1."
-       },
-       "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
-      },
-      "fb": {
-       "good": false,
-       "success": false,
-       "icon": "🧤",
-       "text": "Geblockt! Rot 1 stand vor dem Tor.",
-       "tip": "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
-       "say": "Geblockt! Rot 1 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
-       "goal": null
-      },
-      "events": [
-       "blocked:r1"
-      ],
-      "ticks": 50,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A5"
-      },
-      "afterApply": {
-       "sit": "A5",
-       "p": [
-        [
-         "b1",
-         30.5,
-         13
-        ],
-        [
-         "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         28.5,
-         13
-        ],
-        [
-         "r2",
-         34,
-         12
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 0,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A5",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "shoot",
-       "goal": 1
-      },
-      "hint": null,
-      "ev": {
-       "good": true,
-       "rec": {
-        "good": true,
-        "why": "Du hast die Torchance erkannt."
-       },
-       "exe": {
-        "good": true,
-        "why": "Du hast das freie Tor gewählt."
-       },
-       "why": "Du hast das freie Tor gewählt."
-      },
-      "fb": {
-       "good": true,
-       "success": true,
-       "icon": "🎉",
-       "text": "Toooor! Der Weg war frei.",
-       "tip": "Super gemacht!",
-       "say": "Toooor! Der Weg war frei. Super gemacht!",
-       "goal": "blue"
-      },
-      "events": [
-       "goal"
-      ],
-      "ticks": 134,
       "mission": {
        "att": 0,
        "done": false,
@@ -4243,6 +5884,333 @@
     "done": true,
     "score": {
      "blue": 1,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 134,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A4"
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         24,
+         9.5
+        ],
+        [
+         "r2",
+         34.4,
+         7.9
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "dribble",
+       "x": 34,
+       "y": 12
+      },
+      "hint": {
+       "k": "dribbeln",
+       "say": "Dribbel dorthin, wo kein Gegner im Weg ist."
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast den freien Platz gesehen."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in den freien Raum gedribbelt."
+       },
+       "why": "Du bist in den freien Raum gedribbelt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Gut gedribbelt – du hast den Ball behalten!",
+       "tip": "Super gemacht!",
+       "say": "Gut gedribbelt – du hast den Ball behalten! Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 160,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         33.99,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         31.433741,
+         11.807991
+        ],
+        [
+         "r2",
+         35.218399,
+         8.269163
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 1,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast die Torchance erkannt."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du hast das freie Tor gewählt."
+       },
+       "why": "Du hast das freie Tor gewählt."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🎉",
+       "text": "Toooor! Der Weg war frei.",
+       "tip": "Super gemacht!",
+       "say": "Toooor! Der Weg war frei. Super gemacht!",
+       "goal": "blue"
+      },
+      "events": [
+       "goal"
+      ],
+      "ticks": 128,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A3"
+      },
+      "afterApply": {
+       "sit": "A3",
+       "p": [
+        [
+         "b1",
+         32,
+         8
+        ],
+        [
+         "b2",
+         30.5,
+         19.5
+        ],
+        [
+         "r1",
+         33.9,
+         11.4
+        ],
+        [
+         "r2",
+         34.2,
+         7
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 2,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A3",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "shoot",
+       "goal": 1
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": false,
+        "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
+       },
+       "exe": {
+        "good": false,
+        "why": "Vor diesem Tor stand Rot 1."
+       },
+       "why": "Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "🧤",
+       "text": "Geblockt! Rot 1 stand vor dem Tor.",
+       "tip": "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+       "say": "Geblockt! Rot 1 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+       "goal": null
+      },
+      "events": [
+       "blocked:r1"
+      ],
+      "ticks": 50,
+      "mission": {
+       "att": 1,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A3",
+       "p": [
+        [
+         "b1",
+         30.433098,
+         7.554762
+        ],
+        [
+         "b2",
+         30.5,
+         19.5
+        ],
+        [
+         "r1",
+         31.71126,
+         11.596077
+        ],
+        [
+         "r2",
+         32.566993,
+         7.672866
+        ]
+       ],
+       "ball": "r1",
+       "poss": "red",
+       "score": {
+        "blue": 2,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 2,
      "red": 0
     }
    }
@@ -4577,8 +6545,8 @@
       "sit": "A5",
       "ctx": {
        "type": "angriff",
-       "title": "Wem spiele ich den Ball zu?",
-       "say": "Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
        "actions": [
         "passen",
         "dribbeln"
@@ -4946,30 +6914,30 @@
        "att": 0,
        "done": false,
        "note": "situation",
-       "next": "A1"
+       "next": "A4"
       },
       "afterApply": {
-       "sit": "A1",
+       "sit": "A4",
        "p": [
         [
          "b1",
-         31,
+         26,
          12
         ],
         [
          "b2",
-         24,
+         21,
          19
         ],
         [
          "r1",
-         29.5,
-         13.5
+         24,
+         9.5
         ],
         [
          "r2",
-         34.5,
-         7.8
+         34.4,
+         7.9
         ]
        ],
        "ball": "b1",
@@ -4981,103 +6949,14 @@
       }
      },
      {
-      "sit": "A1",
+      "sit": "A4",
       "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
        "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "pass",
-       "id": "b2"
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": true,
-        "why": "Abspielen war eine gute Idee."
-       },
-       "exe": {
-        "good": false,
-        "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
-       },
-       "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
-      },
-      "fb": {
-       "good": false,
-       "success": false,
-       "icon": "😮",
-       "text": "Oh! Rot 1 stand im Weg und hat den Ball bekommen.",
-       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "say": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "goal": null
-      },
-      "events": [
-       "intercepted:r1",
-       "evade"
-      ],
-      "ticks": 46,
-      "mission": {
-       "att": 1,
-       "done": true,
-       "note": null,
-       "next": null
-      },
-      "afterApply": {
-       "sit": "A1",
-       "p": [
-        [
-         "b1",
-         30.979496,
-         10.33491
-        ],
-        [
-         "b2",
-         24,
-         19
-        ],
-        [
-         "r1",
-         28.022481,
-         13.337365
-        ],
-        [
-         "r2",
-         32.732868,
-         8.178133
-        ]
-       ],
-       "ball": "r1",
-       "poss": "red",
-       "score": {
-        "blue": 0,
-        "red": 0
-       }
-      }
-     }
-    ],
-    "done": true,
-    "score": {
-     "blue": 0,
-     "red": 0
-    }
-   },
-   {
-    "out": [
-     {
-      "sit": "A5",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
+        "passen",
+        "dribbeln"
        ]
       },
       "a": {
@@ -5109,7 +6988,7 @@
       "events": [
        "received:b2"
       ],
-      "ticks": 101,
+      "ticks": 95,
       "mission": {
        "att": 1,
        "done": false,
@@ -5117,27 +6996,27 @@
        "next": null
       },
       "afterApply": {
-       "sit": "A5",
+       "sit": "A4",
        "p": [
         [
          "b1",
-         30.5,
-         13
+         26,
+         12
         ],
         [
          "b2",
-         24,
-         6
+         21,
+         19
         ],
         [
          "r1",
-         25.769174,
-         8.752049
+         22.569626,
+         14.029518
         ],
         [
          "r2",
-         32.730874,
-         14.991959
+         31.442757,
+         10.763853
         ]
        ],
        "ball": "b2",
@@ -5149,7 +7028,7 @@
       }
      },
      {
-      "sit": "A5",
+      "sit": "A4",
       "ctx": {
        "type": "ohneBall",
        "title": "Wo kann ich helfen?",
@@ -5161,8 +7040,8 @@
       "a": {
        "kind": "run",
        "id": "b1",
-       "x": 32,
-       "y": 5
+       "x": 29,
+       "y": 20
       },
       "hint": {
        "k": "freilaufen",
@@ -5193,7 +7072,7 @@
        "goal": null
       },
       "events": [],
-      "ticks": 136,
+      "ticks": 141,
       "mission": {
        "att": 2,
        "done": false,
@@ -5201,27 +7080,27 @@
        "next": null
       },
       "afterApply": {
-       "sit": "A5",
+       "sit": "A4",
        "p": [
         [
          "b1",
-         32,
-         5
+         29,
+         20
         ],
         [
          "b2",
-         24,
-         6
+         21,
+         19
         ],
         [
          "r1",
-         24.768773,
-         7.195869
+         21.425327,
+         17.653132
         ],
         [
          "r2",
-         33.790485,
-         9.300909
+         31.176223,
+         16.55737
         ]
        ],
        "ball": "b2",
@@ -5233,11 +7112,11 @@
       }
      },
      {
-      "sit": "A5",
+      "sit": "A4",
       "ctx": {
        "type": "angriff",
-       "title": "Wem spiele ich den Ball zu?",
-       "say": "Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
        "actions": [
         "passen",
         "dribbeln"
@@ -5280,106 +7159,27 @@
        "next": null
       },
       "afterApply": {
-       "sit": "A5",
+       "sit": "A4",
        "p": [
         [
          "b1",
-         32,
-         5
+         29,
+         20
         ],
         [
          "b2",
-         24,
-         6
-        ],
-        [
-         "r1",
-         29.230667,
-         6.304804
-        ],
-        [
-         "r2",
-         32.541413,
-         6.300523
-        ]
-       ],
-       "ball": "b1",
-       "poss": "blue",
-       "score": {
-        "blue": 0,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A5",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "pass",
-       "id": "b2"
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": true,
-        "why": "Abspielen war eine gute Idee."
-       },
-       "exe": {
-        "good": false,
-        "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
-       },
-       "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
-      },
-      "fb": {
-       "good": false,
-       "success": true,
-       "icon": "👍",
-       "text": "Der Pass ist angekommen!",
-       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "say": "Der Pass ist angekommen! Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "goal": null
-      },
-      "events": [
-       "received:b2"
-      ],
-      "ticks": 91,
-      "mission": {
-       "att": 0,
-       "done": false,
-       "note": "situation",
-       "next": "A1"
-      },
-      "afterApply": {
-       "sit": "A1",
-       "p": [
-        [
-         "b1",
-         31,
-         12
-        ],
-        [
-         "b2",
-         24,
+         21,
          19
         ],
         [
          "r1",
-         29.5,
-         13.5
+         25.960097,
+         18.025095
         ],
         [
          "r2",
-         34.5,
-         7.8
+         29.760244,
+         18.797348
         ]
        ],
        "ball": "b1",
@@ -5391,75 +7191,81 @@
       }
      },
      {
-      "sit": "A1",
+      "sit": "A4",
       "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "type": "ohneBall",
+       "title": "Wo kann ich helfen?",
+       "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
        "actions": [
-        "schiessen",
-        "passen"
+        "freilaufen"
        ]
       },
       "a": {
-       "kind": "pass",
-       "id": "b2"
+       "kind": "run",
+       "id": "b2",
+       "x": 20,
+       "y": 21.5
       },
-      "hint": null,
+      "hint": {
+       "k": "freilaufen",
+       "say": "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.",
+       "ids": [
+        "b2"
+       ]
+      },
       "ev": {
-       "good": false,
+       "good": true,
        "rec": {
         "good": true,
-        "why": "Abspielen war eine gute Idee."
+        "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
        },
        "exe": {
-        "good": false,
-        "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+        "good": true,
+        "why": "Du bist in einen freien Raum gelaufen."
        },
-       "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+       "why": "Du bist in einen freien Raum gelaufen."
       },
       "fb": {
-       "good": false,
-       "success": false,
-       "icon": "😮",
-       "text": "Oh! Rot 1 stand im Weg und hat den Ball bekommen.",
-       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "say": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "good": true,
+       "success": true,
+       "icon": "🙌",
+       "text": "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne.",
+       "tip": "Super gemacht!",
+       "say": "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne. Super gemacht!",
        "goal": null
       },
       "events": [
-       "intercepted:r1",
-       "evade"
+       "autoDribble"
       ],
-      "ticks": 46,
+      "ticks": 91,
       "mission": {
-       "att": 0,
+       "att": 4,
        "done": false,
-       "note": "situation",
-       "next": "A3"
+       "note": null,
+       "next": null
       },
       "afterApply": {
-       "sit": "A3",
+       "sit": "A4",
        "p": [
         [
          "b1",
-         32,
-         8
+         30.841479,
+         20.736592
         ],
         [
          "b2",
-         30.5,
-         19.5
+         20,
+         21.5
         ],
         [
          "r1",
-         33.9,
-         11.4
+         30.477312,
+         18.545143
         ],
         [
          "r2",
-         34.2,
-         7
+         30.035562,
+         19.591822
         ]
        ],
        "ball": "b1",
@@ -5471,7 +7277,7 @@
       }
      },
      {
-      "sit": "A3",
+      "sit": "A4",
       "ctx": {
        "type": "abschluss",
        "title": "Welches Tor ist frei?",
@@ -5510,120 +7316,39 @@
       "events": [
        "received:b2"
       ],
-      "ticks": 115,
+      "ticks": 110,
       "mission": {
-       "att": 1,
-       "done": false,
-       "note": null,
-       "next": null
-      },
-      "afterApply": {
-       "sit": "A3",
-       "p": [
-        [
-         "b1",
-         32,
-         8
-        ],
-        [
-         "b2",
-         30.5,
-         19.5
-        ],
-        [
-         "r1",
-         31.674526,
-         16.701864
-        ],
-        [
-         "r2",
-         35.085692,
-         8.210599
-        ]
-       ],
-       "ball": "b2",
-       "poss": "blue",
-       "score": {
-        "blue": 0,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A3",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "pass",
-       "id": "b1"
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": true,
-        "why": "Abspielen war eine gute Idee."
-       },
-       "exe": {
-        "good": false,
-        "why": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
-       },
-       "why": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
-      },
-      "fb": {
-       "good": false,
-       "success": false,
-       "icon": "😮",
-       "text": "Oh! Rot 2 stand im Weg und hat den Ball bekommen.",
-       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "say": "Oh! Rot 2 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "goal": null
-      },
-      "events": [
-       "intercepted:r2",
-       "redPass",
-       "received:r1"
-      ],
-      "ticks": 120,
-      "mission": {
-       "att": 2,
+       "att": 5,
        "done": true,
        "note": null,
        "next": null
       },
       "afterApply": {
-       "sit": "A3",
+       "sit": "A4",
        "p": [
         [
          "b1",
-         32,
-         8
+         30.841479,
+         20.736592
         ],
         [
          "b2",
-         30.104459,
-         17.110384
+         20,
+         21.5
         ],
         [
          "r1",
-         30.481077,
-         13.523984
+         33.49165,
+         19.330678
         ],
         [
          "r2",
-         30.191433,
-         9.237399
+         24.632368,
+         20.619194
         ]
        ],
-       "ball": "r1",
-       "poss": "red",
+       "ball": "b2",
+       "poss": "blue",
        "score": {
         "blue": 0,
         "red": 0
@@ -5640,7 +7365,335 @@
    {
     "out": [
      {
-      "sit": "A3",
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 2 war frei."
+       },
+       "why": "Der Weg zu Blau 2 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b2"
+      ],
+      "ticks": 95,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         22.569626,
+         14.029518
+        ],
+        [
+         "r2",
+         31.442757,
+         10.763853
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "ohneBall",
+       "title": "Wo kann ich helfen?",
+       "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
+       "actions": [
+        "freilaufen"
+       ]
+      },
+      "a": {
+       "kind": "run",
+       "id": "b1",
+       "x": 29,
+       "y": 20
+      },
+      "hint": {
+       "k": "freilaufen",
+       "say": "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.",
+       "ids": [
+        "b1"
+       ]
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in einen freien Raum gelaufen."
+       },
+       "why": "Du bist in einen freien Raum gelaufen."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🙌",
+       "text": "Super! Jetzt bist du anspielbar.",
+       "tip": "Super gemacht!",
+       "say": "Super! Jetzt bist du anspielbar. Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 141,
+      "mission": {
+       "att": 2,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         29,
+         20
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         21.425327,
+         17.653132
+        ],
+        [
+         "r2",
+         31.176223,
+         16.55737
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b1"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 1 war frei."
+       },
+       "why": "Der Weg zu Blau 1 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b1"
+      ],
+      "ticks": 91,
+      "mission": {
+       "att": 3,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         29,
+         20
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         25.960097,
+         18.025095
+        ],
+        [
+         "r2",
+         29.760244,
+         18.797348
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "ohneBall",
+       "title": "Wo kann ich helfen?",
+       "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
+       "actions": [
+        "freilaufen"
+       ]
+      },
+      "a": {
+       "kind": "run",
+       "id": "b2",
+       "x": 20,
+       "y": 21.5
+      },
+      "hint": {
+       "k": "freilaufen",
+       "say": "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.",
+       "ids": [
+        "b2"
+       ]
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in einen freien Raum gelaufen."
+       },
+       "why": "Du bist in einen freien Raum gelaufen."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🙌",
+       "text": "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne.",
+       "tip": "Super gemacht!",
+       "say": "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne. Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "autoDribble"
+      ],
+      "ticks": 91,
+      "mission": {
+       "att": 4,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         30.841479,
+         20.736592
+        ],
+        [
+         "b2",
+         20,
+         21.5
+        ],
+        [
+         "r1",
+         30.477312,
+         18.545143
+        ],
+        [
+         "r2",
+         30.035562,
+         19.591822
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
       "ctx": {
        "type": "abschluss",
        "title": "Welches Tor ist frei?",
@@ -5679,88 +7732,7 @@
       "events": [
        "received:b2"
       ],
-      "ticks": 115,
-      "mission": {
-       "att": 1,
-       "done": false,
-       "note": null,
-       "next": null
-      },
-      "afterApply": {
-       "sit": "A3",
-       "p": [
-        [
-         "b1",
-         32,
-         8
-        ],
-        [
-         "b2",
-         30.5,
-         19.5
-        ],
-        [
-         "r1",
-         31.674526,
-         16.701864
-        ],
-        [
-         "r2",
-         35.085692,
-         8.210599
-        ]
-       ],
-       "ball": "b2",
-       "poss": "blue",
-       "score": {
-        "blue": 0,
-        "red": 0
-       }
-      }
-     },
-     {
-      "sit": "A3",
-      "ctx": {
-       "type": "abschluss",
-       "title": "Welches Tor ist frei?",
-       "say": "Welches Tor ist frei? Schießen oder passen?",
-       "actions": [
-        "schiessen",
-        "passen"
-       ]
-      },
-      "a": {
-       "kind": "pass",
-       "id": "b1"
-      },
-      "hint": null,
-      "ev": {
-       "good": false,
-       "rec": {
-        "good": true,
-        "why": "Abspielen war eine gute Idee."
-       },
-       "exe": {
-        "good": false,
-        "why": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
-       },
-       "why": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
-      },
-      "fb": {
-       "good": false,
-       "success": false,
-       "icon": "😮",
-       "text": "Oh! Rot 2 stand im Weg und hat den Ball bekommen.",
-       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "say": "Oh! Rot 2 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
-       "goal": null
-      },
-      "events": [
-       "intercepted:r2",
-       "redPass",
-       "received:r1"
-      ],
-      "ticks": 120,
+      "ticks": 110,
       "mission": {
        "att": 0,
        "done": false,
@@ -5966,8 +7938,8 @@
       "sit": "A5",
       "ctx": {
        "type": "angriff",
-       "title": "Wem spiele ich den Ball zu?",
-       "say": "Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
        "actions": [
         "passen",
         "dribbeln"
@@ -6086,6 +8058,335 @@
        "att": 0,
        "done": false,
        "note": "situation",
+       "next": "A1"
+      },
+      "afterApply": {
+       "sit": "A1",
+       "p": [
+        [
+         "b1",
+         31,
+         12
+        ],
+        [
+         "b2",
+         24,
+         19
+        ],
+        [
+         "r1",
+         29.5,
+         13.5
+        ],
+        [
+         "r2",
+         34.5,
+         7.8
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A1",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Abspielen war eine gute Idee."
+       },
+       "exe": {
+        "good": false,
+        "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+       },
+       "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "😮",
+       "text": "Oh! Rot 1 stand im Weg und hat den Ball bekommen.",
+       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "say": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "goal": null
+      },
+      "events": [
+       "intercepted:r1",
+       "evade"
+      ],
+      "ticks": 46,
+      "mission": {
+       "att": 1,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A1",
+       "p": [
+        [
+         "b1",
+         30.979496,
+         10.33491
+        ],
+        [
+         "b2",
+         24,
+         19
+        ],
+        [
+         "r1",
+         28.022481,
+         13.337365
+        ],
+        [
+         "r2",
+         32.732868,
+         8.178133
+        ]
+       ],
+       "ball": "r1",
+       "poss": "red",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 0,
+     "red": 0
+    }
+   },
+   {
+    "out": [
+     {
+      "sit": "A3",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 2 war frei."
+       },
+       "why": "Der Weg zu Blau 2 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b2"
+      ],
+      "ticks": 115,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A3",
+       "p": [
+        [
+         "b1",
+         32,
+         8
+        ],
+        [
+         "b2",
+         30.5,
+         19.5
+        ],
+        [
+         "r1",
+         31.674526,
+         16.701864
+        ],
+        [
+         "r2",
+         35.085692,
+         8.210599
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A3",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b1"
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Abspielen war eine gute Idee."
+       },
+       "exe": {
+        "good": false,
+        "why": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+       },
+       "why": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "😮",
+       "text": "Oh! Rot 2 stand im Weg und hat den Ball bekommen.",
+       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "say": "Oh! Rot 2 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "goal": null
+      },
+      "events": [
+       "intercepted:r2",
+       "redPass",
+       "received:r1"
+      ],
+      "ticks": 120,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A1"
+      },
+      "afterApply": {
+       "sit": "A1",
+       "p": [
+        [
+         "b1",
+         31,
+         12
+        ],
+        [
+         "b2",
+         24,
+         19
+        ],
+        [
+         "r1",
+         29.5,
+         13.5
+        ],
+        [
+         "r2",
+         34.5,
+         7.8
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A1",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Abspielen war eine gute Idee."
+       },
+       "exe": {
+        "good": false,
+        "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+       },
+       "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "😮",
+       "text": "Oh! Rot 1 stand im Weg und hat den Ball bekommen.",
+       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "say": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "goal": null
+      },
+      "events": [
+       "intercepted:r1",
+       "evade"
+      ],
+      "ticks": 46,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
        "next": "A2"
       },
       "afterApply": {
@@ -6183,8 +8484,8 @@
         ],
         [
          "r1",
-         27.460768,
-         12.437488
+         27.467698,
+         12.423003
         ],
         [
          "r2",
@@ -6206,209 +8507,1106 @@
      "blue": 0,
      "red": 0
     }
+   },
+   {
+    "out": [
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 2 war frei."
+       },
+       "why": "Der Weg zu Blau 2 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b2"
+      ],
+      "ticks": 101,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A5",
+       "p": [
+        [
+         "b1",
+         30.5,
+         13
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         25.769174,
+         8.752049
+        ],
+        [
+         "r2",
+         32.730874,
+         14.991959
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "ohneBall",
+       "title": "Wo kann ich helfen?",
+       "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
+       "actions": [
+        "freilaufen"
+       ]
+      },
+      "a": {
+       "kind": "run",
+       "id": "b1",
+       "x": 32,
+       "y": 5
+      },
+      "hint": {
+       "k": "freilaufen",
+       "say": "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.",
+       "ids": [
+        "b1"
+       ]
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in einen freien Raum gelaufen."
+       },
+       "why": "Du bist in einen freien Raum gelaufen."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🙌",
+       "text": "Super! Jetzt bist du anspielbar.",
+       "tip": "Super gemacht!",
+       "say": "Super! Jetzt bist du anspielbar. Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 136,
+      "mission": {
+       "att": 2,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A5",
+       "p": [
+        [
+         "b1",
+         32,
+         5
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         24.768773,
+         7.195869
+        ],
+        [
+         "r2",
+         33.790485,
+         9.300909
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b1"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 1 war frei."
+       },
+       "why": "Der Weg zu Blau 1 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b1"
+      ],
+      "ticks": 91,
+      "mission": {
+       "att": 3,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A5",
+       "p": [
+        [
+         "b1",
+         32,
+         5
+        ],
+        [
+         "b2",
+         24,
+         6
+        ],
+        [
+         "r1",
+         29.230667,
+         6.304804
+        ],
+        [
+         "r2",
+         32.541413,
+         6.300523
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A5",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Abspielen war eine gute Idee."
+       },
+       "exe": {
+        "good": false,
+        "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+       },
+       "why": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+      },
+      "fb": {
+       "good": false,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "say": "Der Pass ist angekommen! Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "goal": null
+      },
+      "events": [
+       "received:b2"
+      ],
+      "ticks": 91,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A4"
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         24,
+         9.5
+        ],
+        [
+         "r2",
+         34.4,
+         7.9
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 2 war frei."
+       },
+       "why": "Der Weg zu Blau 2 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b2"
+      ],
+      "ticks": 95,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         26,
+         12
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         22.569626,
+         14.029518
+        ],
+        [
+         "r2",
+         31.442757,
+         10.763853
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "ohneBall",
+       "title": "Wo kann ich helfen?",
+       "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
+       "actions": [
+        "freilaufen"
+       ]
+      },
+      "a": {
+       "kind": "run",
+       "id": "b1",
+       "x": 29,
+       "y": 20
+      },
+      "hint": {
+       "k": "freilaufen",
+       "say": "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.",
+       "ids": [
+        "b1"
+       ]
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in einen freien Raum gelaufen."
+       },
+       "why": "Du bist in einen freien Raum gelaufen."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🙌",
+       "text": "Super! Jetzt bist du anspielbar.",
+       "tip": "Super gemacht!",
+       "say": "Super! Jetzt bist du anspielbar. Super gemacht!",
+       "goal": null
+      },
+      "events": [],
+      "ticks": 141,
+      "mission": {
+       "att": 2,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         29,
+         20
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         21.425327,
+         17.653132
+        ],
+        [
+         "r2",
+         31.176223,
+         16.55737
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "angriff",
+       "title": "Noch zu weit fürs Tor",
+       "say": "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.",
+       "actions": [
+        "passen",
+        "dribbeln"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b1"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 1 war frei."
+       },
+       "why": "Der Weg zu Blau 1 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b1"
+      ],
+      "ticks": 91,
+      "mission": {
+       "att": 3,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         29,
+         20
+        ],
+        [
+         "b2",
+         21,
+         19
+        ],
+        [
+         "r1",
+         25.960097,
+         18.025095
+        ],
+        [
+         "r2",
+         29.760244,
+         18.797348
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "ohneBall",
+       "title": "Wo kann ich helfen?",
+       "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
+       "actions": [
+        "freilaufen"
+       ]
+      },
+      "a": {
+       "kind": "run",
+       "id": "b2",
+       "x": 20,
+       "y": 21.5
+      },
+      "hint": {
+       "k": "freilaufen",
+       "say": "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.",
+       "ids": [
+        "b2"
+       ]
+      },
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
+       },
+       "exe": {
+        "good": true,
+        "why": "Du bist in einen freien Raum gelaufen."
+       },
+       "why": "Du bist in einen freien Raum gelaufen."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "🙌",
+       "text": "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne.",
+       "tip": "Super gemacht!",
+       "say": "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne. Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "autoDribble"
+      ],
+      "ticks": 91,
+      "mission": {
+       "att": 4,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A4",
+       "p": [
+        [
+         "b1",
+         30.841479,
+         20.736592
+        ],
+        [
+         "b2",
+         20,
+         21.5
+        ],
+        [
+         "r1",
+         30.477312,
+         18.545143
+        ],
+        [
+         "r2",
+         30.035562,
+         19.591822
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A4",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 2 war frei."
+       },
+       "why": "Der Weg zu Blau 2 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b2"
+      ],
+      "ticks": 110,
+      "mission": {
+       "att": 0,
+       "done": false,
+       "note": "situation",
+       "next": "A3"
+      },
+      "afterApply": {
+       "sit": "A3",
+       "p": [
+        [
+         "b1",
+         32,
+         8
+        ],
+        [
+         "b2",
+         30.5,
+         19.5
+        ],
+        [
+         "r1",
+         33.9,
+         11.4
+        ],
+        [
+         "r2",
+         34.2,
+         7
+        ]
+       ],
+       "ball": "b1",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A3",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b2"
+      },
+      "hint": null,
+      "ev": {
+       "good": true,
+       "rec": {
+        "good": true,
+        "why": "Du hast gesehen, dass ein Freund frei war."
+       },
+       "exe": {
+        "good": true,
+        "why": "Der Weg zu Blau 2 war frei."
+       },
+       "why": "Der Weg zu Blau 2 war frei."
+      },
+      "fb": {
+       "good": true,
+       "success": true,
+       "icon": "👍",
+       "text": "Der Pass ist angekommen!",
+       "tip": "Super gemacht!",
+       "say": "Der Pass ist angekommen! Super gemacht!",
+       "goal": null
+      },
+      "events": [
+       "received:b2"
+      ],
+      "ticks": 115,
+      "mission": {
+       "att": 1,
+       "done": false,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A3",
+       "p": [
+        [
+         "b1",
+         32,
+         8
+        ],
+        [
+         "b2",
+         30.5,
+         19.5
+        ],
+        [
+         "r1",
+         31.674526,
+         16.701864
+        ],
+        [
+         "r2",
+         35.085692,
+         8.210599
+        ]
+       ],
+       "ball": "b2",
+       "poss": "blue",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     },
+     {
+      "sit": "A3",
+      "ctx": {
+       "type": "abschluss",
+       "title": "Welches Tor ist frei?",
+       "say": "Welches Tor ist frei? Schießen oder passen?",
+       "actions": [
+        "schiessen",
+        "passen"
+       ]
+      },
+      "a": {
+       "kind": "pass",
+       "id": "b1"
+      },
+      "hint": null,
+      "ev": {
+       "good": false,
+       "rec": {
+        "good": true,
+        "why": "Abspielen war eine gute Idee."
+       },
+       "exe": {
+        "good": false,
+        "why": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+       },
+       "why": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen."
+      },
+      "fb": {
+       "good": false,
+       "success": false,
+       "icon": "😮",
+       "text": "Oh! Rot 2 stand im Weg und hat den Ball bekommen.",
+       "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "say": "Oh! Rot 2 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+       "goal": null
+      },
+      "events": [
+       "intercepted:r2",
+       "redPass",
+       "received:r1"
+      ],
+      "ticks": 120,
+      "mission": {
+       "att": 2,
+       "done": true,
+       "note": null,
+       "next": null
+      },
+      "afterApply": {
+       "sit": "A3",
+       "p": [
+        [
+         "b1",
+         32,
+         8
+        ],
+        [
+         "b2",
+         30.104459,
+         17.110384
+        ],
+        [
+         "r1",
+         30.481077,
+         13.523984
+        ],
+        [
+         "r2",
+         30.191433,
+         9.237399
+        ]
+       ],
+       "ball": "r1",
+       "poss": "red",
+       "score": {
+        "blue": 0,
+        "red": 0
+       }
+      }
+     }
+    ],
+    "done": true,
+    "score": {
+     "blue": 0,
+     "red": 0
+    }
    }
   ]
  },
  "seeds": {
-  "1": "ccc86ef590f2ab1a",
-  "2": "b4372925499d98a0",
-  "3": "820c237a83d49fbe",
-  "4": "7742c127aeaad75f",
-  "5": "13b760885d253b7d",
-  "6": "3bd5f319b171ed51",
-  "7": "ac6c4c44e75bc73a",
-  "8": "271f176c47348cdf",
-  "9": "9845478cb4f3a171",
-  "10": "d65e9aa3853d8833",
-  "11": "505b4c4648dcad8e",
-  "12": "89cc2470bdeb383f",
-  "13": "05258927f8396a7b",
-  "14": "ea118a20b485d8d0",
-  "15": "c13d7b5a5c4d3f7d",
-  "16": "a03e025dbf53958b",
-  "17": "e10d90a16d9f2467",
-  "18": "643818734707c198",
-  "19": "0090c3e87c73b1df",
+  "1": "7892916b7a684992",
+  "2": "cf50b22819d09bf5",
+  "3": "8aa91b498716792e",
+  "4": "9ad980eb643a1cff",
+  "5": "2d919dbd878bf072",
+  "6": "f4f61f6a00c6d04d",
+  "7": "be944b9018462746",
+  "8": "718b4fe4864ebd19",
+  "9": "75132c658da27453",
+  "10": "f9d8c0401a440839",
+  "11": "d0f9a5d82281b173",
+  "12": "dabd6b4f95e9bef2",
+  "13": "67d16b12f2812e10",
+  "14": "6d5d87bc0b17d075",
+  "15": "53d5b5d1d37472ad",
+  "16": "124224ed05bf11e7",
+  "17": "87d12750499656d9",
+  "18": "3d23a5282381e8d3",
+  "19": "2b4f0f7723238b6d",
   "20": "abd4c7de27276294",
-  "21": "0779eeaf035f10fe",
-  "22": "d65e9aa3853d8833",
-  "23": "609d8173dd76458b",
-  "24": "b61e706f02e0517d",
-  "25": "4d8ee19dd04369e1",
-  "26": "cb6273c413534be3",
-  "27": "c23097d2bdcb1eb3",
-  "28": "1c2d2ff490cbd1a9",
-  "29": "f4b11f044bb3f81e",
-  "30": "f53551c7d9ed966b",
-  "31": "9b24e4541a3a12e4",
-  "32": "f9ee4fb1f3726544",
-  "33": "8a09598a48ebe81d",
-  "34": "28574a6b133e2fcf",
-  "35": "753766e7c52770a4",
-  "36": "53d5b5d1d37472ad",
-  "37": "315700e0c256d5e9",
-  "38": "514a6880335d03ea",
-  "39": "7f3117a106a766d7",
+  "21": "4a18e41c8506833a",
+  "22": "fe178e2146adb067",
+  "23": "6ec4efd01618fc18",
+  "24": "9c1e3d3bc2aa6cc9",
+  "25": "320b95c4c6107a14",
+  "26": "21bb4be6f532b2ea",
+  "27": "25b8a246fa54f788",
+  "28": "cf21dcd013da2ac3",
+  "29": "454b91e3c8a75d6d",
+  "30": "8b0acc001c07dd0a",
+  "31": "5caee743d4ebbb05",
+  "32": "1ba526a665bd7d07",
+  "33": "35b29653ca7b346b",
+  "34": "c691a450702592ed",
+  "35": "bd5059669c1c7a70",
+  "36": "6fa8161bbca133f0",
+  "37": "8eeaaa1a2cdf4ad8",
+  "38": "e05a8241ad19d34f",
+  "39": "9688962b2b3c3801",
   "40": "53d5b5d1d37472ad",
-  "41": "e2da06a85aa2366c",
-  "42": "283d4f5a128caa6c",
-  "43": "ea3ea28bbb84de53",
-  "44": "a66dc25ce0081bdc",
-  "45": "05258927f8396a7b",
-  "46": "e9af53642b7dd248",
-  "47": "6b480a45e27707c9",
-  "48": "7aa23a1f3d32e05e",
-  "49": "315700e0c256d5e9",
-  "50": "29cdd7b799ddd58f",
-  "51": "954dd140b7a5b9c2",
-  "52": "51ece2e783780ae6",
-  "53": "6bcbfbd13fd95bde",
-  "54": "85910076908fda3a",
-  "55": "9b24e4541a3a12e4",
-  "56": "4a88719675d70407",
-  "57": "d83d91dd5d06d87b",
-  "58": "5fcbbec2ff2b5d69",
-  "59": "9ba4e5f8187c1651",
-  "60": "c193da55791a24b7",
-  "61": "e2e442b0653599b7",
-  "62": "793ad62c0da4e73d",
-  "63": "255264dba9e68f03",
-  "64": "f9d8c0401a440839",
-  "65": "1798cb162a37c787",
-  "66": "04da70f47674b1b3",
-  "67": "c8b30046363fc49c",
-  "68": "96d920382fdb1b01",
-  "69": "315700e0c256d5e9",
-  "70": "a6427e7fbc060adb",
-  "71": "57d1eedf980c61cd",
-  "72": "9aac969065f1119b",
-  "73": "47aed67dc9eb0d41",
-  "74": "f6b588fd501965dc",
-  "75": "ea3ea28bbb84de53",
-  "76": "ba690783c94f0329",
-  "77": "53c6629d66c12ceb",
-  "78": "f9a1ee6754ff2ed7",
-  "79": "08d4d4447165025a",
-  "80": "af5af90f5501d8c2",
-  "81": "b6e769f3199fb51d",
-  "82": "9864614ceaffa22f",
-  "83": "bc1a40d9d67500cd",
-  "84": "8b0acc001c07dd0a",
-  "85": "b6e769f3199fb51d",
-  "86": "62b52c36bf7a246a",
-  "87": "9b24e4541a3a12e4",
-  "88": "a773df516c3fa836",
-  "89": "55e03ca2f86def3d",
-  "90": "f9a1ee6754ff2ed7",
-  "91": "c13d7b5a5c4d3f7d",
-  "92": "6327efcdc8493839",
-  "93": "315700e0c256d5e9",
-  "94": "af6dc70e6ddb3fa3",
-  "95": "19935ea8f59fc1ec",
-  "96": "6327efcdc8493839",
-  "97": "0779eeaf035f10fe",
-  "98": "7bef571dc2601931",
-  "99": "e941ce52d9bcb00b",
+  "41": "248e3a678f2fbe51",
+  "42": "bd8deae15e6c55d5",
+  "43": "89e63ad81a3b69de",
+  "44": "6b3dbbfba0271705",
+  "45": "f9d8c0401a440839",
+  "46": "59681372e050ca77",
+  "47": "f21a7867674a4efd",
+  "48": "a3460a26b5070471",
+  "49": "476c539664490ce9",
+  "50": "6d1082ce54d73706",
+  "51": "01449fcda798aa4e",
+  "52": "70899c1715825136",
+  "53": "faecfdc9961dceaf",
+  "54": "ea7a9b12ae0892b4",
+  "55": "b61e706f02e0517d",
+  "56": "cbba6e7d2bd7f6f0",
+  "57": "43dc25b5742ba258",
+  "58": "6de1477964b2aded",
+  "59": "8a729b26a0e93513",
+  "60": "8acef63b428570c2",
+  "61": "0385864b48a4e3f4",
+  "62": "570a67d5f2b7ae51",
+  "63": "53e4b3e42f46a275",
+  "64": "f59d7753d07a3613",
+  "65": "82413ce070d7c291",
+  "66": "e634ca80f709424e",
+  "67": "b688eb31052e88bb",
+  "68": "ddb3ff16fa62ba52",
+  "69": "8c8934ebe7c4d20f",
+  "70": "7dc28f2799d0d798",
+  "71": "fab6c0fa7a3ba8eb",
+  "72": "6051a8f56452fc8c",
+  "73": "e05a8241ad19d34f",
+  "74": "1f3dd4cdd05034d7",
+  "75": "89cc2470bdeb383f",
+  "76": "8449cba22ac6ac57",
+  "77": "95ee588f21e9cddc",
+  "78": "e6405c629e726cc6",
+  "79": "04a41c180c7324cc",
+  "80": "acff78a982cd9f47",
+  "81": "5087d34d14efd61b",
+  "82": "b4c23693cc44c65c",
+  "83": "e2abc87b2c2ad29e",
+  "84": "61b6de3dc34381b8",
+  "85": "8b0acc001c07dd0a",
+  "86": "88738aa33cbb175e",
+  "87": "91643c505f831e0b",
+  "88": "35b29653ca7b346b",
+  "89": "2fb9c15eff025ddf",
+  "90": "b61e706f02e0517d",
+  "91": "344f2e1059745c64",
+  "92": "caf40bf3be62ca07",
+  "93": "3d23a5282381e8d3",
+  "94": "bc2024f01527d105",
+  "95": "c274bbf170098131",
+  "96": "f9a97b25f8076fbb",
+  "97": "94bfdb3547f9acfd",
+  "98": "6ec4efd01618fc18",
+  "99": "6880cc02bc663b64",
   "100": "0268d9757f641468",
-  "101": "53c6629d66c12ceb",
-  "102": "b7414bedd0147255",
-  "103": "c13d7b5a5c4d3f7d",
-  "104": "c49fbd6177e2484b",
-  "105": "8cd86b9b214365dd",
-  "106": "413bfd5ffa103576",
-  "107": "d0b3373dc2e5f29f",
-  "108": "0780f987f975e0c9",
-  "109": "8a09598a48ebe81d",
-  "110": "fec5dbfbf807f7a0",
-  "111": "3d2304094c0a27bd",
-  "112": "283effa9550852db",
-  "113": "13b760885d253b7d",
-  "114": "c045792ee05b6eb7",
-  "115": "35832f74b1aee05e",
-  "116": "6c09a5970e8737e0",
-  "117": "92a8e57652f2921a",
-  "118": "488c67da781c7d8b",
-  "119": "10b15a04c172ba67",
+  "101": "d0e1243f100e8dea",
+  "102": "7fe32a93efee1a9e",
+  "103": "a80d32baaf29e6fd",
+  "104": "30c1421afbd59da2",
+  "105": "6327efcdc8493839",
+  "106": "6814adb287104329",
+  "107": "06a97070003248a9",
+  "108": "dd20954349ab0e62",
+  "109": "3608863c4fcab145",
+  "110": "237da2cdf26fb09f",
+  "111": "f417d3e1ae69fd97",
+  "112": "99bd03d6867a26ff",
+  "113": "4093e8f4eb40b1fc",
+  "114": "04bb4fdf2e485a23",
+  "115": "310d658776e973aa",
+  "116": "534de463d47ddf1b",
+  "117": "9ed66a6eadce96ce",
+  "118": "a3460a26b5070471",
+  "119": "ea5dbef993cf225e",
   "120": "ba690783c94f0329",
-  "121": "439669d444211f9f",
-  "122": "034173035f8294a9",
-  "123": "ea3ea28bbb84de53",
-  "124": "6327efcdc8493839",
-  "125": "e10d90a16d9f2467",
-  "126": "af6dc70e6ddb3fa3",
-  "127": "748abb27a06da61f",
-  "128": "bdd4090ffe6fb0d1",
-  "129": "315700e0c256d5e9",
-  "130": "f17667ab8241f685",
-  "131": "ce727bd7bafac8f5",
-  "132": "a773df516c3fa836",
-  "133": "f0d00b428f81af8e",
-  "134": "30371a50bcd95aaf",
-  "135": "c23097d2bdcb1eb3",
-  "136": "d46ebb87018047da",
-  "137": "4f9977d0d48a9636",
-  "138": "413bfd5ffa103576",
-  "139": "2ce69a765dc4b3bd",
+  "121": "99f0a6be895c010d",
+  "122": "6670c59592c380f0",
+  "123": "89e63ad81a3b69de",
+  "124": "dad8350aecd8e247",
+  "125": "34f216c09949d917",
+  "126": "9cff5ebbbb977eb8",
+  "127": "c1795c0ec594413b",
+  "128": "a27dba76a2673005",
+  "129": "b9c4222864289fed",
+  "130": "f587731d50828490",
+  "131": "0527ab54e07a3e66",
+  "132": "dea3d53e599306a7",
+  "133": "67d16b12f2812e10",
+  "134": "ed8ef060e27c1231",
+  "135": "51ece2e783780ae6",
+  "136": "b8f687569ea7e793",
+  "137": "a8885946bbe63d0b",
+  "138": "6770931384edcb6d",
+  "139": "e5d5864c40d65d03",
   "140": "f7a08b270a21c69f",
-  "141": "8a09598a48ebe81d",
-  "142": "f9a1ee6754ff2ed7",
-  "143": "5ce30ae7a4f2f9f0",
-  "144": "a773df516c3fa836",
-  "145": "0779eeaf035f10fe",
-  "146": "28cd3cdf0095036f",
-  "147": "c13d7b5a5c4d3f7d",
-  "148": "9aac969065f1119b",
-  "149": "586e4c3be270bfeb",
-  "150": "158bc923634e586e",
-  "151": "c13d7b5a5c4d3f7d",
-  "152": "f9d8c0401a440839",
-  "153": "9845478cb4f3a171",
-  "154": "04da70f47674b1b3",
-  "155": "b328259208d767d7",
-  "156": "f9d8c0401a440839",
-  "157": "315700e0c256d5e9",
-  "158": "a00c5366dd619a64",
-  "159": "3a8d5b631b25a15d",
+  "141": "469d3ed2087de46a",
+  "142": "9c2c038116afb314",
+  "143": "f8091df8b1430626",
+  "144": "bbbe3b537da49efd",
+  "145": "0268d9757f641468",
+  "146": "28c71bb8c188e5a0",
+  "147": "dfda6db00622c7a8",
+  "148": "3d23a5282381e8d3",
+  "149": "0dc657c50efdc82d",
+  "150": "993d16c689a16d05",
+  "151": "151f261418c03bb5",
+  "152": "5a70373cf62a5a0d",
+  "153": "a64f0a63baac9735",
+  "154": "4e52dea6ff2a292c",
+  "155": "795e60e6e0b66217",
+  "156": "aa101f4814f99c55",
+  "157": "76d746119c54ed1f",
+  "158": "4b26ae2d23d3ff9e",
+  "159": "7762cf42f69a985a",
   "160": "8b0acc001c07dd0a",
-  "161": "13b760885d253b7d",
-  "162": "ca086bf3aac5d737",
-  "163": "44e66c88b782302d",
-  "164": "97f760803d765d4a",
-  "165": "fed0acb3fa99b205",
-  "166": "f9a1ee6754ff2ed7",
-  "167": "fbd2f6a0610f7bf8",
-  "168": "a9cbdeed5215248d",
-  "169": "bc55a2ee6b6dd13b",
-  "170": "ffc00827b9f58796",
-  "171": "659745adb324b1e6",
-  "172": "320b95c4c6107a14",
-  "173": "975c49c065a3d28b",
-  "174": "3cd3aaa19704c3b8",
-  "175": "238ce0985593aac6",
-  "176": "4cb7c4320ce37608",
-  "177": "d897559c1e255940",
-  "178": "3cd3aaa19704c3b8",
-  "179": "10558fe023b3cbd1",
+  "161": "68d20a00ab419164",
+  "162": "93295eadaec10216",
+  "163": "35b29653ca7b346b",
+  "164": "71010ffb2bbaf4f0",
+  "165": "79382aedde0be9b5",
+  "166": "38b29723e4abc5d3",
+  "167": "2b1fd7bec251381b",
+  "168": "cb678b252e566b01",
+  "169": "af453ff9f3cd0f40",
+  "170": "5d6089e31bee116d",
+  "171": "82ede79ece447a28",
+  "172": "f21558c0cd71893b",
+  "173": "223f0bbe7b74922f",
+  "174": "ef0febc9f00db5a2",
+  "175": "f9d8c0401a440839",
+  "176": "2dad0ebfeb77b7b9",
+  "177": "bdd8669a9a3488f0",
+  "178": "6ec4efd01618fc18",
+  "179": "055b46049cd26bbe",
   "180": "9aac969065f1119b",
-  "181": "c088c2ff64ca602c",
-  "182": "135d96ecdebc52c3",
-  "183": "43e8295de0eda7f7",
-  "184": "6327efcdc8493839",
-  "185": "0d1953d66dab8ca6",
-  "186": "f9a1ee6754ff2ed7",
-  "187": "a401081f4975ae76",
-  "188": "f87b1aa03f743f98",
-  "189": "c944fdaaef890772",
-  "190": "36d6750a65766be8",
-  "191": "860da8dc6807a2ab",
-  "192": "8b0acc001c07dd0a",
-  "193": "5c94e30633554a85",
-  "194": "154bd7e916dbde54",
-  "195": "f2053f5caa31d624",
-  "196": "a773df516c3fa836",
-  "197": "7d3b54d735eb2dce",
-  "198": "f9a1ee6754ff2ed7",
-  "199": "a401529ea2b3054c",
+  "181": "ea44c68a00819689",
+  "182": "bc0825174d4ccce0",
+  "183": "3d23a5282381e8d3",
+  "184": "848d796128ec2778",
+  "185": "b868d58cc7b65508",
+  "186": "c8ddefc93856c242",
+  "187": "85511d236749ea08",
+  "188": "1557ef65b58b528c",
+  "189": "86b09ee57231c20c",
+  "190": "6cf736f6f84f0f05",
+  "191": "14c1e8081ba98115",
+  "192": "84f445ed82a9cb6f",
+  "193": "9ab062bc202bd253",
+  "194": "567989c23255e574",
+  "195": "8b0acc001c07dd0a",
+  "196": "a35089c4625c5de1",
+  "197": "b27040e442a7e908",
+  "198": "e6405c629e726cc6",
+  "199": "b081560b37d68174",
   "200": "f9d8c0401a440839"
  }
 }

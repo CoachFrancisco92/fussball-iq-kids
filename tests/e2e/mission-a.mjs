@@ -102,7 +102,6 @@ try {
   await end('Durchlauf 1');
   console.log('✓ Durchlauf 1 (A1 · A2 · A5) mit der Hilfe: 3 Tore, 3 Sterne, Situationswechsel ohne Zwischenbild und angesagt');
 
-  const nachDurchlauf1 = log.length; // bis hier unverändert gegenüber der Referenz ohne A4
 
   // Durchlauf 2 (A2 · A3 · A4): A3 komplett (Pass → Annahme → Schuss), A4 mit der Hilfe: erst in die Schusszone dribbeln, dann schießen
   await touch('#again');
@@ -173,17 +172,9 @@ try {
   const wi = process.argv.indexOf('--write');
   if (wi > 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(log, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }
   else {
-    const J = (x) => JSON.stringify(x), G = (f) => JSON.parse(fs.readFileSync(path.join(here, '..', 'golden', f), 'utf8'));
-    const cmp = (ref, upto, name) => { const n = upto == null ? Math.max(ref.length, log.length) : upto; for (let k = 0; k < n; k++) if (J(ref[k]) !== J(log[k])) fail(`Mitschrift weicht ab von ${name} bei Eintrag ${k}\n  Referenz: ${J(ref[k])}\n  jetzt:    ${J(log[k])}`); };
-    // Freigegebene Referenz (ohne A4): Durchlauf 1 muss unverändert sein. Der Startbildschirm hat seit Meilenstein 4 eine Karte
-    // mehr („Freie Bahn!“, Platz 2) – die bisherigen Karten bleiben gleich, nur Mission 1 rückt auf Platz 3.
-    const ref = G(REF.missionA.ui), alt = ref[0].start, neu = log[0].start;
-    const erwartet = [alt[0], ['freie-bahn', '🏃', 'Freie Bahn!', 'Freie Wege finden', false], [alt[1][0], '3', ...alt[1].slice(2)]];
-    if (J(neu) !== J(erwartet)) fail('Startbildschirm: ' + J(neu));
-    for (let k = 1; k < nachDurchlauf1; k++) if (J(ref[k]) !== J(log[k])) fail(`Durchlauf 1 weicht ab von ${REF.missionA.ui} bei Eintrag ${k}\n  Referenz: ${J(ref[k])}\n  jetzt:    ${J(log[k])}`);
-    console.log(`✓ Durchlauf 1 identisch zur freigegebenen Referenz ${REF.missionA.ui} (${nachDurchlauf1 - 1} Einträge); Startbildschirm nur um „Freie Bahn!“ ergänzt`);
-    // Vorgelegte Mitschrift mit A4 (zur Freigabe): vollständig identisch
-    if (REF.missionA.uiVorgelegt) { cmp(G(REF.missionA.uiVorgelegt), null, REF.missionA.uiVorgelegt); console.log(`✓ Mitschrift identisch zur vorgelegten Aufnahme ${REF.missionA.uiVorgelegt} (${log.length} Einträge)`); }
+    const J = (x) => JSON.stringify(x), ref = JSON.parse(fs.readFileSync(path.join(here, '..', 'golden', REF.missionA.ui), 'utf8'));
+    for (let k = 0; k < Math.max(ref.length, log.length); k++) if (J(ref[k]) !== J(log[k])) fail(`Mitschrift weicht ab bei Eintrag ${k}\n  Referenz: ${J(ref[k])}\n  jetzt:    ${J(log[k])}`);
+    console.log(`✓ Mitschrift identisch zur Referenz ${REF.missionA.ui} (${ref.length} Einträge)`);
   }
   await ctx.close();
 } catch (e) { console.error('✗ Mission A:', e.message); if (process.env.DEBUG && globalThis.__log) console.error(JSON.stringify(globalThis.__log.slice(-4))); exit = 1; }

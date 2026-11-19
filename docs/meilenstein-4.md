@@ -1,6 +1,6 @@
 # Meilenstein 4 – „Freie Bahn!“ und A4 (Grundlage V0.5.0)
 
-Stand 19.11.2026, Branch `meilenstein-4-freie-bahn` (Basis `meilenstein-3b-dribbeln`). Version 0.5.0. **Zur Abnahme vorgelegt.** Es gibt keinen Merge und keine Veröffentlichung.
+Stand 19.11.2026, Branch `meilenstein-4-freie-bahn` (Basis `meilenstein-3b-dribbeln`). Version 0.5.0. **Abgenommen am 19.11.2026**, Veröffentlichung als V0.5.0 freigegeben. Referenzwechsel Mission A (mit A4) vollzogen und geprüft (`tests/analysis/a4-referenzwechsel-pruefen.js`).
 
 ## 0. Vorab erledigt (Freigaben aus 3b)
 - **Mindeststrecke:** Sie zählt jetzt die tatsächlich ausgeführte Bewegung bis zum Szenenende, nicht die Entfernung zum Tippziel. Ein Test belegt das: Ein 4 m weiter Tipp ins Aus mit nur 0,5 m Bewegung ist „nur ein kleiner Schritt“. Keine aufgezeichnete Entscheidung hat sich dadurch geändert.
