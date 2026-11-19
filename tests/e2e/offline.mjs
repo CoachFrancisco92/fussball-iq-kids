@@ -40,7 +40,7 @@ try {
   console.log(`✓ Offline-Cache ${cacheName} enthält alle ${expected.length} Dateien (inkl. Texte und Missionen)`);
   await ctx.setOffline(true);
   await page.reload();
-  const state = await page.evaluate(() => ({ v: window.FIQ && window.FIQ.VERSION, texte: !!window.FIQ_TEXTE, missionen: (window.FIQ_MISSIONS || []).map((m) => m.id), titel: document.getElementById('mTitle').textContent }));
+  const state = await page.evaluate(() => ({ v: window.FIQ && window.FIQ.VERSION, texte: !!window.FIQ_TEXTE, missionen: (window.FIQ_MISSIONS || []).map((m) => m.id), titel: (document.querySelector('#missionList .mcard b') || {}).textContent }));
   if (state.v !== version || !state.texte || !state.missionen.includes('mission-1') || !state.titel) throw new Error('Offline unvollständig geladen: ' + JSON.stringify(state));
   await page.click('#play');
   await page.waitForFunction(() => window.__fiq && window.__fiq.mode === 'look', null, { timeout: 5000 });

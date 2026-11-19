@@ -10,8 +10,11 @@
     } else sessionStorage.removeItem('fiq-reloaded');
   } catch (e) {}
   const E = window.FIQ, F = E.F;
-  const MISSION_ID = E.mission().id;           // derzeit eine Mission; Auswahl folgt mit weiteren Missionen
-  const T = () => E.texts(MISSION_ID);         // Textkatalog inkl. Missions-Texte (content/texte.js)
+  // M3: Missionsauswahl. Reihenfolge = empfohlener Weg (Lernwelt, dann Nummer); nichts wird gespeichert.
+  const MISSIONS = E.missions().slice().sort((a, b) => (a.lernwelt - b.lernwelt) || (a.nummer - b.nummer));
+  let curId = MISSIONS[0].id;
+  const runs = {};                              // Durchläufe je Mission in dieser Sitzung (M1: nächste Situationen)
+  const T = () => E.texts(curId);              // Textkatalog inkl. Missions-Texte (content/texte.js)
   const SIM_SPEED = 0.85;
   const MIN_TAP_PX = 34;           // Mindest-Tippradius in Pixeln (kleine Handys)
 
@@ -339,7 +342,8 @@
 
   // ------------------------------------------------------------ Ablauf der Mission
   function startMission() {
-    S = E.newState(MISSION_ID); M = E.newMission(MISSION_ID); dec = 0; hist = [];
+    const n = runs[curId] || 0;
+    S = E.newState(curId, n); M = E.newMission(curId, n); dec = 0; hist = [];
     hintView = null; marker = null; explainView = null;
     $('startScreen').hidden = true; $('endScreen').hidden = true;
     updateScore(); beginDecision(null);
@@ -590,6 +594,14 @@
     const last = { kind: h.final.a.kind, success: h.final.fb.success, team: 'blue' };
     E.missionApply(M, S);
     dec++;
+    if (M.note === 'situation') {
+      // M1: nahtlos zur nächsten Situation (eigene Startaufstellung, kein Neustart-Bild)
+      Voice.say(T().bedienung.neueSituation);
+      setStepText(T().bedienung.neueSituationAnzeige);
+      M.note = null;
+      setTimeout(() => beginDecision(null), 1800);
+      return;
+    }
     if (M.note === 'aus') {
       Sfx.whistle();
       Voice.say(T().bedienung.ballImAus);
@@ -635,6 +647,7 @@
     $('prompt').hidden = true; setStepText('');
     $('endScreen').hidden = false;
     firstRun = false;
+    runs[curId] = (runs[curId] || 0) + 1;       // nächster Durchlauf bringt andere Situationen (falls die Mission welche hat)
     Voice.say(msg + TE.sterne(good, done.length));
   }
   function highlights() {
@@ -692,20 +705,33 @@
   $('skip').onclick = () => { if (replay) { const d = replay.onDone; replay = null; d(); } };
   $('sound').onclick = () => { Voice.on = !Voice.on; $('sound').textContent = Voice.on ? '🔊' : '🔇'; if (!Voice.on) Voice.stop(); };
 
-  // Startbildschirm aus der Missionsdatei
-  (function renderStart() {
-    const m = E.mission(MISSION_ID);
-    $('mNum').textContent = String(m.nummer);
-    $('mTitle').textContent = m.titel;
-    $('mSub').textContent = m.untertitel;
-    $('mChips').innerHTML = '';
-    for (const c of m.merkmale) { const sp = document.createElement('span'); sp.textContent = c; $('mChips').appendChild(sp); }
-  })();
+  // M3: Startbildschirm – eine große Karte je Mission, Antippen wählt und liest vor (kein Lesen nötig)
+  function renderStart() {
+    const box = $('missionList'); box.innerHTML = '';
+    MISSIONS.forEach((m, i) => {
+      const card = document.createElement('button');
+      card.type = 'button'; card.className = 'mcard' + (m.id === curId ? ' sel' : ''); card.dataset.id = m.id;
+      card.setAttribute('aria-pressed', m.id === curId ? 'true' : 'false');
+      // Nummer = Platz im empfohlenen Weg (1, 2, 3 …), damit die Reihenfolge ohne Lesen erkennbar ist
+      card.innerHTML = `<div class="num">${m.symbol || i + 1}</div><div><b></b><small></small><div class="chips"></div></div>`;
+      card.querySelector('b').textContent = m.titel;
+      card.querySelector('small').textContent = m.untertitel || '';
+      for (const c of m.merkmale || []) { const sp = document.createElement('span'); sp.textContent = c; card.querySelector('.chips').appendChild(sp); }
+      card.onclick = () => {
+        Sfx.ctx(); Voice.init(); Sfx.tap();
+        curId = m.id; renderStart();
+        Voice.say(T().bedienung.missionGewaehlt(m.titel, m.einfuehrung || m.untertitel || ''));
+      };
+      box.appendChild(card);
+    });
+    box.classList.toggle('single', MISSIONS.length === 1);
+  }
+  renderStart();
 
   window.addEventListener('resize', resize);
   try { new ResizeObserver(() => resize()).observe(wrap); } catch (e) {}
   resize();
-  S = E.newState(MISSION_ID); M = E.newMission(MISSION_ID);
+  S = E.newState(curId, 0); M = E.newMission(curId, 0);
   updateScore(); updateProgress();
   requestAnimationFrame(loop);
 

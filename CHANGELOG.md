@@ -1,5 +1,12 @@
 # Changelog
 
+## Unveröffentlicht – Meilenstein 1: Testabdeckung und Grundlage M1–M3
+Wird gemeinsam mit Mission A „Welches Tor ist frei?“ veröffentlicht (Version folgt dann). Mission 1 unverändert in Spielverlauf, Bewertung, Hilfe und Oberflächen-Mitschrift (Referenzen v0.3.1 bit-gleich; 17 496 Bewertungen, 710 Kontexte und 1 420 Hilfen gegen v0.3.1 verglichen: 0 Abweichungen).
+- **M1 Situationen:** `situationen`, `durchlaeufe`, nahtloser Wechsel ohne Neustart-Bild, feste Rotation je Durchlauf; `phasen.abschlussNachGrenze` (Standard aus).
+- **M2 Aktionen nach Mitspielern:** ab 1 gegen 1; ohne Mitspieler kein „Passen“ und kein Pass in den Raum; „Auch gut“ nennt nur angebotene Aktionen.
+- **M3 Missionsauswahl:** große Karten, Antippen wählt und liest Titel und Einladung vor, empfohlene Reihenfolge (Lernwelt, Nummer), keine Sperren, nichts gespeichert; „Nochmal“ bringt die nächsten Situationen.
+- **Neue Testreihen:** `tests/zufallsreihen.test.js` (gestreute Startwerte, gezielte erste Aktionen, Abschluss), `tests/situationen.test.js`, `tests/e2e/auswahl.mjs` (Touch, Sprache). Bisherige Referenzen bleiben unverändert.
+
 ## V0.3.1 – Korrektur A: Freilaufen (Rückmeldung, Etikett, Erklärbild)
 Fachlich freigegeben. Bewertung und Sterne unverändert (17 496 Bewertungen gegen v0.3.0 verglichen, 0 Abweichungen); Spielverlauf nur beim Befolgen der Hilfe geändert. Details, alle geänderten Texte und die Änderungshistorie: `docs/korrektur-a-freilaufen.md`.
 - Grund „zu weit weg vom Ball“ statt „Passweg versperrt“, wenn das Ziel mehr als 15 m entfernt ist.
