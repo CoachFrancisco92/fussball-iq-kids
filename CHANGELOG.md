@@ -1,11 +1,13 @@
 # Changelog
 
-## Unveröffentlicht – Meilenstein 3b: Paket D (Dribbelbewertung und -hilfe, E1/E2/E4/E6)
-Zur Abnahme; Referenzen nicht neu erzeugt (Abweichungen vorgelegt). Details: `docs/meilenstein-3b.md`.
-- Dribbelbewertung per deterministischer Vorausrechnung des tatsächlich ausgeführten Wegs (max. 8 m) mit Toleranz ±0,5 m (Ziel + ≥ 3/4 Nachbarziele behalten den Ball).
-- Erklärungen nach Ursache: „Das war knapp – Rot X war ganz nah.“, „Dribbel weiter weg von Rot X.“; „direkt auf einen Gegner“ nur noch, wenn es stimmt.
-- Dribbelhilfe: nur sichere, robuste Ziele; Raumgewinn, Schusszone mit freiem Tor, Feldmitte statt Seitenlinie.
-- Spielverlauf von Mission 1 und Mission A unverändert; 10 bzw. 5 Bewertungen geändert (alle 💭 → ⭐ bzw. neue Erklärung).
+## Unveröffentlicht – Meilenstein 3b: Paket D (Dribbelbewertung und -hilfe, E1–E6)
+Zur Abnahme; Referenzen nicht neu erzeugt (Abweichungen vorgelegt). Details: `docs/meilenstein-3b.md`. Veröffentlichung geplant gemeinsam mit „Freie Bahn!“ als V0.5.0.
+- E1/E2: Dribbelbewertung per deterministischer Vorausrechnung des tatsächlich ausgeführten Wegs (max. 8 m) mit Toleranz ±0,5 m.
+- E3 (R2): ⭐ nur mit Grund – Raumgewinn ≥ 1 m, Anschluss in der Folgesituation (Freund bzw. Tor jetzt frei) oder Ball sichern ohne Alternative; Mindeststrecke 1 m.
+- E4: Erklärungen und Etiketten nach Ursache, kurz, ohne Doppelungen.
+- E5-a/-b: Dribbeln sinnvoll, wenn ein gutes Dribbling existiert; Torchance-Vorrang für den Pass zum freien Freund vor dem Tor.
+- E6: Dribbelhilfe nur mit guten, robusten Zielen Richtung Tor; ohne guten Weg ehrlicher Hinweis („eng“ / „genau dorthin“).
+- Spielverlauf von Mission 1 und Mission A unverändert; Mission 1: 26 Bewertungen geändert (Sterne −4, Ablauf „dribbling“/„Keiner ist frei“ 2 statt 5 von 6 Sternen), Mission A: 12 (Sterne ±0).
 - Tests: `tests/dribbeln.test.js`, `tests/e2e/rechenzeit.mjs` (4× CPU-Drosselung, ≤ 150 ms); Abweichungslisten für Mission A (`missionA-abweichungen-*.json`).
 
 ## V0.4.0 – Mission „Welches Tor ist frei?“ und Missionsauswahl (Meilenstein 1 + 2, zur Abnahme, unveröffentlicht)

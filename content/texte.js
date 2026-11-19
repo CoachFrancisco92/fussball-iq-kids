@@ -37,6 +37,8 @@
       passen: 'Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner.',
       schiessen: 'Vor diesem Tor steht kein Gegner im Weg.',
       dribbeln: 'Dribbel dorthin, wo kein Gegner im Weg ist.',
+      dribbelnEng: 'Gerade ist es eng. Dribbel vorsichtig weg vom Gegner – sicher ist es nicht.',
+      dribbelnGenau: 'Dribbel genau dorthin, wo es leuchtet – daneben wird es eng.',
       freilaufen: 'Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen.',
       freilaufenEng: 'Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen.',
       freilaufenKeinPlatz: 'Gerade ist es überall eng. Such dir eine Stelle mit Platz – weg von den Gegnern.',
@@ -57,6 +59,7 @@
       besserSchiessen: 'Ein Tor war frei – Schießen wäre gut gewesen.',
       besserPassStattSchuss: 'Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.',
       besserPass: 'Ein Freund stand frei – ein Pass wäre besser gewesen.',
+      besserTorchancePass: 'Dein Freund stand frei vor dem Tor – Passen war besser.',
       besserRaum: 'Ein Pass in den freien Raum, in den dein Freund laufen kann, wäre besser gewesen.',
       dribbelnRaumAuch: 'Den Ball zu behalten war gut. Du hättest ihn auch in den freien Raum spielen können, dein Freund wäre hingelaufen.',
       besserRaumStattSchuss: 'Beide Tore waren zugestellt. Ein Pass in den freien Raum, in den dein Freund laufen kann, wäre besser gewesen.',
@@ -88,6 +91,12 @@
       freierRaum: 'Du bist in den freien Raum gedribbelt.',
       inGegner: 'Du bist direkt auf einen Gegner zugelaufen.',
       dribbelKnapp: (g) => `Das war knapp – ${g} war ganz nah.`,
+      dribbelAnschlussPass: 'Jetzt ist dein Freund frei – gut vorbereitet!',
+      dribbelAnschlussTor: 'Jetzt ist das Tor frei – gut vorbereitet!',
+      dribbelGesichert: 'Nach vorn war kein Platz – gut gesichert!',
+      dribbelNachVorn: 'Nach vorn war Platz – dribbel Richtung Tor.',
+      dribbelFreund: 'Ein Freund stand frei – ein Pass bringt euch weiter.',
+      dribbelZuKurz: 'Das war nur ein kleiner Schritt – dribbel ein Stück weiter.',
       gegnerDazwischen: (g) => (g ? `Dribbel weiter weg von ${g}.` : 'Dribbel weiter weg vom Gegner.'),
       gelaufenFrei: 'Du bist in einen freien Raum gelaufen.',
       gelaufenBesetzt: 'Dort stand schon ein Gegner.',
@@ -142,6 +151,9 @@
       tagZielSchlecht: { press: 'Anderer Spieler näher', cover: 'Weg offen', sonst: 'Gegner im Weg' },
       // Freilaufen: Etikett nach dem Grund (Laufziel vs. Passweg)
       tagLaufSchlecht: { besetzt: 'Gegner dort', zuNah: 'Zu nah am Ball', zuWeit: 'Zu weit weg', versperrt: 'Passweg zu' },
+      // Dribbeln: Etikett nach dem Grund (Paket D, E3/E4)
+      tagDribbel: { raum: 'Weg frei', anschlussPass: 'Freund jetzt frei', anschlussTor: 'Tor jetzt frei', sichern: 'Ball gesichert',
+        nachVorn: 'Vorn war Platz', freund: 'Freund war frei', zuKurz: 'Zu kurz', knapp: 'Zu knapp', direkt: 'Gegner im Weg', dazwischen: 'Gegner kam dazu' },
     },
 
     // „Erst schauen, dann entscheiden“

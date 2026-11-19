@@ -1,30 +1,47 @@
 {
- "grund": "Paket D (E1, E2, E4, E6): Dribbelbewertung per Vorausrechnung des ausgeführten Wegs, neue Erklärungen, Dribbelhilfe – zur Freigabe vorgelegt, Referenzen NICHT aktualisiert",
+ "grund": "Paket D konsolidiert (E1–E6): Dribbelbewertung per Vorausrechnung, Raumgewinnregel R2, Erkennen nach E3, Torchance-Vorrang, Erklärungen, Dribbelhilfe – zur Freigabe vorgelegt, Referenzen NICHT aktualisiert",
  "bericht": "docs/meilenstein-3b.md",
- "geaenderteEntscheidungen": 10,
+ "geaenderteEntscheidungen": 26,
  "spielverlaufGeaendert": [],
- "scripted": {},
+ "scripted": {
+  "dribbling": {
+   "alt": "a1ff6298b0fadc03",
+   "neu": "3b6795c91d4fd0af"
+  }
+ },
  "hinted": null,
  "seeds": {
   "11": {
    "alt": "78a9357d9066bce4",
-   "neu": "e8e8b3ff1845b3b2"
+   "neu": "ed00cb39cae1df12"
   },
   "26": {
    "alt": "db397cff1954e3be",
-   "neu": "371f4ffd9e5682b1"
+   "neu": "7a15d8c347a7d550"
   },
   "30": {
    "alt": "a4913a73bf2ab012",
-   "neu": "cf9a6b35c116adc3"
+   "neu": "f1adf4577c9d3496"
+  },
+  "40": {
+   "alt": "7ee5ae163506448c",
+   "neu": "c2b1fd49e63cbd0b"
   },
   "50": {
    "alt": "c1dafa29b4167b5a",
    "neu": "e7b30a2fb8808465"
   },
+  "59": {
+   "alt": "ca64835a467384ea",
+   "neu": "51ae245b6fec3a45"
+  },
+  "81": {
+   "alt": "806c673a5023ab63",
+   "neu": "5393b515d3ff22b9"
+  },
   "85": {
    "alt": "41a8f7c410fb1d34",
-   "neu": "ccf13dd35abf37fa"
+   "neu": "e448e73917949cbb"
   },
   "93": {
    "alt": "a7467e230a084fd8",
@@ -36,15 +53,39 @@
   },
   "116": {
    "alt": "a078583b5e1747eb",
-   "neu": "d5c75b8731f492f6"
+   "neu": "c5fd40ef347ed168"
   },
   "148": {
    "alt": "f0087ba8d46ae995",
-   "neu": "398b51aca1fe271e"
+   "neu": "24cb1721242108e5"
+  },
+  "150": {
+   "alt": "f6268a96f4fbe474",
+   "neu": "cd9b72156c07ba14"
   },
   "158": {
    "alt": "6568a4a0dd908556",
-   "neu": "f7604b943a229137"
+   "neu": "d002063062971530"
+  },
+  "161": {
+   "alt": "c3506b0d7643ad18",
+   "neu": "e561d49587fd71a5"
+  },
+  "170": {
+   "alt": "3320e2a9ce9494d8",
+   "neu": "50dccb74622dbf4b"
+  },
+  "173": {
+   "alt": "df34c5e0bca61115",
+   "neu": "e64b7c97996a729f"
+  },
+  "183": {
+   "alt": "37b27e19a97e627a",
+   "neu": "f082247d25737d28"
+  },
+  "195": {
+   "alt": "112f7ace5846b8fd",
+   "neu": "c16276ce75f07c8b"
   }
  }
 }

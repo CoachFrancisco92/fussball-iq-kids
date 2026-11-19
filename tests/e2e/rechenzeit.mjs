@@ -44,26 +44,31 @@ try {
     for (let i = 0; i < 8; i++) play('mission-1', 0, kid);
     for (let d = 0; d < 4; d++) play('welches-tor-ist-frei', d, kid);
     const P = (id, x, y) => ({ id, x, y });
-    const ent = [[P('b1', 17, 14), P('r1', 22, 9)], [P('b1', 18, 12), P('r1', 15.5, 12)], [P('b1', 17, 12), P('r1', 23, 12)], [P('b1', 12, 12), P('r1', 19, 7), P('r2', 19, 17)], [P('b1', 12, 13), P('r1', 23, 3), P('r2', 32, 17)], [P('b1', 26, 12), P('b2', 21, 19), P('r1', 24, 9.5), P('r2', 34.4, 7.9)]];
+    const ent = [[P('b1', 17, 14), P('r1', 22, 9)], [P('b1', 18, 12), P('r1', 15.5, 12)], [P('b1', 17, 12), P('r1', 23, 12)], [P('b1', 12, 12), P('r1', 19, 7), P('r2', 19, 17)], [P('b1', 12, 13), P('r1', 23, 3), P('r2', 32, 17)], [P('b1', 26, 12), P('b2', 21, 19), P('r1', 24, 9.5), P('r2', 34.4, 7.9)],
+      // ungünstigste Fälle: kein sicherer Weg (alle Kandidaten werden geprüft), Torchance-Vorrang
+      [P('b1', 1, 1), P('r1', 2.4, 1.1), P('r2', 1.1, 2.4), P('r3', 2.3, 2.3)], [P('b1', 0.8, 0.8), P('r1', 2.0, 0.9), P('r2', 0.9, 2.0), P('r3', 1.9, 1.9), P('b2', 10, 20), P('r4', 9, 19)],
+      [P('b1', 3, 1.2), P('r1', 4.4, 1.3), P('r2', 4.2, 3.0), P('r3', 3.2, 3.6)], [P('b1', 20, 12), P('b2', 31, 7), P('r1', 21.4, 12.6), P('r2', 34.4, 15.5)]];
     ent.forEach((sp, i) => { const id = 'rz-' + i; window.FIQ_MISSIONS.push({ id, nummer: 90 + i, titel: id, lernwelt: 9, lernziele: ['x'], schauSchritt: [], texte: {}, situationen: [{ id: 'P', start: { ballbesitz: 'b1', spieler: sp } }], phasen: { maxAngriff: 5, verteidigung: 0 } }); L.push(E.newState(id, 0)); });
   });
   const n = await page.evaluate(() => window.__lagen.length);
   const cdp = await ctx.newCDPSession(page); await cdp.send('Emulation.setCPUThrottlingRate', { rate: RATE });
   const res = await page.evaluate(() => {
-    const E = window.FIQ, out = { evalKalt: [], hilfeKalt: [], hilfeWieder: [], evalHilfeziel: [], wiederholen: [] };
+    const E = window.FIQ, out = { evalKalt: [], hilfeKalt: [], hilfeWieder: [], evalHilfeziel: [], wiederholen: [] }, worst = {};
     const t = (f) => { const a = performance.now(); f(); return performance.now() - a; };
+    const note = (k, i, v) => { if (!worst[k] || v > worst[k][1]) worst[k] = [i, Math.round(v)]; return v; };
     window.__lagen.forEach((s, i) => {
       const c = E.carrier(s);
       // abwechselnd: zuerst eine Bewertung (Kind tippt ohne Hilfe) bzw. zuerst die Hilfe – beides „kalt“
       if (i % 2 === 0) out.evalKalt.push(t(() => E.evaluate(s, { kind: 'dribble', x: c.x + 5, y: c.y + (i % 4 === 0 ? 3 : -3) })));
       else { let h; out.hilfeKalt.push(t(() => { h = E.hint(s, 'dribbeln'); })); }
-      let h; out.hilfeWieder.push(t(() => { h = E.hint(s, 'dribbeln'); }));
-      out.evalHilfeziel.push(t(() => E.evaluate(s, { kind: 'dribble', x: h.point.x, y: h.point.y })));
+      let h; out.hilfeWieder.push(note('hilfeWieder', i, t(() => { h = E.hint(s, 'dribbeln'); })));
+      if (h.point) out.evalHilfeziel.push(t(() => E.evaluate(s, { kind: 'dribble', x: h.point.x, y: h.point.y })));
       out.wiederholen.push(t(() => E.evaluate(E.clone(s), { kind: 'dribble', x: c.x + 5, y: c.y + (i % 4 === 0 ? 3 : -3) }))); // „Wiederholen“: gleiche Lage erneut
     });
-    return out;
+    out.worst = worst; return out;
   });
   const stat = (a) => { const b = a.slice().sort((x, y) => x - y); return { n: b.length, median: Math.round(b[Math.floor(b.length / 2)]), max: Math.round(b[b.length - 1]) }; };
+  const worst = res.worst; delete res.worst; if (process.env.DEBUG) console.log('Lagen gesamt', n, 'ungünstigste:', JSON.stringify(worst));
   const rows = Object.fromEntries(Object.entries(res).map(([k, v]) => [k, stat(v)]));
   console.table(rows);
   const over = Object.entries(rows).filter(([, v]) => v.max > LIMIT);

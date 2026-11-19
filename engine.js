@@ -303,8 +303,11 @@
       return withAlternatives(s, actionKey, { goal: o.goal, say: texts(s).hilfe.schiessen });
     }
     if (actionKey === 'dribbeln' && s.poss === 'blue') {
-      const pt = dribbleHelpTarget(s); // D2
-      if (pt) return withAlternatives(s, actionKey, { point: pt, say: texts(s).hilfe.dribbeln });
+      const h = dribbleHelp(s); // D2/E6
+      if (!h.eng) return withAlternatives(s, actionKey, h.genau ? { point: h.point, genau: true, say: texts(s).hilfe.dribbelnGenau } : { point: h.point, say: texts(s).hilfe.dribbeln });
+      // kein guter Dribbelweg: ehrlich sagen, keine „sichere Lösung“ vortäuschen, kein „Auch gut“
+      // (Punkt = am wenigsten riskanter Weg, sonst keiner – nie die alte Suche, die einen Ballverlust zeigen könnte)
+      return { point: h.point, eng: true, say: texts(s).hilfe.dribbelnEng };
     }
     if (actionKey === 'dribbeln') { // kein sicheres Ziel gefunden: bisherige Suche (Ausweg)
       let best = null;
@@ -473,8 +476,13 @@
       let n = 0; while (!t.ep.done && n++ < 1500) tick(t);
     } finally { probeDepth--; }
     const st = t.ep.events.find((e) => e.type === 'steal'), c = P(t, c0.id);
-    const r = { lost: !!st, by: st ? st.by : null, end: { x: c.x, y: c.y }, gain: c.x - from.x,
-      zone: !st && c.x >= F.W - F.ZONE - 0.3, open: Math.min(...team(t, 'red').map((q) => dist(q, c))) };
+    const zone = !st && c.x >= F.W - F.ZONE - 0.3;
+    // Folgesituation = genau die Lage, in der das Kind als Nächstes entscheidet (Szenenende): Ist dort ein Pass zu einem
+    // Freund frei bzw. (in der Schusszone) ein Tor frei? Gleiches Modell wie die Pass- und Schussbewertung (E3: Anschluss nutzbar).
+    const passFree = !st && t.poss === 'blue' && Math.max(-9, ...passOptions(t).map((o) => o.margin)) > CFG.passLaneOk;
+    const shotFree = zone && Math.max(...shotOptions(t).map((o) => o.margin)) > CFG.shotLaneOk;
+    const r = { lost: !!st, by: st ? st.by : null, end: { x: c.x, y: c.y }, gain: c.x - from.x, zone, passFree, shotFree,
+      open: Math.min(...team(t, 'red').map((q) => dist(q, c))) };
     if (probeCache.size > 3000) probeCache.clear();
     probeCache.set(k, r);
     return r;
@@ -486,36 +494,80 @@
     let kept = 0;
     if (!main.lost) for (const [dx, dy] of D_NB) if (!dribbleProbe(s, dribbleTarget(c, { x: tgt.x + dx, y: tgt.y + dy }), k).lost) kept++;
     const into = team(s, 'red').some((r) => { const sd = segDist(r, c, tgt); return sd.t > 0.02 && sd.d < 1.0; });
-    return Object.assign({}, main, { tgt, kept, into, safe: !main.lost && kept >= 3, knapp: !main.lost && kept < 3 });
+    return Object.assign({}, main, { tgt, kept, into, len: dist(c, tgt), safe: !main.lost && kept >= 3, knapp: !main.lost && kept < 3 });
   }
-  /** D2: Dribbelziel für die Hilfe. Nur sichere Ziele; bevorzugt Raumgewinn Richtung Tor, Ende in der Schusszone mit
-   *  freiem Tor, Abstand zum Gegner, alle Nachbarziele sicher (robust bei ungenauem Tippen), Feldmitte statt Seitenlinie.
-   *  Gesucht wird nach geschätztem Wert absteigend; abgebrochen, sobald kein weiterer Kandidat das beste Ziel noch
-   *  übertreffen kann (Rechenzeit). */
-  function dribbleHelpTarget(s) {
-    const c = carrier(s), key = probeKey(s), reds = team(s, 'red');
-    const freeShot = (p) => Math.max(...F.goals.red.map((g) => lane(p, g, CFG.shotSpeed, reds, CFG.redReact, CFG.blockReach).margin)) > CFG.shotLaneOk;
-    const inZone = (p) => p.x >= F.W - F.ZONE - 0.3;
-    const mid = (p) => Math.abs(p.y - F.H / 2) * 0.05;
-    const score = (j) => j.gain + (j.zone && freeShot(j.end) ? 6 : 0) + Math.min(j.open, 3) * 0.5 + (j.kept === 4 ? 1 : 0) - mid(j.end);
-    const cands = [];
-    for (let a = -75; a <= 75; a += 15) for (const d of [8, 5, 3]) {
-      const r = (a * Math.PI) / 180, t = dribbleTarget(c, { x: c.x + Math.cos(r) * d, y: c.y + Math.sin(r) * d });
-      const est = (t.x - c.x) + (inZone(t) ? 6 : 0) + 1.5 + 1 - mid(t); // Obergrenze des erreichbaren Werts
-      cands.push({ t, est });
-    }
-    cands.sort((x, y) => y.est - x.est);
-    // robust: auch ein um 0,5 m daneben getipptes Ziel ist sicher (mind. 3 von 4) – die Empfehlung hält ungenauem Tippen stand
-    const robust = (j) => D_NB.filter(([dx, dy]) => dribbleJudge(s, { x: j.tgt.x + dx, y: j.tgt.y + dy }, key).safe).length >= 3;
-    let best = null;
+  // ---- E3/E5: Wann ist ein sicheres Dribbling sinnvoll? Wann ist Dribbeln eine gute Entscheidung?
+  const D_GAIN = 1;
+  const inZoneP = (p) => p.x >= F.W - F.ZONE - 0.3;
+  const midPen = (p) => Math.abs(p.y - F.H / 2) * 0.05;
+  /** Kandidaten (gleich für Erkennen und Hilfe): nach vorn −75…75° (15°) × 8/4 m, dazu quer und rückwärts
+   *  (±90°, ±120°, ±150°, 180°) × 4 m (29 Ziele; Rechenzeit auf langsamen Geräten). est = geschätzte Obergrenze des Hilfe-Werts (Suchreihenfolge, Abbruch). */
+  function dribbleCandidates(s) {
+    const c = carrier(s), out = [];
+    const push = (a, d) => { const r = (a * Math.PI) / 180, t = dribbleTarget(c, { x: c.x + Math.cos(r) * d, y: c.y + Math.sin(r) * d });
+      if (dist(c, t) < 1.5) return; // am Rand gekappt: kaum Bewegung, kein Dribbling
+      // Obergrenze: Raumgewinn ≤ Strecke nach vorn; der Anschluss-Zuschlag (+4) gilt nur unter 1 m Raumgewinn → höchstens 1 + 4
+      out.push({ t, est: Math.max(t.x - c.x, 5) + (inZoneP(t) ? 6 : 0) + 1.5 + 1 - midPen(t) }); };
+    for (let a = -75; a <= 75; a += 15) for (const d of [8, 4]) push(a, d);
+    for (const a of [90, -90, 120, -120, 150, -150, 180]) push(a, 4);
+    return out.sort((x, y) => y.est - x.est);
+  }
+  const optCache = new Map();
+  /** Lage-Fakten für E3/E5 (je Lage zwischengespeichert):
+   *  forwardSafe – es gibt ein sicheres Dribbling mit ≥ 1 m Raumgewinn; mate – ein Freund steht frei (Pass);
+   *  sinnvoll – mindestens ein Dribbling ist nach E3 gut; torchancePass – ein freier Freund steht in der Schusszone
+   *  und hat freie Schussbahn; dribbelTorchance – ein sicheres Dribbling endet selbst mit freiem Schuss. */
+  function dribbleOptions(s) {
+    const key = probeKey(s);
+    if (optCache.has(key)) return optCache.get(key);
+    const c = carrier(s), reds = team(s, 'red'), cands = dribbleCandidates(s);
+    const passes = passOptions(s), mate = Math.max(-9, ...passes.map((o) => o.margin)) > CFG.passLaneOk;
+    const shot0 = inZoneP(c) && Math.max(...shotOptions(s).map((o) => o.margin)) > CFG.shotLaneOk;
+    const freeShotFrom = (p) => Math.max(...F.goals.red.map((g) => lane(p, g, CFG.shotSpeed, reds, CFG.redReact, CFG.blockReach).margin)) > CFG.shotLaneOk;
+    const torchancePass = passes.some((o) => o.margin > CFG.passLaneOk && inZoneP(P(s, o.id)) && freeShotFrom(P(s, o.id)));
+    const facts = { key, mate, shot0, torchancePass, forwardSafe: false, sinnvoll: false, dribbelTorchance: false };
+    // 1) sicherer Weg nach vorn? (Abbruch beim ersten Fund – Rechenzeit)
+    for (const cd of cands) { const j = dribbleJudge(s, cd.t, key); if (j.safe && j.gain >= D_GAIN) { facts.forwardSafe = true; break; } }
+    facts.sinnvoll = facts.forwardSafe;
+    // 2) sonst: Anschluss geschaffen oder Ball sichern
+    if (!facts.sinnvoll) for (const cd of cands) { const j = dribbleJudge(s, cd.t, key); if (dribbleReason(facts, j)) { facts.sinnvoll = true; break; } }
+    // 3) Torchance-Vorrang (E5-b): nur prüfen, wenn ein Torchance-Pass existiert
+    if (torchancePass) for (const cd of cands) { if (!inZoneP(cd.t) && cd.t.x < F.W - F.ZONE - 2) continue; const j = dribbleJudge(s, cd.t, key); if (j.safe && j.shotFree) { facts.dribbelTorchance = true; break; } }
+    if (optCache.size > 500) optCache.clear();
+    optCache.set(key, facts);
+    return facts;
+  }
+  /** E3 (Regel R2): Grund, warum ein sicheres Dribbling gut ist – oder null.
+   *  raum: ≥ 1 m Raumgewinn Richtung Tor · anschluss: in der Folgesituation ist ein Freund frei (vorher keiner) oder das
+   *  Tor frei (vorher nicht) · sichern: nach vorn kein sicherer Weg und kein Freund frei. */
+  function dribbleReason(facts, j) {
+    if (!j.safe || j.len < 1) return null; // unter 1 m ist es kein Dribbling (z. B. Tipp in die Ecke, an der man schon steht)
+    if (j.gain >= D_GAIN) return 'raum';
+    if (j.shotFree && !facts.shot0) return 'anschlussTor';
+    if (j.passFree && !facts.mate) return 'anschlussPass';
+    if (!facts.forwardSafe && !facts.mate) return 'sichern';
+    return null;
+  }
+  /** D2/E6: Dribbelziel für die Hilfe – nur nach E3 gute Ziele, bevorzugt Raumgewinn, Schusszone mit freiem Tor, neuer
+   *  Anschluss, Abstand zum Gegner, alle Nachbarziele sicher, Feldmitte. Robust: auch ±0,5 m daneben ist das Ziel gut
+   *  (mind. 3 von 4), sonst das beste gute Ziel. Gibt es kein gutes Ziel: { eng } mit dem am wenigsten riskanten Weg. */
+  function dribbleHelp(s) {
+    const key = probeKey(s), facts = dribbleOptions(s), cands = dribbleCandidates(s);
+    const score = (j, why) => j.gain + (j.zone && j.shotFree ? 6 : 0) + (why === 'anschlussPass' || why === 'anschlussTor' ? 4 : 0) + Math.min(j.open, 3) * 0.5 + (j.kept === 4 ? 1 : 0) - midPen(j.end);
+    const robust = (j) => D_NB.filter(([dx, dy]) => dribbleReason(facts, dribbleJudge(s, { x: j.tgt.x + dx, y: j.tgt.y + dy }, key))).length >= 3;
+    let best = null, bestAny = null, least = null;
     for (const cd of cands) {
       if (best && cd.est <= best.v) break;
-      const j = dribbleJudge(s, cd.t, key);
-      if (!j.safe) continue;
-      const v = score(j);
+      const j = dribbleJudge(s, cd.t, key), why = dribbleReason(facts, j);
+      if (!j.lost && (!least || j.kept > least.kept || (j.kept === least.kept && j.gain > least.gain))) least = j;
+      if (!why) continue;
+      const v = score(j, why);
+      if (!bestAny || v > bestAny.v) bestAny = { v, j };
       if ((!best || v > best.v) && robust(j)) best = { v, j };
     }
-    return best ? best.j.tgt : null;
+    if (best) return { point: best.j.tgt };
+    if (bestAny) return { point: bestAny.j.tgt, genau: true }; // gut, aber daneben getippt wird es eng – ehrlich sagen
+    return { point: least ? least.tgt : null, eng: true };
   }
 
   /** Was bietet die Situation dem Ballführenden? (Grundlage für "Erkennen") */
@@ -537,10 +589,15 @@
     const inZone = c.x >= F.W - F.ZONE - 0.3;
     const shots = inZone ? shotOptions(s) : [];
     const sBest = shots.length ? Math.max(...shots.map((o) => o.margin)) : -9;
-    const dBest = dribbleBest(s).m;
+    // E5-a: Dribbeln ist eine sinnvolle Entscheidung, wenn mindestens ein Dribbling nach E3 gut ist.
+    // E5-b: Torchance-Vorrang – steht ein freier Freund in der Schusszone mit freier Schussbahn und eröffnet kein sicheres
+    // Dribbling eine eigene freie Schussmöglichkeit, ist der Pass die bessere Entscheidung (sonst sind beide gut).
+    const dOpt = s.poss === 'blue' && c.team === 'blue' ? dribbleOptions(s) : null;
+    const vorrang = !!(dOpt && dOpt.torchancePass && !dOpt.dribbelTorchance);
+    const dBest = dOpt && dOpt.sinnvoll && !vorrang ? 1 : -1;
     const mate = pBest > CFG.passLaneOk;
     const space = bestSpacePass(s);
-    return { passes, pBest, shots, sBest, dBest, inZone, space,
+    return { passes, pBest, shots, sBest, dBest, inZone, space, vorrang,
       ok: { pass: mate || !!space, mate, space: !!space, shoot: sBest > CFG.shotLaneOk, dribble: dBest > 0.2 } };
   }
   const nameOf = (s, id) => { const p = P(s, id); return texts(s).teams[p.team] + ' ' + p.num; };
@@ -579,6 +636,7 @@
       // wie in v0.2.4 – der Raumpass wird genannt, aber das Dribbeln nicht abgewertet (E2: andere Wege nicht abwerten).
       else if (a.kind === 'dribble' && sit.ok.space && !sit.ok.mate && !sit.ok.shoot) rec = R(true, E.dribbelnRaumAuch);
       else if (sit.ok.shoot) rec = R(false, E.besserSchiessen);
+      else if (a.kind === 'dribble' && sit.vorrang) rec = R(false, E.besserTorchancePass);
       else if (sit.ok.mate) rec = R(false, a.kind === 'shoot' ? E.besserPassStattSchuss : E.besserPass);
       else if (sit.ok.space) rec = R(false, a.kind === 'shoot' ? E.besserRaumStattSchuss : E.besserRaum);
       else rec = R(false, a.kind === 'shoot' ? E.besserDribbelnStattSchuss : E.besserDribbeln);
@@ -608,10 +666,18 @@
         // D1: Ausführung nach Vorausrechnung des tatsächlich ausgeführten Wegs (E1, E2); Erklärung nach Ursache (E4).
         const j = dribbleJudge(s, a), nm = (id) => (id ? nameOf(s, id) : X.einGegner);
         const near = j.by || laneKey(s, c, j.tgt, 'red');
-        if (j.safe) exe = R(true, X.freierRaum);
+        const why = j.safe ? dribbleReason(dribbleOptions(s), j) : null;
+        if (why === 'raum') exe = R(true, X.freierRaum);
+        else if (why === 'anschlussPass') exe = R(true, X.dribbelAnschlussPass);
+        else if (why === 'anschlussTor') exe = R(true, X.dribbelAnschlussTor);
+        else if (why === 'sichern') exe = R(true, X.dribbelGesichert);
+        else if (j.safe) exe = R(false, j.len < 1 ? X.dribbelZuKurz : dribbleOptions(s).forwardSafe ? X.dribbelNachVorn : X.dribbelFreund);
         else if (j.knapp) exe = named(R(false, X.dribbelKnapp(nm(near))), near, (id) => X.dribbelKnapp(nm(id)));
         else if (j.into) exe = named(R(false, X.inGegner), near, () => X.inGegner);
         else exe = named(R(false, X.gegnerDazwischen(near ? nameOf(s, near) : null)), near, (id) => X.gegnerDazwischen(id ? nameOf(s, id) : null));
+        // Grund fürs Etikett in der Rückmeldung (nicht aufzählbar → ändert keine Aufzeichnung)
+        const grund = why || (j.safe ? (j.len < 1 ? 'zuKurz' : dribbleOptions(s).forwardSafe ? 'nachVorn' : 'freund') : j.knapp ? 'knapp' : j.into ? 'direkt' : 'dazwischen');
+        Object.defineProperty(exe, 'dribbel', { value: grund, enumerable: false });
       }
     } else if (a.kind === 'run') {
       const sc = runSpotScore(s, c, P(s, a.id), a);
@@ -1098,8 +1164,9 @@
     else tip = (out.success ? T.geklapptAber : T.schauMal) + ev.rec.why;
     const say = out.text + ' ' + tip;
     const grundLauf = a.kind === 'run' && s.ep.eval.exe.lauf;
-    const zielGut = T.tagZielGut[a.kind] || T.tagZielGut.sonst;
-    const zielSchlecht = (grundLauf && T.tagLaufSchlecht[grundLauf]) || T.tagZielSchlecht[a.kind] || T.tagZielSchlecht.sonst;
+    const grundDribbel = a.kind === 'dribble' && s.ep.eval.exe.dribbel;
+    const zielGut = (grundDribbel && T.tagDribbel[grundDribbel]) || T.tagZielGut[a.kind] || T.tagZielGut.sonst;
+    const zielSchlecht = (grundLauf && T.tagLaufSchlecht[grundLauf]) || (grundDribbel && T.tagDribbel[grundDribbel]) || T.tagZielSchlecht[a.kind] || T.tagZielSchlecht.sonst;
     const tags = {
       rec: { good: ev.rec.good, label: ev.rec.good ? T.tagIdeeGut : T.tagIdeeBesser },
       exe: { good: ev.exe.good, label: ev.exe.good ? zielGut : zielSchlecht },

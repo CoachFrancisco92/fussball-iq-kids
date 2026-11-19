@@ -22,23 +22,26 @@ test('Bewertung und Hilfe verändern die Lage nicht (Spielverlauf bleibt unberü
   }
 });
 
-test('E1: ⭐ nur, wenn das Ziel UND mindestens 3 von 4 Nachbarzielen (±0,5 m) in der Simulation den Ball behalten – nie ⭐ mit Ballverlust', () => {
-  let stars = 0, knapp = 0;
+const SAFE_NO = [T.dribbelNachVorn, T.dribbelFreund, T.dribbelZuKurz];      // sicher, aber nicht sinnvoll (E3) → 💭
+const GOOD = [T.freierRaum, T.dribbelAnschlussPass, T.dribbelAnschlussTor, T.dribbelGesichert]; // E3-Gründe → ⭐-Ziel
+test('E1: ⭐-Ziel nur, wenn das Ziel UND mindestens 3 von 4 Nachbarzielen (±0,5 m) in der Simulation den Ball behalten – nie ⭐ mit Ballverlust', () => {
+  let stars = 0, knapp = 0, sicherNichtSinnvoll = 0;
   for (const l of L) {
     const c = E.carrier(l.s);
     for (const z of ziele(l.s)) {
       const ev = E.evaluate(l.s, dribble(z)), t = cap(E, c, z), main = sim(E, l.s, t);
       const kept = [[0.5, 0], [-0.5, 0], [0, 0.5], [0, -0.5]].filter(([dx, dy]) => !sim(E, l.s, cap(E, c, { x: t.x + dx, y: t.y + dy })).lost).length;
-      assert.strictEqual(ev.exe.good, !main.lost && kept >= 3, `${l.src} (${z.x.toFixed(1)}|${z.y.toFixed(1)})`);
-      if (ev.exe.good) stars++;
+      const safe = !main.lost && kept >= 3, where = `${l.src} (${z.x.toFixed(1)}|${z.y.toFixed(1)})`;
+      if (ev.exe.good) { stars++; assert.ok(safe, where); assert.ok(GOOD.includes(ev.exe.why), where + ': ' + ev.exe.why); }
+      else if (safe) { sicherNichtSinnvoll++; assert.ok(SAFE_NO.includes(ev.exe.why), where + ': ' + ev.exe.why); }
       if (!main.lost && kept < 3) { knapp++; assert.match(ev.exe.why, /^Das war knapp – (Rot|Ein Gegner)/); }
     }
   }
-  assert.ok(stars > 500 && knapp > 0, `⭐ ${stars}, knapp ${knapp}`);
+  assert.ok(stars > 300 && knapp > 0 && sicherNichtSinnvoll > 100, `⭐ ${stars}, knapp ${knapp}, sicher aber nicht sinnvoll ${sicherNichtSinnvoll}`);
 });
 
 test('E4: Erklärung nennt die tatsächliche Ursache – „direkt auf einen Gegner“ nur bei Ballverlust mit Weg < 1 m am Gegner', () => {
-  const seen = { frei: 0, knapp: 0, direkt: 0, dazwischen: 0 };
+  const seen = { gut: 0, sicherNicht: 0, knapp: 0, direkt: 0, dazwischen: 0 };
   for (const l of L) {
     const c = E.carrier(l.s), reds = E.team(l.s, 'red');
     for (const z of ziele(l.s)) {
@@ -47,7 +50,10 @@ test('E4: Erklärung nennt die tatsächliche Ursache – „direkt auf einen Geg
       if (ev.exe.why === T.inGegner) { seen.direkt++; assert.ok(main.lost && into, `${l.src}: „direkt“ ohne Ballverlust/Gegner im Weg`); }
       else if (/^Dribbel weiter weg vo/.test(ev.exe.why)) { seen.dazwischen++; assert.ok(main.lost && !into); }
       else if (/^Das war knapp/.test(ev.exe.why)) { seen.knapp++; assert.ok(!main.lost); }
-      else { seen.frei++; assert.strictEqual(ev.exe.why, T.freierRaum); assert.ok(!main.lost); }
+      else if (SAFE_NO.includes(ev.exe.why)) { seen.sicherNicht++; assert.ok(!main.lost); }
+      else { seen.gut++; assert.ok(GOOD.includes(ev.exe.why), ev.exe.why); assert.ok(!main.lost); }
+      // keine doppelte Aussage „Ball behalten“ in der gesprochenen Rückmeldung (nur im Ergebnis-Satz)
+      assert.ok(!/behalten/.test(ev.exe.why), 'Ziel-Text wiederholt „behalten“: ' + ev.exe.why);
     }
   }
   for (const k of Object.keys(seen)) assert.ok(seen[k] > 0, `Fall ${k} kommt vor: ${JSON.stringify(seen)}`);
@@ -77,24 +83,27 @@ test('Bewusst schlechte und zweifelhafte Dribblings (Entwurfslagen)', () => {
   // Tipp weit ins Aus: wird aufs Feld und auf 8 m gekappt, bewertet wie ausgeführt
   const a = E.evaluate(b2, { kind: 'dribble', x: 60, y: -20 }), c = E.carrier(b2);
   assert.deepStrictEqual(a.exe, E.evaluate(b2, dribble(cap(E, c, { x: 60, y: -20 }))).exe);
-  // Rückwärts ohne Not (B3: Verfolger hinten, vorn alles frei) – heute noch ⭐, wird mit E3 neu entschieden
+  // Quer bzw. rückwärts ohne Not (B3: Verfolger hinten, vorn alles frei): sicher, aber nicht sinnvoll (E3)
   const b3 = probeState(E, ENTWURF.B3);
-  assert.ok(E.evaluate(b3, { kind: 'dribble', x: 18, y: 4 }).exe.good, 'quer ohne Gegner: sicher (Raumgewinn-Regel E3 noch offen)');
+  assert.deepStrictEqual(E.evaluate(b3, { kind: 'dribble', x: 18, y: 4 }).exe, { good: false, why: T.dribbelNachVorn });
+  assert.ok(E.evaluate(b3, { kind: 'dribble', x: 24, y: 12 }).exe.good, 'nach vorn');
 });
 
-test('E6: Hilfe zeigt nur ⭐-Ziele, robust bei ungenauem Tippen (≥ 3 von 4 Nachbarzielen ±0,5 m ebenfalls ⭐), gewinnt Raum', () => {
+test('E6: Hilfe zeigt ⭐-Ziele, robust bei ungenauem Tippen (≥ 3 von 4 Nachbarzielen ±0,5 m ebenfalls ⭐), meist nach vorn; ohne guten Weg ehrlich „eng“', () => {
   let n = 0, fwd = 0;
   for (const l of L) {
-    const h = E.hint(l.s, 'dribbeln'); if (!h.point) continue;
+    const h = E.hint(l.s, 'dribbeln'), sit = E.situation(l.s);
+    if (h.eng) { assert.strictEqual(sit.dBest < 0 || sit.vorrang, true, l.src); assert.ok(!h.alsoGood); assert.strictEqual(h.say, E.texts(l.s).hilfe.dribbelnEng); if (h.point) assert.ok(!E.evaluate(l.s, dribble(h.point)).exe.good || sit.vorrang); continue; }
     const ev = E.evaluate(l.s, dribble(h.point));
-    if (!ev.exe.good) continue; // kein sicheres Ziel in dieser Lage: Ausweg-Hilfe (bisherige Suche), selten
+    assert.ok(ev.exe.good, `${l.src}: Hilfeziel ⭐ (${ev.exe.why})`);
     n++;
     const nb = [[0.5, 0], [-0.5, 0], [0, 0.5], [0, -0.5]].filter(([dx, dy]) => E.evaluate(l.s, { kind: 'dribble', x: h.point.x + dx, y: h.point.y + dy }).exe.good).length;
-    assert.ok(nb >= 3, `${l.src}: Nachbarn ${nb}/4`);
+    if (h.genau) assert.strictEqual(h.say.startsWith(E.texts(l.s).hilfe.dribbelnGenau), true, 'ehrlicher Hinweis „genau dorthin“');
+    else assert.ok(nb >= 3, `${l.src}: Nachbarn ${nb}/4`);
     if (h.point.x > E.carrier(l.s).x + 1) fwd++;
   }
-  assert.ok(n >= L.length * 0.9, `Hilfe mit ⭐-Ziel in ${n} von ${L.length} Lagen`);
-  assert.ok(fwd >= n * 0.9, `Hilfe nach vorn in ${fwd} von ${n}`);
+  assert.ok(n >= L.length * 0.8, `Hilfe mit ⭐-Ziel in ${n} von ${L.length} Lagen`);
+  assert.ok(fwd >= n * 0.85, `Hilfe nach vorn in ${fwd} von ${n}`);
 });
 
 test('E6: Hilfe-Weg in B1–B5 führt ohne Abdriften zur Seitenlinie in höchstens 4 Entscheidungen zum Tor (nur ⭐)', () => {
@@ -122,5 +131,104 @@ test('E6: A4 mit dem Lernweg von „Welches Tor ist frei?“ – Dribbeln ⭐ �
   for (let i = 0; i < ENTWURF.A4.length; i++) for (const ax of ['x', 'y']) for (const d of [-0.5, 0.5]) {
     const sp = ENTWURF.A4.map((p) => ({ ...p })); sp[i][ax] += d;
     assert.strictEqual(run(sp), 'dribble⭐ shoot⭐⚽', `${sp[i].id} ${ax} ${d}`);
+  }
+});
+
+// ---------------------------------------------------------------- E3 (Regel R2), E5-a/-b, E6-Ausweg
+const endState = (s, to) => { const t = E.clone(s); E.startAction(t, dribble(to)); let n = 0; while (!t.ep.done && n++ < 3000) E.tick(t); return t; };
+
+test('E3: Jeder ⭐-Grund trifft in der Folgesituation (nächster Entscheidungsmoment) wirklich zu – Anschluss ist nutzbar', () => {
+  const seen = { raum: 0, pass: 0, tor: 0, sichern: 0 };
+  for (const l of L) {
+    const c = E.carrier(l.s), sit0 = E.situation(l.s);
+    for (const z of ziele(l.s)) {
+      const ev = E.evaluate(l.s, dribble(z)); if (!ev.exe.good) continue;
+      const t = endState(l.s, cap(E, c, z)), c1 = E.carrier(t), ctx = E.context(t, { kind: 'dribble', success: true, team: 'blue' });
+      assert.strictEqual(t.poss, 'blue');
+      if (ev.exe.why === T.freierRaum) { seen.raum++; assert.ok(c1.x - c.x >= 1, 'Raumgewinn ≥ 1 m'); }
+      else if (ev.exe.why === T.dribbelAnschlussPass) {
+        seen.pass++; assert.ok(!sit0.ok.mate, 'vorher kein Freund frei');
+        assert.ok(ctx.actions.includes('passen'), 'Passen wird angeboten');
+        const best = E.passOptions(t).sort((a, b) => b.margin - a.margin)[0];
+        assert.ok(E.evaluate(t, { kind: 'pass', id: best.id }).exe.good, 'Pass in der Folgesituation ⭐-Ziel');
+      } else if (ev.exe.why === T.dribbelAnschlussTor) {
+        seen.tor++; assert.strictEqual(ctx.type, 'abschluss');
+        const g = E.shotOptions(t).sort((a, b) => b.margin - a.margin)[0].goal;
+        assert.ok(E.evaluate(t, { kind: 'shoot', goal: g }).good, 'freier Schuss in der Folgesituation ⭐');
+      } else { seen.sichern++; assert.strictEqual(ev.exe.why, T.dribbelGesichert); assert.ok(!sit0.ok.mate); }
+    }
+  }
+  assert.ok(seen.raum > 100 && seen.pass + seen.tor > 0, JSON.stringify(seen));
+});
+
+test('E3: Beispiele seitlich und rückwärts – gut nur mit Grund, sonst 💭 mit Hinweis', () => {
+  const P = (id, x, y) => ({ id, x, y });
+  // rückwärts/quer ohne Not, vorn frei (B3) → 💭 „Nach vorn war Platz …“
+  const b3 = probeState(E, ENTWURF.B3);
+  for (const p of [{ x: 14, y: 6 }, { x: 18, y: 18 }]) assert.deepStrictEqual(E.evaluate(b3, dribble(p)).exe, { good: false, why: T.dribbelNachVorn });
+  // Freund frei, Dribbling quer/rückwärts → 💭 „Ein Freund stand frei …“ bzw. „Nach vorn war Platz“; nach vorn ⭐
+  const x3 = probeState(E, [P('b1', 14, 12), P('b2', 21, 5), P('r1', 15.4, 12.6), P('r2', 30, 18)]);
+  assert.strictEqual(E.evaluate(x3, dribble({ x: 10, y: 12 })).exe.good, false);
+  assert.ok(E.evaluate(x3, dribble(E.hint(x3, 'dribbeln').point)).good, 'nach vorn ⭐');
+  // eingeklemmt am Rand, kein Freund, nach vorn kein sicherer Weg → Ball sichern ist gut (Grund „gesichert“)
+  const ecke = probeState(E, [P('b1', 3, 1.2), P('r1', 4.4, 1.3), P('r2', 4.2, 3.0), P('r3', 3.2, 3.6)]);
+  const sit = E.situation(ecke);
+  if (sit.ok.dribble) { const h = E.hint(ecke, 'dribbeln'); const ev = E.evaluate(ecke, dribble(h.point)); assert.ok(ev.exe.good); assert.ok(GOOD.includes(ev.exe.why)); }
+  // unter 1 m ist es kein Dribbling
+  const s = probeState(E, ENTWURF.B5), c = E.carrier(s);
+  assert.deepStrictEqual(E.evaluate(s, dribble({ x: c.x + 0.5, y: c.y })).exe.why, T.dribbelZuKurz);
+});
+
+test('E3: Grenzfall 1 m – Raumgewinn knapp unter 1 m ohne Anschluss ist 💭, ab 1 m ⭐ (gleiches Ziel, nur Strecke verschieden)', () => {
+  const s = probeState(E, ENTWURF.B5), c = E.carrier(s); // viel Platz, kein Druck
+  const a = E.evaluate(s, dribble({ x: c.x + 0.8, y: c.y + 3 })), b = E.evaluate(s, dribble({ x: c.x + 1.3, y: c.y + 3 }));
+  assert.deepStrictEqual([a.exe.good, a.exe.why], [false, T.dribbelNachVorn]);
+  assert.deepStrictEqual([b.exe.good, b.exe.why], [true, T.freierRaum]);
+});
+
+test('E5-a: Dribbeln ist sinnvoll, sobald ein nach E3 gutes Dribbling existiert – ein freier Freund macht es nicht falsch', () => {
+  for (const l of L) {
+    const sit = E.situation(l.s), h = E.hint(l.s, 'dribbeln');
+    if (sit.ok.dribble) { assert.ok(!h.eng, l.src); const ev = E.evaluate(l.s, dribble(h.point)); assert.ok(ev.good, `${l.src}: Hilfeziel ⭐ (${ev.why})`); }
+    else for (const z of ziele(l.s, 60, [4, 8])) assert.strictEqual(E.evaluate(l.s, dribble(z)).rec.good, !E.situation(l.s).ok.pass && !E.situation(l.s).ok.shoot, l.src);
+  }
+  const P = (id, x, y) => ({ id, x, y });
+  const x3 = probeState(E, [P('b1', 14, 12), P('b2', 21, 5), P('r1', 15.4, 12.6), P('r2', 30, 18)]);
+  assert.ok(E.situation(x3).ok.mate && E.situation(x3).ok.dribble, 'Freund frei UND Dribbeln sinnvoll');
+  assert.ok(E.evaluate(x3, { kind: 'pass', id: 'b2' }).good, 'Pass ⭐');
+  assert.ok(E.evaluate(x3, dribble(E.hint(x3, 'dribbeln').point)).good, 'Dribbling ⭐');
+  assert.strictEqual(E.recommend(x3, ['passen', 'dribbeln']), 'passen', 'Hilfe folgt weiter dem Lernweg (Passen zuerst)');
+});
+
+test('E5-b: Torchance-Vorrang – Freund frei vor dem Tor und kein Dribbling mit eigener freier Schusschance → Passen besser; beide Torchancen → beide ⭐', () => {
+  const P = (id, x, y) => ({ id, x, y });
+  const x1 = probeState(E, [P('b1', 20, 12), P('b2', 31, 7), P('r1', 21.4, 12.6), P('r2', 34.4, 15.5)]);
+  assert.ok(E.situation(x1).vorrang);
+  assert.ok(E.evaluate(x1, { kind: 'pass', id: 'b2' }).good, 'Pass ⭐');
+  const d = E.evaluate(x1, dribble({ x: 26, y: 9 }));
+  assert.deepStrictEqual([d.rec.good, d.rec.why, d.good], [false, E.texts(x1).erkennen.besserTorchancePass, false]);
+  assert.strictEqual(E.recommend(x1, ['passen', 'dribbeln']), 'passen');
+  assert.ok(!E.goodActions(x1, ['passen', 'dribbeln']).includes('dribbeln'));
+  // Torchance nutzbar: Pass kommt an, Blau 2 hat in der Folgesituation einen freien Schuss
+  const t = E.clone(x1); E.startAction(t, { kind: 'pass', id: 'b2' }); let n = 0; while (!t.ep.done && n++ < 3000) E.tick(t);
+  assert.strictEqual(E.carrier(t).id, 'b2'); const g = E.shotOptions(t).sort((a, b) => b.margin - a.margin)[0].goal;
+  assert.ok(E.evaluate(t, { kind: 'shoot', goal: g }).good, 'Schuss nach dem Pass ⭐');
+  // beide Wege führen zur freien Schusschance → keine Passpflicht
+  for (const sp of [[P('b1', 26.5, 16), P('b2', 31, 7), P('r1', 25, 17.5), P('r2', 34.4, 10.5)], [P('b1', 27, 18), P('b2', 31, 6), P('r1', 25.5, 19), P('r2', 34, 12)]]) {
+    const s = probeState(E, sp);
+    assert.ok(!E.situation(s).vorrang && E.situation(s).ok.dribble);
+    assert.ok(E.evaluate(s, { kind: 'pass', id: 'b2' }).good);
+    assert.ok(E.evaluate(s, dribble(E.hint(s, 'dribbeln').point)).good, 'Dribbling zur eigenen Torchance ⭐');
+  }
+});
+
+test('E6-Ausweg: ohne guten Dribbelweg sagt die Hilfe ehrlich „eng“, zeigt kein riskantes Ziel als sicher, nennt kein „Auch gut“', () => {
+  const P = (id, x, y) => ({ id, x, y });
+  for (const sp of [[P('b1', 1, 1), P('r1', 2.4, 1.1), P('r2', 1.1, 2.4), P('r3', 2.3, 2.3)], [P('b1', 0.8, 0.8), P('r1', 2.0, 0.9), P('r2', 0.9, 2.0), P('r3', 1.9, 1.9), P('b2', 10, 20), P('r4', 9, 19)]]) {
+    const s = probeState(E, sp, { reihenfolge: ['dribbeln', 'passen', 'schiessen'], alternativenNennen: true });
+    assert.ok(!E.situation(s).ok.dribble);
+    const h = E.hint(s, 'dribbeln');
+    assert.ok(h.eng); assert.strictEqual(h.say, E.texts(s).hilfe.dribbelnEng); assert.ok(!h.alsoGood);
+    if (h.point) assert.ok(!E.evaluate(s, dribble(h.point)).good);
   }
 });

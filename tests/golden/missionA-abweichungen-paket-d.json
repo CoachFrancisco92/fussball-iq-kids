@@ -1,27 +1,55 @@
 {
- "grund": "Paket D (E1, E2, E4, E6) – zur Freigabe vorgelegt, Referenzen NICHT aktualisiert",
+ "grund": "Paket D konsolidiert (E1–E6) – zur Freigabe vorgelegt, Referenzen NICHT aktualisiert",
  "bericht": "docs/meilenstein-3b.md",
  "styles": {},
  "seeds": {
+  "6": {
+   "alt": "12a6f627aeccf9e9",
+   "neu": "3bd5f319b171ed51"
+  },
+  "23": {
+   "alt": "d78fbcc39a67c7fe",
+   "neu": "609d8173dd76458b"
+  },
   "74": {
    "alt": "859fd4315ba29dd0",
    "neu": "f6b588fd501965dc"
+  },
+  "86": {
+   "alt": "f842bfc9f5ee0693",
+   "neu": "62b52c36bf7a246a"
   },
   "108": {
    "alt": "c60571c6e339bd7e",
    "neu": "0780f987f975e0c9"
   },
+  "117": {
+   "alt": "4e7fd02fdbd57d58",
+   "neu": "92a8e57652f2921a"
+  },
   "127": {
    "alt": "b4f3f328f029adf8",
-   "neu": "7ef4e9f1d72f0aee"
+   "neu": "748abb27a06da61f"
   },
   "134": {
    "alt": "da3fa8c5eecbb86a",
-   "neu": "e732386d18d30203"
+   "neu": "30371a50bcd95aaf"
+  },
+  "143": {
+   "alt": "cd45bd25b7521775",
+   "neu": "5ce30ae7a4f2f9f0"
   },
   "150": {
    "alt": "92dba0464bdc8534",
-   "neu": "6a2393fc740fc5ba"
+   "neu": "158bc923634e586e"
+  },
+  "158": {
+   "alt": "5f253c8198ee78f4",
+   "neu": "a00c5366dd619a64"
+  },
+  "165": {
+   "alt": "f61d19101f581562",
+   "neu": "fed0acb3fa99b205"
   }
  }
 }
