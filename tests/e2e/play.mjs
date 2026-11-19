@@ -98,6 +98,8 @@ async function run(viewport, label, strategy = 'hint') {
     await doTaps(plan.taps, 'Fehlentscheidung ' + plan.k);
   };
 
+  // Seit Meilenstein 2 gibt es mehrere Missionen (vorausgewählt ist die erste im Lernpfad): Mission 1 gezielt wählen.
+  await page.click('#missionList .mcard[data-id="mission-1"]');
   await page.click('#play');
   // 1) Schau-Schritt: erst falsch (Blau 3), dann richtig (Blau 2)
   await waitMode('look'); await tap(19, 19.5); await until(() => window.__fiq.look && window.__fiq.look.tries === 1, 'Schau-Schritt 1. Antwort'); await tap(24, 6);

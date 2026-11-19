@@ -40,12 +40,18 @@ try {
   console.log(`✓ Offline-Cache ${cacheName} enthält alle ${expected.length} Dateien (inkl. Texte und Missionen)`);
   await ctx.setOffline(true);
   await page.reload();
-  const state = await page.evaluate(() => ({ v: window.FIQ && window.FIQ.VERSION, texte: !!window.FIQ_TEXTE, missionen: (window.FIQ_MISSIONS || []).map((m) => m.id), titel: document.getElementById('mTitle').textContent }));
-  if (state.v !== version || !state.texte || !state.missionen.includes('mission-1') || !state.titel) throw new Error('Offline unvollständig geladen: ' + JSON.stringify(state));
+  const state = await page.evaluate(() => ({ v: window.FIQ && window.FIQ.VERSION, texte: !!window.FIQ_TEXTE, missionen: (window.FIQ_MISSIONS || []).map((m) => m.id), titel: (document.querySelector('#missionList .mcard b') || {}).textContent }));
+  if (state.v !== version || !state.texte || !['mission-1', 'welches-tor-ist-frei'].every((id) => state.missionen.includes(id)) || !state.titel) throw new Error('Offline unvollständig geladen: ' + JSON.stringify(state));
+  // Vorausgewählte Mission (erste im Lernpfad: „Welches Tor ist frei?“) startet direkt mit Situation A1
   await page.click('#play');
-  await page.waitForFunction(() => window.__fiq && window.__fiq.mode === 'look', null, { timeout: 5000 });
+  await page.waitForFunction(() => window.__fiq && window.__fiq.mode === 'decide' && window.__fiq.S.missionId === 'welches-tor-ist-frei' && window.__fiq.S.situation === 'A1', null, { timeout: 5000 });
+  // Mission 1 ebenfalls ohne Netz wählbar und spielbar
+  await page.reload();
+  await page.click('#missionList .mcard[data-id="mission-1"]');
+  await page.click('#play');
+  await page.waitForFunction(() => window.__fiq && window.__fiq.mode === 'look' && window.__fiq.S.missionId === 'mission-1', null, { timeout: 5000 });
   if (errors.length) throw new Error('JS-Fehler offline: ' + errors.join('; '));
-  console.log(`✓ Ohne Netz: App ${state.v} startet, Texte und Mission „${state.titel}“ geladen, Spiel beginnt`);
+  console.log(`✓ Ohne Netz: App ${state.v} startet, Texte und beide Missionen geladen („${state.titel}“ vorausgewählt); beide Missionen starten`);
   await ctx.close();
 } catch (e) { console.error('✗ Offline-Test:', e.message); exit = 1; }
 finally { await browser.close(); server.close(); fs.rmSync(site, { recursive: true, force: true }); process.exit(exit); }

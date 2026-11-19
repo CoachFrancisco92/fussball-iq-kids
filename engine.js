@@ -125,14 +125,31 @@
       }
       need(ids.includes(L.ballbesitz), `${where}: ballbesitz ${L.ballbesitz} ist kein Spieler`);
     };
-    lineup(m.start, 'start');
-    if (m.start && Array.isArray(m.start.spieler)) {
-      const b = m.start.spieler.filter((p) => p.id[0] === 'b').length, r = m.start.spieler.filter((p) => p.id[0] === 'r').length;
-      need(b >= 2 && r >= 2, 'start: mindestens 2 gegen 2');
-    }
-    for (const t of ['red', 'blue']) {
-      lineup(m.neustart && m.neustart[t], 'neustart.' + t);
-      if (m.neustart && m.neustart[t] && m.start) need((m.neustart[t].ballbesitz || '')[0] === (t === 'red' ? 'r' : 'b'), `neustart.${t}: Ball muss beim Team ${t} sein`);
+    const count = (L, where) => {
+      if (!L || !Array.isArray(L.spieler)) return;
+      const b = L.spieler.filter((p) => p.id[0] === 'b').length, r = L.spieler.filter((p) => p.id[0] === 'r').length;
+      need(b >= 1 && r >= 1, `${where}: mindestens 1 gegen 1`);
+      need((L.ballbesitz || '')[0] === 'b', `${where}: Blau hat zu Beginn den Ball`);
+      if (b < 2) need(!(m.schauSchritt || []).length, `${where}: Schau-Schritt braucht einen Mitspieler`);
+    };
+    const sit = Array.isArray(m.situationen);
+    if (sit) {
+      // M1: mehrere Ausgangssituationen je Mission (nur Angriff; Abwehr in Situationsmissionen ist noch nicht vorgesehen)
+      need(m.situationen.length >= 1, 'situationen: leer');
+      const ids = m.situationen.map((x) => x && x.id);
+      need(ids.every((id) => typeof id === 'string' && id) && new Set(ids).size === ids.length, 'situationen: id fehlt oder doppelt');
+      for (const x of m.situationen) {
+        lineup(x && x.start, `situation ${x && x.id}`); count(x && x.start, `situation ${x && x.id}`);
+        if (x && x.phasen) need(Number.isInteger(x.phasen.maxAngriff) && x.phasen.maxAngriff >= 1, `situation ${x.id}: phasen.maxAngriff`);
+      }
+      if (m.durchlaeufe != null) need(Array.isArray(m.durchlaeufe) && m.durchlaeufe.length >= 1 && m.durchlaeufe.every((d) => Array.isArray(d) && d.length >= 1 && d.every((id) => ids.includes(id))), 'durchlaeufe: nur bekannte Situationen');
+      need(m.phasen && m.phasen.verteidigung === 0, 'situationen: nur mit phasen.verteidigung = 0');
+    } else {
+      lineup(m.start, 'start'); count(m.start, 'start');
+      for (const t of ['red', 'blue']) {
+        lineup(m.neustart && m.neustart[t], 'neustart.' + t);
+        if (m.neustart && m.neustart[t] && m.start) need((m.neustart[t].ballbesitz || '')[0] === (t === 'red' ? 'r' : 'b'), `neustart.${t}: Ball muss beim Team ${t} sein`);
+      }
     }
     need(m.phasen && Number.isInteger(m.phasen.maxAngriff) && m.phasen.maxAngriff >= 1, 'phasen.maxAngriff fehlt');
     need(m.phasen && Number.isInteger(m.phasen.verteidigung) && m.phasen.verteidigung >= 0, 'phasen.verteidigung fehlt (0 = keine Abwehrphase)');
@@ -148,13 +165,18 @@
     }
   }
 
-  function newState(missionId) {
-    const m = mission(missionId);
-    const errs = validateMission(m);
-    if (errs.length) throw new Error(`Mission ${m.id} ungültig: ${errs.join('; ')}`);
-    const players = m.start.spieler.map((q) => mkPlayer(q.id[0] === 'b' ? 'blue' : 'red', Number(q.id.slice(1)), q.x, q.y));
-    const owner = players.find((p) => p.id === m.start.ballbesitz);
-    const ball = m.start.ball || { x: owner.x, y: owner.y };
+  /** M1: Reihenfolge der Situationen im Durchlauf n (fest, ohne Zufall; reihum über `durchlaeufe`). */
+  function situationOrder(m, durchlauf) {
+    const n = Math.max(0, durchlauf | 0);
+    if (Array.isArray(m.durchlaeufe) && m.durchlaeufe.length) return m.durchlaeufe[n % m.durchlaeufe.length].slice();
+    const ids = m.situationen.map((x) => x.id), k = n % ids.length;
+    return ids.slice(k).concat(ids.slice(0, k));
+  }
+  const situationById = (m, id) => m.situationen.find((x) => x.id === id);
+  function stateFrom(m, L) {
+    const players = L.spieler.map((q) => mkPlayer(q.id[0] === 'b' ? 'blue' : 'red', Number(q.id.slice(1)), q.x, q.y));
+    const owner = players.find((p) => p.id === L.ballbesitz);
+    const ball = L.ball || { x: owner.x, y: owner.y };
     return {
       missionId: m.id,
       players,
@@ -165,6 +187,20 @@
       ai: { goal: 0, next: 0 },
       ep: null,
     };
+  }
+  function newState(missionId, durchlauf) {
+    const m = mission(missionId);
+    const errs = validateMission(m);
+    if (errs.length) throw new Error(`Mission ${m.id} ungültig: ${errs.join('; ')}`);
+    if (!Array.isArray(m.situationen)) return stateFrom(m, m.start);
+    const id = situationOrder(m, durchlauf)[0];
+    return Object.assign(stateFrom(m, situationById(m, id).start), { situation: id });
+  }
+  /** M1: nächste Situation nahtlos laden – eigene Startaufstellung, kein Neustart-Bild; Spielstand bleibt. */
+  function loadSituation(s, id) {
+    const m = mission(s.missionId), n = stateFrom(m, situationById(m, id).start);
+    s.players = n.players; s.ball = n.ball; s.poss = n.poss; s.ai = n.ai; s.situation = id;
+    s.ep = null;                                 // neue Situation: keine Vorgeschichte (z. B. kein „Freilaufen nach Pass“)
   }
 
   function restart(s, teamName) {
@@ -183,11 +219,14 @@
     const t = texts(s);
     const mk = (type, key, actions) => Object.assign({ type }, { title: t.kontext[key].title, tag: t.kontext[key].tag }, { actions }, { say: t.kontext[key].say });
     if (s.poss === 'blue') {
+      // M2: nur Aktionen anbieten, die möglich sind – ohne Mitspieler kein Passen
+      const solo = team(s, 'blue').length < 2;
+      const mkB = (type, key, actions) => mk(type, key, solo ? actions.filter((k) => k !== 'passen') : actions);
       const inZone = c.x >= F.W - F.ZONE - 0.3;
-      if (inZone) return mk('abschluss', 'abschluss', ['schiessen', 'passen']);
-      if (last && last.kind === 'pass' && last.success && last.team === 'blue') return mk('ohneBall', 'ohneBall', ['freilaufen']);
+      if (inZone) return mkB('abschluss', 'abschluss', ['schiessen', 'passen']);
+      if (last && s.ep && last.kind === 'pass' && last.success && last.team === 'blue') return mk('ohneBall', 'ohneBall', ['freilaufen']);
       const near = team(s, 'red').some((r) => dist(r, c) < 4.5);
-      return near ? mk('angriff', 'angriffDruck', ['passen', 'dribbeln']) : mk('angriff', 'angriffFrei', ['passen', 'dribbeln']);
+      return near ? mkB('angriff', 'angriffDruck', ['passen', 'dribbeln']) : mkB('angriff', 'angriffFrei', ['passen', 'dribbeln']);
     }
     const pressed = team(s, 'blue').some((b) => dist(b, c) < 3.5);
     return pressed ? mk('verteidigung', 'verteidigungNah', ['raum', 'erobern']) : mk('verteidigung', 'verteidigungFern', ['erobern', 'raum']);
@@ -308,7 +347,10 @@
   function withAlternatives(s, shown, h) {
     const m = mission(s.missionId);
     if (!(m.hilfe && m.hilfe.alternativenNennen) || s.poss !== 'blue') return h;
-    const ctxActions = ['schiessen', 'passen', 'dribbeln'];
+    // M2: als „Auch gut“ nur Aktionen nennen, die in diesem Moment wirklich angeboten werden
+    const offered = context(s, null).actions;
+    const ctxActions = ['schiessen', 'passen', 'dribbeln'].filter((k) => offered.includes(k));
+    if (!ctxActions.includes(shown)) return h;
     const others = goodActions(s, ctxActions).filter((k) => k !== shown);
     if (!others.length) return h;
     const T = texts(s);
@@ -387,6 +429,7 @@
    *  entscheidend; welcher Punkt gezeigt wird, nur für die Hilfe (Sicherheit + Raumgewinn). */
   function bestSpacePass(s) {
     const c = carrier(s);
+    if (team(s, c.team).length < 2) return null; // M2: ohne Mitspieler kein Pass in den Raum
     let best = null;
     for (let x = 1.5; x < F.W - 1; x += 1.5) for (let y = 1.5; y < F.H - 1; y += 1.5) {
       const pt = { x, y };
@@ -801,7 +844,7 @@
       s.score[fl.team]++;
       s.ball.x = fl.tx; s.ball.y = fl.ty;
       event(s, 'goal', { team: fl.team, goal: fl.goal });
-      s.ep.restart = other(fl.team);
+      s.ep.restart = Array.isArray(mission(s.missionId).situationen) ? null : other(fl.team);
       s.ep.endT = s.ep.t + 1.6;
       s.poss = null;
       return;
@@ -1029,24 +1072,48 @@
   // Angriffsphase: endet bei Ballverlust/Tor, spätestens nach maxAttack Entscheidungen (dann Ball im Aus -> Rot).
   // Verteidigungsphase: defense Entscheidungen, endet früher bei Balleroberung oder Gegentor.
   // So enthält jede Mission sicher Angriff UND Verteidigung, ohne frühere Entscheidungen zu verändern.
-  function newMission(missionId) {
+  function newMission(missionId, durchlauf) {
     const m = mission(missionId);
-    return { id: m.id, phase: 'attack', att: 0, def: 0, maxAttack: m.phasen.maxAngriff, defense: m.phasen.verteidigung, done: false, note: null };
+    const r = { id: m.id, phase: 'attack', att: 0, def: 0, maxAttack: m.phasen.maxAngriff, defense: m.phasen.verteidigung, done: false, note: null,
+      abschluss: !!m.phasen.abschlussNachGrenze };
+    if (Array.isArray(m.situationen)) {
+      const order = situationOrder(m, durchlauf);
+      r.sit = { order, idx: 0, durchlauf: Math.max(0, durchlauf | 0) };
+      const p = situationById(m, order[0]).phasen; if (p) r.maxAttack = p.maxAngriff;
+    }
+    return r;
   }
   function missionAfter(m, s, ctxType) {
     m.note = null;
     if (ctxType === 'verteidigung') m.def++; else m.att++;
+    // M1: „Abschluss nach der Grenze“ (Einstellung phasen.abschlussNachGrenze): Bringt die letzte erlaubte Entscheidung
+    // den Ball in die Torschusszone, darf noch geschossen werden.
+    const c = carrier(s), inZone = s.poss === 'blue' && c && c.x >= F.W - F.ZONE - 0.3;
+    const atLimit = m.att >= m.maxAttack && !(m.abschluss && inZone && ctxType !== 'abschluss' && m.att === m.maxAttack);
+    if (m.sit) {
+      // M1: Situation endet bei Tor, Ballverlust oder Angriffsgrenze → nächste Situation oder Missionsende
+      if (s.poss !== 'blue' || atLimit) {
+        if (m.sit.idx + 1 < m.sit.order.length) {
+          m.sit.idx++; m.att = 0; m.next = m.sit.order[m.sit.idx]; m.note = 'situation';
+          const p = situationById(mission(m.id), m.next).phasen; m.maxAttack = p ? p.maxAngriff : mission(m.id).phasen.maxAngriff;
+        } else m.done = true;
+      }
+      return m;
+    }
     if (m.phase === 'attack') {
-      const over = s.poss === 'red' || m.att >= m.maxAttack;
+      const over = s.poss === 'red' || atLimit;
       if (over && m.defense === 0) m.done = true; // E3: Mission ohne Verteidigungsphase endet mit dem Angriff
       else if (s.poss === 'red') m.phase = 'defense';
-      else if (m.att >= m.maxAttack) { m.pending = 'red'; m.phase = 'defense'; m.note = 'aus'; }
+      else if (atLimit) { m.pending = 'red'; m.phase = 'defense'; m.note = 'aus'; }
     } else if (m.def >= m.defense || s.poss === 'blue') m.done = true;
     return m;
   }
   /** Ausstehenden Neustart (Ball im Aus) ausführen – erst wenn das Kind weiterspielt. */
-  function missionApply(m, s) { if (m.pending) { restart(s, m.pending); m.pending = null; } }
+  function missionApply(m, s) {
+    if (m.pending) { restart(s, m.pending); m.pending = null; }
+    if (m.next) { loadSituation(s, m.next); m.next = null; }
+  }
 
   root.FIQ = {
-    VERSION: '0.3.1', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.4.0', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

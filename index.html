@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Fußball-IQ Kids</title>
 <meta name="theme-color" content="#1e3a8a">
-<meta name="app-version" content="0.3.1">
+<meta name="app-version" content="0.4.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fußball-IQ">
@@ -122,7 +122,11 @@
   .screen h1 { margin: 6px 0 0; font-size: clamp(34px, 7vw, 52px); font-weight: 800; letter-spacing: -.5px; line-height: 1; }
   .screen h1 span { color: var(--sun); }
   .sub { margin: 6px 0 18px; font-size: 17px; opacity: .85; font-weight: 600; }
-  .mcard { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.25); border-radius: 22px; padding: 14px 16px; text-align: left; display: flex; gap: 14px; align-items: center; }
+  .mlist { display: flex; flex-direction: column; gap: 10px; }
+  .mcard { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.25); border-radius: 22px; padding: 14px 16px; text-align: left; display: flex; gap: 14px; align-items: center;
+    width: 100%; min-height: 78px; color: inherit; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .mlist:not(.single) .mcard.sel { border-color: var(--sun); background: rgba(255,255,255,.22); box-shadow: 0 0 0 3px rgba(255,214,10,.35); }
+  .mlist:not(.single) .mcard:not(.sel) { opacity: .85; }
   .mcard .num { width: 54px; height: 54px; border-radius: 16px; background: var(--sun); color: #6b4e00; font-size: 26px; font-weight: 800; display: grid; place-items: center; flex: none; }
   .mcard b { font-size: 20px; display: block; line-height: 1.1; }
   .mcard small { opacity: .8; font-size: 14px; font-weight: 600; }
@@ -228,21 +232,14 @@
     <div class="logo">⚽</div>
     <h1>Fußball-<span>IQ</span> Kids</h1>
     <p class="sub">Schau hin. Entscheide. Probier's aus!</p>
-    <div class="mcard">
-      <div class="num" id="mNum"></div>
-      <div>
-        <b id="mTitle"></b>
-        <small id="mSub"></small>
-        <div class="chips" id="mChips"></div>
-      </div>
-    </div>
+    <div id="missionList" class="mlist" role="group" aria-label="Missionen"></div>
     <button class="big" id="play">▶ Los geht's</button>
     <div class="how">
       <div><i>🔵</i>Du spielst Blau</div>
       <div><i>👆</i>Knopf, dann Feld</div>
       <div><i>↩️</i>Nochmal probieren</div>
     </div>
-    <p class="ver" id="ver">Version 0.3.1</p>
+    <p class="ver" id="ver">Version 0.4.0</p>
   </div>
 </div>
 
@@ -266,9 +263,10 @@
 <div id="confetti"></div>
 <div class="goalBanner" id="goalBanner"></div>
 
-<script src="content/texte.js?v=0.3.1"></script>
-<script src="missions/mission-1.js?v=0.3.1"></script>
-<script src="engine.js?v=0.3.1"></script>
-<script src="app.js?v=0.3.1"></script>
+<script src="content/texte.js?v=0.4.0"></script>
+<script src="missions/mission-1.js?v=0.4.0"></script>
+<script src="missions/welches-tor-ist-frei.js?v=0.4.0"></script>
+<script src="engine.js?v=0.4.0"></script>
+<script src="app.js?v=0.4.0"></script>
 </body>
 </html>

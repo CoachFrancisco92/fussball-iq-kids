@@ -4,7 +4,7 @@ Ein Fußballspiel mit integriertem Entscheidungstraining für Kinder ab fünf Ja
 Das Kind erlebt eine echte Spielsituation (3 gegen 3, vier Minitore, Torschusszonen nach DFB-Kinderfußball),
 entscheidet per Antippen, und der nächste Spielzustand ergibt sich aus dieser Entscheidung.
 
-**Stand:** V0.2.4 – Mission 1 „Zusammen sind wir stark!“ (Angriffs- und Verteidigungsphase, „Erst schauen, dann entscheiden“). Änderungen: [CHANGELOG.md](CHANGELOG.md).
+**Stand:** V0.4.0 (zur Abnahme) – Missionsauswahl mit zwei Missionen: „Welches Tor ist frei?“ (Lernwelt 1, Torabschluss, 2 gegen 2, wechselnde Situationen) und Mission 1 „Zusammen sind wir stark!“ (Lernwelt 2, Angriff und Verteidigung, „Erst schauen, dann entscheiden“). Änderungen: [CHANGELOG.md](CHANGELOG.md).
 
 ## Spielen
 - Online: https://coachfrancisco92.github.io/fussball-iq-kids/ (Version steht auf dem Startbildschirm)

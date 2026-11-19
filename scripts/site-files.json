@@ -4,6 +4,7 @@
     "index.html",
     "content/texte.js",
     "missions/mission-1.js",
+    "missions/welches-tor-ist-frei.js",
     "engine.js",
     "app.js",
     "sw.js",
