@@ -203,3 +203,27 @@ Für jede neue Mission gelten wie bei A:
 5. Für später:
    - M4 (Start ohne Ball) für „Spiel mich an!“ statt Pass-Einstieg?
    - Bei „Zusammen verteidigen!“: Soll das Kind beide Rollen wählen, oder wählt es den Angreifer und das Absichern geschieht automatisch und wird erklärt?
+
+## Entscheidungen des Product Owners (19.11.2026)
+1. **Katalog freigegeben, Lernpfad geändert:**
+   1. Welches Tor ist frei?
+   2. Freie Bahn!
+   3. Pass oder Dribbling?
+   4. Spiel mich an!
+   5. Zusammen sind wir stark!
+   6. Zusammen verteidigen!
+
+   Die Lernwelten dürfen neu strukturiert werden. Vorhandene Missionen bleiben unverändert und frei wählbar. Die Reihenfolge auf dem Startbildschirm darf später angepasst werden.
+2. **Missionsarten Lernen/Spiel freigegeben:** ein Datenfeld und eine Kennzeichnung auf der Karte. „Zusammen sind wir stark!“ ist das Vorbild für Spielmissionen.
+3. **Nächste Missionen:**
+   - „Freie Bahn!“, danach „Pass oder Dribbling?“, beide auf Basis von D1/D2;
+   - A4 kommt dazu, sobald die Dribbelbewertung zuverlässig ist.
+4. **Meilenstein 3a beauftragt** (Analyse D1/D2): Ergebnis in `docs/paket-d-analyse.md`.
+5. **„Spiel mich an!“:**
+   - Direkter Einstieg ohne Ball, wenn es eine allgemeine Erweiterung erlaubt.
+   - Zusätzlich ist zu prüfen, welches minimale Mitspielerverhalten nötig ist, damit aus gutem Freilaufen erlebbar ein Pass, eine Torchance oder freier Raum entsteht. Eine positive Rückmeldung allein reicht nicht.
+   - Das wird mit der B3a-Analyse geprüft.
+6. **„Zusammen verteidigen!“ (erste Version):**
+   - Das Kind wählt den Spieler, der Druck macht. Die übrigen sichern automatisch und situationsgerecht ab, und die App zeigt und erklärt das.
+   - Die Absicherung beginnt schon während der laufenden Spielphase.
+   - Die eigene Wahl des Absichernden kommt später als Schwierigkeitsstufe.
