@@ -12,7 +12,7 @@ Grundlage: UX-Review `docs/ux-review-v0.5.md`, Maßnahmen 1.1–1.5 (freigegeben
 - **Einzelaktion:** Ist nur eine Aktion möglich, entfallen Aktionsknöpfe und „Zurück“; die Hilfe bleibt sichtbar.
 - Schnelles Mehrfach-Antippen: Knöpfe wirken nur im passenden Zustand; ein Doppeltipp auf einen Knopf zählt nicht als Tipp aufs Spielfeld darunter.
 - Oberflächen-Mitschriften (vorgelegt, nicht freigegeben): Mission 1 – 3 Einträge (Schlussansage „Das war die letzte Mission …“), Mission A – 1 Eintrag, „Freie Bahn!“ – 50 Einträge (jeweils nur: keine Aktionsknöpfe bei einer Aktion). Listen: `tests/golden/abweichungen-v0.5.1-ui.json`, `ui-missionA-abweichungen-v0.5.1.json`, `ui-freieBahn-abweichungen-v0.5.1.json`.
-- Tests: `tests/sprache.test.js` (17), `tests/e2e/navigation.mjs` (Sprache mit nachgebauter Sprachausgabe inkl. Safari-Fällen, 🏠 in Übergängen, Neustart, Durchläufe, Missionswechsel, Hilfe bei Einzelaktion, Touch iPad/Handy); Mitschrift-Abweichungen für Mission A und „Freie Bahn!“ jetzt wie bei Mission 1 vorlegbar (`tests/helpers/ui-abweichungen.mjs`).
+- Tests: `tests/sprache.test.js` (17), `tests/e2e/navigation.mjs` (Sprache mit nachgebauter Sprachausgabe inkl. Safari-Fällen, 🏠 in Übergängen, Neustart, Durchläufe, Missionswechsel, Hilfe bei Einzelaktion, Touch iPad/Handy); Mitschrift-Abweichungen für Mission A und „Freie Bahn!“ jetzt wie bei Mission 1 vorlegbar (`tests/helpers/ui-abweichungen.mjs`). Mitschrift-Tests nutzen eine sofort fertige nachgebaute Sprachausgabe (unabhängig vom Sprechtempo der Umgebung).
 
 ## V0.5.0 – Mission „Freie Bahn!“, A4 und Paket D
 ### Meilenstein 4: „Freie Bahn!“ und A4

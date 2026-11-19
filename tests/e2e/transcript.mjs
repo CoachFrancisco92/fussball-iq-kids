@@ -28,7 +28,7 @@ async function flow(browser, name, steps) {
   page.on('pageerror', (e) => errors.push(e.message));
   await page.addInitScript(() => {
     window.__said = [];
-    if ('speechSynthesis' in window) { const s = speechSynthesis; const orig = s.speak.bind(s); s.speak = (u) => { window.__said.push(u.text); try { orig(u); } catch (e) {} }; }
+    if ('speechSynthesis' in window) { const s = speechSynthesis; const orig = s.speak.bind(s); s.speak = (u) => { window.__said.push(u.text); setTimeout(() => { if (u.onend) u.onend({}); }, 0); }; /* V0.5.1: sofort fertige Sprachausgabe – Mitschrift unabhängig vom Sprechtempo der Umgebung; Zeitverhalten prüft e2e/navigation.mjs */ }
   });
   await page.goto(base + 'index.html', { waitUntil: 'domcontentloaded' });
   const log = [];
