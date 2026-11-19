@@ -4,8 +4,12 @@
 //   v0.2.5 – Hotfix Endlosszene: 10 Abfolgen (docs/hotfix-endlosszene.md)
 //   v0.3.0 – Engine-Paket E1–E6: 153 Bewertungen, 3 Ansagen (docs/bewertungsaenderungen-e1.md)
 //   v0.3.1 – Korrektur A Freilaufen: 115 Rückmeldungen/Anzeigen, Hilfe-Durchlauf, 2 Ansagen (docs/korrektur-a-freilaufen.md)
-// Mission „Welches Tor ist frei?“ (Meilenstein 2): eigene Referenzen, erstmals erzeugt mit v0.4.0 (noch nicht freigegeben).
+//   v0.5.0 – Paket D (Dribbelbewertung/-hilfe, E1–E6): Mission 1 26 Bewertungen + 10 Oberflächen-Einträge, Mission A 12
+//            Bewertungen; Spielverlauf unverändert (docs/meilenstein-3b.md). Vorgelegte Listen: historie/v0.5.0-paket-d-*.json,
+//            Prüfung: tests/analysis/paket-d/referenzwechsel-pruefen.js. Erzeugt mit Commit 707e9ac (tag = dieser Stand,
+//            bis der Release-Tag v0.5.0 existiert).
+// Mission „Welches Tor ist frei?“: eigene Referenzen (v0.4.0 in historie/, seit v0.5.0 mit Paket D).
 module.exports = {
-  file: 'mission1.v0.3.1.json', ui: 'ui-transcript.v0.3.1.json', tag: 'v0.3.1', seit: 'v0.3.1',
-  missionA: { file: 'mission-a.v0.4.0.json', hash: '5a323f55a74e95eb', ui: 'ui-mission-a.v0.4.0.json' },
+  file: 'mission1.v0.5.0.json', ui: 'ui-transcript.v0.5.0.json', tag: '707e9ace6aaecdf70b35d647c729acd88c6aaa7f', seit: 'v0.5.0',
+  missionA: { file: 'mission-a.v0.5.0.json', hash: 'c53a4cd03ff008fc', ui: 'ui-mission-a.v0.5.0.json' },
 };
