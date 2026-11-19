@@ -26,13 +26,13 @@ async function open(withTest) {
   const errors = []; page.on('pageerror', (e) => errors.push(e.message));
   await page.addInitScript((fx) => {
     window.__said = [];
-    if ('speechSynthesis' in window) { const s = speechSynthesis; const orig = s.speak.bind(s); s.speak = (u) => { window.__said.push(u.text); setTimeout(() => { if (u.onend) u.onend({}); }, 0); }; /* V0.5.1: sofort fertige Sprachausgabe – Mitschrift unabhängig vom Sprechtempo der Umgebung; Zeitverhalten prüft e2e/navigation.mjs */ }
+    if (true) { /* V0.5.1: nachgebaute Sprachausgabe, die jede Ansage im selben Moment beendet – die Mitschrift hält jede angeforderte Ansage fest, unabhängig vom Sprachsystem der Umgebung; Zeitverhalten prüft e2e/navigation.mjs */ const fake = { speaking: false, pending: false, paused: false, speak(u) { window.__said.push(u.text); if (u.onend) u.onend({}); }, cancel() {}, resume() {}, pause() {}, getVoices() { return []; }, addEventListener() {} }; Object.defineProperty(window, 'speechSynthesis', { value: fake, configurable: true }); }
     if (fx) (0, eval)(fx);
   }, withTest ? fixture : '');
   await page.goto(base + 'index.html');
   const H = {
     page, errors,
-    said: () => page.evaluate(() => window.__said.splice(0)),
+    said: async () => /* V0.5.1: erst lesen, wenn die Sprachsteuerung alle angeforderten Ansagen gestartet hat */ (await page.waitForFunction(() => { const s = window.__fiq && window.__fiq.speech; return !s || (!s.cur && !s.queue.length); }, null, { timeout: 5000 }), page.evaluate(() => window.__said.splice(0))),
     mode: () => page.evaluate(() => window.__fiq.mode),
     waitMode: async (m) => { for (let i = 0; i < 500; i++) { if ((await H.mode()) === m) return; await page.waitForTimeout(40); } fail(`Modus ${m} erwartet, ist ${await H.mode()}`); },
     touch: async (sel) => { const b = await page.locator(sel).boundingBox(); await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); },
