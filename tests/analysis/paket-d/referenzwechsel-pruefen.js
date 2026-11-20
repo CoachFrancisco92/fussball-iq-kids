@@ -5,7 +5,7 @@ const G = require('node:path').join(__dirname, '..', '..', 'golden') + '/'; cons
 const r = (f) => require(G + f);
 const bad = [];
 // Mission 1 Engine
-{ const A = r('historie/mission1.v0.3.1.json'), B = r('mission1.v0.5.0.json'), P = r('historie/v0.5.0-paket-d-abweichungen.json');
+{ const A = r('historie/mission1.v0.3.1.json'), B = r('historie/mission1.v0.5.0.json'), P = r('historie/v0.5.0-paket-d-abweichungen.json');
   for (const k of Object.keys(A.scripted)) { const p = P.scripted[k], same = JSON.stringify(A.scripted[k]) === JSON.stringify(B.scripted[k]);
     if (p ? !(hash(A.scripted[k]) === p.alt && hash(B.scripted[k]) === p.neu) : !same) bad.push('M1 Ablauf ' + k); }
   if (P.hinted ? hash(B.hinted) !== P.hinted.neu : JSON.stringify(A.hinted) !== JSON.stringify(B.hinted)) bad.push('M1 Hilfe');

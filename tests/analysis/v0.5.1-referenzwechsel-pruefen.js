@@ -28,19 +28,19 @@ function pruefe(name, alt, neu, liste) {
 
 // Mission 1: drei Abläufe, je Ablauf eine Liste
 {
-  const alt = r('historie/ui-transcript.v0.5.0.json'), neu = r('ui-transcript.v0.5.1.json'), liste = r('historie/v0.5.1-ui-mission1-abweichungen.json');
+  const alt = r('historie/ui-transcript.v0.5.0.json'), neu = r('historie/ui-transcript.v0.5.1.json'), liste = r('historie/v0.5.1-ui-mission1-abweichungen.json');
   if (J(Object.keys(alt)) !== J(Object.keys(neu))) fail('Mission 1: andere Abläufe');
   let n = 0;
   for (const k of Object.keys(alt)) n += pruefe(`Mission 1 „${k}“`, alt[k], neu[k], liste[k] || []) || 0;
   if (n !== 3) fail(`Mission 1: ${n} statt 3 freigegebene Abweichungen`);
 }
 {
-  const n = pruefe('Mission A', r('historie/ui-mission-a.v0.5.0.json'), r('ui-mission-a.v0.5.1.json'), r('historie/v0.5.1-ui-missionA-abweichungen.json'));
+  const n = pruefe('Mission A', r('historie/ui-mission-a.v0.5.0.json'), r('historie/ui-mission-a.v0.5.1.json'), r('historie/v0.5.1-ui-missionA-abweichungen.json'));
   if (n !== 1) fail(`Mission A: ${n} statt 1`);
 }
 {
   const liste = r('historie/v0.5.1-ui-freieBahn-abweichungen.json');
-  const n = pruefe('Freie Bahn', r('historie/ui-freie-bahn.v0.5.0.json'), r('ui-freie-bahn.v0.5.1.json'), liste);
+  const n = pruefe('Freie Bahn', r('historie/ui-freie-bahn.v0.5.0.json'), r('historie/ui-freie-bahn.v0.5.1.json'), liste);
   if (n !== 50) fail(`Freie Bahn: ${n} statt 50`);
   // freigegeben war ausschließlich: Aktionsknöpfe entfallen
   for (const d of liste) {

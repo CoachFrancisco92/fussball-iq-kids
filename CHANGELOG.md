@@ -8,7 +8,7 @@ Freigabe P1–P5 (PO, 20.11.2026). Bericht, Kriterien und Gegenprüfungen: `docs
 - **P4 Sterne je Situation:** Kernleistung statt Einzelentscheidung; ⭐💡 bei Hilfe (voller Stern); nicht geschafft: Hinweis + „Nochmal“; Fortschritt und Endbildschirm je Situation; Mission 1: Angriff/Abwehr.
 - **P5 Darstellung:** größere Spieler mit Blickrichtung, fester Ausschnitt in Lernmissionen, Lücke ✓/✗, Wächter-Schatten, „Vorbei!“, Passweg.
 - Tests: `tests/lernaufbau.test.js`, `tests/ursachen.test.js` (neu), Mission-A/Freie-Bahn-Tests und -Browserdurchläufe angepasst, `e2e/navigation.mjs` Block 3d (Kurzrückmeldung); Analysen `tests/analysis/v0.6/text-abweichungen.js`, `bildschirm.mjs`.
-- **Referenzen nicht erneuert** – vorgelegt: `abweichungen-v0.6a.json` (nur Text), `missionA-`/`freieBahn-abweichungen-v0.6a.json` (neue Situationen), `*-v0.6a-ui.json` (Oberfläche).
+- **Referenzen v0.6.0 (freigegeben 20.11.2026):** `mission1.v0.6.0.json` (nur Sätze; Simulation/Bewertung unverändert), `mission-a.v0.6.0.json`, `freie-bahn.v0.6.0.json` (neue Situationen), `ui-transcript/ui-mission-a/ui-freie-bahn.v0.6.0.json`. Vorgänger und Listen in `tests/golden/historie/` (`v0.6.0-*.json`), geprüft mit `tests/analysis/v0.6.0-referenzwechsel-pruefen.js`.
 - Backlog (nur Dokumentation): `docs/backlog.md`.
 
 ## V0.5.1 – Sprachsteuerung, Navigation, Einzelaktion (zur Abnahme, unveröffentlicht)

@@ -2,7 +2,7 @@
 // freigegebenen Abweichungen (historie/v0.5.0-a4-missionA-abweichungen.json), nichts sonst. Aufruf: node tests/analysis/a4-referenzwechsel-pruefen.js
 const path = require('node:path'), { hash } = require('../golden/trace.js');
 const G = path.join(__dirname, '..', 'golden'), H = path.join(G, 'historie');
-const A = require(path.join(H, 'mission-a.v0.5.0-paket-d.json')), B = require(path.join(G, 'mission-a.v0.5.0.json')), P = require(path.join(H, 'v0.5.0-a4-missionA-abweichungen.json'));
+const A = require(path.join(H, 'mission-a.v0.5.0-paket-d.json')), B = require(path.join(H, 'mission-a.v0.5.0.json')), P = require(path.join(H, 'v0.5.0-a4-missionA-abweichungen.json'));
 const bad = [];
 if (JSON.stringify(Object.keys(A.styles)) !== JSON.stringify(Object.keys(B.styles))) bad.push('Spielweisen-Liste');
 for (const k of Object.keys(A.styles)) { const p = P.styles[k]; if (p ? !(hash(A.styles[k]) === p.alt && hash(B.styles[k]) === p.neu) : JSON.stringify(A.styles[k]) !== JSON.stringify(B.styles[k])) bad.push('Spielweise ' + k); }
