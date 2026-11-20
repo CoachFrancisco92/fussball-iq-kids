@@ -1,7 +1,7 @@
 /* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen (V0.2) */
 (function () {
   'use strict';
-  const APP_VERSION = '0.6.0';
+  const APP_VERSION = '0.6.1';
   // Schutz gegen gemischte Cache-Stände (neue Seite + altes Skript oder umgekehrt)
   try {
     const htmlV = (document.querySelector('meta[name="app-version"]') || {}).content;
@@ -42,7 +42,8 @@
     try { speechSynthesis.addEventListener('voiceschanged', () => Sprache.stimmenGeaendert()); } catch (e) {}
     document.addEventListener('visibilitychange', () => { if (!document.hidden) Sprache.fortsetzen(); });
   }
-  const say = (t, art, sofort, merken) => Sprache.sage(t, { art, sofort, merken });
+  // Gesprochen wird die Aussprache-Fassung des angezeigten Texts (content/texte.js → sprechtext, z. B. „Toooor!“ → „Tor!“)
+  const say = (t, art, sofort, merken) => { const tx = T(); Sprache.sage(tx.sprechtext ? tx.sprechtext(t || '') : t, { art, sofort, merken }); };
   const Sfx = {
     ac: null,
     ctx() { if (!this.ac) { try { this.ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } return this.ac; },

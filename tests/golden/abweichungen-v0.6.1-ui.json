@@ -1,0 +1,27 @@
+{
+ "Schau falsch/richtig, Fehlpass, Wiederholen, Vergleichen, Rest mit Hilfe": [
+  {
+   "eintrag": 15,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Vor diesem Tor steht kein Gegner im Weg.",
+     "Toooor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+    ],
+    "title": "Welches Tor ist frei?",
+    "tag": "Torabschluss",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Vor diesem Tor steht kein Gegner im Weg.",
+     "Tor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+    ],
+    "title": "Welches Tor ist frei?",
+    "tag": "Torabschluss",
+    "step": ""
+   }
+  }
+ ]
+}

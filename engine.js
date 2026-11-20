@@ -1476,5 +1476,5 @@
   }
 
   root.FIQ = {
-    VERSION: '0.6.0', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, ursachen, lernStart, lernAuswertung, LERNZIELE, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.6.1', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, ursachen, lernStart, lernAuswertung, LERNZIELE, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);
