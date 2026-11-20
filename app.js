@@ -857,7 +857,8 @@
     folgeWeiter = weiterNachFolge;
     Sprache.phase();
     const f = T().folge;
-    const grund = fo.gruende.includes('toreVeraendert') ? 'tore' : fo.gruende.includes('ballVerloren') ? 'ball' : 'gegner';
+    const grund = fo.gruende.includes('toreVeraendert') ? 'tore' : fo.gruende.includes('ballVerloren') ? 'ball'
+      : fo.gegner.length > 1 ? 'gegnerMehrere' : 'gegner';
     say(f[grund] || f.schau, 'ansage', false, false);
     const ms = f.dauer || 1400;
     Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 6000 });   // kurze Frage zu Ende sprechen; Tippen darf sofort weiter
