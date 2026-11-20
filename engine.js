@@ -648,7 +648,7 @@
       const raumGewaehlt = a.kind === 'pass' && !a.id;
       const passText = () => {
         if (sit.ok.mate && !raumGewaehlt) return E.freund;                                     // wie bisher (Pass zum Mitspieler)
-        if (raumGewaehlt && spacePassInfo(s, c, clampP(a)).ok) return E.raum;                  // genau diesen Raum gesehen
+        if (raumGewaehlt && spacePassInfo(s, c, clampP(a)).ok) return E.raum;                  // genau diesen Raum gewählt
         return E.abspielen;                                                                    // Abspielen richtig, Ziel nicht
       };
       if (sit.ok[a.kind]) rec = R(true, a.kind === 'shoot' ? E.torchance : a.kind === 'pass' ? passText() : E.platz);

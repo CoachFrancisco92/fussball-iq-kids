@@ -30,7 +30,10 @@ let alt, neu;
 try { alt = dump(wt); neu = dump(root); } finally { execFileSync('git', ['worktree', 'remove', '--force', wt], { cwd: root, stdio: 'ignore' }); }
 
 const TEXT = { ctx: ['title', 'say'], fb: ['text', 'tip', 'say'] };
-const ohneText = (x) => { const y = JSON.parse(JSON.stringify(x)); for (const [k, fs2] of Object.entries(TEXT)) if (y[k]) for (const f of fs2) delete y[k][f]; return y; };
+// Bewertungstexte (rec.why/exe.why/why – Chip-Hinweise) sind ebenfalls nur Sätze: überall entfernt, gut/schlecht bleibt im Vergleich
+const ohneWhy = (y) => { if (Array.isArray(y)) y.forEach(ohneWhy); else if (y && typeof y === 'object') for (const k of Object.keys(y)) { if (k === 'why' && typeof y[k] === 'string') delete y[k]; else ohneWhy(y[k]); } return y; };
+const whyListe = (y, o = []) => { if (Array.isArray(y)) y.forEach((z) => whyListe(z, o)); else if (y && typeof y === 'object') for (const k of Object.keys(y)) { if (k === 'why' && typeof y[k] === 'string') o.push(y[k]); else whyListe(y[k], o); } return o; };
+const ohneText = (x) => { const y = JSON.parse(JSON.stringify(x)); for (const [k, fs2] of Object.entries(TEXT)) if (y[k]) for (const f of fs2) delete y[k][f]; return ohneWhy(y); };
 const J = (x) => JSON.stringify(x);
 const stat = {}, paare = new Map(); let spiel = 0, schritte = 0, geaendert = 0;
 function vergleiche(name, A, B) {
@@ -47,6 +50,11 @@ function vergleiche(name, A, B) {
       for (const [o, fs2] of Object.entries(TEXT)) for (const f of fs2) if (x[o] && J(x[o][f]) !== J(b[i][o][f])) {
         stat[`${name} ${o}.${f}`] = (stat[`${name} ${o}.${f}`] || 0) + 1;
         if (f === 'say') { const key = `${o}: ${x[o][f]}\n   → ${b[i][o][f]}`; paare.set(key, (paare.get(key) || 0) + 1); }
+      }
+      const wa = whyListe(x), wb = whyListe(b[i]);
+      if (J(wa) !== J(wb)) {
+        stat[`${name} Bewertungstext (why)`] = (stat[`${name} Bewertungstext (why)`] || 0) + 1;
+        wa.forEach((t, j) => { if (t !== wb[j]) { const key = `why: ${t}\n   → ${wb[j]}`; paare.set(key, (paare.get(key) || 0) + 1); } });
       }
     });
   }

@@ -229,13 +229,89 @@
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(String(p.num), X(p.x), Y(p.y) + Mm(0.04));
     }
-    const b = v.ball;
-    ctx.fillStyle = 'rgba(0,0,0,.25)';
-    ctx.beginPath(); ctx.ellipse(X(b.x + 0.1), Y(b.y + 0.22), Mm(0.36), Mm(0.22), 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.strokeStyle = '#111'; ctx.lineWidth = Mm(0.07);
-    ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), Mm(0.38), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#111';
-    ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), Mm(0.13), 0, Math.PI * 2); ctx.fill();
+    drawBall(v);
+  }
+
+  // ---------- V0.6.2: Ball als klassischer schwarz-weißer Fußball (2D-Vektorgrafik, nur Darstellung)
+  // Grafischer Radius 0,46 m (vorher 0,38 m), mindestens 7 CSS-Pixel; die Spielmechanik (Position, Kollision) bleibt unverändert.
+  // Muster: Fünfeck in der Mitte, fünf angeschnittene Fünfecke am Rand, Nähte dazwischen (Sechsecke); unter 9 CSS-Pixeln
+  // vereinfacht (ohne Nähte), damit es auch klein als Fußball erkennbar bleibt. Einmal je Pixelgröße
+  // vorgezeichnet (Zwischenspeicher) – keine Mehrkosten pro Bild.
+  const R_BALL = 0.46, BALL_MIN_CSS = 7;
+  const ballCache = new Map();
+  function ballSprite(rPx) {
+    const key = Math.round(rPx * 2) / 2, ck = key + '@' + dpr;
+    if (ballCache.has(ck)) return ballCache.get(ck);
+    const pad = 2, size = Math.ceil(key * 2 + pad * 2), c = document.createElement('canvas');
+    c.width = c.height = size;
+    const g = c.getContext('2d'), m = size / 2, R = key, klein = key / dpr < 9;
+    const P = (cx, cy, r, rot) => { const pts = []; for (let i = 0; i < 5; i++) { const w = rot + (i * 2 * Math.PI) / 5; pts.push([cx + Math.cos(w) * r, cy + Math.sin(w) * r]); } return pts; };
+    const flach = (pts, cx, cy, w, k) => pts.map(([x, y]) => { const dx = x - cx, dy = y - cy, ux = Math.cos(w), uy = Math.sin(w); const a = dx * ux + dy * uy, b = -dx * uy + dy * ux; return [cx + ux * a * k - uy * b, cy + uy * a * k + ux * b]; });
+    const poly = (pts) => { g.beginPath(); pts.forEach(([x, y], i) => g[i ? 'lineTo' : 'moveTo'](x, y)); g.closePath(); };
+    const grad = g.createRadialGradient(m - R * 0.35, m - R * 0.4, R * 0.1, m, m, R);
+    grad.addColorStop(0, '#ffffff'); grad.addColorStop(1, '#d9dee5');
+    g.fillStyle = grad; g.beginPath(); g.arc(m, m, R, 0, Math.PI * 2); g.fill();
+    g.save(); g.beginPath(); g.arc(m, m, R, 0, Math.PI * 2); g.clip();
+    const ink = '#16181c'; g.fillStyle = ink; g.strokeStyle = ink;
+    const rot = -Math.PI / 2, pc = R * 0.36, dist = R * 0.9, po = R * 0.34, fk = 0.62;
+    const mitte = P(m, m, pc, rot); poly(mitte); g.fill();
+    const aussen = [];
+    for (let k = 0; k < 5; k++) {
+      const w = rot + (k * 2 * Math.PI) / 5, cx = m + Math.cos(w) * dist, cy = m + Math.sin(w) * dist;
+      const pts = flach(P(cx, cy, po, w + Math.PI), cx, cy, w, fk); aussen.push(pts); poly(pts); g.fill();
+    }
+    if (!klein) {
+      g.lineWidth = Math.max(1, R * 0.05); g.lineCap = 'round'; g.lineJoin = 'round';
+      for (let k = 0; k < 5; k++) {
+        const w = rot + (k * 2 * Math.PI) / 5;
+        // Naht Mitte-Ecke → innere Ecke des Randfünfecks
+        g.beginPath(); g.moveTo(...mitte[k]); g.lineTo(...aussen[k][0]); g.stroke();
+        // Sechseck-Außenkante: nächstgelegene Ecken benachbarter Randfünfecke verbinden
+        const n = aussen[(k + 1) % 5]; let best = null;
+        for (const pa of aussen[k]) for (const pb of n) { const d = Math.hypot(pa[0] - pb[0], pa[1] - pb[1]); if (!best || d < best[0]) best = [d, pa, pb]; }
+        g.beginPath(); g.moveTo(...best[1]); g.lineTo(...best[2]); g.stroke();
+      }
+    }
+    g.restore();
+    g.lineWidth = Math.max(1, R * 0.09); g.strokeStyle = ink;
+    g.beginPath(); g.arc(m, m, R - g.lineWidth / 2, 0, Math.PI * 2); g.stroke();
+    const sprite = { c, m };
+    if (ballCache.size > 24) ballCache.clear();
+    ballCache.set(ck, sprite);
+    return sprite;
+  }
+  // Liegt der Ball beim Ballführenden näher als 1,05 m an dessen Mitte (Simulation: ruhend = Spielermitte, Mission 1 teils
+  // 0,4 m davor), zeigen wir ihn vorn am Fuß (1,05 m, wie beim Dribbling) – in Richtung des Balls, bei Ball in der Mitte in
+  // Angriffsrichtung. So verdeckt er weder Figur noch Nummer, und der Besitz ist eindeutig. Fliegt er danach los, klingt der
+  // Versatz auf den ersten 2 m Flugweg gleichmäßig aus (kein Rücksprung). Reine Darstellung: Simulation, Kollision, Wege unverändert.
+  const BALL_VOR = 1.05;
+  let ballHalt = null, ballZuletzt = null;
+  function ballAnzeige(v) {
+    const b = v.ball, o = v.owner && v.players.find((p) => p.id === v.owner);
+    if (o) {
+      const dx = b.x - o.x, dy = b.y - o.y, d = Math.hypot(dx, dy);
+      if (d < BALL_VOR - 0.01) {
+        const ux = d > 0.05 ? dx / d : (o.team === 'blue' ? 1 : -1), uy = d > 0.05 ? dy / d : 0;
+        const ziel = { x: o.x + ux * BALL_VOR, y: o.y + uy * BALL_VOR };
+        ballHalt = { x: b.x, y: b.y, ox: ziel.x - b.x, oy: ziel.y - b.y };
+        return ziel;
+      }
+      ballHalt = null; return b;
+    }
+    if (ballHalt) {
+      const f = Math.max(0, 1 - Math.hypot(b.x - ballHalt.x, b.y - ballHalt.y) / 2);
+      if (f > 0) return { x: b.x + ballHalt.ox * f, y: b.y + ballHalt.oy * f };
+    }
+    return b;
+  }
+  function drawBall(v) {
+    const b = ballAnzeige(v);
+    const rPx = Math.max(Mm(R_BALL), BALL_MIN_CSS * dpr);
+    ctx.fillStyle = 'rgba(0,0,0,.25)';                                       // Schatten
+    ctx.beginPath(); ctx.ellipse(X(b.x) + rPx * 0.2, Y(b.y) + rPx * 0.55, rPx * 0.95, rPx * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+    const sp = ballSprite(rPx);
+    ballZuletzt = { x: b.x, y: b.y, rCss: rPx / dpr, owner: v.owner || null };
+    ctx.drawImage(sp.c, Math.round(X(b.x) - sp.m), Math.round(Y(b.y) - sp.m));
   }
 
   const R_SPIELER = 1.02; // V0.6a P5: Spieler ca. 20 % größer (vorher 0,85 m; 25 % überdeckt den Ballführenden beim Pressing zu stark); Tippflächen unverändert
@@ -912,7 +988,7 @@
     const good = sits.filter((x) => x.e.geloest).length, mitHilfe = sits.filter((x) => x.e.geloest && x.e.hilfe).length;
     $('stars').innerHTML = sits.map((x) => `<span class="${x.e.geloest ? 'on' : ''}">★</span>`).join('');
     const TE = T().ende, TL = T().lern;
-    $('endScore').textContent = TE.spielstand(S.score.blue, S.score.red) + (looks.length ? TE.erkannt(looks.filter((l) => l.right && l.tries === 1).length, looks.length) : '') + '  ·  ' + TE.zaehler(good, sits.length, mitHilfe);
+    $('endScore').textContent = TE.spielstand(S.score.blue, S.score.red) + (looks.length ? TE.schauRichtig(looks.filter((l) => l.right && l.tries === 1).length, looks.length) : '') + '  ·  ' + TE.zaehler(good, sits.length, mitHilfe);
     const msg = TE.lob(good, sits.length) + (TE.merksatz || '');
     $('endMsg').textContent = msg;
     $('endList').innerHTML = sits.map((x) => `<li class="${x.e.geloest ? 'good' : ''}"><b>${x.key === 'verteidigung' ? '🛡️' : '⚽'}</b> ${TL.titel[x.e.typ] || ''} <span>${x.e.geloest ? '⭐' + (x.e.hilfe ? '💡' : '') : '✓'}</span></li>`).join('');
@@ -1081,5 +1157,5 @@
     try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
   }
   // Testzugriff (nur lesend) für automatisierte Oberflächentests
-  window.__fiq = { get taps() { return { ...tapCount }; }, get replayIdx() { return replay ? replay.i : -1; }, get dec() { return dec; }, get run() { return curRun; }, get id() { return curId; }, get paused() { return pausiert; }, get relevant() { return Sprache.relevant; }, get speech() { return Sprache._zustand(); }, get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; }, get view() { return { ...VIEW }; }, get lern() { return JSON.parse(JSON.stringify(lernErgebnis)); }, get feldScale() { return scale; }, get blattSeite() { return $('app').classList.contains('blattSeite'); }, get folge() { return folgeView ? { gruende: folgeView.gruende, gegner: folgeView.gegner.map((g) => g.id), tore: folgeView.tore } : null; }, get kurz() { return kurzInfo ? { dec: kurzInfo.dec, tip: kurzInfo.fb.tip } : null; }, get lernView() { return lernView ? Object.keys(lernView) : []; } };
+  window.__fiq = { get taps() { return { ...tapCount }; }, get replayIdx() { return replay ? replay.i : -1; }, get dec() { return dec; }, get run() { return curRun; }, get id() { return curId; }, get paused() { return pausiert; }, get relevant() { return Sprache.relevant; }, get speech() { return Sprache._zustand(); }, get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; }, get view() { return { ...VIEW }; }, get lern() { return JSON.parse(JSON.stringify(lernErgebnis)); }, get feldScale() { return scale; }, get ball() { return ballZuletzt ? { ...ballZuletzt } : null; }, get blattSeite() { return $('app').classList.contains('blattSeite'); }, get folge() { return folgeView ? { gruende: folgeView.gruende, gegner: folgeView.gegner.map((g) => g.id), tore: folgeView.tore } : null; }, get kurz() { return kurzInfo ? { dec: kurzInfo.dec, tip: kurzInfo.fb.tip } : null; }, get lernView() { return lernView ? Object.keys(lernView) : []; } };
 })();

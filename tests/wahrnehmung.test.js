@@ -154,3 +154,19 @@ test('Rückmeldungen und Lernergebnisse unterstellen kein Sehen, Erkennen oder D
   // „Gut gewählt!“ nur bei guter Entscheidung (sonst keine unpassende positive Bewertung)
   for (const x of ALLE) if (/Gut gewählt|gewählt!/.test(x.fb.say)) assert.ok(x.fb.good, 'Lob ohne Stern: ' + x.fb.say);
 });
+
+test('Ganzer Textkatalog (alle Missionen, inkl. verborgener Hinweistexte und Endstatistik) ohne unterstellte Wahrnehmung/Gedanken', () => {
+  const fehler = new Set();
+  const walk = (o, pfad) => {
+    for (const [k, v] of Object.entries(o)) {
+      if (typeof v === 'string') { if (UNTERSTELLT.test(v) || /\bsofort erkannt\b/.test(v)) fehler.add(`${pfad}.${k}: ${v}`); }
+      else if (typeof v === 'function') { let t = ''; try { t = String(v('Rot 1', 'Rot 2', 'Rot 3')); } catch (e) { t = ''; } if (UNTERSTELLT.test(t) || /sofort erkannt/.test(t)) fehler.add(`${pfad}.${k}(): ${t}`); }
+      else if (v && typeof v === 'object') walk(v, pfad + '.' + k);
+    }
+  };
+  for (const id of ['mission-1', 'welches-tor-ist-frei', 'freie-bahn']) walk(E.texts(id), id);
+  assert.deepStrictEqual([...fehler], []);
+  const T = E.texts('mission-1');
+  assert.strictEqual(T.erkennen.torchance, 'Ein Tor war frei – Schießen war eine gute Wahl.');
+  assert.match(T.ende.schauRichtig(2, 3), /2\/3 beim ersten Versuch richtig/);
+});

@@ -5,6 +5,8 @@ Freigabe Maßnahmen 1–3 aus `docs/qs-kindertest-v0.6.0.md` (PO, 20.11.2026). B
 - Ansagen passen zur Lage: „Ein Roter ist hinter dir …“ (B3 u. a.), „Schau nochmal: Welches Tor ist jetzt frei?“ nach veränderter Torlage (W1, A3) – ohne Lösung.
 - Neue Möglichkeiten rückblickend benannt („Nach deinem Dribbling war das obere Tor frei. Gut gewählt!“); „vorbei“ mit dem Kriterium der Aufgabenbewertung; Lücke vor „vorbei“.
 - Sprachliche Korrektur (PO): keine unbelegten Aussagen über Sehen/Erkennen/Denken des Kindes – Rückmeldungen und Lernergebnisse beschreiben Lage und Handlung (u. a. „… gelaufen. Du hast das freie Tor gewählt!“ statt „… und du hast das freie Tor gesehen!“).
+- Sprachliche Restkorrektur (PO, zweiter Durchgang): versteckte Bewertungstexte beschreiben Lage und Entscheidung („Ein Tor war frei – Schießen war eine gute Wahl.“ statt „Du hast die Torchance erkannt.“ u. a.); Missionsende „👀 x/y beim ersten Versuch richtig“ statt „sofort erkannt“ (keine Reaktionszeit erfasst).
+- Ball als klassischer schwarz-weißer 2D-Fußball (Vektor, vorgezeichnet, Handy vereinfacht, ≥ 7 px); ruhender Ball vorn am Fuß statt über der Spielernummer. Nur Darstellung – Simulation, Kollision, Wege unverändert. Test `tests/e2e/ball.mjs`, Sichtprüfung `tests/analysis/v0.6/ball-bilder.mjs`.
 - Folge-Moment (~1,4 s, „Schau!“) nur bei bedeutsamer Veränderung: Spuren der Roten, neutraler „!“-Ring an veränderten Toren; Antippen überspringt.
 - Rückmeldeblatt im Querformat rechts neben dem Feld – das Feld wird nicht kleiner; Handy quer kompakter.
 - Tests: `tests/wahrnehmung.test.js`, `tests/e2e/wahrnehmung.mjs` (neu), `tests/ursachen.test.js` erweitert; Analysen `tests/analysis/v0.6.2-text-abweichungen.js`, `tests/analysis/v0.6/qs-wahrnehmung.js`.

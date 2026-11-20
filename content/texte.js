@@ -54,11 +54,12 @@
 
     // Bewertung, Teil 1: War die Art der Entscheidung sinnvoll? (👀 Entscheidung)
     erkennen: {
-      torchance: 'Du hast die Torchance erkannt.',
-      freund: 'Du hast gesehen, dass ein Freund frei war.',
-      raum: 'Du hast den freien Raum gesehen, in den dein Freund laufen kann.',
+      // V0.6.2 (PO): beobachtbare Lage + Entscheidung beschreiben, kein Sehen/Erkennen/Denken unterstellen
+      torchance: 'Ein Tor war frei – Schießen war eine gute Wahl.',
+      freund: 'Ein Freund stand frei – Abspielen war eine gute Wahl.',
+      raum: 'Ein Pass in den freien Raum war eine gute Wahl – dein Freund kann hinlaufen.',
       abspielen: 'Abspielen war eine gute Idee.',
-      platz: 'Du hast den freien Platz gesehen.',
+      platz: 'Vor dir war Platz – Dribbeln war eine gute Wahl.',
       schwierig: 'Eine schwierige Lage – nirgends war es richtig frei.',
       besserSchiessen: 'Ein Tor war frei – Schießen wäre gut gewesen.',
       besserPassStattSchuss: 'Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.',
@@ -72,7 +73,7 @@
       geholfen: 'Du hast deinem Freund geholfen, statt stehen zu bleiben.',
       angreifenRichtig: 'Angreifen war richtig – ein Spieler war nah genug.',
       angreifenZuWeit: 'Der Gegner war weit weg. Besser erst den Weg zum Tor versperren.',
-      torGedacht: 'Du hast an unser Tor gedacht.',
+      torGedacht: 'Den Weg zu unserem Tor zu schützen war eine gute Wahl.',
     },
 
     // Bewertung, Teil 2: War das gewählte Ziel sinnvoll? (🎯 Ausführung)
@@ -302,7 +303,8 @@
       lob: (gut, anzahl) => (gut >= anzahl - 1 ? 'Super gespielt!' : gut >= 2 ? 'Gut gemacht!' : 'Toll, dass du es probiert hast!'),
       sterne: (gut, anzahl) => ` Du hast ${gut} von ${anzahl} Sternen.`,
       spielstand: (blau, rot) => `Blau ${blau} : ${rot} Rot`,
-      erkannt: (sofort, anzahl) => `  ·  👀 ${sofort}/${anzahl} sofort erkannt`,
+      // Schau-Schritt: richtige Antwort beim ersten Versuch (keine Reaktionszeit erfasst – daher nicht „sofort“)
+      schauRichtig: (ersterVersuch, anzahl) => `  ·  👀 ${ersterVersuch}/${anzahl} beim ersten Versuch richtig`,
       // V0.6a P4: Sterne je Lernsituation
       sterneSituationen: (gut, anzahl) => ` Du hast ${gut} von ${anzahl} Aufgaben geschafft.`,
       zaehler: (gut, anzahl, hilfe) => `⭐ ${gut} von ${anzahl} geschafft` + (hilfe ? `  ·  💡 ${hilfe} mit Hilfe` : ''),
