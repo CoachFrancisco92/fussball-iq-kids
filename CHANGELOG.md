@@ -1,10 +1,10 @@
 # Changelog
 
-## V0.6.1 – Hotfix Toraussprache (Branch `hotfix-tor-aussprache`, unveröffentlicht)
+## V0.6.1 – Hotfix Toraussprache
 - Kindertest: Die Sprachausgabe sprach das gedehnte „Toooor!“ teils wie „Tour“. Anzeige und Aussprache sind jetzt getrennt: angezeigt bleibt „Toooor!“ (Rückmeldung) bzw. „TOOOR! ⚽“ (Torbanner), gesprochen wird „Tor!“.
 - Umsetzung: `content/texte.js` → `sprechtext` (eine Regel); `app.js` wendet sie auf jeden gesprochenen Text an (Rückmeldung, 🔈, Szenen-Wiedergabe). Sprachsteuerung (`sprache.js`) und Engine unverändert; Engine-Referenzen unverändert.
 - Regressionstests: `tests/aussprache.test.js`, `tests/e2e/aussprache.mjs` (schlägt ohne den Hotfix fehl).
-- Oberflächen-Mitschriften: nur gesprochene Toransagen geändert – vorgelegt als `tests/golden/*-v0.6.1*-ui*.json`, Referenzen nicht erneuert.
+- Referenzwechsel (freigegeben 20.11.2026): `ui-transcript/ui-mission-a/ui-freie-bahn.v0.6.1.json` – genau 36 Einträge, nur gesprochenes „Tor!“; Vorgänger und Listen in `tests/golden/historie/` (`*.v0.6.0.json`, `v0.6.1-*.json`), geprüft mit `tests/analysis/v0.6.1-referenzwechsel-pruefen.js`. Engine-Referenzen unverändert (v0.6.0).
 
 ## V0.6.0 – V0.6a: Lernaufbau, Ursachen, Kurzrückmeldung, Sterne je Situation (zur Abnahme, unveröffentlicht)
 Freigabe P1–P5 (PO, 20.11.2026). Bericht, Kriterien und Gegenprüfungen: `docs/v0.6a.md`. **Bewertung unverändert** (Mission 1: Spielverlauf identisch, nur Sätze).

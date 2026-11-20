@@ -2,11 +2,11 @@
 // wird das gedehnte „Toooor!“ zu „Tor!“. Alles Angezeigte (Rückmeldung, Banner, Titel …) bleibt identisch.
 //   node tests/analysis/v0.6.1-abweichungen-pruefen.js
 const fs = require('node:fs'), path = require('node:path');
-const G = path.join(__dirname, '..', 'golden');
+const G = path.join(__dirname, '..', 'golden', 'historie'); // seit dem Referenzwechsel V0.6.1 archiviert
 const sprich = (t) => String(t).replace(/\bto{2,}r!/gi, 'Tor!');
 const erwartet = (e) => { const y = JSON.parse(JSON.stringify(e)); const walk = (o) => { for (const k of Object.keys(o)) { if (k === 'said' && Array.isArray(o[k])) o[k] = o[k].map(sprich); else if (o[k] && typeof o[k] === 'object') walk(o[k]); } }; walk(y); return y; };
 const bad = []; let n = 0;
-for (const f of fs.readdirSync(G).filter((x) => /v0\.6\.1/.test(x) && x.endsWith('.json'))) {
+for (const f of fs.readdirSync(G).filter((x) => /^v0\.6\.1-ui-/.test(x) && x.endsWith('.json'))) {
   const p = JSON.parse(fs.readFileSync(path.join(G, f), 'utf8'));
   const listen = Array.isArray(p) ? { '': p } : p;
   for (const [ablauf, l] of Object.entries(listen)) for (const d of l) {
