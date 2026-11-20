@@ -1,5 +1,6 @@
 // Mission „Freie Bahn!“ im Browser (iPad-Größe, Touch): Auswahl, alle 5 Durchläufe über „Nochmal“, nur Dribbeln bzw.
-// Schießen, gute und schlechte Dribblings mit Erklärung, beide Wege in B2, enge Lücke B6, freies Tor in B5, Hilfe-Wege,
+// Schießen, gute und schlechte Dribblings mit Erklärung, V0.6a: Lernaufbau B3 → V1 → L4e → L4b, Kurzrückmeldung (P3) mit
+// ↶ und 🔈, Lernergebnis je Situation (P4) mit „Nochmal“, breite Lücke außen herum, freies Tor in B5, Hilfe-Wege,
 // nahtloser Situationswechsel. Zeichnet eine Mitschrift auf und vergleicht sie mit der Referenz (referenz.js → freieBahn.ui).
 // Darunter die Vorlage aus Mission A:
 // Mission „Welches Tor ist frei?“ im Browser (iPad-Größe, Touch): Auswahl, alle 4 Durchläufe über „Nochmal“,
@@ -10,6 +11,7 @@
 //   node tests/e2e/mission-a.mjs --write F       -> Mitschrift nach F schreiben (Referenz bzw. vorgelegte Aufnahme erzeugen)
 //   SLOW=6 node tests/e2e/mission-a.mjs          -> mit 6-fach gedrosselter CPU (langsames Gerät)
 import { chromium } from 'playwright';
+import { vergleiche } from '../helpers/ui-abweichungen.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -37,16 +39,16 @@ try {
   const errors = []; page.on('pageerror', (e) => errors.push(e.message));
   await page.addInitScript(() => {
     window.__said = [];
-    if ('speechSynthesis' in window) { const s = speechSynthesis; const orig = s.speak.bind(s); s.speak = (u) => { window.__said.push(u.text); try { orig(u); } catch (e) {} }; }
+    if (true) { /* V0.5.1: nachgebaute Sprachausgabe, die jede Ansage im selben Moment beendet – die Mitschrift hält jede angeforderte Ansage fest, unabhängig vom Sprachsystem der Umgebung; Zeitverhalten prüft e2e/navigation.mjs */ const fake = { speaking: false, pending: false, paused: false, speak(u) { window.__said.push(u.text); if (u.onend) u.onend({}); }, cancel() {}, resume() {}, pause() {}, getVoices() { return []; }, addEventListener() {} }; Object.defineProperty(window, 'speechSynthesis', { value: fake, configurable: true }); }
   });
   await page.goto(base + 'index.html');
   const mode = () => page.evaluate(() => window.__fiq.mode);
   const waitMode = async (m) => { const t = Date.now(); while (Date.now() - t < 25000) { if (errors.length) fail('JS-Fehler: ' + errors.join('; ')); if ((await mode()) === m) return; await page.waitForTimeout(40); } fail(`Modus ${m} erwartet, ist ${await mode()}`); };
   const until = async (fn, what, arg) => { const t = Date.now(); while (Date.now() - t < 4000) { if (await page.evaluate(fn, arg)) return; await page.waitForTimeout(40); } fail('nicht erreicht: ' + what); };
   const touch = async (sel) => { const b = await page.locator(sel).first().boundingBox(); await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); };
-  const field = async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; }); const k = b[2] / 40.4; await page.touchscreen.tap(b[0] + (x + 2.2) * k, b[1] + (y + 1.6) * k); };
+  const field = async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; }); const k = b[2] / b[3].w; await page.touchscreen.tap(b[0] + (x - b[3].x0) * k, b[1] + (y - b[3].y0) * k); };
   const text = (sel) => page.$eval(sel, (e) => (e.hidden ? '' : e.textContent.trim())).catch(() => '');
-  const said = () => page.evaluate(() => window.__said.splice(0));
+  const said = async () => /* V0.5.1: erst lesen, wenn die Sprachsteuerung alle angeforderten Ansagen gestartet hat */ (await page.waitForFunction(() => { const s = window.__fiq && window.__fiq.speech; return !s || (!s.cur && !s.queue.length); }, null, { timeout: 5000 }), page.evaluate(() => window.__said.splice(0)));
   const actions = () => page.$$eval('#actions .act:not(.hint)', (bs) => bs.map((b) => b.textContent.trim()));
   const state = () => page.evaluate(() => ({ sit: window.__fiq.S.situation, p: window.__fiq.S.players.map((p) => [p.id, +p.x.toFixed(2), +p.y.toFixed(2)]), carrier: FIQ.carrier(window.__fiq.S) && FIQ.carrier(window.__fiq.S).id }));
   const startOf = (id) => page.evaluate(([mid, sid]) => FIQ.mission(mid).situationen.find((x) => x.id === sid).start.spieler.map((p) => [p.id, p.x, p.y]), [ID, id]);
@@ -56,8 +58,25 @@ try {
   const choose = async (label) => { if (!(await page.evaluate(() => !!window.__fiq.sel))) await touch(`#actions .act:not(.hint) >> text=${label}`); await until(() => !!window.__fiq.sel, 'Aktion gewählt'); };
   const feedback = async () => {
     await waitMode('feedback');
-    const fb = { said: await said(), fb: [await text('#fbText'), await text('#fbTip'), await text('#fbRec'), await text('#fbExe'), await text('#fbStar')] };
+    const fb = { said: await said(), fb: [await text('#fbText'), await text('#fbTip'), await text('#fbRec'), await text('#fbExe'), await text('#fbStar')], lern: await text('#fbLern'), sitNochmal: await page.isVisible('#fbSit') };
     log.push(fb); return fb;
+  };
+  // V0.6a P3: nach guter Entscheidung (Situation läuft weiter) Kurzrückmeldung, dann automatisch die nächste Entscheidung
+  const ergebnis = async () => {
+    const t = Date.now(); let m;
+    while (Date.now() - t < 25000) { if (errors.length) fail('JS-Fehler: ' + errors.join('; ')); m = await mode(); if (m === 'feedback' || m === 'kurz') break; await page.waitForTimeout(30); }
+    if (m === 'feedback') return { art: 'voll', ...(await feedback()) };
+    if (m !== 'kurz') fail('weder Rückmeldung noch Kurzrückmeldung: ' + m);
+    const d0 = await page.evaluate(() => window.__fiq.dec);
+    const k = { kurz: await text('#kurzText'), sheet: await page.isVisible('#feedback') };
+    if (k.sheet) fail('Kurzrückmeldung zeigt das Rückmeldeblatt');
+    if (!/^⭐ /.test(k.kurz)) fail('Kurzrückmeldung ohne Stern: ' + k.kurz);
+    await waitMode('decide');
+    const d1 = await page.evaluate(() => window.__fiq.dec);
+    if (d1 !== d0 + 1) fail(`Automatischer Übergang überspringt Entscheidungen: ${d0} → ${d1}`);
+    if (!(await page.isVisible('#kurzZurueck'))) fail('↶ Nochmal nicht sichtbar in der nächsten Entscheidung');
+    k.said = await said(); log.push(k);
+    return { art: 'kurz', ...k };
   };
   // Weiter: Bei Situationswechsel muss sofort die neue Startaufstellung zu sehen sein (kein Neustart-Bild), angesagt.
   const next = async () => {
@@ -92,13 +111,25 @@ try {
   const end = async (what) => { await waitMode('end'); log.push({ end: what, said: await said(), stars: await page.$$eval('#stars span', (x) => x.map((s) => (s.classList.contains('on') ? '★' : '☆')).join('')), score: await text('#endScore'), msg: await text('#endMsg') }); };
 
   const dribble = async (x, y) => { await choose('Dribbeln'); await field(x, y); };
-  const onlyDribble = async (where) => { const a = await actions(); if (a.length !== 1 || !/Dribbeln/.test(a[0])) fail(`${where}: Aktionen ${a.join(', ')}`); };
-  // Hilfe bis zum Tor dieser Situation (max. 6 Entscheidungen), nur ⭐
+  // V0.5.1: Nur Dribbeln möglich -> Aktion vorgewählt, keine Aktionsknöpfe, Hilfe sichtbar und nutzbar
+  const onlyDribble = async (where) => {
+    const o = await page.evaluate(() => ({ acts: window.__fiq.ctx.actions.slice(), sel: window.__fiq.sel && window.__fiq.sel.action }));
+    const a = await actions();
+    if (o.acts.join() !== 'dribbeln' || o.sel !== 'dribbeln' || a.length || !(await page.isVisible('#actions .hint')) || (await page.isVisible('#cancel'))) fail(`${where}: ${JSON.stringify(o)} Knöpfe ${a.join(', ')}`);
+  };
+  // Hilfe bis zum Tor dieser Situation (max. 6 Entscheidungen), nur ⭐; Zwischenschritte als Kurzrückmeldung
   const helpToGoal = async (sit) => {
-    for (let i = 0; i < 6; i++) { const fb = await (async () => { await viaHint(); return feedback(); })(); expectStar(fb, true, `${sit} Hilfe ${i + 1}`);
-      const goal = /Toooor/.test(fb.said.join(' ')); const r = await next(); if (goal) return r; const st = await decision(sit + ' weiter'); if (st.sit !== sit) fail(`${sit}: Situation endet ohne Tor`); }
+    for (let i = 0; i < 6; i++) {
+      await viaHint(); const r = await ergebnis();
+      if (r.art === 'kurz') { const st = await state(); if (st.sit !== sit) fail(`${sit}: Situation wechselt nach Kurzrückmeldung`); continue; }
+      expectStar(r, true, `${sit} Hilfe ${i + 1}`);
+      if (!/^⭐💡 Geschafft/.test(r.lern)) fail(`${sit}: Lernergebnis „geschafft mit Hilfe“ erwartet, ist „${r.lern}“`);
+      const goal = /Toooor/.test(r.said.join(' ')); const n = await next(); if (goal) return n;
+      const st = await decision(sit + ' weiter'); if (st.sit !== sit) fail(`${sit}: Situation endet ohne Tor`);
+    }
     fail(sit + ': kein Tor mit der Hilfe');
   };
+  const dots = () => page.$$eval('#progress .dot', (d) => d.map((x) => x.textContent + (x.classList.contains('hilfe') ? '💡' : '') + (x.classList.contains('cur') ? '*' : '')).join(' '));
 
   // Start: drei Karten, „Freie Bahn!“ antippen (vorgelesen), starten
   log.push({ start: await page.$$eval('#missionList .mcard', (cs) => cs.map((c) => [c.dataset.id, c.querySelector('.num').textContent, c.querySelector('b').textContent, c.querySelector('small').textContent, c.classList.contains('sel')])) });
@@ -106,51 +137,90 @@ try {
   if (!/Freie Bahn!/.test(gew.join(' ')) || !/Schau, wo kein Roter ist/.test(gew.join(' '))) fail('Antippen liest nicht vor: ' + gew);
   await touch('#play');
 
-  // Durchlauf 1 (B3 · B4 · B2) mit der Hilfe; in B2 zusätzlich der andere Weg (außen herum)
+  // Durchlauf 1 (B3 · V1 · L4e · L4b): Kurzrückmeldung mit ↶ und 🔈; enge Lücke nicht geschafft → „Nochmal“ → mit Hilfe
   let st = await decision('entscheiden'); if (st.sit !== 'B3') fail('Durchlauf 1 beginnt nicht mit B3');
   await onlyDribble('B3'); if (/[Pp]ass|Freund/.test(log[log.length - 1].said.join(' '))) fail('Ansage nennt Passen/Freund');
+  if ((await dots()) !== '•* • • •') fail('Fortschritt je Situation: ' + (await dots()));
+  await dribble(26, 12); let r = await ergebnis(); if (r.art !== 'kurz') fail('B3 nach vorn: Kurzrückmeldung erwartet');
+  // 🔈 wiederholt die ganze Erklärung; ↶ macht die Entscheidung rückgängig (gleiche Lage, gleiche Entscheidung Nr.)
+  await touch('#kurzHoeren'); const hoer = await said(); log.push({ kurzHoeren: hoer }); if (!hoer.join(' ').length) fail('🔈 spricht nichts');
+  const dVor = await page.evaluate(() => window.__fiq.dec);
+  await touch('#kurzZurueck'); await waitMode('decide');
+  const zur = await state(); const start3 = await startOf('B3');
+  if (JSON.stringify(zur.p) !== JSON.stringify(start3) || (await page.evaluate(() => window.__fiq.dec)) !== dVor - 1) fail('↶ stellt die vorige Entscheidung nicht wieder her');
+  if (await page.isVisible('#kurz')) fail('↶ bleibt nach dem Rückgängigmachen sichtbar');
+  log.push({ zurueck: await said() });
   await helpToGoal('B3');
-  st = await decision('entscheiden'); if (st.sit !== 'B4') fail('B4 erwartet'); await helpToGoal('B4');
-  st = await decision('entscheiden'); if (st.sit !== 'B2') fail('B2 erwartet');
-  await dribble(19, 22); expectStar(await feedback(), true, 'B2 außen herum (unten)'); await next();
-  await decision('B2 weiter'); await helpToGoal('B2');
+  st = await decision('entscheiden'); if (st.sit !== 'V1') fail('V1 erwartet');
+  if ((await dots()) !== '★💡 •* • •') fail('Fortschritt nach B3: ' + (await dots()));
+  await helpToGoal('V1');
+  st = await decision('entscheiden'); if (st.sit !== 'L4e') fail('L4e erwartet');
+  await dribble(27, 12); r = await ergebnis(); if (r.art !== 'voll') fail('L4e durch die enge Lücke: volle Rückmeldung erwartet'); expectStar(r, false, 'L4e durch die enge Lücke');
+  if (!/^🔁 Das üben wir nochmal/.test(r.lern)) fail('L4e: nicht geschafft erwartet: ' + r.lern);
+  if (r.sitNochmal) fail('L4e: „Nochmal“ doppelt zu „Anders probieren“ (Situation hatte nur diese Entscheidung)');
+  await touch('#fbRetry'); st = await decision('L4e nochmal');
+  if (st.sit !== 'L4e' || JSON.stringify(st.p) !== JSON.stringify(await startOf('L4e'))) fail('„Nochmal“ startet L4e nicht in der Startaufstellung');
+  await helpToGoal('L4e');
+  st = await decision('entscheiden'); if (st.sit !== 'L4b') fail('L4b erwartet');
+  // breite Lücke: sicher außen herum (erst seitlich, dann vorbei) – ohne Hilfe geschafft
+  await dribble(22.3, 7.2); r = await ergebnis(); if (r.art !== 'kurz') fail('L4b seitlich: Kurzrückmeldung erwartet');
+  await page.evaluate(() => 0); const c2 = await page.evaluate(() => { const c = FIQ.carrier(window.__fiq.S); return [c.x + 7, c.y]; });
+  await dribble(...c2); r = await ergebnis();
+  if (r.art === 'kurz') { /* Lücke geschafft, Abschluss folgt */ } else if (!/^⭐ Geschafft/.test(r.lern)) fail('L4b außen herum nicht geschafft: ' + r.lern);
+  for (let i = 0; i < 4 && (await mode()) !== 'end'; i++) {
+    if ((await mode()) === 'feedback') { const n = await next(); if (n === 'end') break; continue; }
+    await viaHint(); r = await ergebnis(); if (r.art === 'voll') { if (!/Geschafft/.test(r.lern)) fail('L4b: Lernergebnis fehlt: ' + r.lern); }
+  }
   await end('Durchlauf 1');
-  console.log('✓ Durchlauf 1 (B3 · B4 · B2): nur „Dribbeln“, Ansagen ohne Passen; Hilfe bis zum Tor nur ⭐; in B2 auch außen herum ⭐');
+  const e1 = log[log.length - 1]; if (e1.stars !== '★★★★') fail('Durchlauf 1: 4 Sterne erwartet, ' + e1.stars);
+  const liste = await page.$$eval('#endList li', (l) => l.map((x) => x.textContent.trim()));
+  log.push({ endListe: liste });
+  if (liste.length !== 4 || !/Platz vor dir.*⭐💡/.test(liste[0]) || !/Lücke oder außen herum.*⭐$/.test(liste[3])) fail('Endliste je Situation: ' + JSON.stringify(liste));
+  console.log('✓ Durchlauf 1 (B3 · V1 · L4e · L4b): Kurzrückmeldung (Folge, 🔈, ↶ ohne Überspringen); enge Lücke nicht geschafft → „Anders probieren“; breite Lücke außen herum geschafft; ein Stern je Situation, 💡 bei Hilfe');
 
-  // Durchlauf 2 (B4 · B5 · B6): B4 frontal in den Gegner 💭 (Ballverlust, Erklärung); B5 aufs zugestellte Tor 💭; B6 enge Lücke 💭, dann außen herum
+  // Durchlauf 2 (B3m · V1m · L4bm · L4em): V1m frontal in den Gegner 💭 mit Erklärung und „Nochmal“ – dann weiter mit der Hilfe
   await touch('#again');
-  st = await decision('entscheiden'); if (st.sit !== 'B4') fail('Durchlauf 2 beginnt nicht mit B4');
-  await dribble(25, 12); const f4 = await feedback(); expectStar(f4, false, 'B4 in den Gegner');
-  if (!/direkt auf einen Gegner/.test(f4.said.join(' '))) fail('B4: Erklärung fehlt: ' + f4.said); await next();
+  st = await decision('entscheiden'); if (st.sit !== 'B3m') fail('Durchlauf 2 beginnt nicht mit B3m'); await helpToGoal('B3m');
+  st = await decision('entscheiden'); if (st.sit !== 'V1m') fail('V1m erwartet');
+  await dribble(30, 12); r = await ergebnis(); expectStar(r, false, 'V1m in den Gegner');
+  if (!/direkt auf einen Gegner/.test(r.said.join(' '))) fail('V1m: Erklärung fehlt: ' + r.said);
+  if (!/^🔁/.test(r.lern)) fail('V1m: nicht geschafft erwartet: ' + r.lern);
+  await next();
+  for (const sit of ['L4bm', 'L4em']) { st = await decision('entscheiden'); if (st.sit !== sit) fail(sit + ' erwartet'); await helpToGoal(sit); }
+  await end('Durchlauf 2');
+  if (log[log.length - 1].stars !== '★☆★★') fail('Durchlauf 2: Sterne ' + log[log.length - 1].stars);
+  console.log('✓ Durchlauf 2 (B3m · V1m · L4bm · L4em): in den Gegner 💭 mit Erklärung, Situation nicht geschafft (✓ statt ⭐)');
+
+  // Durchlauf 3 (V1 · B5 · L4em · L4b): B5 aufs zugestellte Tor 💭 mit Erklärung
+  await touch('#again');
+  st = await decision('entscheiden'); if (st.sit !== 'V1') fail('Durchlauf 3 beginnt nicht mit V1'); await helpToGoal('V1');
   st = await decision('entscheiden'); if (st.sit !== 'B5') fail('B5 erwartet');
-  for (let i = 0; i < 6; i++) { if ((await actions()).some((a) => /Schießen/.test(a))) break; await viaHint(); expectStar(await feedback(), true, 'B5 Hilfe'); await next(); await decision('B5 weiter'); }
+  for (let i = 0; i < 6; i++) { if ((await page.evaluate(() => window.__fiq.ctx.actions)).includes('schiessen')) break; await viaHint(); r = await ergebnis(); if (r.art === 'voll') { await next(); await decision('B5 weiter'); } }
   await choose('Schießen'); await field(36, 18); const f5 = await feedback(); expectStar(f5, false, 'B5 unteres Tor (zugestellt)');
   if (!/Rot 2/.test(f5.said.join(' '))) fail('B5: Erklärung fehlt: ' + f5.said); await next();
-  st = await decision('entscheiden'); if (st.sit !== 'B6') fail('B6 erwartet');
-  await dribble(20, 12); const f6 = await feedback(); expectStar(f6, false, 'B6 durch die enge Lücke');
-  if (!/Dribbel weiter weg von Rot|direkt auf einen Gegner|knapp/.test(f6.said.join(' '))) fail('B6: Erklärung fehlt: ' + f6.said);
-  if ((await next()) !== 'end') { st = await state(); if (st.sit === 'B6') { await decision('B6 weiter'); await helpToGoal('B6'); } }
-  await end('Durchlauf 2');
-  console.log('✓ Durchlauf 2 (B4 · B5 · B6): in den Gegner 💭 mit Erklärung, zugestelltes Tor 💭 mit Erklärung, enge Lücke 💭');
+  for (const sit of ['L4em', 'L4b']) { st = await decision('entscheiden'); if (st.sit !== sit) fail(sit + ' erwartet'); await helpToGoal(sit); }
+  await end('Durchlauf 3');
+  console.log('✓ Durchlauf 3 (V1 · B5 · L4em · L4b): zugestelltes Tor 💭 mit Erklärung');
 
-  // Durchläufe 3–5 mit der Hilfe; Rückkehr zu Durchlauf 1
-  for (const [d, order] of [[3, ['B2', 'B6', 'B3']], [4, ['B5', 'B3', 'B4']], [5, ['B6', 'B2', 'B5']]]) {
+  // Durchläufe 4–5 mit der Hilfe; Rückkehr zu Durchlauf 1
+  for (const [d, order] of [[4, ['B3m', 'V1m', 'L4e', 'L4bm']], [5, ['B5', 'V1', 'L4b', 'L4em']]]) {
     await touch('#again');
     for (const sit of order) { st = await decision('entscheiden'); if (st.sit !== sit) fail(`Durchlauf ${d}: ${sit} erwartet, ist ${st.sit}`); await helpToGoal(sit); }
     await end('Durchlauf ' + d);
+    if (log[log.length - 1].stars !== '★★★★') fail(`Durchlauf ${d}: Sterne ${log[log.length - 1].stars}`);
   }
-  // Endbildschirm nach 12 Entscheidungen: „Nochmal“ ohne Scrollen erreichbar (iPad quer)
+  // Endbildschirm: „Nochmal“ ohne Scrollen erreichbar (iPad quer)
   const again = await page.locator('#again').boundingBox(); if (!again || again.y + again.height > 768) fail('„Nochmal“ außerhalb des Bildschirms: ' + JSON.stringify(again));
   await touch('#again'); st = await decision('entscheiden'); if (st.sit !== 'B3') fail('Nach Durchlauf 5 nicht wieder B3');
   if (errors.length) fail('JS-Fehler: ' + errors.join('; '));
-  console.log('✓ Durchläufe 3–5 mit der Hilfe: jede Situation endet mit Tor, nur ⭐; Rückkehr zu Durchlauf 1; keine JavaScript-Fehler' + (process.env.SLOW ? ` (CPU ${process.env.SLOW}× gedrosselt)` : ''));
+  console.log('✓ Durchläufe 4–5 mit der Hilfe: jede Situation endet mit Tor, nur ⭐; Rückkehr zu Durchlauf 1; keine JavaScript-Fehler' + (process.env.SLOW ? ` (CPU ${process.env.SLOW}× gedrosselt)` : ''));
 
   const wi = process.argv.indexOf('--write');
-  if (wi > 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(log, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }
+  if (wi > 0 && process.argv.indexOf('--pending-write') < 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(log, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }
   else {
-    const J = (x) => JSON.stringify(x), ref = JSON.parse(fs.readFileSync(path.join(here, '..', 'golden', REF.freieBahn.ui), 'utf8'));
-    for (let k = 0; k < Math.max(ref.length, log.length); k++) if (J(ref[k]) !== J(log[k])) fail(`Mitschrift weicht ab bei Eintrag ${k}\n  Referenz: ${J(ref[k])}\n  jetzt:    ${J(log[k])}`);
-    console.log(`✓ Mitschrift identisch zur Referenz ${REF.freieBahn.ui} (${ref.length} Einträge)`);
+    const ref = JSON.parse(fs.readFileSync(path.join(here, '..', 'golden', REF.freieBahn.ui), 'utf8'));
+    // vorgelegte, noch nicht freigegebene Abweichungen: tests/golden/ui-freieBahn-abweichungen-*.json (--pending-write F erzeugt sie)
+    console.log('✓ ' + vergleiche({ ref, log, gdir: path.join(here, '..', 'golden'), praefix: 'ui-freieBahn', refName: REF.freieBahn.ui }));
   }
   await ctx.close();
 } catch (e) { console.error('✗ Freie Bahn:', e.message); if (process.env.DEBUG && globalThis.__log) console.error(JSON.stringify(globalThis.__log.slice(-4))); exit = 1; }

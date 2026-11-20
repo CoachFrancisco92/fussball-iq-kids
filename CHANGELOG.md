@@ -1,5 +1,31 @@
 # Changelog
 
+## V0.6.0 – V0.6a: Lernaufbau, Ursachen, Kurzrückmeldung, Sterne je Situation (zur Abnahme, unveröffentlicht)
+Freigabe P1–P5 (PO, 20.11.2026). Bericht, Kriterien und Gegenprüfungen: `docs/v0.6a.md`. **Bewertung unverändert** (Mission 1: Spielverlauf identisch, nur Sätze).
+- **P1 Lernaufbau:** „Welches Tor ist frei?“ A1 → A2 → A3 → W1 (neu: A3m, W1, W1m „nochmal schauen“); „Freie Bahn!“ B3 → V1 → L4e → L4b (neu: B3/V1/L4e/L4b + Spiegel, B2/B4/B6 entfallen); 5 Durchläufe à 4 Situationen; Feld `lernziel` je Situation.
+- **P2 Ursachen:** belegte Ursachen aus der Lage vor/nach der Entscheidung (vorbei, Lücke breit/eng, Wächter verschoben/erkannt, Passweg frei, Freund dribbelt, Gegner mitgelaufen/schoss); kein „Manchmal klappt es nicht“; keine doppelte Nennung desselben Gegners.
+- **P3 Kurzrückmeldung** („Freie Bahn!“): Band statt Blatt nach guter Zwischenentscheidung, automatisch weiter am Satzende (≥ 1,2 s), ↶ Nochmal und 🔈 bis zur nächsten Aktion.
+- **P4 Sterne je Situation:** Kernleistung statt Einzelentscheidung; ⭐💡 bei Hilfe (voller Stern); nicht geschafft: Hinweis + „Nochmal“; Fortschritt und Endbildschirm je Situation; Mission 1: Angriff/Abwehr.
+- **P5 Darstellung:** größere Spieler mit Blickrichtung, fester Ausschnitt in Lernmissionen, Lücke ✓/✗, Wächter-Schatten, „Vorbei!“, Passweg.
+- Tests: `tests/lernaufbau.test.js`, `tests/ursachen.test.js` (neu), Mission-A/Freie-Bahn-Tests und -Browserdurchläufe angepasst, `e2e/navigation.mjs` Block 3d (Kurzrückmeldung); Analysen `tests/analysis/v0.6/text-abweichungen.js`, `bildschirm.mjs`.
+- **Referenzen v0.6.0 (freigegeben 20.11.2026):** `mission1.v0.6.0.json` (nur Sätze; Simulation/Bewertung unverändert), `mission-a.v0.6.0.json`, `freie-bahn.v0.6.0.json` (neue Situationen), `ui-transcript/ui-mission-a/ui-freie-bahn.v0.6.0.json`. Vorgänger und Listen in `tests/golden/historie/` (`v0.6.0-*.json`), geprüft mit `tests/analysis/v0.6.0-referenzwechsel-pruefen.js`.
+- Backlog (nur Dokumentation): `docs/backlog.md`.
+
+## V0.5.1 – Sprachsteuerung, Navigation, Einzelaktion (zur Abnahme, unveröffentlicht)
+Grundlage: UX-Review `docs/ux-review-v0.5.md`, Maßnahmen 1.1–1.5 (freigegeben 19.11.2026). Details und Testergebnisse: `docs/v0.5.1.md`.
+**Engine, Bewertungen und Engine-Referenzen unverändert** (`engine.js` nur Versionsnummer).
+- **Zentrale Sprachsteuerung** (`sprache.js`, neu): Warteschlange statt Abbruch bei jeder Ansage. Laufende Ansagen werden nur abgebrochen, wenn das Kind etwas antippt, bei „Ton aus“, 🏠, Neustart oder Missionswechsel. Arten: Anweisung, Rückmeldung, Ansage, Hinweis (optional, wird verworfen statt zu stauen). Phasenwechsel verwerfen noch nicht begonnene Ansagen. Übergänge („Neue Situation“, „Ball im Aus“, „Anders probieren“, Schau-Schritt) warten auf das Satzende, mit Mindest- und Höchstzeit statt fester 0,9/1,8/2,6/3,4 s. Safari: Pause nach Abbruch, `resume()`, Wächter bei fehlendem Ende-Ereignis, späte Ereignisse alter Ansagen werden ignoriert. Sprechtempo 0,9, Tonhöhe 1,05.
+- **Ablauf-Taktgeber:** alle zeitgesteuerten Übergänge laufen über die Sprachsteuerung; 🏠, Neustart und Missionswechsel beenden sie vollständig (behebt den Geisterablauf hinter der Übersicht).
+- „Los geht's! …“ ist jetzt hörbar (wurde bisher nach 64 ms abgeschnitten); „Neue Situation! Schau genau hin.“ wird zu Ende gesprochen.
+- 🔈 liest die aktuell relevante Anweisung (Aufgabe, gewählter Schritt, Hilfe) bzw. die Erklärung der Rückmeldung.
+- **↺ Neu starten** in der Kopfzeile mit kindersicherer Abfrage (✔/✖, vorgelesen); während der Abfrage steht das Spiel. ✔ = gleicher Durchlauf von vorn.
+- **Missionsende:** „▶ Nächste Mission“ (nächste im Lernweg, startet direkt mit der Einführung), „🔁 Nochmal“ (nächster Durchlauf, neue Situationen), „↺ Genau so nochmal“ (gleicher Durchlauf, nur bei Missionen mit Durchläufen), „🏠 Alle Missionen“, „🎬 Szenen ansehen“. Nach der letzten Mission kein Sprung zur ersten, sondern „🏅 Das war die letzte Mission!“ (angesagt). In der Sitzung gespielte Missionen tragen ✓ auf der Karte (nichts gespeichert).
+- **Einzelaktion:** Ist nur eine Aktion möglich, entfallen Aktionsknöpfe und „Zurück“; die Hilfe bleibt sichtbar.
+- Schnelles Mehrfach-Antippen: Knöpfe wirken nur im passenden Zustand; ein Doppeltipp auf einen Knopf zählt nicht als Tipp aufs Spielfeld darunter.
+- **Oberflächen-Referenzen neu (freigegeben 19.11.2026):** `ui-transcript.v0.5.1.json` (Mission 1: 3 Einträge, Schlussansage „Das war die letzte Mission …“), `ui-mission-a.v0.5.1.json` (1 Eintrag), `ui-freie-bahn.v0.5.1.json` (50 Einträge; jeweils nur: keine Aktionsknöpfe bei einer Aktion). Vorgänger und Listen in `tests/golden/historie/` (`ui-*.v0.5.0.json`, `v0.5.1-ui-*-abweichungen.json`), geprüft mit `tests/analysis/v0.5.1-referenzwechsel-pruefen.js`. Engine-Referenzen unverändert.
+- Nachprüfung (PO): Erreicht ein Übergang seine Höchstzeit (`wennFertig`) bzw. die Szenen-Wiedergabe ihre Wartegrenze, wird eine noch laufende Ansage beendet, bevor die neue Phase beginnt (keine verspätete Anweisung). Doppeltipp-Sperre eingegrenzt: verworfen wird ein Feld-Tipp nur, wenn der eben angetippte Knopf an dieser Stelle verschwunden ist (≤ 450 ms, ≤ 48 px); Tipps neben sichtbaren Knöpfen (gewählte Aktion, Hilfe) bleiben gültig. Regressionstests in `tests/sprache.test.js` und `tests/e2e/navigation.mjs`.
+- Tests: `tests/sprache.test.js` (23), `tests/e2e/navigation.mjs` (Sprache mit nachgebauter Sprachausgabe inkl. Safari-Fällen, 🏠 in Übergängen, Neustart, Durchläufe, Missionswechsel, Hilfe bei Einzelaktion, Touch iPad/Handy); Mitschrift-Abweichungen für Mission A und „Freie Bahn!“ jetzt wie bei Mission 1 vorlegbar (`tests/helpers/ui-abweichungen.mjs`). Mitschrift-Tests nutzen eine nachgebaute Sprachausgabe, die jede Ansage im selben Moment beendet (unabhängig vom Sprachsystem der Umgebung).
+
 ## V0.5.0 – Mission „Freie Bahn!“, A4 und Paket D
 ### Meilenstein 4: „Freie Bahn!“ und A4
 Details: `docs/meilenstein-4.md`.

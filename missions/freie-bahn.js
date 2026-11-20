@@ -19,29 +19,33 @@
     merkmale: ['1 gegen 1', '1 gegen 2', 'Dribbeln'],
     lernwelt: 1, // „Ich und der Ball“
     lernziele: [
-      'Erkennen, wo kein Gegner ist, und dorthin dribbeln',
-      'Einen Gegner umgehen statt auf ihn zuzulaufen – durch die Lücke oder außen herum',
+      'Erkennen, wo vor dir Platz ist, wenn der Gegner hinter dir steht',
+      'An einem Gegner vorbeidribbeln',
+      'Eine zu enge von einer breiten Lücke unterscheiden: zu eng → außen herum mit Abstand, breit → durch oder sicher außen',
       'Nah am Tor aufs freie Tor schießen',
     ],
     einfuehrung: 'Heute dribbelst du! Schau, wo kein Roter ist, und dribbel dorthin. Nah am Tor schießt du aufs freie Tor.',
+    kurzrueckmeldung: true, // V0.6a P3: nach guten Entscheidungen kurze Rückmeldung (zunächst nur in dieser Mission)
 
-    // Blau greift nach rechts an; Tore rechts oben (36|6) und unten (36|18). Jede Situation fragt etwas anderes:
+    // V0.6a: Lernaufbau B3 → V1 → L4-eng → L4-breit (PO-Freigabe 20.11.2026). Jede Lage mit Torwächter, damit auch der
+    // Abschluss eine echte Wahl ist. Prüfwerte: tests/lernaufbau.test.js, docs/v0.6a.md.
     situationen: [
-      // B3: Verfolger hinten – nach vorn ist alles frei: zügig Richtung Tor (rückwärts/quer ohne Grund ist 💭)
-      { id: 'B3', start: lage([18, 12], [15.5, 12]) },
-      // B4: Gegner frontal – nicht in ihn hinein, sondern seitlich vorbei (oben oder unten, beides gut)
-      { id: 'B4', start: lage([17, 12], [23, 12]) },
-      // B2: zwei Gegner mit großer Lücke – durch die Lücke ODER außen herum (beides gut)
-      { id: 'B2', start: lage([12, 12], [19, 7], [19, 17]) },
-      // B6: zwei Gegner dicht beieinander – die Lücke ist zu eng, außen herum ist der freie Weg
-      { id: 'B6', start: lage([12, 12], [18.5, 10.6], [18.5, 13.4]) },
-      // B5: viel Platz, ein Gegner vor dem unteren Tor – große Stücke Richtung Tor, dann aufs freie (obere) Tor schießen
-      { id: 'B5', start: lage([12, 13], [23, 3], [32, 17]) },
+      // B3: Gegner hinter dir, vor dir Platz (bewusst leichter Einstieg), näher am Tor
+      { id: 'B3', lernziel: 'platzVorDir', start: lage([22.5, 12], [20, 12], [34.6, 16.6]) },
+      { id: 'B3m', lernziel: 'platzVorDir', start: lage([22.5, 12], [20, 12], [34.6, 7.4]) },
+      // V1: an einem Gegner vorbei, danach direkt in der Schusszone
+      { id: 'V1', lernziel: 'vorbei', start: lage([23.5, 12], [27, 12], [34.6, 16.6]) },
+      { id: 'V1m', lernziel: 'vorbei', start: lage([23.5, 12], [27, 12], [34.6, 7.4]) },
+      // L4: Lückenpaar aus gleicher Entfernung – eng (2,4 m) und breit (6,8 m); die Bewertung folgt der Geometrie
+      { id: 'L4e', lernziel: 'luecke', start: lage([21, 12], [24, 10.8], [24, 13.2], [34.6, 7.4]) },
+      { id: 'L4em', lernziel: 'luecke', start: lage([21, 12], [24, 13.2], [24, 10.8], [34.6, 16.6]) },
+      { id: 'L4b', lernziel: 'luecke', start: lage([21, 12], [24, 8.6], [24, 15.4], [34.6, 7.4]) },
+      { id: 'L4bm', lernziel: 'luecke', start: lage([21, 12], [24, 15.4], [24, 8.6], [34.6, 16.6]) },
+      // B5: zwei verteilte Rote, einer schützt das untere Tor – wiedererkennen (ab Durchlauf 3), näher am Tor als bisher
+      { id: 'B5', lernziel: 'torWaehlen', start: lage([18, 13], [23, 3], [32, 17]) },
     ],
-    // Jede Situation 3-mal in 5 Durchläufen, jeder Durchlauf beginnt anders; der erste beginnt mit den 1-gegen-1-Lagen.
-    durchlaeufe: [['B3', 'B4', 'B2'], ['B4', 'B5', 'B6'], ['B2', 'B6', 'B3'], ['B5', 'B3', 'B4'], ['B6', 'B2', 'B5']],
+    durchlaeufe: [['B3', 'V1', 'L4e', 'L4b'], ['B3m', 'V1m', 'L4bm', 'L4em'], ['V1', 'B5', 'L4em', 'L4b'], ['B3m', 'V1m', 'L4e', 'L4bm'], ['B5', 'V1', 'L4b', 'L4em']],
 
-    // 5 Dribbel-Entscheidungen je Situation (Hilfe braucht 2–3); erreicht die letzte die Schusszone, folgt noch der Schuss
     phasen: { maxAngriff: 5, verteidigung: 0, abschlussNachGrenze: true },
     schauSchritt: [], // kein Mitspieler
     hilfe: { reihenfolge: ['dribbeln', 'schiessen'], alternativenNennen: false },

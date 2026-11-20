@@ -7,6 +7,7 @@
     "missions/welches-tor-ist-frei.js",
     "missions/freie-bahn.js",
     "engine.js",
+    "sprache.js",
     "app.js",
     "sw.js",
     "manifest.webmanifest",

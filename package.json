@@ -1,11 +1,11 @@
 {
   "name": "fussball-iq-kids",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "description": "Fußballspiel mit Entscheidungstraining für Kinder ab 5 Jahren (PWA)",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "test:e2e": "node tests/e2e/play.mjs && node tests/e2e/transcript.mjs && node tests/e2e/offline.mjs && node tests/e2e/auswahl.mjs && node tests/e2e/mission-a.mjs && node tests/e2e/freie-bahn.mjs && node tests/e2e/rechenzeit.mjs",
+    "test:e2e": "node tests/e2e/play.mjs && node tests/e2e/transcript.mjs && node tests/e2e/offline.mjs && node tests/e2e/auswahl.mjs && node tests/e2e/mission-a.mjs && node tests/e2e/freie-bahn.mjs && node tests/e2e/navigation.mjs && node tests/e2e/rechenzeit.mjs",
     "test:all": "npm test && npm run test:e2e",
     "build": "node scripts/build-site.mjs",
     "version:set": "node scripts/set-version.mjs",

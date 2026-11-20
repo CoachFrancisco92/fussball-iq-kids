@@ -28,7 +28,7 @@ async function flow(browser, name, steps) {
   page.on('pageerror', (e) => errors.push(e.message));
   await page.addInitScript(() => {
     window.__said = [];
-    if ('speechSynthesis' in window) { const s = speechSynthesis; const orig = s.speak.bind(s); s.speak = (u) => { window.__said.push(u.text); try { orig(u); } catch (e) {} }; }
+    if (true) { /* V0.5.1: nachgebaute Sprachausgabe, die jede Ansage im selben Moment beendet – die Mitschrift hält jede angeforderte Ansage fest, unabhängig vom Sprachsystem der Umgebung; Zeitverhalten prüft e2e/navigation.mjs */ const fake = { speaking: false, pending: false, paused: false, speak(u) { window.__said.push(u.text); if (u.onend) u.onend({}); }, cancel() {}, resume() {}, pause() {}, getVoices() { return []; }, addEventListener() {} }; Object.defineProperty(window, 'speechSynthesis', { value: fake, configurable: true }); }
   });
   await page.goto(base + 'index.html', { waitUntil: 'domcontentloaded' });
   const log = [];
@@ -36,8 +36,8 @@ async function flow(browser, name, steps) {
   const mode = () => page.evaluate(() => window.__fiq.mode);
   const waitMode = async (m, ms = 25000) => { const t = Date.now(); while (Date.now() - t < ms) { if ((await mode()) === m) return; await page.waitForTimeout(40); } fail(`${name}: warte auf ${m}, ist ${await mode()}`); };
   const until = async (fn, what) => { const t = Date.now(); while (Date.now() - t < 4000) { if (await page.evaluate(fn)) return; await page.waitForTimeout(40); } fail(`${name}: ${what}`); };
-  const tap = async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; }); const s = b[2] / 40.4; await page.mouse.click(b[0] + (x + 2.2) * s, b[1] + (y + 1.6) * s); };
-  const flush = async (where) => { const said = await page.evaluate(() => window.__said.splice(0)); log.push({ where, said, title: await text('#title'), tag: await text('#tag'), step: await text('#step') }); };
+  const tap = async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; }); const s = b[2] / b[3].w; await page.mouse.click(b[0] + (x - b[3].x0) * s, b[1] + (y - b[3].y0) * s); };
+  const flush = async (where) => { const said = await /* V0.5.1: erst lesen, wenn die Sprachsteuerung alle angeforderten Ansagen gestartet hat */ (await page.waitForFunction(() => { const s = window.__fiq && window.__fiq.speech; return !s || (!s.cur && !s.queue.length); }, null, { timeout: 5000 }), page.evaluate(() => window.__said.splice(0))); log.push({ where, said, title: await text('#title'), tag: await text('#tag'), step: await text('#step') }); };
   const fb = async () => { await waitMode('feedback'); await flush('feedback'); log.push({ fb: [await text('#fbText'), await text('#fbTip'), await text('#fbRec'), await text('#fbExe'), await text('#fbStar')], compare: await page.isVisible('#fbCompare') }); };
   const choose = async (label) => { if (!(await page.evaluate(() => !!window.__fiq.sel))) await page.locator('#actions .act', { hasText: label }).click(); await until(() => !!window.__fiq.sel, 'Aktion gewählt'); };
   const taps = async (list) => { for (let i = 0; i < list.length; i++) { await tap(...list[i]); if (i < list.length - 1) await until(() => window.__fiq.sel && window.__fiq.sel.step === 2, 'Spieler gewählt'); } };
@@ -130,7 +130,7 @@ try {
       if (bad.length) {
         const i = bad[0];
         console.error(`✗ ${name}: Abweichung bei Eintrag ${i}${listed.has(i) ? ' (anders als vorgelegt)' : ''}\n  Referenz: ${J(ra[i])}\n  jetzt:    ${J(rb[i])}`); exit = 1;
-      } else console.log(`✓ ${name}: identisch zur Referenz ${REF.seit}${listed.size ? ` bis auf ${listed.size} vorgelegte Abweichung(en)` : ''} (${ra.length} Einträge)`);
+      } else console.log(`✓ ${name}: identisch zur Referenz ${REF.ui}${listed.size ? ` bis auf ${listed.size} vorgelegte Abweichung(en)` : ''} (${ra.length} Einträge)`);
     }
   }
 } catch (e) { console.error('✗', e.message); exit = 1; }

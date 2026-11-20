@@ -1,0 +1,1274 @@
+[
+ {
+  "eintrag": 2,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 5,
+  "alt": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 8,
+  "alt": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 12,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B4",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B4",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 15,
+  "alt": {
+   "where": "B4 weiter",
+   "sit": "B4",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B4 weiter",
+   "sit": "B4",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 18,
+  "alt": {
+   "where": "B4 weiter",
+   "sit": "B4",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B4 weiter",
+   "sit": "B4",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 22,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B2",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B2",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 24,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 27,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 30,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 34,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B4",
+   "said": [
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B4",
+   "said": [
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 37,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B5",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B5",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 40,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 43,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 46,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 49,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B6",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B6",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 52,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B2",
+   "said": [
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B2",
+   "said": [
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 55,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 58,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 61,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 65,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B6",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B6",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 68,
+  "alt": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 71,
+  "alt": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 74,
+  "alt": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 78,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 81,
+  "alt": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 84,
+  "alt": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 88,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B5",
+   "said": [
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B5",
+   "said": [
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 91,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 94,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 97,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 101,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 104,
+  "alt": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 107,
+  "alt": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B3 weiter",
+   "sit": "B3",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 111,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B4",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B4",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 114,
+  "alt": {
+   "where": "B4 weiter",
+   "sit": "B4",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B4 weiter",
+   "sit": "B4",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 117,
+  "alt": {
+   "where": "B4 weiter",
+   "sit": "B4",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B4 weiter",
+   "sit": "B4",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 121,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B6",
+   "said": [
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B6",
+   "said": [
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 124,
+  "alt": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 127,
+  "alt": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 130,
+  "alt": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B6 weiter",
+   "sit": "B6",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 134,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B2",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B2",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 137,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 140,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 143,
+  "alt": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B2 weiter",
+   "sit": "B2",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 147,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B5",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B5",
+   "said": [
+    "Neue Situation! Schau genau hin.",
+    "Wohin dribbelst du? Tippe dorthin, wo kein Roter ist."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 150,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 153,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 156,
+  "alt": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": [
+    "🥅Schießen"
+   ]
+  },
+  "neu": {
+   "where": "B5 weiter",
+   "sit": "B5",
+   "said": [
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ],
+   "title": "Welches Tor ist frei?",
+   "tag": "Torabschluss",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 160,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": [
+    "🏃Dribbeln"
+   ]
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ }
+]

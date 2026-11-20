@@ -26,28 +26,37 @@
       'Auf das freie Tor schießen',
       'Wenn beide Tore zugestellt sind, zu einem freien Freund passen',
       'Wenn das Tor noch zu weit ist, erst näher ran dribbeln und dann schießen',
+      'Nach dem Dribbeln nochmal schauen: Welches Tor ist jetzt frei?',
     ],
     einfuehrung: 'Heute schießt du Tore! Schau vor jedem Schuss genau: Vor welchem Tor steht kein Roter? Dorthin schießt du.',
 
     // Situationen (Blau greift nach rechts an; Tor oben = (36|6), Tor unten = (36|18))
     situationen: [
       // A1: Tor oben zugestellt (r2), Tor unten frei
-      { id: 'A1', start: lage([31, 12], [24, 19], [29.5, 13.5], [34.5, 7.8]) },
+      { id: 'A1', lernziel: 'torWaehlen', start: lage([31, 12], [24, 19], [29.5, 13.5], [34.5, 7.8]) },
       // A2: Tor unten zugestellt (r2), Tor oben frei
-      { id: 'A2', start: lage([30.5, 14.5], [24, 6], [29, 13], [34, 16.7]) },
+      { id: 'A2', lernziel: 'torWaehlen', start: lage([30.5, 14.5], [24, 6], [29, 13], [34, 16.7]) },
       // A3: beide Tore zugestellt → Pass zu Blau 2, der in der Torzone steht und schießt.
       // Lage auf Robustheit optimiert (±0,5 m je Spieler: 16/16, ±1 m: 14/16) – siehe docs/meilenstein-2.md.
-      { id: 'A3', start: lage([32, 8], [30.5, 19.5], [33.9, 11.4], [34.2, 7]) },
+      { id: 'A3', lernziel: 'andereLoesung', start: lage([32, 8], [30.5, 19.5], [33.9, 11.4], [34.2, 7]) },
+      // A3m: A3 gespiegelt (y → 24 − y), V0.6a
+      { id: 'A3m', lernziel: 'andereLoesung', start: lage([32, 16], [30.5, 4.5], [33.9, 12.6], [34.2, 17]) },
       // A4: noch zu weit fürs Tor – erst in die Schusszone dribbeln (Rot 1 seitlich vorn), dann aufs freie Tor schießen
       // 4 statt 3 Angriffsentscheidungen: auch der andere gute Weg (Pass zu Blau 2 → Freilaufen → Dribbling) endet noch mit dem
       // Torschuss, statt direkt nach der gelungenen Vorbereitung abzubrechen (Vorgabe PO, Meilenstein 4)
-      { id: 'A4', start: lage([26, 12], [21, 19], [24, 9.5], [34.4, 7.9]), phasen: { maxAngriff: 4 } },
+      { id: 'A4', lernziel: 'torWaehlen', start: lage([26, 12], [21, 19], [24, 9.5], [34.4, 7.9]), phasen: { maxAngriff: 4 } },
       // A5: beide Tore frei – beide Schüsse sind gleich gut
-      { id: 'A5', start: lage([30.5, 13], [24, 6], [28.5, 13], [34, 12]) },
+      { id: 'A5', lernziel: 'torWaehlen', start: lage([30.5, 13], [24, 6], [28.5, 13], [34, 12]) },
+      // V0.6a W1 „Schau nochmal!“: beide Tore wirken frei; beim Hineindribbeln stellt sich Rot 2 vor das untere Tor
+      // (vorhandenes Torwächter-Verhalten). Rot 2 bei y = 13,0 (nicht mittig), damit die Lage robust ist (16/16 bei ±0,5 m).
+      { id: 'W1', lernziel: 'nochmalSchauen', start: lage([26, 12.5], [21, 19], [23.5, 9.5], [33.6, 13.0]), phasen: { maxAngriff: 4 } },
+      { id: 'W1m', lernziel: 'nochmalSchauen', start: lage([26, 11.5], [21, 5], [23.5, 14.5], [33.6, 11.0]), phasen: { maxAngriff: 4 } },
     ],
     // Jede Situation 3-mal in 5 Durchläufen, jeder Durchlauf beginnt anders; danach wieder von vorn.
     // Durchlauf 1 unverändert (A1 · A2 · A5); A4 kommt ab Durchlauf 2 dazu.
-    durchlaeufe: [['A1', 'A2', 'A5'], ['A2', 'A3', 'A4'], ['A4', 'A5', 'A1'], ['A3', 'A1', 'A2'], ['A5', 'A4', 'A3']],
+    // V0.6a: jeder Durchlauf enthält alle vier Lernschritte (freies Tor erkennen, gespiegelt bzw. zu weit, beide zu,
+    // Lage verändert sich). Durchlauf 1 = A1 → A2 → A3 → W1 (PO-Vorgabe); danach Spiegelungen und A4/A5 im Wechsel.
+    durchlaeufe: [['A1', 'A2', 'A3', 'W1'], ['A2', 'A5', 'A3m', 'W1m'], ['A4', 'A1', 'A3', 'W1m'], ['A5', 'A2', 'A3m', 'W1'], ['A1', 'A4', 'A3m', 'W1m']],
 
     phasen: { maxAngriff: 3, verteidigung: 0, abschlussNachGrenze: true },
 
