@@ -47,6 +47,10 @@
   #main { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   #fieldWrap { position: relative; flex: 1; min-height: 0; margin: 0 8px; }
   #field { position: absolute; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); touch-action: none; }
+  #tapWeiter { position: absolute; right: 12px; bottom: 12px; z-index: 5; pointer-events: none;
+    padding: 8px 12px; border-radius: 999px; background: rgba(15,23,42,.78); color: #fff;
+    font-size: clamp(12px, 1.6vw, 15px); font-weight: 800; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+  #tapWeiter[hidden] { display: none; }
   #prompt { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; justify-content: center; margin: 0 auto; max-width: 620px;
     background: rgba(255,253,246,.97); padding: 5px 6px 5px 12px; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.25); transition: opacity .2s; }
   .spacer { flex: 1; }
@@ -237,6 +241,7 @@
     <canvas id="field"></canvas>
     <div id="portraitTip" hidden>📱↻ Quer halten macht's größer</div>
 
+    <div id="tapWeiter" hidden aria-hidden="true">Tippen: weiter ⏭</div>
     <button id="skip" hidden>Überspringen ⏭</button>
   </div>
 
