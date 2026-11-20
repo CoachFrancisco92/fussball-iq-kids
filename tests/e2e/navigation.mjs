@@ -70,7 +70,7 @@ async function open(viewport, cfg) {
   H.until = async (fn, what, arg, ms = 6000) => { const t = Date.now(); while (Date.now() - t < ms) { if (await page.evaluate(fn, arg)) return; await page.waitForTimeout(30); } fail('nicht erreicht: ' + what); };
   H.box = async (sel) => page.locator(sel).first().boundingBox();
   H.touch = async (sel) => { const b = await H.box(sel); if (!b) fail(sel + ' nicht sichtbar'); await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); };
-  H.field = async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; }); const k = b[2] / 40.4; await page.touchscreen.tap(b[0] + (x + 2.2) * k, b[1] + (y + 1.6) * k); };
+  H.field = async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; }); const k = b[2] / b[3].w; await page.touchscreen.tap(b[0] + (x - b[3].x0) * k, b[1] + (y - b[3].y0) * k); };
   H.text = (sel) => page.$eval(sel, (e) => (e.hidden ? '' : e.textContent.trim())).catch(() => '');
   H.log = () => page.evaluate(() => window.__sp.log.slice());
   H.now = () => page.evaluate(() => performance.now());
@@ -93,6 +93,18 @@ async function open(viewport, cfg) {
     for (let i = 0; i < t.length; i++) { await H.field(...t[i]); if (i < t.length - 1) await H.until(() => window.__fiq.sel && window.__fiq.sel.step === 2, 'Spieler gewählt'); }
     return plan;
   };
+  /** V0.6a P3: mit der Hilfe weiterspielen, bis eine volle Rückmeldung kommt (Kurzrückmeldungen laufen selbst weiter) */
+  H.hilfeBisRueckmeldung = async () => {
+    let first = null;
+    for (let i = 0; i < 8; i++) {
+      const plan = await H.hintStep(); first = first || plan;
+      const m = await H.waitMode(['feedback', 'kurz']);
+      if (m === 'feedback') return first;
+      await H.waitMode(['decide', 'feedback', 'end'], 15000);
+      if ((await H.mode()) !== 'decide') return first;
+    }
+    fail('keine volle Rückmeldung');
+  };
   H.look = async () => {
     const id = await page.evaluate(() => { const o = FIQ.passOptions(window.__fiq.S).sort((a, b) => b.margin - a.margin)[0]; return o && o.id; });
     if (id) { const p = await page.evaluate((i) => { const q = FIQ.P(window.__fiq.S, i); return [q.x, q.y]; }, id); await H.field(...p); } else await H.touch('#lookNone');
@@ -101,11 +113,12 @@ async function open(viewport, cfg) {
   /** Mission mit der Hilfe zu Ende spielen */
   H.playToEnd = async () => {
     for (let i = 0; i < 60; i++) {
-      const m = await H.waitMode(['decide', 'look', 'feedback', 'end']);
+      const m = await H.waitMode(['decide', 'look', 'feedback', 'kurz', 'end']);
       if (m === 'end') return;
+      if (m === 'kurz') { await H.waitMode(['decide', 'look', 'feedback', 'end'], 15000); continue; }
       if (m === 'look') { await H.look(); continue; }
       if (m === 'feedback') { await H.touch('#fbNext'); await H.waitMode(['wechsel', 'decide', 'look', 'end']); continue; }
-      await H.hintStep(); await H.waitMode('feedback');
+      await H.hintStep(); await H.waitMode(['feedback', 'kurz']);
     }
     fail('Mission endet nicht');
   };
@@ -149,8 +162,8 @@ try {
     await H.touch('#repeat'); await H.ruhig('Wiederholen');
     log = await H.log();
     if (log.filter((x) => x.e === 'start').pop().t !== ctxSay) fail('🔈 liest nicht die aktuelle Anweisung');
-    const plan = await H.hintStep(); // Hilfe: Ansage der Hilfe wird relevant
-    await H.waitMode('feedback'); await H.ruhig('Rückmeldung');
+    const plan = await H.hilfeBisRueckmeldung(); // Hilfe (Zwischenschritte als Kurzrückmeldung), bis zur vollen Rückmeldung
+    await H.ruhig('Rückmeldung');
     await H.touch('#repeat'); await H.ruhig('Wiederholen Rückmeldung');
     log = await H.log();
     const fbSay = await H.fiq('relevant');
@@ -169,7 +182,7 @@ try {
 
     // bis zum Situationswechsel mit der Hilfe; dort nichts antippen: „Neue Situation“ ganz, danach die neue Anweisung
     for (let i = 0; i < 8; i++) {
-      await H.waitMode('decide'); await H.hintStep(); await H.waitMode('feedback');
+      await H.waitMode('decide'); await H.hilfeBisRueckmeldung();
       const sit = (await H.fiq('S')).situation;
       await H.touch('#fbNext');
       await H.page.waitForTimeout(50);
@@ -193,7 +206,7 @@ try {
     console.log('✓ Situationswechsel: „Neue Situation“ zu Ende gesprochen, dann die neue Anweisung; keine Ansage ohne Antippen abgebrochen');
 
     // Übersicht während des Übergangs „Anders probieren“: nichts läuft weiter
-    await H.hintStep(); await H.waitMode('feedback');
+    await H.hilfeBisRueckmeldung();
     await H.touch('#fbRetry'); await H.touch('#home');
     const tHome = await H.now();
     await H.page.waitForTimeout(2500);
@@ -206,7 +219,7 @@ try {
     // Übersicht während des Situationswechsels
     await H.selectAndPlay('freie-bahn'); await H.waitMode('decide');
     for (let i = 0; i < 8; i++) {
-      await H.waitMode('decide'); await H.hintStep(); await H.waitMode('feedback');
+      await H.waitMode('decide'); await H.hilfeBisRueckmeldung();
       const sit = (await H.fiq('S')).situation; await H.touch('#fbNext'); await H.page.waitForTimeout(30);
       if ((await H.fiq('S')).situation !== sit) break;
     }
@@ -237,7 +250,7 @@ try {
     await H.selectAndPlay('freie-bahn'); await H.waitMode('decide');
     let tSwitch = null;
     for (let i = 0; i < 8; i++) {
-      await H.waitMode('decide', 30000); await H.hintStep(); await H.waitMode('feedback');
+      await H.waitMode('decide', 30000); await H.hilfeBisRueckmeldung();
       const sit = (await H.fiq('S')).situation; await H.touch('#fbNext'); await H.page.waitForTimeout(30);
       if ((await H.fiq('S')).situation !== sit) { tSwitch = await H.now(); break; }
     }
@@ -280,8 +293,10 @@ try {
     const b1 = await H.page.evaluate(() => [window.__fiq.S.ball.x, window.__fiq.S.ball.y]); await H.page.waitForTimeout(500);
     const b2 = await H.page.evaluate(() => [window.__fiq.S.ball.x, window.__fiq.S.ball.y]);
     if (JSON.stringify(b1) !== JSON.stringify(b2)) fail('Spiel läuft hinter der Abfrage weiter');
-    await H.touch('#confirmNo'); await H.waitMode('feedback');
-    await H.touch('#fbNext'); await H.waitMode(['decide', 'wechsel']);
+    await H.touch('#confirmNo');
+    // V0.6a: gute Entscheidung in Freie Bahn → Kurzrückmeldung, danach automatisch die nächste Entscheidung
+    if ((await H.waitMode(['feedback', 'kurz'])) === 'feedback') await H.touch('#fbNext');
+    await H.waitMode(['decide', 'wechsel']);
     if ((await H.fiq('dec')) !== 1) fail('Ablauf nach ✖ falsch');
     // ✔: gleicher Durchlauf, von vorn
     await H.touch('#restart'); await H.touch('#confirmYes'); await H.waitMode('decide');
@@ -341,7 +356,8 @@ try {
     const H = await open(IPAD, { ms: 320 });
     const T = await H.page.evaluate(() => FIQ.texts('freie-bahn').bedienung);
     await H.selectAndPlay('freie-bahn'); await H.waitMode('decide');
-    await H.hintStep(); await H.waitMode('feedback');
+    { const c = await H.page.evaluate(() => { const c = FIQ.carrier(window.__fiq.S); return [c.x - 3, c.y]; }); await H.field(...c); } // zurück: 💭 (volle Rückmeldung)
+    await H.waitMode('feedback');
     await H.touch('#fbRetry'); const tR = await H.now();
     await H.waitMode('decide', 15000); const tD = await H.now();
     const wd = await H.page.evaluate((t) => FIQSprache.dauer(t, 0.9), T.andersProbieren);
@@ -372,6 +388,53 @@ try {
     await H.close();
   }
 
+  // ------------------------------------------------------------------ 3d. V0.6a P3 Kurzrückmeldung: Sprache und Übergänge
+  {
+    const H = await open(IPAD, { ms: 12 });
+    await H.selectAndPlay('freie-bahn'); await H.waitMode('decide'); await H.ruhig('Start');
+    const fwd = async () => { const c = await H.page.evaluate(() => { const c = FIQ.carrier(window.__fiq.S); return [c.x + 3.5, c.y]; }); await H.field(...c); };
+    // (a) Kurzrückmeldung zu Ende gesprochen (mind. 1,2 s Bild), danach die nächste Anweisung; genau eine Entscheidung weiter
+    await fwd(); await H.waitMode('kurz'); const tK = await H.now(); const k = await H.fiq('kurz');
+    await H.waitMode('decide', 15000); const tD = await H.now(); await H.ruhig('nach Kurzrückmeldung');
+    let log = await H.log();
+    const kurzSay = log.find((x) => x.e === 'speak' && x.at >= tK - 50);
+    if (!kurzSay || kurzSay.t !== k.tip) fail('Kurzrückmeldung spricht nicht den Kurzsatz: ' + JSON.stringify(kurzSay));
+    if (!ganz(log, k.tip)) fail('Kurzrückmeldung wird abgeschnitten');
+    const ctxSay = (await H.fiq('ctx')).say;
+    const iF = log.findIndex((x) => x.e === 'fertig' && x.t === k.tip), iC = log.findIndex((x) => x.e === 'start' && x.t === ctxSay && x.at > tK);
+    if (!(iC > iF)) fail('Nächste Anweisung beginnt vor dem Ende der Kurzrückmeldung');
+    if (tD - tK < 1150) fail(`Folge kürzer als 1,2 s sichtbar (${Math.round(tD - tK)} ms)`);
+    if ((await H.fiq('dec')) !== k.dec + 1) fail('Kurzrückmeldung überspringt eine Entscheidung');
+    // (b) 🔈 an der Kurzrückmeldung: ganze Erklärung; Haupt-🔈 bleibt bei der aktuellen Anweisung
+    await H.touch('#kurzHoeren'); await H.ruhig('Kurz hören');
+    log = await H.log(); const last = log.filter((x) => x.e === 'start').pop().t;
+    if (last === ctxSay || !last.length) fail('🔈 der Kurzrückmeldung wiederholt nicht die Erklärung: ' + last);
+    await H.touch('#repeat'); await H.ruhig('Wiederholen');
+    if ((await H.log()).filter((x) => x.e === 'start').pop().t !== ctxSay) fail('🔈 oben liest nicht die aktuelle Anweisung');
+    // (c) ↶ in der nächsten Entscheidung: zurück zur vorigen Lage, „Anders probieren“ ganz, dann die Anweisung
+    await H.touch('#kurzZurueck'); await H.waitMode('decide', 15000); await H.ruhig('nach ↶');
+    if ((await H.fiq('dec')) !== k.dec) fail('↶ führt nicht zur vorigen Entscheidung');
+    const T = await H.page.evaluate(() => FIQ.texts('freie-bahn').bedienung);
+    if (!ganz(await H.log(), T.andersProbieren)) fail('↶: Ansage abgeschnitten');
+    // (d) ↺ während der Kurzrückmeldung: Übergang wartet hinter der Abfrage; ✖ setzt fort, genau eine Entscheidung weiter
+    await fwd(); await H.waitMode('kurz'); await H.touch('#restart');
+    const d0 = await H.fiq('dec'); await H.page.waitForTimeout(2500);
+    if ((await H.mode()) !== 'kurz' || (await H.fiq('dec')) !== d0) fail('Kurzrückmeldung läuft hinter der Abfrage weiter: ' + (await H.mode()));
+    await H.touch('#confirmNo'); await H.waitMode('decide', 15000);
+    if ((await H.fiq('dec')) !== d0 + 1) fail('Nach ✖: nicht genau eine Entscheidung weiter');
+    // (e) 🏠 während der Kurzrückmeldung: kein Geisterübergang, keine Ansage, keine offenen Aufträge
+    await H.touch('#home'); await H.waitMode('start'); await H.selectAndPlay('freie-bahn'); await H.waitMode('decide');
+    await fwd(); await H.waitMode('kurz'); await H.touch('#home'); const tH = await H.now();
+    await H.page.waitForTimeout(3000);
+    log = await H.log();
+    if ((await H.mode()) !== 'start' || log.some((x) => x.e === 'speak' && x.at > tH + 5)) fail('🏠 während Kurzrückmeldung: Ablauf läuft weiter');
+    const sp = await H.fiq('speech'); if (sp.timers || sp.waiters || sp.cur || sp.queue.length) fail('Nach 🏠 laufen noch Aufträge: ' + JSON.stringify(sp));
+    if (await H.page.isVisible('#kurz')) fail('Kurzrückmeldung bleibt in der Übersicht sichtbar');
+    nurNachTipp(await H.log(), 'Kurzrückmeldung');
+    console.log('✓ Kurzrückmeldung: Kurzsatz ganz, Folge ≥ 1,2 s, dann die nächste Anweisung (keine Entscheidung übersprungen); 🔈 Erklärung; ↶ zurück; ↺ hält an; 🏠 ohne Geisterablauf');
+    await H.close();
+  }
+
   // ------------------------------------------------------------------ 3c. Doppeltipp-Sperre: nur Geistertipps auf verschwundene Knöpfe
   {
     const H = await open(IPAD, { ms: 2 });
@@ -390,11 +453,11 @@ try {
     await H.touch('#missionList .mcard[data-id="freie-bahn"]');
     const far = await H.page.evaluate(() => { const c = FIQ.newState('freie-bahn', window.__fiq.run + 0).players.find((p) => p.team === 'blue'); return [c.x + 4, c.y - 3]; });
     await H.page.touchscreen.tap(...P);
-    const fb = await H.page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; }); const k = fb[2] / 40.4;
-    const FP = [fb[0] + (far[0] + 2.2) * k, fb[1] + (far[1] + 1.6) * k];
+    const fb = await H.page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; }); const k = fb[2] / fb[3].w;
+    const FP = [fb[0] + (far[0] - fb[3].x0) * k, fb[1] + (far[1] - fb[3].y0) * k];
     if (Math.hypot(FP[0] - P[0], FP[1] - P[1]) < 60) fail('Testaufbau: Zielpunkt zu nah am Knopf');
     await H.page.waitForTimeout(120); await H.page.touchscreen.tap(...FP);
-    await H.waitMode(['anim', 'feedback']);
+    await H.waitMode(['anim', 'feedback', 'kurz']);
     // (d) Knopf bleibt sichtbar (gewählte Aktion / Hilfe), Feld-Tipp direkt daneben innerhalb 450 ms -> verarbeitet
     await H.touch('#home'); await H.waitMode('start');
     await H.selectAndPlay('mission-1'); await H.look();
@@ -428,6 +491,10 @@ try {
     await H.touch('#missionList .mcard[data-id="freie-bahn"]'); await H.reachable('#play', true); await H.touch('#play'); await H.waitMode('decide');
     for (const s of ['#actions .hint', '#restart', '#home', '#repeat']) await H.reachable(s);
     await H.touch('#restart'); await H.reachable('#confirmYes'); await H.reachable('#confirmNo'); await H.touch('#confirmNo');
+    // V0.6a: Kurzrückmeldung – ↶ und 🔈 in der nächsten Entscheidung ohne Scrollen erreichbar, Hilfe weiter erreichbar
+    { const c = await H.page.evaluate(() => { const c = FIQ.carrier(window.__fiq.S); return [c.x + 3.5, c.y]; }); await H.field(...c); }
+    await H.waitMode('kurz'); await H.waitMode('decide', 15000);
+    for (const s of ['#kurzZurueck', '#kurzHoeren', '#actions .hint']) await H.reachable(s);
     await H.playToEnd();
     for (const s of ['#nextMission', '#again', '#same', '#home2']) await H.reachable(s);
     await H.touch('#nextMission'); await H.waitMode(['look', 'decide']);

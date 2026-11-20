@@ -10,24 +10,36 @@ const REF = require('./golden/referenz.js');
 
 const M = E.mission(ID);
 const sitStart = (id) => M.situationen.find((x) => x.id === id).start;
-const stateAt = (id) => { const d = M.durchlaeufe.findIndex((x) => x[0] === id); const s = E.newState(ID, d); assert.strictEqual(s.situation, id); return s; };
+// V0.6a: nicht jede Situation beginnt einen Durchlauf – dann eine Testmission mit genau dieser Situation (gleiche Einstellungen)
+const inst = (id) => {
+  const d = M.durchlaeufe.findIndex((x) => x[0] === id);
+  if (d >= 0) return { mid: ID, d };
+  const mid = 'a-einzel-' + id;
+  if (!globalThis.FIQ_MISSIONS.some((x) => x.id === mid)) globalThis.FIQ_MISSIONS.push(Object.assign({}, M, { id: mid, situationen: [M.situationen.find((x) => x.id === id)], durchlaeufe: [[id]] }));
+  return { mid, d: 0 };
+};
+const stateAt = (id) => { const { mid, d } = inst(id); const s = E.newState(mid, d); assert.strictEqual(s.situation, id); return s; };
+const missionAt = (id) => { const { mid, d } = inst(id); return E.newMission(mid, d); };
 const run = (s, a) => { const ev = E.evaluate(s, a); E.startAction(s, a); let n = 0; while (!s.ep.done && n++ < 3000) E.tick(s); assert.ok(s.ep.done, 'Szene endet'); return { ev, fb: E.feedback(s), goal: s.ep.events.some((e) => e.type === 'goal') }; };
 
-test('Mission A: gültig, A1–A5, 2 gegen 2, keine Verteidigung, Engine-Standard bleibt Mission 1', () => {
+test('Mission A: gültig, A1–A5 + A3m/W1/W1m (V0.6a), 2 gegen 2, keine Verteidigung, Engine-Standard bleibt Mission 1', () => {
   assert.deepStrictEqual(E.validateMission(M), []);
-  assert.deepStrictEqual(M.situationen.map((x) => x.id), ['A1', 'A2', 'A3', 'A4', 'A5'], 'A4 seit Meilenstein 4');
+  assert.deepStrictEqual(M.situationen.map((x) => x.id), ['A1', 'A2', 'A3', 'A3m', 'A4', 'A5', 'W1', 'W1m'], 'A4 seit Meilenstein 4, A3m/W1/W1m seit V0.6a');
   for (const x of M.situationen) assert.deepStrictEqual(x.start.spieler.map((p) => p.id).sort(), ['b1', 'b2', 'r1', 'r2']);
   assert.strictEqual(M.phasen.verteidigung, 0);
   assert.strictEqual(E.mission().id, 'mission-1', 'Standardmission der Engine unverändert');
   assert.deepStrictEqual([M.lernwelt, M.nummer], [1, 2]);
 });
 
-test('Rotation: 3 Situationen je Durchlauf, jede Situation gleich oft, jeder Durchlauf beginnt anders, Zyklus deterministisch', () => {
-  const D = M.durchlaeufe, count = {};
-  for (const d of D) { assert.strictEqual(d.length, 3); assert.strictEqual(new Set(d).size, 3, 'keine Wiederholung in einem Durchlauf'); d.forEach((id) => { count[id] = (count[id] || 0) + 1; }); }
-  assert.deepStrictEqual(count, { A1: 3, A2: 3, A3: 3, A4: 3, A5: 3 });
-  assert.deepStrictEqual(D[0], ['A1', 'A2', 'A5'], 'erster Durchlauf unverändert');
-  assert.strictEqual(new Set(D.map((d) => d[0])).size, D.length);
+test('Rotation (V0.6a): 4 Situationen je Durchlauf im Lernaufbau Tor wählen → andere Lösung → nochmal schauen, aufeinanderfolgende Durchläufe beginnen anders, deterministisch', () => {
+  const D = M.durchlaeufe, ziel = (id) => M.situationen.find((x) => x.id === id).lernziel, rang = { torWaehlen: 0, andereLoesung: 1, nochmalSchauen: 2 };
+  for (const d of D) {
+    assert.strictEqual(d.length, 4); assert.strictEqual(new Set(d).size, 4, 'keine Wiederholung in einem Durchlauf');
+    const r = d.map((id) => rang[ziel(id)]); assert.deepStrictEqual(r, [0, 0, 1, 2], `Lernaufbau ${d}`);
+  }
+  assert.deepStrictEqual(D[0], ['A1', 'A2', 'A3', 'W1'], 'erster Durchlauf = freigegebene Progression');
+  for (const x of M.situationen) assert.ok(D.flat().includes(x.id), x.id + ' kommt vor');
+  for (let n = 1; n < D.length; n++) assert.notStrictEqual(D[n][0], D[n - 1][0], 'aufeinanderfolgende Durchläufe beginnen anders');
   for (let n = 0; n < 9; n++) assert.deepStrictEqual(E.newMission(ID, n).sit.order, D[n % D.length]);
   for (let n = 0; n < D.length; n++) assert.notDeepStrictEqual(D[n], D[(n + 1) % D.length], 'kein Durchlauf gleicht dem vorigen');
 });
@@ -52,7 +64,7 @@ test('A2: Tor unten zugestellt – Spiegelbild von A1', () => {
 });
 
 test('A3: beide Tore zu – Pass zu Blau 2 ⭐, Ballannahme in der Torzone, Blau 2 schießt aufs freie Tor ⭐ und trifft (kein Freilaufen dazwischen)', () => {
-  const s = stateAt('A3'), m = E.newMission(ID, M.durchlaeufe.findIndex((x) => x[0] === 'A3'));
+  const s = stateAt('A3'), m = missionAt('A3');
   assert.strictEqual(m.sit.order[0], 'A3');
   const sit = E.situation(s);
   assert.ok(sit.shots.every((o) => o.margin <= E.CFG.shotLaneOk), 'beide Tore zugestellt');
@@ -85,7 +97,7 @@ test('A5: beide Tore frei – beide Schüsse ⭐ und Tor (gleich gut); Hilfe zei
 });
 
 test('A4: noch zu weit fürs Tor – Hilfe: in die Schusszone dribbeln ⭐, dann aufs freie Tor schießen ⭐ und treffen', () => {
-  const s = stateAt('A4'), m = E.newMission(ID, M.durchlaeufe.findIndex((x) => x[0] === 'A4'));
+  const s = stateAt('A4'), m = missionAt('A4');
   let ctx = E.context(s, null);
   assert.strictEqual(ctx.type, 'angriff'); assert.deepStrictEqual(ctx.actions, ['passen', 'dribbeln']);
   assert.match(ctx.say, /Noch zu weit fürs Tor/);
@@ -110,8 +122,8 @@ test('A4: andere Entscheidungen – Pass zu Blau 2 ist auch gut (mehrere gute We
 });
 
 test('A4: auch der Weg über den Pass zu Blau 2 (danach Hilfe) endet mit Torschuss ⭐ – die Situation bricht nicht nach der Vorbereitung ab', () => {
-  const d = M.durchlaeufe.findIndex((x) => x[0] === 'A4');
-  const r = play(E, d, (E2, s, ctx, i) => (i === 0 ? { kind: 'pass', id: 'b2' } : STYLES.hilfe(E2, s, ctx)));
+  const { mid, d } = inst('A4');
+  const r = play(E, d, (E2, s, ctx, i) => (i === 0 ? { kind: 'pass', id: 'b2' } : STYLES.hilfe(E2, s, ctx)), mid);
   const a4 = r.out.filter((x) => x.sit === 'A4');
   assert.strictEqual(a4[0].a.kind, 'pass'); assert.ok(a4.every((x) => x.fb.good), JSON.stringify(a4.map((x) => x.a.kind)));
   assert.ok(a4[a4.length - 1].events.includes('goal'), 'Tor am Ende');
@@ -132,13 +144,14 @@ test('A4 Robustheit: jeder Spieler ±0,5 m und ±1 m (x und y) – Hilfe: Dribbe
   assert.deepStrictEqual(fail, []);
 });
 
-test('Vollständige Durchläufe mit der Hilfe: alle 5 Durchläufe enden nach 3 Situationen mit 3 Toren, nur ⭐', () => {
+test('Vollständige Durchläufe mit der Hilfe: alle 5 Durchläufe enden nach 4 Situationen mit 4 Toren, nur ⭐', () => {
   for (let d = 0; d < M.durchlaeufe.length; d++) {
     const r = play(E, d, STYLES.hilfe);
-    assert.ok(r.done); assert.deepStrictEqual(r.score, { blue: 3, red: 0 });
+    assert.ok(r.done); assert.deepStrictEqual(r.score, { blue: 4, red: 0 });
     assert.ok(r.out.every((x) => x.fb.good), `Durchlauf ${d}`);
     assert.deepStrictEqual([...new Set(r.out.map((x) => x.sit))], M.durchlaeufe[d]);
-    assert.strictEqual(r.out.length, 3 + M.durchlaeufe[d].filter((x) => x === 'A3' || x === 'A4').length, 'A3 und A4 brauchen je 2 Entscheidungen');
+    const je = {}; r.out.forEach((x) => { je[x.sit] = (je[x.sit] || 0) + 1; });
+    for (const [sid, n] of Object.entries(je)) assert.strictEqual(n, /^(A3|A4|W1)/.test(sid) ? 2 : 1, `${sid}: A3, A4 und W1 brauchen je 2 Entscheidungen, sonst 1`);
   }
 });
 

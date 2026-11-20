@@ -1,7 +1,7 @@
 /* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen (V0.2) */
 (function () {
   'use strict';
-  const APP_VERSION = '0.5.1';
+  const APP_VERSION = '0.6.0';
   // Schutz gegen gemischte Cache-Stände (neue Seite + altes Skript oder umgekehrt)
   try {
     const htmlV = (document.querySelector('meta[name="app-version"]') || {}).content;
@@ -79,9 +79,22 @@
   let idleTimer = null;
   let curRun = 0;        // Durchlauf der laufenden Mission (für „Neu starten“ und „Genau so nochmal“)
   let pausiert = false;  // Neustart-Abfrage offen: Simulation und Ablauf stehen
+  // V0.6a P4: Lernsituationen – je Situation (Lernmission) bzw. je Feld Angriff/Abwehr (Mission 1)
+  let lernStarts = {};   // key -> {start: E.lernStart(...), dec}
+  let lernErgebnis = {}; // key -> Ergebnis von E.lernAuswertung (gesetzt, sobald die Situation zu Ende ist)
+  let lernView = null;   // P5: sichtbare Ursachen nach der Aktion (Lücke, Wächter vorher, Vorbei-Moment, Passweg)
+  let kurzInfo = null;   // P3: letzte Kurzrückmeldung {fb, dec} – ↶ und 🔈 bis zur nächsten Aktion
 
   // ------------------------------------------------------------ Darstellung
-  const VIEW = { x0: -2.2, y0: -1.6, w: 40.4, h: 27.2 };
+  const VIEW_GANZ = { x0: -2.2, y0: -1.6, w: 40.4, h: 27.2 };
+  // V0.6a P5: ruhige Rahmung – Lernmissionen spielen in der rechten Feldhälfte. Fester Ausschnitt je Mission (wechselt
+  // nie innerhalb einer Mission): ganze Feldhöhe mit Linien und beiden Toren, der leere linke Teil entfällt.
+  const VIEW_LERNEN = { x0: 6, y0: -0.8, w: 32.0, h: 25.6 };
+  const VIEW = { ...VIEW_GANZ };
+  function setzeRahmen() {
+    const def = MISSIONS.find((m) => m.id === curId), v = def && def.art === 'lernen' && def.situationen ? VIEW_LERNEN : VIEW_GANZ;
+    Object.assign(VIEW, v); resize();
+  }
   let scale = 20, dpr = 1;
 
   /** Nach jeder Änderung, die die Höhe von Kopf- oder Bedienleiste ändert, sofort neu vermessen.
@@ -169,10 +182,12 @@
     const cand = opts.candidates || [];
     for (const p of v.players) {
       ctx.fillStyle = 'rgba(0,0,0,.18)';
-      ctx.beginPath(); ctx.ellipse(X(p.x + 0.15), Y(p.y + 0.35), Mm(0.85), Mm(0.55), 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(X(p.x + 0.15), Y(p.y + 0.4), Mm(R_SPIELER), Mm(R_SPIELER * 0.65), 0, 0, Math.PI * 2); ctx.fill();
     }
-    for (const p of v.players) {
-      const r = 0.85;
+    // Ballführender zuletzt gezeichnet: bleibt sichtbar, auch wenn ein Gegner ganz nah ist (größere Spieler überlappen bei 1,4 m)
+    const reihe = v.players.slice().sort((a, b) => (a.id === v.owner) - (b.id === v.owner));
+    for (const p of reihe) {
+      const r = R_SPIELER;
       if (v.owner === p.id) {
         ctx.fillStyle = 'rgba(255,255,255,.35)';
         ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), Mm(r + 0.45), 0, Math.PI * 2); ctx.fill();
@@ -188,7 +203,16 @@
       ctx.fillStyle = g;
       ctx.beginPath(); ctx.arc(X(p.x), Y(p.y), Mm(r), 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#fff'; ctx.lineWidth = Mm(0.13); ctx.stroke();
-      ctx.fillStyle = '#fff'; ctx.font = FONT(Mm(0.95));
+      // P5: Blickrichtung – Ballführender schaut in Angriffsrichtung, alle anderen schauen zum Ball
+      const w = v.owner === p.id ? (p.team === 'blue' ? 0 : Math.PI) : Math.atan2(v.ball.y - p.y, v.ball.x - p.x);
+      const nx = p.x + Math.cos(w) * (r + 0.42), ny = p.y + Math.sin(w) * (r + 0.42);
+      ctx.fillStyle = p.team === 'blue' ? '#1e3a8a' : '#881337';
+      ctx.beginPath();
+      ctx.moveTo(X(nx), Y(ny));
+      ctx.lineTo(X(p.x + Math.cos(w + 0.42) * (r - 0.05)), Y(p.y + Math.sin(w + 0.42) * (r - 0.05)));
+      ctx.lineTo(X(p.x + Math.cos(w - 0.42) * (r - 0.05)), Y(p.y + Math.sin(w - 0.42) * (r - 0.05)));
+      ctx.closePath(); ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = Mm(0.08); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.font = FONT(Mm(1.15));
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(String(p.num), X(p.x), Y(p.y) + Mm(0.04));
     }
@@ -199,6 +223,59 @@
     ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), Mm(0.38), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.fillStyle = '#111';
     ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), Mm(0.13), 0, Math.PI * 2); ctx.fill();
+  }
+
+  const R_SPIELER = 1.02; // V0.6a P5: Spieler ca. 20 % größer (vorher 0,85 m; 25 % überdeckt den Ballführenden beim Pressing zu stark); Tippflächen unverändert
+
+  /** P5: belegte Ursachen sichtbar machen (nur nach der Aktion: Rückmeldung und Kurzrückmeldung) */
+  function drawLern(lv) {
+    if (!lv) return;
+    if (lv.passweg) arrow(lv.passweg.from, lv.passweg.to, 'rgba(34,197,94,.9)', 0.24, true);
+    if (lv.luecke) {
+      const { a, b, ok } = lv.luecke;
+      for (const q of [a, b]) ring(q.x, q.y, R_SPIELER, 'rgba(255,255,255,.9)', 0.1, true); // wo das Paar vorher stand
+      ctx.strokeStyle = ok ? 'rgba(34,197,94,.95)' : 'rgba(255,59,48,.95)'; ctx.lineWidth = Mm(0.22); ctx.lineCap = 'round';
+      ctx.setLineDash([Mm(0.3), Mm(0.22)]);
+      ctx.beginPath(); ctx.moveTo(X(a.x), Y(a.y)); ctx.lineTo(X(b.x), Y(b.y)); ctx.stroke(); ctx.setLineDash([]);
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      ctx.fillStyle = ok ? 'rgba(34,197,94,.95)' : 'rgba(255,59,48,.95)';
+      ctx.beginPath(); ctx.arc(X(mx), Y(my), Mm(0.75), 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = Mm(0.1); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.font = FONT(Mm(1.05)); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(ok ? '✓' : '✗', X(mx), Y(my) + Mm(0.03));
+    }
+    if (lv.waechter) {
+      // vorher (blasser Schatten) → jetzt
+      const { alt, neu } = lv.waechter;
+      ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = Mm(0.12); ctx.setLineDash([Mm(0.25), Mm(0.2)]);
+      ctx.fillStyle = 'rgba(190,18,60,.28)';
+      ctx.beginPath(); ctx.arc(X(alt.x), Y(alt.y), Mm(R_SPIELER), 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+      arrow(alt, neu, 'rgba(255,255,255,.85)', 0.16, true);
+    }
+    if (lv.vorbei && lv.vorbei.at) {
+      const t = (performance.now() - lv.vorbei.t0) / 600;
+      if (t >= 0 && t <= 1) {
+        ctx.globalAlpha = 1 - t * t;
+        ctx.font = FONT(Mm(1.5)); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.lineWidth = Mm(0.25); ctx.strokeStyle = 'rgba(15,23,42,.8)'; ctx.fillStyle = '#ffd60a';
+        const yy = lv.vorbei.at.y - 2 - t * 0.8;
+        ctx.strokeText(lv.vorbei.text, X(lv.vorbei.at.x), Y(yy)); ctx.fillText(lv.vorbei.text, X(lv.vorbei.at.x), Y(yy));
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+  /** P5: Darstellung der Ursachen aus der Rückmeldung (fb.ursachen) und der Lage vor der Aktion (S.ep.vorher) */
+  function lernViewAus(fb) {
+    const v = S.ep && S.ep.vorher; if (!v || !fb.ursachen || !fb.ursachen.length) return null;
+    const at = (id) => (v.pos[id] ? { x: v.pos[id][0], y: v.pos[id][1] } : null), jetzt = (id) => { const p = E.P(S, id); return p ? { x: p.x, y: p.y } : null; };
+    const lv = {}, U = (t) => fb.ursachen.find((u) => u.typ === t);
+    const lu = U('lueckeDurch') || U('lueckeZuEng');
+    if (lu) lv.luecke = { a: at(lu.paar[0]), b: at(lu.paar[1]), ok: lu.typ === 'lueckeDurch' };
+    const w = U('waechterVerschoben') || U('waechterErkannt');
+    if (w && v.prev && v.prev[w.gegner]) lv.waechter = { alt: { x: v.prev[w.gegner][0], y: v.prev[w.gegner][1] }, neu: at(w.gegner) };
+    if (U('ueberspielt') && fb.good) { const c = E.carrier(S); if (c) lv.vorbei = { at: { x: c.x, y: c.y }, t0: performance.now(), text: T().lern.vorbeiMoment }; }
+    const pw = U('passwegFrei'); if (pw) { const c = E.carrier(S), f = jetzt(pw.freund); if (c && f) lv.passweg = { from: { x: c.x, y: c.y }, to: f }; }
+    return Object.keys(lv).length ? lv : null;
   }
 
   function drawMarker(pt, color) {
@@ -292,8 +369,10 @@
       if (marker.from && marker.planned) arrow(marker.from, marker, 'rgba(255,255,255,.75)', 0.18, true);
       drawMarker(marker, 'rgba(255,255,255,.9)');
     }
-    if (mode === 'feedback' && explainView) { drawExplain(explainView); Object.assign(opts, explainIds(explainView)); }
+    if ((mode === 'feedback' || mode === 'kurz') && explainView) { drawExplain(explainView); Object.assign(opts, explainIds(explainView)); }
     drawPlayers(v, opts);
+    // P5: Ursachen über den Spielern (die Lücke liegt dort, wo die Gegner vorher standen – sonst verdeckt)
+    if ((mode === 'feedback' || mode === 'kurz') && lernView) drawLern(lernView);
     if (mode === 'replay' && replay) label(replay.queue[replay.i].label);
   }
   function roundRect(x, y, w, h, r) {
@@ -350,6 +429,8 @@
     curRun = n != null ? n : (runs[curId] || 0);
     S = E.newState(curId, curRun); M = E.newMission(curId, curRun); dec = 0; hist = [];
     hintView = null; marker = null; explainView = null; lookView = null; replay = null; sel = null;
+    lernStarts = {}; lernErgebnis = {}; lernView = null; kurzAus();
+    setzeRahmen();
     $('startScreen').hidden = true; $('endScreen').hidden = true; $('feedback').hidden = true; $('skip').hidden = true;
     $('restart').hidden = false; $('prompt').classList.remove('dim');
     updateScore();
@@ -362,14 +443,34 @@
     Sprache.phase();
     const c = E.context(S, last);
     const prev = hist[dec];
-    hist[dec] = { snap: E.clone(S), mission: E.clone(M), ctx: c, last, attempts: prev ? prev.attempts : [], final: null, look: prev ? prev.look : null };
+    const key = lernKey(c);
+    if (!lernStarts[key]) lernStarts[key] = { start: E.lernStart(S, situationsMission() ? null : key), dec };
+    hist[dec] = { snap: E.clone(S), mission: E.clone(M), ctx: c, last, attempts: prev ? prev.attempts : [], final: null, look: prev ? prev.look : null, sit: key, usedHint: !!(prev && prev.usedHint) };
     hist.length = dec + 1;
-    sel = null; hintView = null; marker = null; explainView = null; lookView = null;
+    sel = null; hintView = null; marker = null; explainView = null; lookView = null; lernView = null;
     updateProgress();
     setPrompt(c.tag, c.type === 'verteidigung' ? 'def' : 'att', c.title);
     if (E.lookBefore(S, c) && !hist[dec].look) return beginLook(c);
     startDecide(c, true);
   }
+
+  // ---------- V0.6a P4: Lernsituationen
+  const missionDef = () => MISSIONS.find((m) => m.id === curId);
+  const situationsMission = () => { const d = missionDef(); return !!(d && Array.isArray(d.situationen) && d.situationen.length); };
+  /** Schlüssel der Lernsituation: Situation (Lernmission) bzw. Feld Angriff/Abwehr (Mission 1) */
+  function lernKey(c) { return situationsMission() ? 'S:' + S.situation : c.type === 'verteidigung' ? 'verteidigung' : 'angriff'; }
+  function lernSchritte(key) {
+    return hist.filter((h) => h.sit === key && h.final).map((h) => ({ ctxType: h.ctx.type, kind: h.final.a.kind, good: h.final.fb.good, ursachen: h.final.fb.ursachen, lern: h.final.fb.lern, hilfe: !!h.usedHint }));
+  }
+  function lernAuswerten(key) { const st = lernStarts[key]; return st ? E.lernAuswertung(st.start, lernSchritte(key)) : null; }
+  /** Endet mit der eben abgeschlossenen Entscheidung die Lernsituation? (Gegenprobe am geklonten Zustand) */
+  function situationEndet(key) {
+    const s2 = E.clone(S), m2 = E.clone(M); E.missionApply(m2, s2);
+    if (m2.done) return true;
+    if (situationsMission()) return m2.note === 'situation' || s2.situation !== S.situation;
+    return key === 'angriff' ? m2.phase !== 'attack' : m2.phase !== 'defense';
+  }
+  const lernTyp = (key) => (lernStarts[key] && lernStarts[key].start.typ) || null;
 
   function setPrompt(tag, cls, title) {
     $('tag').textContent = tag; $('tag').className = 'tag ' + cls;
@@ -563,6 +664,7 @@
 
   function act(a, mark, from) {
     Sprache.stopp(); Sprache.phase(); Sfx.tap(); hideHand(); Sprache.loesche(idleTimer);
+    kurzAus();
     hintView = null;
     marker = mark ? { x: mark.x, y: mark.y, from: from ? { x: from.x, y: from.y } : null, planned: true } : null;
     E.startAction(S, a);
@@ -579,10 +681,64 @@
     attempt.endState = E.clone(S); attempt.missionAfter = E.clone(M);
     const h = hist[dec];
     h.attempts.push(attempt); h.final = attempt;
-    mode = 'feedback'; marker = null;
+    marker = null;
     explainView = fb.explain;
+    lernView = lernViewAus(fb);
     $('prompt').classList.remove('dim');
+    // P4: Lernergebnis, sobald die Situation mit dieser Entscheidung endet
+    const endet = situationEndet(h.sit);
+    h.lern = endet ? lernAuswerten(h.sit) : null;
+    if (h.lern && h.lern.typ) lernErgebnis[h.sit] = h.lern; else delete lernErgebnis[h.sit];
+    // P3: Kurzrückmeldung (nur Missionen mit kurzrueckmeldung): gute Entscheidung, Situation läuft weiter, kein Tor
+    const def = missionDef();
+    if (def && def.kurzrueckmeldung === true && fb.good && !endet && !fb.goal) return kurzRueckmeldung(fb);
+    mode = 'feedback';
     showFeedback(fb, h);
+  }
+
+  // ---------- V0.6a P3: Kurzrückmeldung – Folge sichtbar, ↶ macht die Entscheidung rückgängig, 🔈 wiederholt die Erklärung
+  function kurzRueckmeldung(fb) {
+    mode = 'kurz';
+    kurzInfo = { fb, dec };
+    $('kurzText').textContent = '⭐ ' + fb.tip;
+    $('kurzHoeren').setAttribute('aria-label', T().lern.kurzHoeren);
+    $('kurzZurueck').querySelector('.lbl').textContent = T().lern.kurzZurueck;
+    $('kurz').hidden = false; syncLayout();
+    Sfx.good(); updateProgress();
+    Sprache.phase();
+    say(fb.tip, 'rueckmeldung');
+    const d = dec;
+    // weiter zur nächsten Entscheidung, wenn der Satz zu Ende ist (mind. 1,2 s Bild der Folge); nie eine Entscheidung überspringen
+    Sprache.wennFertig(() => { if (mode === 'kurz' && dec === d && !pausiert) weiter(); }, { min: 1200, max: 8000 });
+  }
+  function kurzAus() { kurzInfo = null; const k = $('kurz'); if (k && !k.hidden) { k.hidden = true; syncLayout(); } }
+  function kurzZurueck() {
+    if (!kurzInfo || pausiert || !(mode === 'kurz' || mode === 'decide' || mode === 'look')) return;
+    const d = kurzInfo.dec; kurzAus();
+    Sprache.stopp(); hideHand(); Sprache.loesche(idleTimer);
+    mode = 'wechsel'; dec = d; hist.length = d + 1;
+    const h = hist[d];
+    S = E.clone(h.snap); M = E.clone(h.mission); h.final = null; explainView = null; lernView = null; hintView = null; sel = null;
+    if (h.look && !h.look.right) h.look = null;
+    $('actions').innerHTML = ''; $('cancel').hidden = true; setStepText('');
+    updateScore(); updateProgress();
+    say(T().bedienung.andersProbieren, 'ansage', true);
+    Sprache.wennFertig(() => beginDecision(h.last), { min: 700, max: 8000 });
+  }
+  /** P4: nicht geschaffte Situation von vorn (eigene Startaufstellung) */
+  function situationNochmal() {
+    if (mode !== 'feedback' || $('feedback').hidden) return;
+    const key = hist[dec].sit, st = lernStarts[key]; if (!st) return;
+    Sprache.stopp(); mode = 'wechsel';
+    $('feedback').hidden = true; syncLayout();
+    dec = st.dec; hist.length = dec + 1;
+    const h = hist[dec];
+    S = E.clone(h.snap); M = E.clone(h.mission);
+    h.final = null; h.attempts = []; h.usedHint = false; h.look = null; h.lern = null;
+    delete lernErgebnis[key]; explainView = null; lernView = null;
+    updateScore(); updateProgress();
+    say(T().lern.situationNochmalAnsage, 'ansage', true);
+    Sprache.wennFertig(() => beginDecision(h.last), { min: 900, max: 8000 });
   }
 
   function chip(el, tag, icon, detail) {
@@ -599,13 +755,26 @@
     chip($('fbRec'), fb.tags.rec, '💡', fb.rec.why);
     chip($('fbExe'), fb.tags.exe, '🎯', fb.exe.why);
     $('fbCompare').hidden = h.attempts.length < 2;
+    // P4: Lernergebnis der Situation
+    const L = h.lern, TL = T().lern, lern = $('fbLern');
+    let lernSatz = '', lernGesagt = '';
+    if (L && L.typ && TL.geschafft[L.typ]) {
+      lernSatz = L.geloest ? TL.geschafft[L.typ] : TL.nochNicht[L.typ];
+      lernGesagt = L.geloest ? TL.geschafftKurz : lernSatz;
+      lern.textContent = (L.geloest ? '⭐' + (L.hilfe ? '💡 ' : ' ') : '🔁 ') + lernSatz + (L.geloest && L.hilfe ? ` (${TL.mitHilfe})` : '');
+      lern.className = L.geloest ? '' : 'offen';
+    }
+    lern.hidden = !lernSatz;
+    // „Nochmal“ (Situation von vorn) nur, wenn die Situation schon frühere Entscheidungen hatte – sonst ist es dasselbe wie „Anders probieren“
+    $('fbSit').hidden = !(L && L.typ && !L.geloest && lernStarts[h.sit] && lernStarts[h.sit].dec < dec);
+    $('fbSit').querySelector('.lbl').textContent = TL.situationNochmal;
     $('fbNext').querySelector('.lbl').textContent = M.done ? T().bedienung.fertig : T().bedienung.weiterspielen;
     $('feedback').hidden = false;
     syncLayout();
     if (fb.good) Sfx.good();
     updateProgress();
     Sprache.phase();
-    say(fb.say, 'rueckmeldung');
+    say(fb.say + (lernGesagt ? ' ' + lernGesagt : ''), 'rueckmeldung');
   }
 
   function retry() {
@@ -623,8 +792,12 @@
   function next() {
     if (mode !== 'feedback' || $('feedback').hidden) return;   // schnelles Mehrfach-Antippen
     Sprache.stopp();
+    weiter();
+  }
+  /** Zur nächsten Entscheidung (aus der Rückmeldung oder automatisch nach der Kurzrückmeldung) */
+  function weiter() {
     $('feedback').hidden = true;
-    explainView = null;
+    explainView = null; lernView = null;
     const h = hist[dec];
     const last = { kind: h.final.a.kind, success: h.final.fb.success, team: 'blue' };
     E.missionApply(M, S);
@@ -675,15 +848,16 @@
     hideHand(); Sprache.loesche(idleTimer); Sprache.phase();
     $('restart').hidden = true;
     updateProgress();
-    const done = hist.filter((h) => h.final);
-    const good = done.filter((h) => h.final.fb.good).length;
     const looks = hist.filter((h) => h.look);
-    $('stars').innerHTML = done.map((h) => `<span class="${h.final.fb.good ? 'on' : ''}">★</span>`).join('');
-    const TE = T().ende;
-    $('endScore').textContent = TE.spielstand(S.score.blue, S.score.red) + (looks.length ? TE.erkannt(looks.filter((l) => l.right && l.tries === 1).length, looks.length) : '');
-    const msg = TE.lob(good, done.length) + (TE.merksatz || '');
+    // V0.6a P4: ein Stern je Lernsituation (geschafft = Kernleistung erbracht; mit Hilfe = voller Stern + 💡)
+    const sits = lernUebersicht();
+    const good = sits.filter((x) => x.e.geloest).length, mitHilfe = sits.filter((x) => x.e.geloest && x.e.hilfe).length;
+    $('stars').innerHTML = sits.map((x) => `<span class="${x.e.geloest ? 'on' : ''}">★</span>`).join('');
+    const TE = T().ende, TL = T().lern;
+    $('endScore').textContent = TE.spielstand(S.score.blue, S.score.red) + (looks.length ? TE.erkannt(looks.filter((l) => l.right && l.tries === 1).length, looks.length) : '') + '  ·  ' + TE.zaehler(good, sits.length, mitHilfe);
+    const msg = TE.lob(good, sits.length) + (TE.merksatz || '');
     $('endMsg').textContent = msg;
-    $('endList').innerHTML = done.map((h, i) => `<li class="${h.final.fb.good ? 'good' : ''}"><b>${h.ctx.type === 'verteidigung' ? '🛡️' : '⚽'}</b> ${h.ctx.title} <span>${h.final.fb.good ? '⭐' : '💭'}</span></li>`).join('');
+    $('endList').innerHTML = sits.map((x) => `<li class="${x.e.geloest ? 'good' : ''}"><b>${x.key === 'verteidigung' ? '🛡️' : '⚽'}</b> ${TL.titel[x.e.typ] || ''} <span>${x.e.geloest ? '⭐' + (x.e.hilfe ? '💡' : '') : '✓'}</span></li>`).join('');
     $('prompt').hidden = true; setStepText('');
     firstRun = false;
     runs[curId] = Math.max(runs[curId] || 0, curRun + 1); // „Nochmal“ bringt den nächsten Durchlauf (andere Situationen)
@@ -696,7 +870,13 @@
     $('endFinal').hidden = !!nx;
     $('same').hidden = !(def && Array.isArray(def.durchlaeufe) && def.durchlaeufe.length > 1);
     $('endScreen').hidden = false;
-    say(msg + TE.sterne(good, done.length) + (nx ? '' : ' ' + T().bedienung.letzteMission), 'rueckmeldung');
+    say(msg + TE.sterneSituationen(good, sits.length) + (nx ? '' : ' ' + T().bedienung.letzteMission), 'rueckmeldung');
+  }
+  /** Lernsituationen in Spielreihenfolge mit Ergebnis (nicht abgeschlossene werden zum Ende ausgewertet) */
+  function lernUebersicht() {
+    const keys = [...new Set(hist.filter((h) => h.final).map((h) => h.sit))];
+    return keys.map((key) => ({ key, e: lernErgebnis[key] || lernAuswerten(key) }))
+      .filter((x) => x.e && x.e.typ && !(x.key === 'verteidigung' && x.e.kern == null));
   }
   /** Nächste Mission im empfohlenen Weg; nach der letzten keine (kein Sprung zur ersten). */
   function nextMission() {
@@ -713,6 +893,16 @@
   function updateProgress() {
     const box = $('progress'); box.innerHTML = '';
     const mk = (cls, txt) => { const d = document.createElement('span'); d.className = cls; d.textContent = txt; box.appendChild(d); };
+    // V0.6a P4: Lernmissionen – ein Punkt je Situation (★ geschafft, ★💡 mit Hilfe, ✓ nicht geschafft, • offen)
+    if (M && M.sit && M.sit.order && situationsMission()) {
+      const cur = S && S.situation;
+      M.sit.order.forEach((sid, i) => {
+        const e = lernErgebnis['S:' + sid];
+        const istCur = mode !== 'end' && !e && sid === cur && i === M.sit.order.indexOf(cur);
+        mk('dot' + (istCur ? ' cur' : '') + (e ? (e.geloest ? ' star' + (e.hilfe ? ' hilfe' : '') : ' done') : ''), e ? (e.geloest ? '★' : '✓') : '•');
+      });
+      return;
+    }
     const items = hist.map((h, i) => ({ h, i }));
     const att = items.filter((x) => x.h.ctx.type !== 'verteidigung');
     const def = items.filter((x) => x.h.ctx.type === 'verteidigung');
@@ -758,7 +948,7 @@
   };
   function goHome() {
     Sprache.abbrechen(); hideHand(); closeConfirm(false);
-    replay = null; mode = 'start'; sel = null;
+    replay = null; mode = 'start'; sel = null; kurzAus(); lernView = null;
     $('feedback').hidden = true; $('endScreen').hidden = true; $('skip').hidden = true; $('restart').hidden = true;
     renderStart(); $('startScreen').hidden = false;
   }
@@ -768,6 +958,9 @@
   $('fbRetry').onclick = () => retry();
   $('fbNext').onclick = () => next();
   $('fbCompare').onclick = () => compare();
+  $('fbSit').onclick = () => situationNochmal();
+  $('kurzZurueck').onclick = () => kurzZurueck();
+  $('kurzHoeren').onclick = () => { if (kurzInfo) say(kurzInfo.fb.say, 'rueckmeldung', true, false); };
   $('cancel').onclick = () => { if (mode !== 'decide') return; sel = null; hintView = null; renderActions(hist[dec].ctx); setStepText(''); };
   $('repeat').onclick = () => Sprache.wiederholen();
   $('skip').onclick = () => { if (replay) { Sprache.stopp(); const d = replay.onDone; replay = null; d(); } };
@@ -828,5 +1021,5 @@
     try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
   }
   // Testzugriff (nur lesend) für automatisierte Oberflächentests
-  window.__fiq = { get taps() { return { ...tapCount }; }, get replayIdx() { return replay ? replay.i : -1; }, get dec() { return dec; }, get run() { return curRun; }, get id() { return curId; }, get paused() { return pausiert; }, get relevant() { return Sprache.relevant; }, get speech() { return Sprache._zustand(); }, get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; } };
+  window.__fiq = { get taps() { return { ...tapCount }; }, get replayIdx() { return replay ? replay.i : -1; }, get dec() { return dec; }, get run() { return curRun; }, get id() { return curId; }, get paused() { return pausiert; }, get relevant() { return Sprache.relevant; }, get speech() { return Sprache._zustand(); }, get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; }, get view() { return { ...VIEW }; }, get lern() { return JSON.parse(JSON.stringify(lernErgebnis)); }, get kurz() { return kurzInfo ? { dec: kurzInfo.dec, tip: kurzInfo.fb.tip } : null; }, get lernView() { return lernView ? Object.keys(lernView) : []; } };
 })();

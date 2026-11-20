@@ -41,7 +41,7 @@ try {
   const waitMode = async (m) => { const t = Date.now(); while (Date.now() - t < 25000) { if (errors.length) fail('JS-Fehler: ' + errors.join('; ')); if ((await mode()) === m) return; await page.waitForTimeout(40); } fail(`Modus ${m} erwartet, ist ${await mode()}`); };
   const until = async (fn, what, arg) => { const t = Date.now(); while (Date.now() - t < 4000) { if (await page.evaluate(fn, arg)) return; await page.waitForTimeout(40); } fail('nicht erreicht: ' + what); };
   const touch = async (sel) => { const b = await page.locator(sel).first().boundingBox(); await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); };
-  const field = async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; }); const k = b[2] / 40.4; await page.touchscreen.tap(b[0] + (x + 2.2) * k, b[1] + (y + 1.6) * k); };
+  const field = async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; }); const k = b[2] / b[3].w; await page.touchscreen.tap(b[0] + (x - b[3].x0) * k, b[1] + (y - b[3].y0) * k); };
   const text = (sel) => page.$eval(sel, (e) => (e.hidden ? '' : e.textContent.trim())).catch(() => '');
   const said = async () => /* V0.5.1: erst lesen, wenn die Sprachsteuerung alle angeforderten Ansagen gestartet hat */ (await page.waitForFunction(() => { const s = window.__fiq && window.__fiq.speech; return !s || (!s.cur && !s.queue.length); }, null, { timeout: 5000 }), page.evaluate(() => window.__said.splice(0)));
   const actions = () => page.$$eval('#actions .act:not(.hint)', (bs) => bs.map((b) => b.textContent.trim()));
@@ -53,7 +53,7 @@ try {
   const choose = async (label) => { if (!(await page.evaluate(() => !!window.__fiq.sel))) await touch(`#actions .act:not(.hint) >> text=${label}`); await until(() => !!window.__fiq.sel, 'Aktion gewählt'); };
   const feedback = async () => {
     await waitMode('feedback');
-    const fb = { said: await said(), fb: [await text('#fbText'), await text('#fbTip'), await text('#fbRec'), await text('#fbExe'), await text('#fbStar')] };
+    const fb = { said: await said(), fb: [await text('#fbText'), await text('#fbTip'), await text('#fbRec'), await text('#fbExe'), await text('#fbStar')], lern: await text('#fbLern'), sitNochmal: await page.isVisible('#fbSit') };
     log.push(fb); return fb;
   };
   // Weiter: Bei Situationswechsel muss sofort die neue Startaufstellung zu sehen sein (kein Neustart-Bild), angesagt.
@@ -92,83 +92,92 @@ try {
   await touch(`#missionList .mcard[data-id="${ID}"]`); log.push({ gewaehlt: await said() });
   await touch('#play');
 
-  // Durchlauf 1 (A1 · A2 · A5) mit der Hilfe
-  for (const sit of ['A1', 'A2', 'A5']) {
+  // Ganze Situation mit der Hilfe; am Ende Lernergebnis „geschafft mit Hilfe“
+  const hilfeSituation = async (sit) => {
+    for (let i = 0; i < 6; i++) {
+      await viaHint(); const fb = await feedback(); expectStar(fb, true, `${sit} Hilfe ${i + 1}`);
+      const ende = !!fb.lern;
+      if (ende && !/^⭐💡 Geschafft/.test(fb.lern)) fail(`${sit}: „geschafft mit Hilfe“ erwartet, ist „${fb.lern}“`);
+      const n = await next(); if (n === 'end' || ende) return n;
+      const st = await decision(sit + ' weiter'); if (st.sit !== sit) fail(`${sit}: Situation wechselt ohne Lernergebnis`);
+    }
+    fail(sit + ': Situation endet nicht mit der Hilfe');
+  };
+  const stars = () => log[log.length - 1].stars;
+
+  // Durchlauf 1 (A1 · A2 · A3 · W1): Lernaufbau freies Tor → beide zu → nochmal schauen; W1 erst falsch (Wächter verschoben), „Nochmal“, dann mit Hilfe
+  for (const sit of ['A1', 'A2']) {
     const st = await decision('entscheiden');
     if (st.sit !== sit) fail(`Durchlauf 1: ${sit} erwartet, ist ${st.sit}`);
     if (st.carrier !== 'b1') fail('Blau 1 hat nicht den Ball');
-    await viaHint(); expectStar(await feedback(), true, `Hilfe in ${sit}`);
-    await next();
+    await hilfeSituation(sit);
   }
-  await end('Durchlauf 1');
-  console.log('✓ Durchlauf 1 (A1 · A2 · A5) mit der Hilfe: 3 Tore, 3 Sterne, Situationswechsel ohne Zwischenbild und angesagt');
-
-
-  // Durchlauf 2 (A2 · A3 · A4): A3 komplett (Pass → Annahme → Schuss), A4 mit der Hilfe: erst in die Schusszone dribbeln, dann schießen
-  await touch('#again');
-  let st = await decision('entscheiden'); if (st.sit !== 'A2') fail('„Nochmal“ bringt nicht Durchlauf 2');
-  await shoot(0); expectStar(await feedback(), true, 'A2 Tor oben'); await next();
-  st = await decision('entscheiden'); if (st.sit !== 'A3') fail('A3 erwartet');
-  await pass('b2'); expectStar(await feedback(), true, 'A3 Pass'); await next();
+  let st = await decision('entscheiden'); if (st.sit !== 'A3') fail('A3 erwartet');
+  await pass('b2'); let fb = await feedback(); expectStar(fb, true, 'A3 Pass'); if (fb.lern) fail('A3: Lernergebnis schon nach dem Pass: ' + fb.lern); await next();
   st = await decision('nach Pass'); if (st.sit !== 'A3' || st.carrier !== 'b2') fail('A3: Blau 2 hat nach dem Pass nicht den Ball: ' + JSON.stringify(st));
   const acts = await actions(); if (!acts.some((a) => /Schießen/.test(a)) || acts.some((a) => /Freilaufen/.test(a))) fail('A3 nach dem Pass: ' + acts.join(', '));
-  await viaHint(); expectStar(await feedback(), true, 'A3 Schuss Blau 2'); await next();
-  st = await decision('entscheiden'); if (st.sit !== 'A4') fail('A4 erwartet');
-  const a4 = log[log.length - 1];
-  if (!/Noch zu weit fürs Tor/.test(a4.title + ' ' + a4.said.join(' '))) fail('A4: Ansage „Noch zu weit fürs Tor“ fehlt: ' + JSON.stringify(a4));
-  if (!(a4.actions.some((a) => /Dribbeln/.test(a)) && a4.actions.some((a) => /Passen/.test(a)))) fail('A4: Aktionen ' + a4.actions.join(', '));
-  const p4 = await viaHint(); if (p4.k !== 'dribbeln') fail('A4: Hilfe zeigt ' + p4.k);
-  expectStar(await feedback(), true, 'A4 Dribbling in die Schusszone'); await next();
-  st = await decision('nach Dribbling'); if (st.sit !== 'A4') fail('A4: Situation endet nach der Vorbereitung');
-  if (!(await actions()).some((a) => /Schießen/.test(a))) fail('A4: in der Schusszone kein Schießen');
-  await viaHint(); expectStar(await feedback(), true, 'A4 Schuss'); await next();
-  await end('Durchlauf 2');
-  console.log('✓ Durchlauf 2 (A2 · A3 · A4): A3 vollständig; A4 – Dribbling ⭐ in die Schusszone, danach Schuss ⭐ und Tor (Situation endet nicht nach der Vorbereitung)');
+  await viaHint(); fb = await feedback(); expectStar(fb, true, 'A3 Schuss Blau 2');
+  if (!/^⭐ Geschafft: Beide Tore waren zu/.test(fb.lern)) fail('A3: Lernergebnis ohne Hilfe erwartet (Hilfe nur beim Schuss danach): ' + fb.lern);
+  await next();
+  st = await decision('entscheiden'); if (st.sit !== 'W1') fail('W1 erwartet');
+  const w1 = log[log.length - 1]; if (!/Noch zu weit fürs Tor/.test(w1.title + ' ' + w1.said.join(' '))) fail('W1: Ansage „Noch zu weit fürs Tor“ fehlt');
+  await choose('Dribbeln'); await field(31, 15); fb = await feedback(); expectStar(fb, true, 'W1 Dribbling Richtung unteres (vorher freies) Tor'); await next();
+  st = await decision('W1 in der Schusszone'); if (st.sit !== 'W1') fail('W1: Situation endet nach dem Dribbling');
+  await shoot(1); fb = await feedback(); expectStar(fb, false, 'W1 Schuss aufs vorher freie Tor');
+  if (!/ist vor das untere Tor gelaufen/.test(fb.said.join(' ')) || !/Das obere Tor war frei/.test(fb.said.join(' '))) fail('W1: Ursache „Wächter verschoben“ fehlt: ' + fb.said);
+  if (!/^🔁 Das üben wir nochmal: Nach dem Dribbeln nochmal schauen/.test(fb.lern) || !fb.sitNochmal) fail('W1: nicht geschafft mit „Nochmal“ erwartet: ' + fb.lern);
+  await touch('#fbSit'); st = await decision('W1 nochmal');
+  if (st.sit !== 'W1' || JSON.stringify(st.p) !== JSON.stringify(await startOf('W1'))) fail('„Nochmal“ startet W1 nicht in der Startaufstellung');
+  await hilfeSituation('W1');
+  await end('Durchlauf 1'); if (stars() !== '★★★★') fail('Durchlauf 1: ' + stars());
+  console.log('✓ Durchlauf 1 (A1 · A2 · A3 · W1): ein Stern je Situation; A3 erst mit dem Schuss nach dem Pass geschafft; W1 Wächter verschoben erklärt, „Nochmal“ von vorn, dann geschafft');
 
-  // Durchlauf 3 (A4 · A5 · A1): A4 in Rot 1 hineindribbeln (💭, Erklärung), A5 aufs obere Tor ⭐, A1 aufs zugestellte Tor 💭
+  // Durchlauf 2 (A2 · A5 · A3m · W1m): A2 oben ⭐, A5 unten ⭐ (beide frei), A3m Schuss trotz zugestellter Tore 💭 (nicht geschafft)
+  await touch('#again');
+  st = await decision('entscheiden'); if (st.sit !== 'A2') fail('„Nochmal“ bringt nicht Durchlauf 2');
+  await shoot(0); fb = await feedback(); expectStar(fb, true, 'A2 Tor oben'); if (!/^⭐ Geschafft/.test(fb.lern)) fail('A2: ' + fb.lern); await next();
+  st = await decision('entscheiden'); if (st.sit !== 'A5') fail('A5 erwartet');
+  await shoot(1); expectStar(await feedback(), true, 'A5 Tor unten'); await next();
+  st = await decision('entscheiden'); if (st.sit !== 'A3m') fail('A3m erwartet');
+  await shoot(1); const b3 = await feedback(); expectStar(b3, false, 'A3m Schuss trotz zugestellter Tore');
+  if (!/Beide Tore waren zugestellt/.test(b3.said.join(' '))) fail('A3m Fehlschuss: Erklärung fehlt: ' + b3.said);
+  if (!/^🔁/.test(b3.lern)) fail('A3m: nicht geschafft erwartet: ' + b3.lern);
+  await next();
+  st = await decision('entscheiden'); if (st.sit !== 'W1m') fail('W1m erwartet'); await hilfeSituation('W1m');
+  await end('Durchlauf 2'); if (stars() !== '★★☆★') fail('Durchlauf 2: ' + stars());
+  console.log('✓ Durchlauf 2 (A2 · A5 · A3m · W1m): beide freien Tore ⭐; Schuss trotz zugestellter Tore 💭 und nicht geschafft');
+
+  // Durchlauf 3 (A4 · A1 · A3 · W1m): A4 in Rot 1 hineindribbeln (💭, Erklärung), A1 aufs zugestellte Tor 💭
   await touch('#again');
   st = await decision('entscheiden'); if (st.sit !== 'A4') fail('Durchlauf 3 beginnt nicht mit A4');
   await choose('Dribbeln'); await field(24, 9.5);
   const f4 = await feedback(); expectStar(f4, false, 'A4 in den Gegner');
   if (!/direkt auf einen Gegner/.test(f4.said.join(' '))) fail('A4: Erklärung fehlt: ' + f4.said);
   await next();
-  st = await decision('entscheiden'); if (st.sit !== 'A5') fail('A5 erwartet');
-  await shoot(0); expectStar(await feedback(), true, 'A5 Tor oben'); await next();
   st = await decision('entscheiden'); if (st.sit !== 'A1') fail('A1 erwartet');
   await shoot(0); const b1 = await feedback(); expectStar(b1, false, 'A1 Tor oben (zugestellt)');
   if (!/Rot 2 stand vor dem Tor/.test(b1.said.join(' ')) || !/Das andere Tor war frei/.test(b1.said.join(' '))) fail('A1 Fehlschuss: Erklärung fehlt: ' + b1.said);
+  if ((b1.said.join(' ').match(/Rot 2 stand/g) || []).length !== 1) fail('A1: Ursache doppelt genannt: ' + b1.said);
   await next();
-  await end('Durchlauf 3');
-  console.log('✓ Durchlauf 3 (A4 · A5 · A1): A4 in den Gegner 💭 mit Erklärung; A5 auch aufs andere freie Tor ⭐; geblockter Schuss erklärt');
+  for (const sit of ['A3', 'W1m']) { st = await decision('entscheiden'); if (st.sit !== sit) fail(sit + ' erwartet'); await hilfeSituation(sit); }
+  await end('Durchlauf 3'); if (stars() !== '☆☆★★') fail('Durchlauf 3: ' + stars());
+  console.log('✓ Durchlauf 3 (A4 · A1 · A3 · W1m): in den Gegner 💭 erklärt; geblockter Schuss erklärt (Ursache nur einmal)');
 
-  // Durchlauf 4 (A3 · A1 · A2): A3 Schuss trotz zugestellter Tore 💭, A1 mit der Hilfe, A2 aufs zugestellte Tor 💭
+  // Durchläufe 4 und 5 mit der Hilfe; in 5 nimmt A4 den anderen guten Weg (Pass zu Blau 2)
   await touch('#again');
-  st = await decision('entscheiden'); if (st.sit !== 'A3') fail('Durchlauf 4 beginnt nicht mit A3');
-  await shoot(1); const b3 = await feedback(); expectStar(b3, false, 'A3 Schuss trotz zugestellter Tore');
-  if (!/Beide Tore waren zugestellt/.test(b3.said.join(' '))) fail('A3 Fehlschuss: Erklärung fehlt: ' + b3.said);
-  await next();
-  st = await decision('entscheiden'); if (st.sit !== 'A1') fail('A1 erwartet');
-  await viaHint(); expectStar(await feedback(), true, 'A1 Hilfe'); await next();
-  st = await decision('entscheiden'); if (st.sit !== 'A2') fail('A2 erwartet');
-  await shoot(1); expectStar(await feedback(), false, 'A2 Tor unten (zugestellt)'); await next();
-  await end('Durchlauf 4');
-  console.log('✓ Durchlauf 4 (A3 · A1 · A2): Fehlschüsse erklärt, Hilfe ⭐');
-
-  // Durchlauf 5 (A5 · A4 · A3): A5 aufs untere Tor ⭐ (beide gleich gut), A4 anderer guter Weg: Pass zu Blau 2 ⭐, dann Hilfe; A3 mit der Hilfe
+  for (const sit of ['A5', 'A2', 'A3m', 'W1']) { st = await decision('entscheiden'); if (st.sit !== sit) fail(`Durchlauf 4: ${sit} erwartet, ist ${st.sit}`); await hilfeSituation(sit); }
+  await end('Durchlauf 4'); if (stars() !== '★★★★') fail('Durchlauf 4: ' + stars());
   await touch('#again');
-  st = await decision('entscheiden'); if (st.sit !== 'A5') fail('Durchlauf 5 beginnt nicht mit A5');
-  await shoot(1); expectStar(await feedback(), true, 'A5 Tor unten'); await next();
+  st = await decision('entscheiden'); if (st.sit !== 'A1') fail('Durchlauf 5 beginnt nicht mit A1'); await hilfeSituation('A1');
   st = await decision('entscheiden'); if (st.sit !== 'A4') fail('A4 erwartet');
-  await pass('b2'); expectStar(await feedback(), true, 'A4 Pass zu Blau 2 (auch gut)');
-  for (let i = 0; i < 6; i++) { if ((await next()) === 'end') break; st = await decision('A4 weiter'); if (st.sit !== 'A4') break; await viaHint(); await feedback(); }
-  st = await state(); if (st.sit !== 'A3') fail('A3 erwartet, ist ' + st.sit);
-  await viaHint(); expectStar(await feedback(), true, 'A3 Hilfe Pass'); await next();
-  await decision('nach Pass'); await viaHint(); expectStar(await feedback(), true, 'A3 Hilfe Schuss'); await next();
-  await end('Durchlauf 5');
+  await pass('b2'); expectStar(await feedback(), true, 'A4 Pass zu Blau 2 (auch gut)'); await next();
+  st = await decision('A4 weiter'); if (st.sit !== 'A4') fail('A4: Situation endet nach dem Pass'); await hilfeSituation('A4');
+  for (const sit of ['A3m', 'W1m']) { st = await decision('entscheiden'); if (st.sit !== sit) fail(sit + ' erwartet'); await hilfeSituation(sit); }
+  await end('Durchlauf 5'); if (stars() !== '★★★★') fail('Durchlauf 5: ' + stars());
   // Danach wieder Durchlauf 1
   await touch('#again'); st = await decision('entscheiden'); if (st.sit !== 'A1') fail('Nach Durchlauf 5 nicht wieder A1');
   if (errors.length) fail('JS-Fehler: ' + errors.join('; '));
-  console.log('✓ Durchlauf 5 (A5 · A4 · A3): beide Tore ⭐, A4 auch über den Pass ⭐; Rückkehr zu Durchlauf 1; keine JavaScript-Fehler' + (process.env.SLOW ? ` (CPU ${process.env.SLOW}× gedrosselt)` : ''));
+  console.log('✓ Durchläufe 4–5 mit der Hilfe, A4 auch über den Pass ⭐; Rückkehr zu Durchlauf 1; keine JavaScript-Fehler' + (process.env.SLOW ? ` (CPU ${process.env.SLOW}× gedrosselt)` : ''));
 
   const wi = process.argv.indexOf('--write');
   if (wi > 0 && process.argv.indexOf('--pending-write') < 0) { fs.writeFileSync(process.argv[wi + 1], JSON.stringify(log, null, 1)); console.log('Mitschrift geschrieben:', process.argv[wi + 1]); }

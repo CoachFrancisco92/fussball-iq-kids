@@ -110,8 +110,30 @@
       torOffen: 'Der Weg zum Tor blieb offen.',
     },
 
+    // V0.6a: belegte Ursachen – nur verwendet, wenn die Simulation sie nachweist (engine.js: ursachen()).
+    // Kurz, konkret, für Fünfjährige verständlich.
+    ursache: {
+      torOben: 'obere', torUnten: 'untere',
+      ueberspielt: (g) => `Du bist an ${g} vorbei!`,
+      ueberspieltZwei: (g1, g2) => `Du bist an ${g1} und ${g2} vorbei!`,
+      gegnerHinterDir: (g) => `${g} war hinter dir. Vor dir war Platz!`,
+      vornPlatz: 'Vor dir war Platz!',
+      lueckeDurch: (g1, g2) => `Die Lücke zwischen ${g1} und ${g2} war breit genug!`,
+      lueckeZuEng: (g1, g2) => `Die Lücke zwischen ${g1} und ${g2} war zu eng.`,
+      aussenPlatz: 'Außen herum war Platz.',
+      passwegFrei: (f, g) => (g ? `Jetzt ist ${f} frei – ${g} steht nicht mehr im Weg!` : `Jetzt ist ${f} frei!`),
+      waechterVerschoben: (g, tor) => `${g} ist vor das ${tor} Tor gelaufen.`,
+      anderesFrei: (tor) => `Das ${tor} Tor war frei.`,
+      waechterErkannt: (g, torZu) => `${g} ist vor das ${torZu} Tor gelaufen – und du hast das freie Tor gesehen!`,
+      anderesTorZu: (g) => `Vor dem anderen Tor stand ${g} – du hast das freie gewählt.`,
+      freundDribbelt: (f) => `${f} hatte aber selbst Platz und ist nach vorn gedribbelt.`,
+      gegnerMitgelaufen: (g) => `${g} ist mitgelaufen.`,
+      gegnerSchoss: (g) => `${g} hat schnell geschossen.`,
+    },
+
     // Bewertung, Teil 3: Was ist passiert? (Ergebnis)
     ergebnis: {
+      torKurz: 'Toooor!',
       abgefangen: (gegner) => `Oh! ${gegner} stand im Weg und hat den Ball bekommen.`,
       passAngekommen: 'Der Pass ist angekommen!',
       tor: 'Toooor! Der Weg war frei.',
@@ -141,10 +163,22 @@
     rueckmeldung: {
       idee: { pass: 'den Ball abzuspielen', shoot: 'aufs Tor zu schießen', dribble: 'zu dribbeln', run: 'dich freizulaufen', press: 'den Gegner anzugreifen', cover: 'dich in den Weg zu stellen' },
       super: 'Super gemacht!',
-      trotzdemGut: 'Das war trotzdem eine gute Idee! Manchmal klappt es nicht.',
+      trotzdemGut: 'Das war trotzdem eine gute Idee!',
+      superKurz: 'Super!',
       guteIdeeAber: (idee, warum) => `Gute Idee, ${idee}! Aber schau mal: ${warum}`,
       geklapptAber: 'Hat geklappt! Aber schau mal: ',
       schauMal: 'Schau mal: ',
+      // V0.6a P2: Was der Ergebnissatz schon sagt („Rot 2 stand vor dem Tor“), wird in der Erklärung nicht wiederholt.
+      ohneWiederholung: (ergebnis, warum) => {
+        const saetze = String(warum).split(/(?<=[.!?])\s+/);
+        const rest = saetze.filter((x) => { const n = x.match(/Rot \d/); return !(n && / stand /.test(x) && ergebnis.includes(n[0] + ' stand')); });
+        return rest.length ? rest.join(' ') : warum;
+      },
+      ergebnisKurzVor: (ergebnis, grund) => {
+        const saetze = String(ergebnis).split(/(?<=[.!?])\s+/);
+        const rest = saetze.filter((x) => { const n = x.match(/Rot \d/); return !(n && / stand /.test(x) && grund.includes(n[0])); });
+        return rest.length ? rest.join(' ') : ergebnis;
+      },
       tagIdeeGut: 'Gute Idee',
       tagIdeeBesser: 'Andere Idee besser',
       tagZielGut: { shoot: 'Freies Tor', press: 'Richtiger Spieler', cover: 'Gut gestellt', run: 'Guter Platz', sonst: 'Weg frei' },
@@ -211,12 +245,47 @@
       naechsteMission: (titel, einfuehrung) => `${titel}${/[.!?]$/.test(titel) ? '' : '.'} ${einfuehrung}`.trim(),
     },
 
+    // V0.6a P4: Lernergebnis je Situation (Stern = Kernleistung geschafft; mit Hilfe = voller Stern + 💡)
+    lern: {
+      titel: { torWaehlen: 'Freies Tor finden', andereLoesung: 'Beide Tore zu', nochmalSchauen: 'Nochmal schauen', platzVorDir: 'Platz vor dir', vorbei: 'Am Gegner vorbei', luecke: 'Lücke oder außen herum', angriff: 'Angriff', verteidigung: 'Abwehr' },
+      geschafft: {
+        torWaehlen: 'Geschafft: Du hast das freie Tor gefunden!',
+        andereLoesung: 'Geschafft: Beide Tore waren zu – und du hast eine andere Lösung gefunden!',
+        nochmalSchauen: 'Geschafft: Du hast nochmal geschaut und das freie Tor gefunden!',
+        platzVorDir: 'Geschafft: Du hast den Platz vor dir genutzt!',
+        vorbei: 'Geschafft: Du bist am Gegner vorbeigekommen!',
+        luecke: 'Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden!',
+        angriff: 'Geschafft: Im Angriff hast du gut entschieden!',
+        verteidigung: 'Geschafft: In der Abwehr hast du gut entschieden!',
+      },
+      nochNicht: {
+        torWaehlen: 'Das üben wir nochmal: Schau vor dem Schuss, welches Tor frei ist.',
+        andereLoesung: 'Das üben wir nochmal: Wenn beide Tore zu sind – steht ein Freund frei?',
+        nochmalSchauen: 'Das üben wir nochmal: Nach dem Dribbeln nochmal schauen – welches Tor ist jetzt frei?',
+        platzVorDir: 'Das üben wir nochmal: Der Gegner ist hinter dir – vor dir ist Platz.',
+        vorbei: 'Das üben wir nochmal: Dribbel am Gegner vorbei – oben oder unten.',
+        luecke: 'Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum.',
+        angriff: 'Das üben wir nochmal: Schau, wo frei ist, bevor du entscheidest.',
+        verteidigung: 'Das üben wir nochmal: Schütze zuerst den Weg zu unserem Tor.',
+      },
+      geschafftKurz: 'Aufgabe geschafft!', // gesprochen (die Ursache hat die Rückmeldung schon genannt); angezeigt wird der ganze Satz
+      mitHilfe: 'mit Hilfe',
+      situationNochmal: 'Nochmal',
+      situationNochmalAnsage: 'Die gleiche Situation nochmal von vorn!',
+      kurzZurueck: 'Nochmal',
+      kurzHoeren: 'Nochmal hören',
+      vorbeiMoment: 'Vorbei!',
+    },
+
     // Missionsende
     ende: {
       lob: (gut, anzahl) => (gut >= anzahl - 1 ? 'Super gespielt!' : gut >= 2 ? 'Gut gemacht!' : 'Toll, dass du es probiert hast!'),
       sterne: (gut, anzahl) => ` Du hast ${gut} von ${anzahl} Sternen.`,
       spielstand: (blau, rot) => `Blau ${blau} : ${rot} Rot`,
       erkannt: (sofort, anzahl) => `  ·  👀 ${sofort}/${anzahl} sofort erkannt`,
+      // V0.6a P4: Sterne je Lernsituation
+      sterneSituationen: (gut, anzahl) => ` Du hast ${gut} von ${anzahl} Aufgaben geschafft.`,
+      zaehler: (gut, anzahl, hilfe) => `⭐ ${gut} von ${anzahl} geschafft` + (hilfe ? `  ·  💡 ${hilfe} mit Hilfe` : ''),
     },
   };
 })(typeof window !== 'undefined' ? window : globalThis);

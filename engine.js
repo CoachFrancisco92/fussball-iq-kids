@@ -115,6 +115,7 @@
     need(typeof m.titel === 'string' && m.titel, 'titel fehlt');
     need(Array.isArray(m.lernziele) && m.lernziele.length >= 1, 'lernziele fehlen');
     need(m.art == null || m.art === 'lernen' || m.art === 'spiel', 'art: lernen oder spiel');
+    need(m.kurzrueckmeldung == null || typeof m.kurzrueckmeldung === 'boolean', 'kurzrueckmeldung: true oder false');
     const lineup = (L, where) => {
       need(L && Array.isArray(L.spieler), `${where}: spieler fehlen`);
       if (!L || !Array.isArray(L.spieler)) return;
@@ -142,6 +143,7 @@
       for (const x of m.situationen) {
         lineup(x && x.start, `situation ${x && x.id}`); count(x && x.start, `situation ${x && x.id}`);
         if (x && x.phasen) need(Number.isInteger(x.phasen.maxAngriff) && x.phasen.maxAngriff >= 1, `situation ${x.id}: phasen.maxAngriff`);
+        if (x && x.lernziel != null) need(LERNZIELE.includes(x.lernziel), `situation ${x.id}: lernziel ${x.lernziel} unbekannt`);
       }
       if (m.durchlaeufe != null) need(Array.isArray(m.durchlaeufe) && m.durchlaeufe.length >= 1 && m.durchlaeufe.every((d) => Array.isArray(d) && d.length >= 1 && d.every((id) => ids.includes(id))), 'durchlaeufe: nur bekannte Situationen');
       need(m.phasen && m.phasen.verteidigung === 0, 'situationen: nur mit phasen.verteidigung = 0');
@@ -784,8 +786,11 @@
     const c = carrier(s);
     if (s.poss === 'red') redPlan(s);
     const ev = probeDepth ? PROBE_EV : evaluate(s, a);
+    // V0.6a: Lage im Moment der Entscheidung festhalten (Grundlage der belegten Ursachen); nicht in Vorausrechnungen
+    const vorher = !probeDepth && c ? vorherSchnappschuss(s, c, a, s.ep) : null;
     s.players.forEach((p) => { p.ctrl = null; p.tackleT = 0; p.tx = p.x; p.ty = p.y; });
     s.ep = { a, t: 0, endT: null, events: [], frames: [], startPoss: s.poss, eval: ev, phase: 'main', restart: null };
+    if (vorher) Object.defineProperty(s.ep, 'vorher', { value: vorher, enumerable: true, writable: true });
     switch (a.kind) {
       case 'pass': doPass(s, c, a, false); break;
       case 'shoot': doShot(s, c, a.goal); break;
@@ -1160,11 +1165,24 @@
         ev = { good: ev.good, rec: ev.rec, exe, why: !ev.rec.good ? ev.rec.why : exe.why };
       }
     }
-    let tip;
-    if (ev.rec.good && ev.exe.good) tip = out.success ? T.super : T.trotzdemGut;
-    else if (ev.rec.good) tip = T.guteIdeeAber(T.idee[a.kind], ev.exe.why);
-    else tip = (out.success ? T.geklapptAber : T.schauMal) + ev.rec.why;
-    const say = out.text + ' ' + tip;
+    // V0.6a: Begründung aus belegten Ursachen (Simulation vor/nach der Entscheidung). Bewertung unverändert.
+    const U = ursachen(s), satz = ursachenSaetze(s, U, ev, a, out);
+    const kurz = (warum) => (T.ohneWiederholung ? T.ohneWiederholung(out.text, warum) : warum);
+    let tip, say;
+    if (ev.rec.good && ev.exe.good) {
+      if (out.success && satz.positiv) {
+        // Tor: „Toooor!“ + Grund; Dribbling: „Super!“ + Grund (der Grund enthält die Folge); sonst Ergebnis + „Super!“ + Grund
+        tip = a.kind === 'shoot' ? satz.positiv : T.superKurz + ' ' + satz.positiv;
+        say = (a.kind === 'shoot' ? satz.ergebnisKurz + ' ' : a.kind === 'dribble' ? '' : out.text + ' ') + tip;
+      } else if (out.success) { tip = T.super; say = out.text + ' ' + tip; }
+      else { tip = T.trotzdemGut + (satz.ohneErfolg ? ' ' + satz.ohneErfolg : ''); say = out.text + ' ' + tip; }
+    } else if (ev.rec.good) {
+      tip = T.guteIdeeAber(T.idee[a.kind], kurz(satz.negativ || ev.exe.why));
+      // belegte Ursache nennt denselben Gegner genauer („ist vor das untere Tor gelaufen“) → Ergebnis nur kurz („Geblockt!“)
+      say = (satz.negativ && T.ergebnisKurzVor ? T.ergebnisKurzVor(out.text, satz.negativ) : out.text) + ' ' + tip;
+    }
+    else { tip = (out.success ? T.geklapptAber : T.schauMal) + kurz(ev.rec.why); say = out.text + ' ' + tip; }
+    say = say.replace(/\s+/g, ' ').trim();
     const grundLauf = a.kind === 'run' && s.ep.eval.exe.lauf;
     const grundDribbel = a.kind === 'dribble' && s.ep.eval.exe.dribbel;
     const zielGut = (grundDribbel && T.tagDribbel[grundDribbel]) || T.tagZielGut[a.kind] || T.tagZielGut.sonst;
@@ -1173,7 +1191,202 @@
       rec: { good: ev.rec.good, label: ev.rec.good ? T.tagIdeeGut : T.tagIdeeBesser },
       exe: { good: ev.exe.good, label: ev.exe.good ? zielGut : zielSchlecht },
     };
-    return { good: ev.good, success: out.success, icon: out.icon, text: out.text, tip, tags, why: ev.why, rec: ev.rec, exe: ev.exe, say, goal: out.goal, explain };
+    return { good: ev.good, success: out.success, icon: out.icon, text: out.text, tip, tags, why: ev.why, rec: ev.rec, exe: ev.exe, say, goal: out.goal, explain,
+      ursachen: U, lern: lernFakten(s) };
+  }
+
+  // ---------------------------------------------------------------- V0.6a: belegte Ursachen (P2)
+  // Jede Aussage einer Rückmeldung folgt aus der Lage im Moment der Entscheidung (s.ep.vorher) und der Lage danach.
+  // Reine Funktionen; ändern weder Bewertung noch Ablauf.
+  const KEGEL = Math.PI / 3;                                       // ±60° vor dem Ball (Angriffsrichtung +x)
+  const imKegel = (c, r, maxD) => { const dx = r.x - c.x, dy = r.y - c.y; return dx > 0 && Math.hypot(dx, dy) <= maxD && Math.abs(Math.atan2(dy, dx)) <= KEGEL; };
+  const pt = (xy) => ({ x: xy[0], y: xy[1] });
+  function kreuzt(p, q, a, b) {
+    const o = (u, v, w) => Math.sign((v.x - u.x) * (w.y - u.y) - (v.y - u.y) * (w.x - u.x));
+    return o(p, q, a) !== o(p, q, b) && o(a, b, p) !== o(a, b, q);
+  }
+  function dribbelZiel(c, a) { let to = clampP(a); const d = dist(c, to); if (d > 8) to = { x: c.x + ((to.x - c.x) / d) * 8, y: c.y + ((to.y - c.y) / d) * 8 }; return to; }
+  /** Zwei Rote vor dem Ball (≤ 8 m), deren Verbindung der Weg c→to kreuzt (die engste solche Lücke). */
+  function lueckeAufWeg(s, c, to) {
+    const rs = team(s, other(c.team)).filter((r) => r.x > c.x && dist(r, c) <= 8);
+    let best = null;
+    for (let i = 0; i < rs.length; i++) for (let j = i + 1; j < rs.length; j++) {
+      if (!kreuzt(c, to, rs[i], rs[j])) continue;
+      const w = dist(rs[i], rs[j]);
+      if (!best || w < best.breite) best = { paar: [rs[i].id, rs[j].id], breite: Math.round(w * 10) / 10 };
+    }
+    return best;
+  }
+  function vorherSchnappschuss(s, c, a, prevEp) {
+    const pos = {}; s.players.forEach((p) => { pos[p.id] = [p.x, p.y]; });
+    const v = { situation: s.situation || null, carrier: c.id, team: c.team, pos, inZone: inZoneP(c) };
+    if (c.team === 'blue' && s.poss === 'blue') {
+      v.shots = shotOptions(s).map((o) => ({ goal: o.goal, margin: o.margin, hit: o.hit ? o.hit.id : null }));
+      v.passes = passOptions(s).map((o) => ({ id: o.id, margin: o.margin, hit: o.hit ? o.hit.id : null }));
+    }
+    const pv = prevEp && prevEp.vorher;
+    v.prev = pv && pv.situation === v.situation && pv.team === v.team ? pv.pos : null;
+    if (a.kind === 'dribble' && c.team === 'blue') {
+      const to = dribbelZiel(c, a), l = lueckeAufWeg(s, c, to);
+      if (l) {
+        v.luecke = l;
+        // „Außen herum war Platz“ nur, wenn die Hilfe einen robusten guten Weg kennt, der die Lücke nicht kreuzt
+        const h = dribbleHelp(s), A = P(s, l.paar[0]), B = P(s, l.paar[1]);
+        v.luecke.aussen = !!(h.point && !h.genau && !h.eng && !kreuzt(c, h.point, A, B));
+      }
+    }
+    if (a.kind === 'shoot' && v.shots && v.prev) {
+      // Torwächter verschoben: Blocker eines Tores hat sich seit der vorigen Entscheidung (≥ 1 m) bewegt und hätte an
+      // seiner alten Stelle das Tor freigelassen (Gegenprobe mit der alten Position).
+      v.waechter = {};
+      for (const o of v.shots) {
+        if (o.margin > CFG.shotLaneOk || !o.hit || !v.prev[o.hit]) continue;
+        const r = P(s, o.hit), alt = pt(v.prev[o.hit]);
+        if (dist(r, alt) < 1) continue;
+        const t = clone(s); const rt = P(t, o.hit); rt.x = alt.x; rt.y = alt.y;
+        if (shotOptions(t).find((x) => x.goal === o.goal).margin > CFG.shotLaneOk) v.waechter[o.goal] = o.hit;
+      }
+    }
+    return v;
+  }
+  function ursachen(s) {
+    const ep = s.ep, v = ep && ep.vorher;
+    if (!v) return [];
+    const a = ep.a, out = [], find = (t) => ep.events.find((e) => e.type === t);
+    const c1 = carrier(s), kept = !!(c1 && c1.id === v.carrier && !find('steal'));
+    const c0 = pt(v.pos[v.carrier]);
+    const roteVorher = Object.keys(v.pos).filter((id) => P(s, id) && P(s, id).team !== v.team).map((id) => ({ id, ...pt(v.pos[id]) }));
+    if (a.kind === 'dribble' && v.team === 'blue') {
+      if (kept) for (const r of roteVorher) {
+        // überspielt: Roter stand im Kegel vor dem Ball (≤ 7 m); Blau ist an seiner Ausgangsposition vorbei, er steht danach hinter dem Ball
+        if (imKegel(c0, r, 7) && c1.x > r.x + 0.3 && P(s, r.id).x < c1.x - 0.3) out.push({ typ: 'ueberspielt', gegner: r.id });
+      }
+      if (v.luecke) {
+        const st = find('steal');
+        if (kept) out.push({ typ: 'lueckeDurch', paar: v.luecke.paar, breite: v.luecke.breite });
+        else if (st && v.luecke.paar.includes(st.by)) out.push({ typ: 'lueckeZuEng', paar: v.luecke.paar, breite: v.luecke.breite, aussen: v.luecke.aussen });
+      }
+      const vorn = roteVorher.some((r) => imKegel(c0, r, 8));
+      const hinten = roteVorher.find((r) => r.x <= c0.x && dist(r, c0) <= 5);
+      if (kept && !vorn && hinten && c1.x > c0.x + 1) out.push({ typ: 'gegnerHinterDir', gegner: hinten.id });
+      if (kept && v.passes) for (const o of passOptions(s)) {
+        const vp = v.passes.find((x) => x.id === o.id);
+        if (vp && vp.margin <= CFG.passLaneOk && o.margin > CFG.passLaneOk) out.push({ typ: 'passwegFrei', freund: o.id, gegner: vp.hit });
+      }
+    }
+    if (a.kind === 'shoot' && v.shots) {
+      const w = v.waechter || {}, mein = v.shots.find((o) => o.goal === a.goal), anderes = v.shots.find((o) => o.goal !== a.goal);
+      if (w[a.goal]) out.push({ typ: 'waechterVerschoben', gegner: w[a.goal], tor: a.goal, anderesFrei: anderes.margin > CFG.shotLaneOk });
+      else if (w[anderes.goal] && mein.margin > CFG.shotLaneOk) out.push({ typ: 'waechterErkannt', gegner: w[anderes.goal], torZu: anderes.goal, tor: a.goal });
+      else if (mein.margin > CFG.shotLaneOk && anderes.margin <= CFG.shotLaneOk && anderes.hit) out.push({ typ: 'anderesTorZu', gegner: anderes.hit, tor: a.goal });
+    }
+    if (a.kind === 'run' && find('autoDribble') && c1 && c1.team === 'blue') out.push({ typ: 'freundDribbelt', freund: c1.id });
+    if (a.kind === 'run' && !find('autoDribble') && !find('steal')) {
+      // Laufweg gut, bei Ankunft aber zu: Gegner ist mitgelaufen (≥ 1 m bewegt und steht jetzt im Passweg)
+      const arr = arrivalCheck(s, P(s, a.id));
+      if (arr && !arr.free && arr.key && v.pos[arr.key] && dist(P(s, arr.key), pt(v.pos[arr.key])) >= 1) out.push({ typ: 'gegnerMitgelaufen', gegner: arr.key });
+    }
+    if ((a.kind === 'press' || a.kind === 'cover') && find('redShot')) {
+      const rec = ep.events.filter((e) => e.type === 'received' && e.team === 'red').pop();
+      out.push({ typ: 'gegnerSchoss', gegner: rec ? rec.by : v.carrier });
+    }
+    return out;
+  }
+  /** Fakten für das Lernergebnis einer Situation (P4). */
+  function lernFakten(s) {
+    const v = s.ep && s.ep.vorher;
+    if (!v) return null;
+    const c1 = carrier(s), kept = !!(c1 && c1.id === v.carrier && !s.ep.events.some((e) => e.type === 'steal'));
+    const freieTore = v.inZone && v.shots ? v.shots.filter((o) => o.margin > CFG.shotLaneOk).map((o) => o.goal) : [];
+    // vor: Gegner, an denen der Ballführende nach der Aktion (mit Ball) vorbei ist – auch wenn das über mehrere Schritte geschah
+    const vor = kept ? team(s, 'red').filter((r) => c1.x > r.x + 0.3).map((r) => r.id) : [];
+    return { inZone: v.inZone, freieTore, dx: kept ? Math.round((c1.x - v.pos[v.carrier][0]) * 100) / 100 : 0, kept, vor };
+  }
+  /** Sätze aus den Ursachen (Vorrang: überspielt > Wächter erkannt > Lücke > Passweg frei > Paket-D-Grund > Gegner hinter dir). */
+  function ursachenSaetze(s, U, ev, a, out) {
+    const TU = texts(s).ursache, X = texts(s).ausfuehren, R = texts(s).ergebnis, n = (id) => nameOf(s, id);
+    const has = (t) => U.filter((u) => u.typ === t);
+    const tor = (g) => (g === 0 ? TU.torOben : TU.torUnten);
+    let positiv = null, negativ = null, ohneErfolg = null;
+    const ue = has('ueberspielt');
+    if (ue.length >= 2) positiv = TU.ueberspieltZwei(n(ue[0].gegner), n(ue[1].gegner));
+    else if (ue.length === 1) positiv = TU.ueberspielt(n(ue[0].gegner));
+    const pw = has('passwegFrei')[0];
+    if (ue.length && pw) positiv += ' ' + TU.passwegFrei(n(pw.freund), pw.gegner ? n(pw.gegner) : null);
+    if (!positiv && has('waechterErkannt')[0]) { const u = has('waechterErkannt')[0]; positiv = TU.waechterErkannt(n(u.gegner), tor(u.torZu)); }
+    if (!positiv && has('lueckeDurch')[0]) { const u = has('lueckeDurch')[0]; positiv = TU.lueckeDurch(n(u.paar[0]), n(u.paar[1])); }
+    if (!positiv && pw) positiv = TU.passwegFrei(n(pw.freund), pw.gegner ? n(pw.gegner) : null);
+    if (!positiv && a.kind === 'dribble') {
+      const g = ev.exe.dribbel;
+      if (g === 'anschlussTor') positiv = X.dribbelAnschlussTor;
+      else if (g === 'anschlussPass') positiv = X.dribbelAnschlussPass;
+      else if (g === 'sichern') positiv = X.dribbelGesichert;
+      else if (has('gegnerHinterDir')[0]) positiv = TU.gegnerHinterDir(n(has('gegnerHinterDir')[0].gegner));
+      else if (g === 'raum') positiv = TU.vornPlatz;
+    }
+    if (!positiv && a.kind === 'shoot' && has('anderesTorZu')[0]) positiv = TU.anderesTorZu(n(has('anderesTorZu')[0].gegner));
+    if (!positiv && a.kind === 'pass' && a.id && ev.exe.good) positiv = ev.exe.why;
+    if (has('lueckeZuEng')[0]) { const u = has('lueckeZuEng')[0]; negativ = TU.lueckeZuEng(n(u.paar[0]), n(u.paar[1])) + (u.aussen ? ' ' + TU.aussenPlatz : ''); }
+    if (has('waechterVerschoben')[0]) { const u = has('waechterVerschoben')[0]; negativ = TU.waechterVerschoben(n(u.gegner), tor(u.tor)) + (u.anderesFrei ? ' ' + TU.anderesFrei(tor(1 - u.tor)) : ''); }
+    // nur ergänzen, was das Ergebnis nicht schon sagt (z. B. „Dein Freund dribbelt dafür nach vorne.“)
+    if (has('freundDribbelt')[0]) ohneErfolg = out.text.includes(R.laufZuDribbel.trim()) ? null : TU.freundDribbelt(n(has('freundDribbelt')[0].freund));
+    else if (has('gegnerMitgelaufen')[0]) ohneErfolg = TU.gegnerMitgelaufen(n(has('gegnerMitgelaufen')[0].gegner));
+    else if (has('gegnerSchoss')[0]) ohneErfolg = TU.gegnerSchoss(n(has('gegnerSchoss')[0].gegner));
+    const ergebnisKurz = a.kind === 'shoot' && out.success ? R.torKurz : '';
+    return { positiv, negativ, ohneErfolg, ergebnisKurz };
+  }
+
+  // ---------------------------------------------------------------- V0.6a: Lernergebnis je Situation (P4)
+  // Eine Situation ist gelöst, wenn ihre Kernleistung erbracht ist – nicht schon durch eine gute Vorbereitung und nicht
+  // erst durch ein Tor. Jede gute Lösung zählt (Bewertung der Engine); mit Hilfe gelöst ist gelöst (Kennzeichen hilfe).
+  const LERNZIELE = ['torWaehlen', 'andereLoesung', 'nochmalSchauen', 'platzVorDir', 'vorbei', 'luecke'];
+  function lernStart(s, typ) {
+    const m = mission(s.missionId), sit = s.situation ? situationById(m, s.situation) : null;
+    const t = typ || (sit && sit.lernziel) || null, c = carrier(s);
+    const start = { situation: s.situation || null, typ: t, paar: null, gegner: null, freieToreStart: [] };
+    if (!c || c.team !== 'blue') return start;
+    if (t === 'vorbei') { const vorn = team(s, 'red').filter((r) => r.x > c.x + 0.3 && imKegel(c, r, 7)).sort((x, y) => dist(x, c) - dist(y, c)); start.gegner = vorn.length ? vorn[0].id : null; }
+    if (t === 'luecke') start.paar = team(s, 'red').slice().sort((x, y) => dist(x, c) - dist(y, c)).slice(0, 2).map((r) => r.id);
+    start.freieToreStart = shotOptions(s).filter((o) => o.margin > CFG.shotLaneOk).map((o) => o.goal);
+    return start;
+  }
+  /** schritte: [{ ctxType, kind, good, ursachen, lern: {inZone, freieTore, dx, kept}, hilfe }] (endgültige Versuche) */
+  function lernAuswertung(start, schritte) {
+    const r = (geloest, k, grund) => ({ typ: start.typ, geloest, kern: k, hilfe: k != null && !!(schritte[k] && schritte[k].hilfe), grund });
+    const idx = (f) => { const i = schritte.findIndex(f); return i < 0 ? null : i; };
+    const U = (x, t) => (x.ursachen || []).filter((u) => u.typ === t);
+    const L = (x) => x.lern || {};
+    switch (start.typ) {
+      case 'torWaehlen': { const k = idx((x) => x.kind === 'shoot'); return k == null ? r(false, null, 'keinSchuss') : r(!!schritte[k].good, k, schritte[k].good ? 'freiesTor' : 'torZu'); }
+      case 'andereLoesung': {
+        const k = idx((x) => x.ctxType === 'abschluss' && L(x).inZone && L(x).freieTore.length === 0);
+        if (k == null) return r(false, null, 'keineLage');
+        const ok = !!schritte[k].good && schritte[k].kind !== 'shoot';
+        return r(ok, k, ok ? 'andereLoesung' : 'aufsZugestellteTor');
+      }
+      case 'nochmalSchauen': {
+        const k = idx((x) => L(x).inZone);
+        if (k == null) return r(false, null, 'zoneNichtErreicht');
+        const vorher = start.freieToreStart.slice().sort().join(), jetzt = L(schritte[k]).freieTore.slice().sort().join();
+        const veraendert = vorher !== jetzt;
+        return r(!!schritte[k].good, k, !schritte[k].good ? 'nichtErkannt' : veraendert ? 'veraenderungErkannt' : 'ohneVeraenderung');
+      }
+      case 'platzVorDir': { const x = schritte[0]; if (!x) return r(false, null, 'keineEntscheidung'); const ok = !!x.good && x.kind === 'dribble' && L(x).dx >= 2; return r(ok, 0, ok ? 'nachVorn' : 'nichtNachVorn'); }
+      // Kernleistung „vorbei“: mit einer guten Entscheidung, Ball behalten, ist der Gegner vor dir überwunden (auch über zwei Schritte)
+      case 'vorbei': {
+        const k = idx((x) => x.good && (U(x, 'ueberspielt').length || (start.gegner && L(x).kept && (L(x).vor || []).includes(start.gegner))));
+        return k == null ? r(false, null, 'nichtVorbei') : r(true, k, 'vorbei');
+      }
+      // Kernleistung „Lücke“: mit Ball an beiden Gegnern des Paars vorbei – durch die Lücke oder sicher außen herum
+      case 'luecke': {
+        const paar = start.paar || [];
+        const k = idx((x) => x.good && (U(x, 'lueckeDurch').length || (paar.length && L(x).kept && paar.every((g) => (L(x).vor || []).includes(g)))));
+        return k == null ? r(false, null, 'nichtVorbei') : r(true, k, schritte.slice(0, k + 1).some((x) => U(x, 'lueckeDurch').length) ? 'durchDieLuecke' : 'aussenHerum');
+      }
+      case 'angriff': { const k = idx((x) => x.ctxType === 'abschluss'); return k == null ? r(false, null, 'keinAbschluss') : r(!!schritte[k].good, k, schritte[k].good ? 'abschlussGut' : 'abschlussSchwach'); }
+      case 'verteidigung': { const k = idx((x) => x.ctxType === 'verteidigung'); return k == null ? r(false, null, 'ohneAbwehrszene') : r(!!schritte[k].good, k, schritte[k].good ? 'verteidigtGut' : 'verteidigtSchwach'); }
+      default: { const k = schritte.length ? 0 : null; return r(k != null && schritte.every((x) => x.good), k, 'ohneLernziel'); }
+    }
   }
 
   // ---------------------------------------------------------------- Wahrnehmung: „Erst schauen, dann entscheiden“
@@ -1263,5 +1476,5 @@
   }
 
   root.FIQ = {
-    VERSION: '0.5.1', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.6.0', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, ursachen, lernStart, lernAuswertung, LERNZIELE, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

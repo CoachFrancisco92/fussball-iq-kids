@@ -36,7 +36,7 @@ async function open(withTest) {
     mode: () => page.evaluate(() => window.__fiq.mode),
     waitMode: async (m) => { for (let i = 0; i < 500; i++) { if ((await H.mode()) === m) return; await page.waitForTimeout(40); } fail(`Modus ${m} erwartet, ist ${await H.mode()}`); },
     touch: async (sel) => { const b = await page.locator(sel).boundingBox(); await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); },
-    field: async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; }); const k = b[2] / 40.4; await page.touchscreen.tap(b[0] + (x + 2.2) * k, b[1] + (y + 1.6) * k); },
+    field: async (x, y) => { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; }); const k = b[2] / b[3].w; await page.touchscreen.tap(b[0] + (x - b[3].x0) * k, b[1] + (y - b[3].y0) * k); },
     until: async (fn, what) => { for (let i = 0; i < 250; i++) { if (await page.evaluate(fn)) return; await page.waitForTimeout(40); } fail('nicht erreicht: ' + what); },
     actions: () => page.$$eval('#actions .act:not(.hint)', (bs) => bs.map((b) => b.textContent.trim())),
   };

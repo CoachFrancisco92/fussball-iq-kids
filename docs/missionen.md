@@ -38,6 +38,10 @@ Seit V0.2.4 sind Spielinhalte von der Simulation getrennt. **Für eine neue Miss
     { id: 'A2', start: { ... }, phasen: { maxAngriff: 2 } },   // optional eigene Angriffsgrenze
   ],
   durchlaeufe: [['A1', 'A2', 'A5'], ['A5', 'A1', 'A3']],       // optional; sonst reihum über die Liste
+  // V0.6a: lernziel je Situation (torWaehlen | andereLoesung | nochmalSchauen | platzVorDir | vorbei | luecke) –
+  // bestimmt, wann die Situation als „geschafft“ gilt (ein Stern je Situation; Kriterien: docs/v0.6a.md, Abschnitt 2).
+  // { id: 'A1', lernziel: 'torWaehlen', start: { ... } }
+  // kurzrueckmeldung: true  – Missionsfeld: nach guter Zwischenentscheidung nur Kurzrückmeldung (V0.6a P3)
   phasen: { maxAngriff: 3, verteidigung: 0, abschlussNachGrenze: true },
 ```
 - Eine Situation endet bei **Tor, Ballverlust oder Angriffsgrenze**. Danach beginnt die nächste Situation direkt in ihrer eigenen Startaufstellung (kein Neustart-Bild, Spielstand bleibt, keine Vorgeschichte wie „Freilaufen nach Pass“). Nach der letzten Situation endet die Mission.

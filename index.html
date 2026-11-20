@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Fußball-IQ Kids</title>
 <meta name="theme-color" content="#1e3a8a">
-<meta name="app-version" content="0.5.1">
+<meta name="app-version" content="0.6.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fußball-IQ">
@@ -81,6 +81,13 @@
   #fbIcon { font-size: 40px; line-height: 1; }
   #fbText { margin: 0; font-size: clamp(16px, 2.3vw, 20px); font-weight: 800; line-height: 1.2; }
   .fbBody { flex: 1; min-width: 0; }
+  #fbLern { margin: 5px 0 0; font-size: clamp(14px, 1.9vw, 17px); font-weight: 800; line-height: 1.25; padding: 5px 10px; border-radius: 12px; background: #fef3c7; color: #7a5a00; }
+  #fbLern.offen { background: #e0f2fe; color: #075985; }
+  #kurz { display: flex; align-items: center; gap: 8px; background: rgba(15,23,42,.72); color: #fff; padding: 6px 8px 6px 14px; border-radius: 18px; font-weight: 800; font-size: clamp(14px, 1.9vw, 18px); max-width: 560px; }
+  #kurz[hidden] { display: none; }
+  #kurz button { border: 0; border-radius: 14px; min-height: 48px; min-width: 48px; font: inherit; font-weight: 800; background: #fff; color: #0f172a; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; }
+  #kurz #kurzText { flex: 1; }
+  .dot.hilfe::after { content: '💡'; font-size: 10px; margin-left: -2px; }
   #fbTip { margin: 3px 0 0; font-size: clamp(14px, 1.9vw, 17px); font-weight: 700; color: #334155; line-height: 1.25; }
   .chips2 { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
   .chip { font-size: 14px; font-weight: 700; padding: 3px 10px; border-radius: 10px; line-height: 1.25; }
@@ -98,6 +105,7 @@
   .fbBtns .ico { font-size: 26px; }
   #fbRetry { background: #e0e7ff; color: #3730a3; box-shadow: 0 4px 0 #a5b4fc; }
   #fbCompare { background: #fce7f3; color: #9d174d; box-shadow: 0 4px 0 #f9a8d4; }
+  #fbSit { background: #e0f2fe; color: #075985; box-shadow: 0 4px 0 #7dd3fc; }
   #fbNext { background: var(--blue); color: #fff; box-shadow: 0 4px 0 var(--blue-d); }
   .fbBtns button:active { transform: translateY(2px); }
   #skip { position: absolute; right: 12px; bottom: 12px; z-index: 6; background: var(--paper); border-radius: 999px; padding: 10px 18px; font-weight: 800; }
@@ -233,16 +241,19 @@
         <div class="fbBody">
           <p id="fbText"></p>
           <p id="fbTip"></p>
+          <p id="fbLern" hidden></p>
           <div class="chips2"><span class="chip" id="fbRec"></span><span class="chip" id="fbExe"></span></div>
         </div>
         <div class="bigstar" id="fbStar">⭐</div>
       </div>
       <div class="fbBtns">
         <button id="fbRetry"><span class="ico">↩️</span><span>Anders probieren</span></button>
+        <button id="fbSit" hidden><span class="ico">🔁</span><span class="lbl">Nochmal</span></button>
         <button id="fbCompare" hidden><span class="ico">🔁</span><span>Vergleichen</span></button>
         <button id="fbNext"><span class="ico">▶️</span><span class="lbl">Weiterspielen</span></button>
       </div>
     </div>
+    <div id="kurz" hidden><span id="kurzText"></span><button id="kurzHoeren" aria-label="Nochmal hören">🔈</button><button id="kurzZurueck"><span class="ico">↶</span><span class="lbl">Nochmal</span></button></div>
     <div id="step" hidden></div>
     <div id="actions"></div>
     <button class="act" id="cancel" hidden><span class="ico">✖</span><span>Zurück</span></button>
@@ -262,7 +273,7 @@
       <div><i>👆</i>Knopf, dann Feld</div>
       <div><i>↩️</i>Nochmal probieren</div>
     </div>
-    <p class="ver" id="ver">Version 0.5.1</p>
+    <p class="ver" id="ver">Version 0.6.0</p>
   </div>
 </div>
 
@@ -304,12 +315,12 @@
 <div id="confetti"></div>
 <div class="goalBanner" id="goalBanner"></div>
 
-<script src="content/texte.js?v=0.5.1"></script>
-<script src="missions/mission-1.js?v=0.5.1"></script>
-<script src="missions/welches-tor-ist-frei.js?v=0.5.1"></script>
-<script src="missions/freie-bahn.js?v=0.5.1"></script>
-<script src="engine.js?v=0.5.1"></script>
-<script src="sprache.js?v=0.5.1"></script>
-<script src="app.js?v=0.5.1"></script>
+<script src="content/texte.js?v=0.6.0"></script>
+<script src="missions/mission-1.js?v=0.6.0"></script>
+<script src="missions/welches-tor-ist-frei.js?v=0.6.0"></script>
+<script src="missions/freie-bahn.js?v=0.6.0"></script>
+<script src="engine.js?v=0.6.0"></script>
+<script src="sprache.js?v=0.6.0"></script>
+<script src="app.js?v=0.6.0"></script>
 </body>
 </html>

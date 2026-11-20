@@ -50,8 +50,8 @@ async function run(viewport, label, strategy = 'hint') {
   const mode = () => page.evaluate(() => window.__fiq.mode);
   const waitMode = async (m, ms = 25000) => { const t = Date.now(); while (Date.now() - t < ms) { if (errors.length) fail('Abbruch'); if ((await mode()) === m) return; await page.waitForTimeout(80); } fail(`[${label}] Zeitüberschreitung: warte auf ${m}, ist ${await mode()}`); };
   const tap = async (x, y) => {
-    const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width]; });
-    const s = b[2] / 40.4; await page.mouse.click(b[0] + (x + 2.2) * s, b[1] + (y + 1.6) * s);
+    const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; });
+    const s = b[2] / b[3].w; await page.mouse.click(b[0] + (x - b[3].x0) * s, b[1] + (y - b[3].y0) * s);
   };
   // Zustandsbasiertes Warten statt fester Pausen (stabil auch auf langsamen CI-Rechnern)
   const until = async (fn, what, ms = 4000) => { const t = Date.now(); while (Date.now() - t < ms) { if (await page.evaluate(fn)) return; await page.waitForTimeout(50); } fail(`[${label}] Zustand nicht erreicht: ${what}`); };

@@ -33,7 +33,8 @@ const STYLES = {
 function play(E, durchlauf, chooser, id = ID) {
   const s = E.newState(id, durchlauf), m = E.newMission(id, durchlauf), out = [];
   let last = null;
-  for (let i = 0; !m.done && i < 16; i++) {
+  // V0.6a: 4 Situationen × bis zu 6 Entscheidungen – Obergrenze 32 (vorher 16 bei 3 Situationen)
+  for (let i = 0; !m.done && i < 32; i++) {
     const ctx = E.context(s, last);
     let a = chooser(E, s, ctx, i), hint = null;
     if (a && a.a) { hint = a.hint; a = a.a; }

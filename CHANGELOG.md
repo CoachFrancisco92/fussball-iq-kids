@@ -1,5 +1,16 @@
 # Changelog
 
+## V0.6.0 – V0.6a: Lernaufbau, Ursachen, Kurzrückmeldung, Sterne je Situation (zur Abnahme, unveröffentlicht)
+Freigabe P1–P5 (PO, 20.11.2026). Bericht, Kriterien und Gegenprüfungen: `docs/v0.6a.md`. **Bewertung unverändert** (Mission 1: Spielverlauf identisch, nur Sätze).
+- **P1 Lernaufbau:** „Welches Tor ist frei?“ A1 → A2 → A3 → W1 (neu: A3m, W1, W1m „nochmal schauen“); „Freie Bahn!“ B3 → V1 → L4e → L4b (neu: B3/V1/L4e/L4b + Spiegel, B2/B4/B6 entfallen); 5 Durchläufe à 4 Situationen; Feld `lernziel` je Situation.
+- **P2 Ursachen:** belegte Ursachen aus der Lage vor/nach der Entscheidung (vorbei, Lücke breit/eng, Wächter verschoben/erkannt, Passweg frei, Freund dribbelt, Gegner mitgelaufen/schoss); kein „Manchmal klappt es nicht“; keine doppelte Nennung desselben Gegners.
+- **P3 Kurzrückmeldung** („Freie Bahn!“): Band statt Blatt nach guter Zwischenentscheidung, automatisch weiter am Satzende (≥ 1,2 s), ↶ Nochmal und 🔈 bis zur nächsten Aktion.
+- **P4 Sterne je Situation:** Kernleistung statt Einzelentscheidung; ⭐💡 bei Hilfe (voller Stern); nicht geschafft: Hinweis + „Nochmal“; Fortschritt und Endbildschirm je Situation; Mission 1: Angriff/Abwehr.
+- **P5 Darstellung:** größere Spieler mit Blickrichtung, fester Ausschnitt in Lernmissionen, Lücke ✓/✗, Wächter-Schatten, „Vorbei!“, Passweg.
+- Tests: `tests/lernaufbau.test.js`, `tests/ursachen.test.js` (neu), Mission-A/Freie-Bahn-Tests und -Browserdurchläufe angepasst, `e2e/navigation.mjs` Block 3d (Kurzrückmeldung); Analysen `tests/analysis/v0.6/text-abweichungen.js`, `bildschirm.mjs`.
+- **Referenzen nicht erneuert** – vorgelegt: `abweichungen-v0.6a.json` (nur Text), `missionA-`/`freieBahn-abweichungen-v0.6a.json` (neue Situationen), `*-v0.6a-ui.json` (Oberfläche).
+- Backlog (nur Dokumentation): `docs/backlog.md`.
+
 ## V0.5.1 – Sprachsteuerung, Navigation, Einzelaktion (zur Abnahme, unveröffentlicht)
 Grundlage: UX-Review `docs/ux-review-v0.5.md`, Maßnahmen 1.1–1.5 (freigegeben 19.11.2026). Details und Testergebnisse: `docs/v0.5.1.md`.
 **Engine, Bewertungen und Engine-Referenzen unverändert** (`engine.js` nur Versionsnummer).
