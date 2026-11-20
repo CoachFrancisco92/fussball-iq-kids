@@ -226,13 +226,30 @@
       const solo = team(s, 'blue').length < 2;
       const mkB = (type, key, actions) => mk(type, key, solo ? actions.filter((k) => k !== 'passen') : actions);
       const inZone = c.x >= F.W - F.ZONE - 0.3;
-      if (inZone) return mkB('abschluss', 'abschluss', ['schiessen', 'passen']);
+      if (inZone) {
+        // V0.6.2 (Wahrnehmung): Haben sich die freien Tore seit der vorigen Entscheidung dieser Situation verändert
+        // (z. B. nach Dribbling oder Pass), fragt das Spiel ausdrücklich nach dem JETZT freien Tor – ohne es zu verraten.
+        const key = toreVeraendertSeitVorher(s) && t.kontext.abschlussNochmal ? 'abschlussNochmal' : 'abschluss';
+        return mkB('abschluss', key, ['schiessen', 'passen']);
+      }
       if (last && s.ep && last.kind === 'pass' && last.success && last.team === 'blue') return mk('ohneBall', 'ohneBall', ['freilaufen']);
-      const near = team(s, 'red').some((r) => dist(r, c) < 4.5);
-      return near ? mkB('angriff', 'angriffDruck', ['passen', 'dribbeln']) : mkB('angriff', 'angriffFrei', ['passen', 'dribbeln']);
+      const nah = team(s, 'red').filter((r) => dist(r, c) < 4.5);
+      // V0.6.2: Stehen alle nahen Roten hinter dem Ball, sagt die Ansage das (statt „an ihm vorbei“)
+      if (nah.length && nah.every((r) => r.x < c.x - 0.3) && t.kontext.angriffHinten) return mkB('angriff', 'angriffHinten', ['passen', 'dribbeln']);
+      return nah.length ? mkB('angriff', 'angriffDruck', ['passen', 'dribbeln']) : mkB('angriff', 'angriffFrei', ['passen', 'dribbeln']);
     }
     const pressed = team(s, 'blue').some((b) => dist(b, c) < 3.5);
     return pressed ? mk('verteidigung', 'verteidigungNah', ['raum', 'erobern']) : mk('verteidigung', 'verteidigungFern', ['erobern', 'raum']);
+  }
+
+  /** Freie Tore aus Sicht des Ballführenden (Blau) */
+  const freieTore = (s) => shotOptions(s).filter((o) => o.margin > CFG.shotLaneOk).map((o) => o.goal);
+  /** V0.6.2: Hat sich die Menge der freien Tore seit Beginn der vorigen Entscheidung derselben Situation verändert? */
+  function toreVeraendertSeitVorher(s) {
+    const v = s.ep && s.ep.vorher, c = carrier(s);
+    if (!v || !v.shots || !c || c.team !== 'blue' || v.team !== 'blue' || v.situation !== (s.situation || null)) return false;
+    const vorher = v.shots.filter((o) => o.margin > CFG.shotLaneOk).map((o) => o.goal).join(), jetzt = freieTore(s).join();
+    return vorher !== jetzt;
   }
 
   // ---------------------------------------------------------------- Bewertung & Hilfen
@@ -1226,6 +1243,8 @@
     }
     const pv = prevEp && prevEp.vorher;
     v.prev = pv && pv.situation === v.situation && pv.team === v.team ? pv.pos : null;
+    // V0.6.2: freie Tore zu Beginn der vorigen Entscheidung (gleiche Situation) und deren Aktion – für „nach dem Dribbling war …“
+    if (v.prev && pv.shots) { v.prevFrei = pv.shots.filter((o) => o.margin > CFG.shotLaneOk).map((o) => o.goal); v.prevAktion = prevEp.a ? prevEp.a.kind : null; }
     if (a.kind === 'dribble' && c.team === 'blue') {
       const to = dribbelZiel(c, a), l = lueckeAufWeg(s, c, to);
       if (l) {
@@ -1258,8 +1277,9 @@
     const roteVorher = Object.keys(v.pos).filter((id) => P(s, id) && P(s, id).team !== v.team).map((id) => ({ id, ...pt(v.pos[id]) }));
     if (a.kind === 'dribble' && v.team === 'blue') {
       if (kept) for (const r of roteVorher) {
-        // überspielt: Roter stand im Kegel vor dem Ball (≤ 7 m); Blau ist an seiner Ausgangsposition vorbei, er steht danach hinter dem Ball
-        if (imKegel(c0, r, 7) && c1.x > r.x + 0.3 && P(s, r.id).x < c1.x - 0.3) out.push({ typ: 'ueberspielt', gegner: r.id });
+        // überspielt: Roter stand im Kegel vor dem Ball (≤ 7 m) und steht danach hinter dem Ball; Blau hat Raum nach vorn
+        // gewonnen (≥ 1 m). V0.6.2: auch, wenn der Rote entgegenkam (gleiches Kriterium wie das Lernergebnis „vorbei“).
+        if (imKegel(c0, r, 7) && c1.x > c0.x + 1 && P(s, r.id).x < c1.x - 0.3) out.push({ typ: 'ueberspielt', gegner: r.id });
       }
       if (v.luecke) {
         const st = find('steal');
@@ -1278,7 +1298,12 @@
       const w = v.waechter || {}, mein = v.shots.find((o) => o.goal === a.goal), anderes = v.shots.find((o) => o.goal !== a.goal);
       if (w[a.goal]) out.push({ typ: 'waechterVerschoben', gegner: w[a.goal], tor: a.goal, anderesFrei: anderes.margin > CFG.shotLaneOk });
       else if (w[anderes.goal] && mein.margin > CFG.shotLaneOk) out.push({ typ: 'waechterErkannt', gegner: w[anderes.goal], torZu: anderes.goal, tor: a.goal });
-      else if (mein.margin > CFG.shotLaneOk && anderes.margin <= CFG.shotLaneOk && anderes.hit) out.push({ typ: 'anderesTorZu', gegner: anderes.hit, tor: a.goal });
+      else if (v.prevFrei && v.prevFrei.join() !== v.shots.filter((o) => o.margin > CFG.shotLaneOk).map((o) => o.goal).join() && v.prevAktion) {
+        // V0.6.2: Torlage hat sich seit der vorigen Entscheidung verändert (Zustandsvergleich, keine Ursachenbehauptung)
+        if (mein.margin > CFG.shotLaneOk) out.push({ typ: 'toreVeraendert', tor: a.goal, aktion: v.prevAktion });
+        else if (v.prevFrei.includes(a.goal)) out.push({ typ: 'torJetztZu', tor: a.goal, aktion: v.prevAktion, anderesFrei: anderes.margin > CFG.shotLaneOk });
+        else if (anderes.margin <= CFG.shotLaneOk && anderes.hit && mein.margin > CFG.shotLaneOk) out.push({ typ: 'anderesTorZu', gegner: anderes.hit, tor: a.goal });
+      } else if (mein.margin > CFG.shotLaneOk && anderes.margin <= CFG.shotLaneOk && anderes.hit) out.push({ typ: 'anderesTorZu', gegner: anderes.hit, tor: a.goal });
     }
     if (a.kind === 'run' && find('autoDribble') && c1 && c1.team === 'blue') out.push({ typ: 'freundDribbelt', freund: c1.id });
     if (a.kind === 'run' && !find('autoDribble') && !find('steal')) {
@@ -1291,6 +1316,36 @@
       out.push({ typ: 'gegnerSchoss', gegner: rec ? rec.by : v.carrier });
     }
     return out;
+  }
+  /**
+   * V0.6.2 (Wahrnehmung): Folge-Moment nach einer Aktion – nur bei bedeutsamer Veränderung, nicht nach Routine.
+   * Bedeutsam: (1) Blau behält den Ball und die freien Tore haben sich verändert (aus Sicht des jetzigen Ballführenden),
+   * (2) ein Gegner wurde überwunden (überspielt / durch die Lücke), (3) der Ball ging an einen Roten, der sich dafür
+   * ≥ 1 m bewegt hat. Kein Folge-Moment bei Tor (Torjubel) und ohne Veränderung. Reine Funktion, ändert nichts.
+   * Liefert { bedeutsam, gruende, gegner: [{id, von:{x,y}, nach:{x,y}}], tore: [geänderte Tore] } – ohne Wertung
+   * „frei/zu“, damit der Folge-Moment keine Lösung vorwegnimmt.
+   */
+  function folge(s) {
+    const ep = s.ep, v = ep && ep.vorher, leer = { bedeutsam: false, gruende: [], gegner: [], tore: [] };
+    if (!v || !ep.done || ep.events.some((e) => e.type === 'goal')) return leer;
+    const U = ursachen(s), c1 = carrier(s), gruende = [], ids = new Set(), tore = [];
+    const bewegt = (id) => { const p = P(s, id); return p && v.pos[id] && dist(p, pt(v.pos[id])) >= 1; };
+    if (c1 && c1.team === 'blue' && v.team === 'blue' && v.shots) {
+      const vor = v.shots.filter((o) => o.margin > CFG.shotLaneOk).map((o) => o.goal), jetzt = freieTore(s);
+      for (const g of [0, 1]) if (vor.includes(g) !== jetzt.includes(g)) tore.push(g);
+      if (tore.length) {
+        gruende.push('toreVeraendert');
+        // beteiligte Rote: Blocker vorher oder jetzt, die sich bewegt haben
+        const jetztHit = shotOptions(s).map((o) => (o.hit ? o.hit.id : null));
+        for (const id of v.shots.map((o) => o.hit).concat(jetztHit)) if (id && bewegt(id)) ids.add(id);
+      }
+    }
+    const uw = U.filter((u) => u.typ === 'ueberspielt').map((u) => u.gegner).concat(...U.filter((u) => u.typ === 'lueckeDurch').map((u) => u.paar));
+    if (uw.length) { gruende.push('ueberwunden'); uw.forEach((id) => ids.add(id)); }
+    const verlust = ep.events.find((e) => (e.type === 'steal' || e.type === 'intercepted') && P(s, e.by) && P(s, e.by).team === 'red');
+    if (verlust && v.team === 'blue' && bewegt(verlust.by)) { gruende.push('ballVerloren'); ids.add(verlust.by); }
+    const gegner = [...ids].filter((id) => v.pos[id] && P(s, id)).map((id) => ({ id, von: pt(v.pos[id]), nach: { x: P(s, id).x, y: P(s, id).y } }));
+    return { bedeutsam: gruende.length > 0, gruende, gegner, tore };
   }
   /** Fakten für das Lernergebnis einer Situation (P4). */
   function lernFakten(s) {
@@ -1309,11 +1364,15 @@
     const tor = (g) => (g === 0 ? TU.torOben : TU.torUnten);
     let positiv = null, negativ = null, ohneErfolg = null;
     const ue = has('ueberspielt');
-    if (ue.length >= 2) positiv = TU.ueberspieltZwei(n(ue[0].gegner), n(ue[1].gegner));
+    const durch = has('lueckeDurch')[0];
+    if (durch) positiv = TU.lueckeDurch(n(durch.paar[0]), n(durch.paar[1]));       // V0.6.2: Lücke vor „vorbei“ (genauer)
+    else if (ue.length >= 2) positiv = TU.ueberspieltZwei(n(ue[0].gegner), n(ue[1].gegner));
     else if (ue.length === 1) positiv = TU.ueberspielt(n(ue[0].gegner));
     const pw = has('passwegFrei')[0];
-    if (ue.length && pw) positiv += ' ' + TU.passwegFrei(n(pw.freund), pw.gegner ? n(pw.gegner) : null);
+    if ((ue.length || durch) && pw) positiv += ' ' + TU.passwegFrei(n(pw.freund), pw.gegner ? n(pw.gegner) : null);
     if (!positiv && has('waechterErkannt')[0]) { const u = has('waechterErkannt')[0]; positiv = TU.waechterErkannt(n(u.gegner), tor(u.torZu)); }
+    // V0.6.2: Torlage hat sich seit der vorigen Entscheidung verändert – rückblickend benennen (nach der Entscheidung)
+    if (!positiv && has('toreVeraendert')[0]) { const u = has('toreVeraendert')[0]; positiv = TU.nachAktion[u.aktion] ? TU.toreVeraendert(TU.nachAktion[u.aktion], tor(u.tor)) : TU.toreVeraendertJetzt(tor(u.tor)); }
     if (!positiv && has('lueckeDurch')[0]) { const u = has('lueckeDurch')[0]; positiv = TU.lueckeDurch(n(u.paar[0]), n(u.paar[1])); }
     if (!positiv && pw) positiv = TU.passwegFrei(n(pw.freund), pw.gegner ? n(pw.gegner) : null);
     if (!positiv && a.kind === 'dribble') {
@@ -1327,6 +1386,7 @@
     if (!positiv && a.kind === 'shoot' && has('anderesTorZu')[0]) positiv = TU.anderesTorZu(n(has('anderesTorZu')[0].gegner));
     if (!positiv && a.kind === 'pass' && a.id && ev.exe.good) positiv = ev.exe.why;
     if (has('lueckeZuEng')[0]) { const u = has('lueckeZuEng')[0]; negativ = TU.lueckeZuEng(n(u.paar[0]), n(u.paar[1])) + (u.aussen ? ' ' + TU.aussenPlatz : ''); }
+    if (has('torJetztZu')[0]) { const u = has('torJetztZu')[0]; negativ = (TU.nachAktion[u.aktion] ? TU.torJetztZu(TU.nachAktion[u.aktion], tor(u.tor)) : TU.torJetztZuJetzt(tor(u.tor))) + (u.anderesFrei ? ' ' + TU.anderesFrei(tor(1 - u.tor)) : ''); }
     if (has('waechterVerschoben')[0]) { const u = has('waechterVerschoben')[0]; negativ = TU.waechterVerschoben(n(u.gegner), tor(u.tor)) + (u.anderesFrei ? ' ' + TU.anderesFrei(tor(1 - u.tor)) : ''); }
     // nur ergänzen, was das Ergebnis nicht schon sagt (z. B. „Dein Freund dribbelt dafür nach vorne.“)
     if (has('freundDribbelt')[0]) ohneErfolg = out.text.includes(R.laufZuDribbel.trim()) ? null : TU.freundDribbelt(n(has('freundDribbelt')[0].freund));
@@ -1476,5 +1536,5 @@
   }
 
   root.FIQ = {
-    VERSION: '0.6.1', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, ursachen, lernStart, lernAuswertung, LERNZIELE, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.6.2', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, ursachen, folge, lernStart, lernAuswertung, LERNZIELE, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -55,6 +55,7 @@
         // ohne Mitspieler: kein „Passen oder dribbeln?“ und kein „welcher Freund frei steht“
         angriffFrei: { title: 'Wohin dribbelst du?', tag: 'Dribbeln', say: 'Wohin dribbelst du? Tippe dorthin, wo kein Roter ist.' },
         angriffDruck: { title: 'Wohin dribbelst du?', tag: 'Dribbeln', say: 'Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor.' },
+        angriffHinten: { title: 'Wohin dribbelst du?', tag: 'Dribbeln', say: 'Ein Roter ist hinter dir. Wohin dribbelst du?' },
       },
       ende: {
         merksatz: ' Beim Dribbeln schaust du: Wo ist frei? Dorthin dribbelst du – und vor dem Tor schießt du aufs freie Tor.',

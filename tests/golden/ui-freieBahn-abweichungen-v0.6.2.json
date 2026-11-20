@@ -1,0 +1,462 @@
+[
+ {
+  "eintrag": 2,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 3,
+  "alt": {
+   "kurz": "⭐ Super! Rot 1 war hinter dir. Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Rot 1 war hinter dir. Vor dir war Platz!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Rot 1 war hinter dir. Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Rot 1 war hinter dir. Vor dir war Platz!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 5,
+  "alt": {
+   "zurueck": [
+    "Gleiche Situation – probier etwas anderes!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "zurueck": [
+    "Gleiche Situation – probier etwas anderes!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 13,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  }
+ },
+ {
+  "eintrag": 18,
+  "alt": {
+   "said": [
+    "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Die Lücke zwischen Rot 1 und Rot 2 war zu eng. Außen herum war Platz.",
+    "Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum."
+   ],
+   "fb": [
+    "Rot 1 stand im Weg und hat dir den Ball abgenommen.",
+    "Gute Idee, zu dribbeln! Aber schau mal: Die Lücke zwischen Rot 1 und Rot 2 war zu eng. Außen herum war Platz.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Gegner kam dazu",
+    "💭"
+   ],
+   "lern": "🔁 Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum.",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Schau!",
+    "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Die Lücke zwischen Rot 1 und Rot 2 war zu eng. Außen herum war Platz.",
+    "Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum."
+   ],
+   "fb": [
+    "Rot 1 stand im Weg und hat dir den Ball abgenommen.",
+    "Gute Idee, zu dribbeln! Aber schau mal: Die Lücke zwischen Rot 1 und Rot 2 war zu eng. Außen herum war Platz.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Gegner kam dazu",
+    "💭"
+   ],
+   "lern": "🔁 Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum.",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 21,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 36,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3m",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3m",
+   "said": [
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 47,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 55,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 63,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  }
+ },
+ {
+  "eintrag": 69,
+  "alt": {
+   "kurz": "⭐ Super! Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Vor dir war Platz!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Vor dir war Platz!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 76,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 84,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 90,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3m",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3m",
+   "said": [
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 98,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  }
+ },
+ {
+  "eintrag": 104,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 112,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 120,
+  "alt": {
+   "kurz": "⭐ Super! Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Vor dir war Platz!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Vor dir war Platz!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 128,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  }
+ },
+ {
+  "eintrag": 134,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 142,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 148,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ }
+]

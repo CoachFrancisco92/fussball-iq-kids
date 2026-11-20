@@ -38,7 +38,9 @@ function fakeSpeech(cfg) {
         log.push({ e: 'fertig', t: u.text, at: performance.now() });
         s.cur = null; s.speaking = false;
         if (!cfg.keinEnde) { if (cfg.spaet) setTimeout(() => u.onend && u.onend({}), cfg.spaet); else if (u.onend) u.onend({}); }
-        s._next();
+        // V0.6.2: Spricht onend sofort Neues (speak() startet es schon), darf die Nachbildung es nicht wieder verlieren
+        // (wie ein echtes Sprachsystem: die neue Äußerung läuft weiter)
+        if (!s.cur) s._next();
       }, Math.max(120, u.text.length * cfg.ms));
     },
     cancel() {
@@ -382,7 +384,7 @@ try {
     if (Math.abs(cutV.at - t1) > 250 || jetzt.at - cutV.at > 200 || jetzt.at < cutV.at) fail(`Szenen-Wiedergabe: Abbruch ${Math.round(cutV.at - t1)} ms, neue Ansage ${Math.round(jetzt.at - cutV.at)} ms danach`);
     if (log.some((x) => x.e === 'start' && x.t === vor.t && x.at > cutV.at)) fail('„Vorher“-Ansage später fortgesetzt');
     // nie zwei Ansagen gleichzeitig im Sprachsystem
-    let cur = null; for (const x of log) { if (x.e === 'start') { if (cur) fail('Überlappung: ' + cur + ' / ' + x.t); cur = x.t; } if ((x.e === 'fertig' || x.e === 'cancel') && x.t) cur = null; }
+    let cur = null; for (const x of log) { if (x.e === 'start') { if (cur) { fail('Überlappung: ' + cur + ' / ' + x.t); } cur = x.t; } if ((x.e === 'fertig' || x.e === 'cancel') && x.t) cur = null; }
     await H.touch('#skip'); await H.waitMode('feedback'); await H.touch('#home'); await H.waitMode('start');
     console.log(`✓ Zu lange Ansage: „Anders probieren“ (Wächter nach ${(wd / 1000).toFixed(1)} s) und Szenen-Wiedergabe (Höchstzeit) beenden die laufende Ansage, die neue folgt sofort (≤ 200 ms); kein Überlappen, nichts Altes später`);
     await H.close();

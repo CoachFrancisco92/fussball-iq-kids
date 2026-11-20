@@ -1,5 +1,14 @@
 # Changelog
 
+## V0.6.2 – Paket „Wahrnehmung“ (Branch `wahrnehmung`, unveröffentlicht)
+Freigabe Maßnahmen 1–3 aus `docs/qs-kindertest-v0.6.0.md` (PO, 20.11.2026). Bericht: `docs/v0.6.2.md`. **Bewertung und Simulation unverändert** (nachgewiesen für alle drei Missionen).
+- Ansagen passen zur Lage: „Ein Roter ist hinter dir …“ (B3 u. a.), „Schau nochmal: Welches Tor ist jetzt frei?“ nach veränderter Torlage (W1, A3) – ohne Lösung.
+- Neue Möglichkeiten rückblickend benannt („Nach dem Dribbling war das obere Tor frei …“); „vorbei“ mit dem Kriterium der Aufgabenbewertung; Lücke vor „vorbei“.
+- Folge-Moment (~1,4 s, „Schau!“) nur bei bedeutsamer Veränderung: Spuren der Roten, neutraler „!“-Ring an veränderten Toren; Antippen überspringt.
+- Rückmeldeblatt im Querformat rechts neben dem Feld – das Feld wird nicht kleiner; Handy quer kompakter.
+- Tests: `tests/wahrnehmung.test.js`, `tests/e2e/wahrnehmung.mjs` (neu), `tests/ursachen.test.js` erweitert; Analysen `tests/analysis/v0.6.2-text-abweichungen.js`, `tests/analysis/v0.6/qs-wahrnehmung.js`.
+- Referenzen nicht erneuert – Abweichungen vorgelegt (`tests/golden/*v0.6.2*`).
+
 ## V0.6.1 – Hotfix Toraussprache
 - Kindertest: Die Sprachausgabe sprach das gedehnte „Toooor!“ teils wie „Tour“. Anzeige und Aussprache sind jetzt getrennt: angezeigt bleibt „Toooor!“ (Rückmeldung) bzw. „TOOOR! ⚽“ (Torbanner), gesprochen wird „Tor!“.
 - Umsetzung: `content/texte.js` → `sprechtext` (eine Regel); `app.js` wendet sie auf jeden gesprochenen Text an (Rückmeldung, 🔈, Szenen-Wiedergabe). Sprachsteuerung (`sprache.js`) und Engine unverändert; Engine-Referenzen unverändert.

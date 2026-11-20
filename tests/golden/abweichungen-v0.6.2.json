@@ -1,0 +1,197 @@
+{
+ "grund": "V0.6.2 Paket Wahrnehmung: nur Ansagen und Rückmeldesätze (Spielverlauf unverändert) – zur Freigabe vorgelegt",
+ "bericht": "docs/v0.6.2.md",
+ "geaenderteEntscheidungen": 48,
+ "spielverlaufGeaendert": [],
+ "scripted": {},
+ "hinted": {
+  "alt": "8f4a14cf9ca25c8b",
+  "neu": "865d981741e49790"
+ },
+ "seeds": {
+  "2": {
+   "alt": "d09710b0690afdb2",
+   "neu": "6da497859020a3be"
+  },
+  "8": {
+   "alt": "770c602a111296fe",
+   "neu": "d4978203ce570e1d"
+  },
+  "12": {
+   "alt": "17b8bbef97797920",
+   "neu": "4f6881fba10e38df"
+  },
+  "14": {
+   "alt": "20338d78cf90bd5d",
+   "neu": "5295e03c0ffe8a23"
+  },
+  "16": {
+   "alt": "081c6867cb483440",
+   "neu": "e8687a2271bf0ddc"
+  },
+  "17": {
+   "alt": "45bd6a19293820cf",
+   "neu": "3f5c0330162a1e28"
+  },
+  "21": {
+   "alt": "b80428f5229121bc",
+   "neu": "e2ac9906d6509d04"
+  },
+  "24": {
+   "alt": "5226e789a07ebbf9",
+   "neu": "d507fbb9abeb5c78"
+  },
+  "33": {
+   "alt": "82a7e70323858d7b",
+   "neu": "7803f890d3663dfe"
+  },
+  "34": {
+   "alt": "c13f78abae07d260",
+   "neu": "95deb0ff7588175b"
+  },
+  "36": {
+   "alt": "965a90ee78f00122",
+   "neu": "e99af4d9b2bf37a0"
+  },
+  "38": {
+   "alt": "c41a2c7c6ccf8de9",
+   "neu": "dac2a92bb5ecc094"
+  },
+  "39": {
+   "alt": "cfc00a026bddaf4f",
+   "neu": "b9438a8e1027864b"
+  },
+  "41": {
+   "alt": "6fdcffb541595633",
+   "neu": "39b575326d50cc96"
+  },
+  "46": {
+   "alt": "9deae314f01662cc",
+   "neu": "21c5dfc054fef902"
+  },
+  "53": {
+   "alt": "9e05d2278a1580ff",
+   "neu": "c57544e20b418cc2"
+  },
+  "56": {
+   "alt": "4d7450e7ad48a0a8",
+   "neu": "15304d1d5baa9a02"
+  },
+  "65": {
+   "alt": "e402d74ce0b7cdb6",
+   "neu": "ceecfe63da93659b"
+  },
+  "68": {
+   "alt": "553a87c7285bf93d",
+   "neu": "1745461e6fd8a369"
+  },
+  "69": {
+   "alt": "5204e83200b368d8",
+   "neu": "f9331f248a15239d"
+  },
+  "70": {
+   "alt": "f5f21cc088ff3c99",
+   "neu": "9b9606f9e2836ebc"
+  },
+  "71": {
+   "alt": "bde3738a2c65777b",
+   "neu": "6ce9ad178566cd65"
+  },
+  "88": {
+   "alt": "0ecad12b5b649876",
+   "neu": "35f223f443f9ae5e"
+  },
+  "92": {
+   "alt": "2727c9ed2c968edf",
+   "neu": "8e439f6bf436bc44"
+  },
+  "93": {
+   "alt": "acc6c0a5eaf2e627",
+   "neu": "a85ed3f519e05d79"
+  },
+  "95": {
+   "alt": "46be73da626f8e0b",
+   "neu": "952512acf5a4cc3c"
+  },
+  "96": {
+   "alt": "ca71a5cb88d800f0",
+   "neu": "268118b2b6e6b793"
+  },
+  "97": {
+   "alt": "e67679e804b2d964",
+   "neu": "0f30830aa496288e"
+  },
+  "100": {
+   "alt": "aff4f13be3bc7a00",
+   "neu": "0a761659eead33aa"
+  },
+  "109": {
+   "alt": "70a8c191fb93f21d",
+   "neu": "878ef4da11bec81f"
+  },
+  "113": {
+   "alt": "10484894b4e6cd9a",
+   "neu": "35230049a1397122"
+  },
+  "123": {
+   "alt": "772f389fd02f138e",
+   "neu": "f73cf25c0ca15c05"
+  },
+  "132": {
+   "alt": "bebc8f3c4f9fb755",
+   "neu": "a293e7c6198906bd"
+  },
+  "135": {
+   "alt": "a1488cd5d22c325d",
+   "neu": "ef2e354586e2e8ce"
+  },
+  "141": {
+   "alt": "283d0edfdbbebf9e",
+   "neu": "67920252cf9fedc7"
+  },
+  "144": {
+   "alt": "e28caa360cfaec8a",
+   "neu": "b931359647d77435"
+  },
+  "145": {
+   "alt": "c08d2ab1c2f4e039",
+   "neu": "1820cb95b7dfd05c"
+  },
+  "149": {
+   "alt": "1bc3848a382268a9",
+   "neu": "39b054ab9b96946b"
+  },
+  "157": {
+   "alt": "93dcb836eeb30ee7",
+   "neu": "83525c892e05ee96"
+  },
+  "163": {
+   "alt": "317b8d2276d8f7fe",
+   "neu": "60f162bcc89c890a"
+  },
+  "164": {
+   "alt": "bd2c7adc8cce3a5c",
+   "neu": "9b82ed5644e1e44c"
+  },
+  "167": {
+   "alt": "f560a542166cde30",
+   "neu": "dbf8b071cca5339e"
+  },
+  "176": {
+   "alt": "f0e406639aa423e0",
+   "neu": "761486eb44d67843"
+  },
+  "179": {
+   "alt": "0c5c6a5d6710c557",
+   "neu": "12948cff2d1b28a0"
+  },
+  "196": {
+   "alt": "8f532c3fcee9ded2",
+   "neu": "6c3131f4b9758966"
+  },
+  "199": {
+   "alt": "2a09d676a57b266e",
+   "neu": "473d6a3c9be5c0ca"
+  }
+ }
+}

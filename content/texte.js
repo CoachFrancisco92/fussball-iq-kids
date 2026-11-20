@@ -24,6 +24,10 @@
       ohneBall: { title: 'Wo kann ich helfen?', tag: 'Bewegung ohne Ball', say: 'Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.' },
       angriffDruck: { title: 'Wem spiele ich den Ball zu?', tag: 'Angriff', say: 'Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?' },
       angriffFrei: { title: 'Was machst du mit dem Ball?', tag: 'Angriff', say: 'Du hast den Ball! Schau dich um. Passen oder dribbeln?' },
+      // V0.6.2: Ansage passt zur Lage – alle nahen Roten stehen hinter dem Ball
+      angriffHinten: { title: 'Was machst du mit dem Ball?', tag: 'Angriff', say: 'Ein Roter ist hinter dir! Schau nach vorn. Passen oder dribbeln?' },
+      // V0.6.2: die freien Tore haben sich seit der vorigen Entscheidung verändert – nochmal schauen (ohne Lösung)
+      abschlussNochmal: { title: 'Welches Tor ist jetzt frei?', tag: 'Torabschluss', say: 'Schau nochmal: Welches Tor ist jetzt frei?' },
       verteidigungNah: { title: 'Wie schützen wir unser Tor?', tag: 'Verteidigung', say: 'Der Gegner will zu unserem Tor! Wo muss dein Spieler stehen, damit er nicht einfach schießen kann?' },
       verteidigungFern: { title: 'Wer hält den Gegner auf?', tag: 'Verteidigung', say: 'Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?' },
     },
@@ -129,6 +133,12 @@
       freundDribbelt: (f) => `${f} hatte aber selbst Platz und ist nach vorn gedribbelt.`,
       gegnerMitgelaufen: (g) => `${g} ist mitgelaufen.`,
       gegnerSchoss: (g) => `${g} hat schnell geschossen.`,
+      // V0.6.2: veränderte Torlage seit der vorigen Entscheidung (reiner Vorher/Nachher-Vergleich, keine Ursache)
+      nachAktion: { dribble: 'dem Dribbling', pass: 'dem Pass' },   // sonst ohne Aktion: „Jetzt war …“
+      toreVeraendertJetzt: (tor) => `Jetzt war das ${tor} Tor frei – du hast nochmal geschaut!`,
+      torJetztZuJetzt: (tor) => `Jetzt war das ${tor} Tor zu.`,
+      toreVeraendert: (akt, tor) => `Nach ${akt} war das ${tor} Tor frei – du hast nochmal geschaut!`,
+      torJetztZu: (akt, tor) => `Nach ${akt} war das ${tor} Tor zu.`,
     },
 
     // Hotfix V0.6.1: Anzeige und Aussprache getrennt. Angezeigt wird „Toooor!“ / „TOOOR!“; die Sprachausgabe sagt „Tor!“
@@ -180,7 +190,8 @@
       },
       ergebnisKurzVor: (ergebnis, grund) => {
         const saetze = String(ergebnis).split(/(?<=[.!?])\s+/);
-        const rest = saetze.filter((x) => { const n = x.match(/Rot \d/); return !(n && / stand /.test(x) && grund.includes(n[0])); });
+        // V0.6.2: auch wenn der Grund die veränderte Torlage nennt („… war das untere Tor zu.“) – dann reicht „Geblockt!“
+        const rest = saetze.filter((x) => { const n = x.match(/Rot \d/); return !(n && / stand /.test(x) && (grund.includes(n[0]) || / Tor zu\./.test(grund))); });
         return rest.length ? rest.join(' ') : ergebnis;
       },
       tagIdeeGut: 'Gute Idee',
@@ -248,6 +259,9 @@
       letzteMission: 'Das war die letzte Mission. Du kannst nochmal spielen oder eine andere Mission aussuchen.',
       naechsteMission: (titel, einfuehrung) => `${titel}${/[.!?]$/.test(titel) ? '' : '.'} ${einfuehrung}`.trim(),
     },
+
+    // V0.6.2: Folge-Moment – erst schauen, dann die Erklärung
+    folge: { schau: 'Schau!', dauer: 1400 },
 
     // V0.6a P4: Lernergebnis je Situation (Stern = Kernleistung geschafft; mit Hilfe = voller Stern + 💡)
     lern: {
