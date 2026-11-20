@@ -167,6 +167,15 @@
       },
       /** Kind hat etwas getan: Sprache und Warteschlange beenden (Timer bleiben). */
       stopp() { stoppIntern(); nach(0, pruefe); },
+      /** Ein bewusstes Antippen darf genau einen wartenden Erzähl-Übergang vorziehen.
+       *  Bei mehreren Wartenden wird nicht geraten: so bleiben Spiel- und Navigationszustand konsistent. */
+      ueberspringen() {
+        if (halted || waiters.length !== 1) return false;
+        const w = waiters[0];
+        stoppIntern();                    // laufende und vorgemerkte Ansagen dieser Phase abbrechen
+        ausfuehren(w);                    // entfernt beide Timer, bevor die nächste Phase beginnt
+        return true;
+      },
       /** Automatischer Übergang nach Ablauf seiner Höchstzeit: noch Laufendes beenden (Szenen-Wiedergabe). */
       vorrang() { if (!frei()) { log('hoechstzeit-abbruch', cur ? cur.text : ''); stoppIntern(); } },
       /** Neue Phase: noch nicht begonnene Ansagen der vorigen Phase verwerfen. */
