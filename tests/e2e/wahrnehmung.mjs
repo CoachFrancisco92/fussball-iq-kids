@@ -60,7 +60,7 @@ async function pruefeFolge(H, wo) {
   const log = await H.log();
   const imFolge = log.filter((x) => x.e === 'start' && x.at >= t0 - 50 && x.at < t1 - 30).map((x) => x.t);
   const erwartung = fo.gruende.includes('toreVeraendert') ? 'Schau auf die Tore. Was ist jetzt anders?'
-    : fo.gruende.includes('ballVerloren') ? 'Schau: Wer hat jetzt den Ball?' : 'Schau: Wo steht der Rote jetzt?';
+    : fo.gruende.includes('ballVerloren') ? 'Schau: Wer hat jetzt den Ball?' : fo.gegner.length > 1 ? 'Schau: Wo stehen die Roten jetzt?' : 'Schau: Wo steht der Rote jetzt?';
   if (!imFolge.includes(erwartung) || imFolge.some((t) => t !== erwartung))
     fail(wo + ': im Folge-Moment nicht nur die passende Beobachtungsfrage: ' + imFolge.join(' | '));
   if (log.some((x) => x.e === 'abbruch' && x.t === erwartung)) fail(wo + ': Beobachtungsfrage abgeschnitten');
