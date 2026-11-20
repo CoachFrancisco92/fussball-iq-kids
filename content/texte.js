@@ -263,7 +263,15 @@
     },
 
     // V0.6.2: Folge-Moment – erst schauen, dann die Erklärung
-    folge: { schau: 'Schau!', dauer: 1400 },
+    folge: {
+      tag: 'Schau hin',
+      titel: 'Was hat sich verändert?',
+      schau: 'Schau mal, was jetzt anders ist!',
+      tore: 'Schau auf die Tore. Was ist jetzt anders?',
+      gegner: 'Schau: Wo steht der Rote jetzt?',
+      ball: 'Schau: Wer hat jetzt den Ball?',
+      dauer: 1400,
+    },
 
     // V0.6a P4: Lernergebnis je Situation (Stern = Kernleistung geschafft; mit Hilfe = voller Stern + 💡)
     lern: {
