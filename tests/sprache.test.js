@@ -359,3 +359,35 @@ test('vorrang() (Szenen-Wiedergabe nach Höchstzeit): beendet Laufendes, sonst n
   assert.deepStrictEqual(gesprochen(), [LANG, 'Jetzt: zweite Szene']);
   assert.ok(sy.log.some((e) => e[0] === 'cancel' && e[1] === LANG));
 });
+
+test('Tippen überspringt genau einen Erzähl-Übergang und verwirft seine Ansage ohne Nachlauf', () => {
+  const { clock, sp, gesprochen, abgebrochen } = setup();
+  let n = 0;
+  sp.sage('Eine lange Erklärung für den Szenenwechsel.', { art: 'ansage' });
+  sp.wennFertig(() => { n++; sp.phase(); sp.sage('Neue Entscheidung', { art: 'anweisung' }); }, { min: 1200, max: 12000 });
+  clock.tick(50);
+  assert.strictEqual(sp.ueberspringen(), true, 'Tippen auf Erzählung funktioniert');
+  assert.strictEqual(n, 1, 'neue Phase sofort');
+  assert.strictEqual(sp.ueberspringen(), false, 'kein zweiter Übergang ohne Wartenden');
+  clock.tick(16000);
+  assert.strictEqual(n, 1, 'abgebrochene Timer springen nicht erneut');
+  assert.ok(abgebrochen().includes('Eine lange Erklärung für den Szenenwechsel.'));
+  assert.deepStrictEqual(gesprochen(), ['Eine lange Erklärung für den Szenenwechsel.', 'Neue Entscheidung']);
+  assert.strictEqual(sp._zustand().waiters, 0);
+});
+
+test('Erzähl-Überspringen ist während Pause und bei unklaren Mehrfach-Übergängen gesperrt', () => {
+  const { clock, sp } = setup();
+  let n = 0;
+  sp.wennFertig(() => n++, { min: 500, max: 12000 });
+  sp.halt();
+  assert.strictEqual(sp.ueberspringen(), false, 'Neustart-Abfrage muss Vorrang behalten');
+  sp.weiter();
+  assert.strictEqual(sp.ueberspringen(), true);
+  assert.strictEqual(n, 1);
+  sp.wennFertig(() => n++, { min: 500, max: 12000 });
+  sp.wennFertig(() => n++, { min: 500, max: 12000 });
+  assert.strictEqual(sp.ueberspringen(), false, 'zwei unabhängige Übergänge dürfen nicht erraten werden');
+  clock.tick(13000);
+  assert.strictEqual(n, 3, 'reguläre Übergänge bleiben intakt');
+});
