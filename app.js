@@ -526,6 +526,10 @@
         }
       }
     }
+    const tapWeiter = $('tapWeiter');
+    const tippen = mode === 'folge' || mode === 'wechsel' || mode === 'kurz' || mode === 'replay' || (mode === 'look' && lookView && lookView.done);
+    if (tapWeiter.hidden === !!tippen) tapWeiter.hidden = !tippen;
+    if (tippen) tapWeiter.textContent = mode === 'replay' ? 'Tippen: nächste Szene ⏭' : 'Tippen: weiter ⏭';
     render();
     requestAnimationFrame(loop);
   }
@@ -731,10 +735,33 @@
     const el = document.elementFromPoint(lastButtonTap.x, lastButtonTap.y);
     return !(el && el.closest && el.closest('button'));
   };
+  /** In Erzählphasen darf ein Tipp die nächste Station vorziehen, aber niemals eine Fußballaktion auslösen.
+   *  Die Capture-Phase verhindert, dass derselbe Tipp nach dem Zustandswechsel auf dem Canvas weiterspielt. */
+  function replayNaechsteSzene() {
+    if (mode !== 'replay' || !replay) return false;
+    Sprache.stopp();
+    const i = replay.i + 1;
+    if (i >= replay.queue.length) {
+      const fertig = replay.onDone; replay = null; fertig();
+    } else {
+      replay.i = i; replay.f = 0; replay.acc = 0;
+      say(replay.queue[i].say || '', 'ansage', true);
+    }
+    return true;
+  }
+  document.addEventListener('pointerdown', (ev) => {
+    if (pausiert || !ev.target || !ev.target.closest || ev.target.closest('button, a, input, textarea, select, [role="button"]')) return;
+    if (isGhostTap(ev)) return;
+    let verbraucht = false;
+    if (mode === 'replay') verbraucht = replayNaechsteSzene();
+    else if (mode === 'folge' || mode === 'wechsel' || mode === 'kurz' || (mode === 'look' && lookView && lookView.done))
+      verbraucht = Sprache.ueberspringen();
+    else if (mode === 'feedback' && !Sprache.frei()) { Sprache.stopp(); verbraucht = true; }
+    if (verbraucht) { ev.preventDefault(); ev.stopPropagation(); }
+  }, true);
   cv.addEventListener('pointerdown', (ev) => {
     if (isGhostTap(ev)) { tapCount.ghost++; return; }
     tapCount.field++;
-    if (mode === 'folge' && folgeWeiter && !pausiert) { Sprache.stopp(); folgeWeiter(); return; }  // Antippen beendet den Folge-Moment
     const pt = worldFromEvent(ev);
     const c = S && E.carrier(S);
     if (mode === 'look') {
@@ -813,12 +840,15 @@
   function folgeMoment(fo, danach) {
     mode = 'folge';
     folgeView = { ...fo, t0: performance.now() };
+    setPrompt(T().folge.tag, 'look', T().folge.titel);
     const d = dec, weiterNachFolge = () => { if (mode === 'folge' && dec === d) { folgeWeiter = null; danach(); } };
     folgeWeiter = weiterNachFolge;
     Sprache.phase();
-    say(T().folge.schau, 'ansage', false, false);
-    const ms = T().folge.dauer || 1400;
-    Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 3000 });   // „Schau!“ wird nie abgeschnitten
+    const f = T().folge;
+    const grund = fo.gruende.includes('toreVeraendert') ? 'tore' : fo.gruende.includes('ballVerloren') ? 'ball' : 'gegner';
+    say(f[grund] || f.schau, 'ansage', false, false);
+    const ms = f.dauer || 1400;
+    Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 6000 });   // kurze Frage zu Ende sprechen; Tippen darf sofort weiter
   }
   function zeigeErgebnis(fb, h, endet) {
     // P3: Kurzrückmeldung (nur Missionen mit kurzrueckmeldung): gute Entscheidung, Situation läuft weiter, kein Tor
@@ -930,6 +960,7 @@
   }
   /** Zur nächsten Entscheidung (aus der Rückmeldung oder automatisch nach der Kurzrückmeldung) */
   function weiter() {
+    kurzAus(); // Kurzrückmeldung auch bei vorgezogenem Übergang zuverlässig ausblenden
     $('feedback').hidden = true;
     explainView = null; lernView = null;
     const h = hist[dec];
