@@ -80,7 +80,7 @@ test('Keine vorweggenommene Lösung: Ansagen und Folge-Moment nennen vor der Ent
   }
   const f = E.texts('mission-1').folge;
   assert.strictEqual(f.titel, 'Was hat sich verändert?');
-  for (const frage of [f.tore, f.gegner, f.ball, f.schau]) {
+  for (const frage of [f.tore, f.gegner, f.gegnerMehrere, f.ball, f.schau]) {
     assert.ok(frage.length < 65, 'Beobachtungsfrage muss kurz bleiben');
     assert.doesNotMatch(frage, /obere|untere|oben|unten|links|rechts|gute wahl|richtig|falsch/i, 'keine vorweggenommene Lösung');
   }
