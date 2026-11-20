@@ -78,7 +78,12 @@ test('Keine vorweggenommene Lösung: Ansagen und Folge-Moment nennen vor der Ent
   for (const x of ALLE) if (x.fo.bedeutsam) {
     assert.deepStrictEqual(Object.keys(x.fo).sort(), ['bedeutsam', 'gegner', 'gruende', 'tore'], 'Folge-Moment trägt keine Wertung frei/zu');
   }
-  assert.strictEqual(E.texts('mission-1').folge.schau, 'Schau!');
+  const f = E.texts('mission-1').folge;
+  assert.strictEqual(f.titel, 'Was hat sich verändert?');
+  for (const frage of [f.tore, f.gegner, f.ball, f.schau]) {
+    assert.ok(frage.length < 65, 'Beobachtungsfrage muss kurz bleiben');
+    assert.doesNotMatch(frage, /obere|untere|oben|unten|links|rechts|gute wahl|richtig|falsch/i, 'keine vorweggenommene Lösung');
+  }
 });
 
 test('Maßnahme 3: Folge-Moment genau bei bedeutsamer Veränderung (unabhängig nachgerechnet), nie bei Tor', () => {
