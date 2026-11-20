@@ -530,6 +530,7 @@
     const tippen = mode === 'folge' || mode === 'wechsel' || mode === 'kurz' || mode === 'replay' || (mode === 'look' && lookView && lookView.done);
     if (tapWeiter.hidden === !!tippen) tapWeiter.hidden = !tippen;
     if (tippen) tapWeiter.textContent = mode === 'replay' ? 'Tippen: nächste Szene ⏭' : 'Tippen: weiter ⏭';
+    tapWeiter.classList.toggle('replay', mode === 'replay');
     render();
     requestAnimationFrame(loop);
   }
@@ -725,12 +726,15 @@
   // V0.5.1: Schnelles Mehrfach-Antippen eines Knopfs (z. B. „Los geht's“, „Weiterspielen“) darf nicht als Tipp aufs
   // Spielfeld darunter zählen – sonst löst ein Doppeltipp ungewollt eine Aktion aus (bei vorgewählter Einzelaktion sofort).
   let lastButtonTap = { t: -1e9, x: 0, y: 0 };
+  let lastErzaehlTap = { t: -1e9, x: 0, y: 0 };
   const tapCount = { field: 0, ghost: 0 };   // nur für Tests (lesend über window.__fiq)
   document.addEventListener('pointerdown', (ev) => { if (ev.target && ev.target.closest && ev.target.closest('button')) lastButtonTap = { t: performance.now(), x: ev.clientX, y: ev.clientY }; }, true);
   // Nur ein Geistertipp, wenn (1) kurz nach dem Knopf-Tipp, (2) fast an derselben Stelle UND (3) an jener Stelle
   // inzwischen kein Knopf mehr ist (der Knopf ist durch sein eigenes Antippen verschwunden: „Los geht's“,
   // „Weiterspielen“, ✔ …). Steht dort noch ein Knopf (z. B. die gewählte Aktion), ist der Feld-Tipp bewusst.
   const isGhostTap = (ev) => {
+    const dt = performance.now() - lastErzaehlTap.t;
+    if (dt < 250 || (dt < 500 && Math.hypot(ev.clientX - lastErzaehlTap.x, ev.clientY - lastErzaehlTap.y) < 48)) return true;
     if (performance.now() - lastButtonTap.t >= 450 || Math.hypot(ev.clientX - lastButtonTap.x, ev.clientY - lastButtonTap.y) >= 48) return false;
     const el = document.elementFromPoint(lastButtonTap.x, lastButtonTap.y);
     return !(el && el.closest && el.closest('button'));
@@ -757,7 +761,10 @@
     else if (mode === 'folge' || mode === 'wechsel' || mode === 'kurz' || (mode === 'look' && lookView && lookView.done))
       verbraucht = Sprache.ueberspringen();
     else if (mode === 'feedback' && !Sprache.frei()) { Sprache.stopp(); verbraucht = true; }
-    if (verbraucht) { ev.preventDefault(); ev.stopPropagation(); }
+    if (verbraucht) {
+      lastErzaehlTap = { t: performance.now(), x: ev.clientX, y: ev.clientY };
+      ev.preventDefault(); ev.stopPropagation();
+    }
   }, true);
   cv.addEventListener('pointerdown', (ev) => {
     if (isGhostTap(ev)) { tapCount.ghost++; return; }
