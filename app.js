@@ -527,10 +527,15 @@
       }
     }
     const tapWeiter = $('tapWeiter');
-    const tippen = mode === 'folge' || mode === 'wechsel' || mode === 'kurz' || mode === 'replay' || (mode === 'look' && lookView && lookView.done);
-    if (tapWeiter.hidden === !!tippen) tapWeiter.hidden = !tippen;
-    if (tippen) tapWeiter.textContent = mode === 'replay' ? 'Tippen: nächste Szene ⏭' : 'Tippen: weiter ⏭';
-    tapWeiter.classList.toggle('replay', mode === 'replay');
+    if (tapWeiter) {
+      const tippen = mode === 'folge' || mode === 'wechsel' || mode === 'kurz' || mode === 'replay' || (mode === 'look' && lookView && lookView.done);
+      if (tapWeiter.hidden === !!tippen) tapWeiter.hidden = !tippen;
+      if (tippen) {
+        const hinweis = mode === 'replay' ? 'Tippen: nächste Szene ⏭' : 'Tippen: weiter ⏭';
+        if (tapWeiter.textContent !== hinweis) tapWeiter.textContent = hinweis;
+      }
+      if (tapWeiter.classList.contains('replay') !== (mode === 'replay')) tapWeiter.classList.toggle('replay', mode === 'replay');
+    }
     render();
     requestAnimationFrame(loop);
   }
