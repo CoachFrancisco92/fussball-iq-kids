@@ -50,7 +50,7 @@ async function open(vp, mission, durchlauf) {
   };
   return H;
 }
-/** Folge-Moment: bis zum Ende nur „Schau!“ gesprochen, Blatt verborgen, Feld unverändert; danach Erklärung */
+/** Folge-Moment: nur die passende Beobachtungsfrage, Blatt verborgen, Feld unverändert; danach Erklärung. */
 async function pruefeFolge(H, wo) {
   const w0 = await H.feldPx();
   await H.wait('folge'); const t0 = await H.now();
@@ -59,8 +59,13 @@ async function pruefeFolge(H, wo) {
   const m = await H.wait(['feedback', 'kurz'], 15000); const t1 = await H.now();
   const log = await H.log();
   const imFolge = log.filter((x) => x.e === 'start' && x.at >= t0 - 50 && x.at < t1 - 30).map((x) => x.t);
-  if (imFolge.some((t) => t !== 'Schau!')) fail(wo + ': im Folge-Moment wird schon erklärt: ' + imFolge.join(' | '));
-  if (log.some((x) => x.e === 'abbruch' && x.t === 'Schau!')) fail(wo + ': „Schau!“ abgeschnitten');
+  const erwartung = fo.gruende.includes('toreVeraendert') ? 'Schau auf die Tore. Was ist jetzt anders?'
+    : fo.gruende.includes('ballVerloren') ? 'Schau: Wer hat jetzt den Ball?' : 'Schau: Wo steht der Rote jetzt?';
+  if (!imFolge.includes(erwartung) || imFolge.some((t) => t !== erwartung))
+    fail(wo + ': im Folge-Moment nicht nur die passende Beobachtungsfrage: ' + imFolge.join(' | '));
+  if (log.some((x) => x.e === 'abbruch' && x.t === erwartung)) fail(wo + ': Beobachtungsfrage abgeschnitten');
+  const titel = await H.page.$eval('#title', (e) => e.textContent);
+  if (titel !== 'Was hat sich verändert?') fail(wo + ': falsche Überschrift im Lernmoment: ' + titel);
   if (t1 - t0 < 1300) fail(`${wo}: Folge-Moment zu kurz (${Math.round(t1 - t0)} ms)`);
   const w1 = await H.feldPx(); if (w1 < w0 * 0.97) fail(`${wo}: Feld in der Rückmeldung kleiner (${Math.round(w0)} → ${Math.round(w1)} px)`);
   return { m, dauer: Math.round(t1 - t0), fo, w0: Math.round(w0), w1: Math.round(w1) };
@@ -81,7 +86,7 @@ try {
     // Schuss aufs jetzt zugestellte Tor: Rückmeldung nennt die Veränderung (rückblickend)
     await H.choose('Schießen'); await H.field(36, 18); await H.wait('feedback');
     const t = await H.page.$eval('#fbTip', (e) => e.textContent); if (!/(Rot 2 ist vor das untere Tor gelaufen|Nach deinem Dribbling war das untere Tor zu)\. Das obere Tor war frei\./.test(t)) fail('W1: Veränderung nicht benannt: ' + t);
-    console.log(`✓ W1 iPad: Folge-Moment ${r.dauer} ms nur mit „Schau!“, Feld ${r.w0}→${r.w1} px; „Schau nochmal: Welches Tor ist jetzt frei?“; Schuss aufs zugestellte Tor: „${t}“`);
+    console.log(`✓ W1 iPad: Folge-Moment ${r.dauer} ms mit Beobachtungsfrage, Feld ${r.w0}→${r.w1} px; „Schau nochmal: Welches Tor ist jetzt frei?“; Schuss aufs zugestellte Tor: „${t}“`);
     fluss.push({ wo: 'W1 Dribbling (iPad)', folgeMs: r.dauer });
     await H.close();
   }
