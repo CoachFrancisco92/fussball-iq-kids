@@ -143,7 +143,7 @@ try {
     await H.field(20, 4); await H.wait('feedback', 3000);
     if ((await H.fiq('dec')) !== d0) fail('Vergleichstipp hat Spielstand verändert');
     const sp = await H.fiq('speech');
-    if (sp.waiters || sp.deferred.length || sp.halted) fail('Nach übersprungenem Vergleich bleiben Sprachaufträge: ' + JSON.stringify(sp));
+    if (sp.waiters || sp.deferred || sp.halted) fail('Nach übersprungenem Vergleich bleiben Sprachaufträge: ' + JSON.stringify(sp));
     console.log('✓ Tipp-Weiter: Folge, Rückmeldung, Wiederholung, Vergleich; keine verfrühte Entscheidung oder Geisterübergänge');
     await H.close();
   }
