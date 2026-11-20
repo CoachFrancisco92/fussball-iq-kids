@@ -34,12 +34,19 @@ Kein Framework, kein Build-Tool, keine Laufzeit-Abhängigkeiten. `playwright` is
 |---|---|---|
 | Product Owner | Francisco | Anforderungen, Priorität, **Freigabe jedes Merges nach `main`** |
 | Fach-Reviewer | extern (ChatGPT) | Fußball- und Lernqualität; Reviews beziehen sich auf eine Versionsnummer |
-| Lead Developer | Claude-Hauptsitzung | Umsetzung, Architektur, Integration, Release-Vorbereitung; ruft die Agenten auf |
+| Lead Developer | Claude-Hauptsitzung | Umsetzung, Architektur, Integration, Release-Vorbereitung; arbeitet freigegebene Pakete **eigenständig** bis zur Abnahme ab (siehe „Zusammenarbeit mit dem Product Owner“); ruft die Agenten auf |
 | `simulation-qa` (Agent) | Claude-Subagent | Tests ergänzen und ausführen, Leitplanken prüfen, Release-Check |
 | `mission-designer` (Agent) | Claude-Subagent | Missionen fachlich entwerfen und gegen die Simulation prüfen |
 
 Es gibt bewusst **keinen** Orchestrator- und **keinen** Kinder-UX-Agenten (Begründung: `docs/bestandsaufnahme-2026-11.md`).
 Agenten aufrufen: Nach Änderungen an `engine.js`/`app.js` → `simulation-qa`. Vor dem Bau einer neuen Mission → `mission-designer`.
+
+## Zusammenarbeit mit dem Product Owner (seit 20.11.2026)
+1. **Eigenständig innerhalb freigegebener Pakete.** Ist ein fachlich abgegrenztes Arbeitspaket freigegeben, wird es ohne Zwischenrückfragen bis zum abnahmefähigen Stand bearbeitet: Implementierung, technische Korrekturen, ergänzende Tests, Regressionstests, Nachbesserungen im vereinbarten Umfang. Technische Details (Struktur, Algorithmen, Testaufbau, Feinabstimmung von Lagen für Robustheit) werden selbst fundiert entschieden und im Bericht begründet.
+2. **Keine eigenmächtigen Produktentscheidungen.** Freigabe des PO brauchen: neue Spielmechaniken, Änderungen an Bewertungsgrundsätzen, Lernzielen oder am Spielerlebnis in wesentlichem Umfang, neue Missionen. Bei einem grundlegenden Zielkonflikt: anhalten und mit **konkreter Empfehlung** vorlegen.
+3. **Gegenprüfungen gehören zu jedem Paket** (nicht gesondert beauftragt), siehe Definition of Done.
+4. **Kompakte Übergabe.** Melden nur mit abnahmefähigem Ergebnis oder wenn eine echte Produktentscheidung nötig ist. Abschlussbericht: *Was wurde umgesetzt? Welcher Lern-/Spielwert entsteht? Welche Tests und Gegenprüfungen? Welche Risiken bleiben? Was genau muss der PO entscheiden?*
+5. **Freigaberegeln bleiben:** eigene Branches, kein Merge nach `main`, keine Veröffentlichung, keine eigenmächtige Änderung freigegebener Referenzen (Abweichungen werden vorgelegt).
 
 ## Arbeitsregeln
 - Jedes Arbeitspaket auf einem **eigenen Branch**. **Nie direkt auf `main` pushen**, nie ohne Freigabe des Product Owners mergen oder veröffentlichen.
@@ -58,7 +65,14 @@ Ein Arbeitspaket ist fertig, wenn:
 3. die Leitplanken oben eingehalten sind,
 4. `CHANGELOG.md` einen Abschnitt für die neue Version hat und die Version gesetzt ist,
 5. betroffene Doku (`README.md`, `CLAUDE.md`, Agenten) aktuell ist,
-6. dem Product Owner eine Zusammenfassung vorliegt: *Was? Warum? Welche Tests? Risiken/offene Punkte? Auswirkungen?*
+6. die **Gegenprüfungen** durchgeführt und im Bericht belegt sind – nicht nur, ob die vorgesehenen Lösungen funktionieren, sondern aktiv gesucht nach:
+   - trivialen oder wiederkehrenden Entscheidungen (Routine; Messung z. B. mit `tests/analysis/v0.6/entscheidungen.js`),
+   - fachlich sinnvollen Alternativen, die falsch bewertet werden,
+   - Wegen, ein Lernziel zu umgehen,
+   - Rückmeldungen, die nicht zur simulierten Situation passen,
+   - Abläufen ohne spürbare Konsequenz einer Entscheidung,
+   - Risiken für bestehende Missionen (Referenzen, Mitschriften, Verhalten),
+7. dem Product Owner der kompakte Abschlussbericht vorliegt (Was? Lern-/Spielwert? Tests und Gegenprüfungen? Risiken? Zu entscheiden?).
 
 ## Freigabekriterien
 - **Merge nach `main`:** Definition of Done erfüllt + ausdrückliche Freigabe des Product Owners.

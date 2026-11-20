@@ -12,13 +12,13 @@ Stand 20.11.2026, Basis Release-Kandidat V0.5.1 (`4021969`). Branch `konzept-v0.
 - `tests/analysis/v0.6/entscheidungen.js`
   - Spielt jede Mission in jedem Durchlauf mit der Hilfe durch.
   - An **jeder** Entscheidung werden 24 bis 86 mögliche Antworten eines Kindes bewertet **und** ausgespielt: alle Aktionen, Tore, Pass- und Laufziele, Dribbelrichtungen in 15°-Schritten über 3, 5 und 8 m.
-  - Einordnung: **Routine** = fast alles ist gut (≥ 60 % der Antworten bekommen einen Stern; bei nur einer Aktion ≥ 45 %). **Musterlösung** = nur eine schmale Lösung (< 8 %). Dazwischen: **echte Entscheidung**.
+  - Einordnung: **Routine** = fast alles ist gut (≥ 60 % der Antworten bekommen einen Stern; bei nur einer Aktion und mehr als zwei Antworten ≥ 45 %; die Wahl zwischen genau zwei Toren gilt nicht als Routine, korrigiert am 20.11.). **Musterlösung** = nur eine schmale Lösung (< 8 %). Dazwischen: **echte Entscheidung**.
 - `tests/analysis/v0.6/beispiele.js`: Die drei Beispielsituationen aus Abschnitt 7, als Test-Missionen nur im Skript registriert und mit allen typischen Kinder-Wegen durchgespielt.
 
 ---
 
 ## Die wichtigsten Erkenntnisse in fünf Sätzen
-1. **„Freie Bahn!“ besteht zu 83 % aus Routine** (45 von 54 Entscheidungen).
+1. **„Freie Bahn!“ besteht zu 78 % aus Routine** (42 von 54 Entscheidungen).
    - Nach der ersten Entscheidung steht in B4, B2 und B6 kein Roter mehr vor dem Ball. Die folgenden Dribblings sind reines Laufen.
    - Die Lückenentscheidung (B6) lässt sich durch kurze Schritte umgehen.
 2. **Die zentralen Lernziele fehlen im ersten Durchlauf.**
@@ -43,7 +43,7 @@ Stand 20.11.2026, Basis Release-Kandidat V0.5.1 (`4021969`). Branch `konzept-v0.
 | Mission | Entscheidungen (alle Durchläufe, mit Hilfe) | Routine | echt | Musterlösung | verschiedene Rückmeldesätze auf dem Hilfeweg |
 |---|---|---|---|---|---|
 | Welches Tor ist frei? | 21 | 0 | 18 | 3 | 3 |
-| Freie Bahn! | 54 | **45** | 9 | 0 | **2** |
+| Freie Bahn! | 54 | **42** | 12 | 0 | **2** |
 | Zusammen sind wir stark! | 5 | 0 | 5 | 0 | 5 |
 
 ### 1.2 „Welches Tor ist frei?“
@@ -100,7 +100,7 @@ Stand 20.11.2026, Basis Release-Kandidat V0.5.1 (`4021969`). Branch `konzept-v0.
 | | 5 bis 6 Jahre | 7 bis 10 Jahre |
 |---|---|---|
 | Versteht die Aufgabe ohne Hilfe? | Mission A: ja (Hinweis „wo kein Roter steht“). Freie Bahn: ja, aber „irgendwo nach vorn“ reicht. Mission 1: Freilaufen und Raum kaum. | ja, in allen Missionen nach einer Situation |
-| Gefordert? | ja, durch Bedienung und Wahrnehmung | **nein**: Mission A nach zwei Situationen gelöst, Freie Bahn zu 83 % Routine, Mission 1 auswendig spielbar |
+| Gefordert? | ja, durch Bedienung und Wahrnehmung | **nein**: Mission A nach zwei Situationen gelöst, Freie Bahn zu 78 % Routine, Mission 1 auswendig spielbar |
 | Erkennt, *warum* richtig oder falsch? | nur bei Fehlern (gute 💭-Texte) | ebenso; bei Erfolg fehlt die Begründung |
 | Was motiviert? | Tor, Ton, Konfetti | Herausforderung, Abwechslung, „ich habe ihn ausgespielt“. Fehlt heute weitgehend. |
 

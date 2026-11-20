@@ -66,7 +66,8 @@ function analyse(id, durchlauf) {
     const share = star / n;
     // Einordnung (bewusst grob, Schwellen im Konzept begründet)
     let art;
-    if (ctx.actions.length === 1 && share >= 0.45) art = 'Routine';
+    // Korrektur 20.11.: eine Wahl zwischen genau zwei Antworten (freies / zugestelltes Tor) ist keine Routine
+    if (ctx.actions.length === 1 && n > 2 && share >= 0.45) art = 'Routine';
     else if (share >= 0.6) art = 'Routine';
     else if (share < 0.08) art = 'Musterlösung';
     else art = 'echte Entscheidung';
