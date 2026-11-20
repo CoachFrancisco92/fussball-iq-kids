@@ -116,6 +116,37 @@ try {
     console.log('✓ Folge-Moment: ↺ hält ihn an, ✖ setzt fort; 🏠 beendet ihn ohne Geisterablauf');
     await H.close(); await H2.close();
   }
+  // 2c) Tippen in Erzählphasen: kein Wartenzwang, keine zufällige Fußballaktion, Replay Szene für Szene
+  {
+    const H = await open(IPAD, 'welches-tor-ist-frei', ['W1', 'A1']); await H.start();
+    await H.choose('Dribbeln'); await H.field(31, 15); await H.wait('folge');
+    if (!(await H.page.isVisible('#tapWeiter'))) fail('Folge-Moment: Tipp-Hinweis fehlt');
+    await H.field(20, 4); await H.wait('feedback', 3000);
+    const d0 = await H.fiq('dec');
+    await H.field(20, 4); // Unterbricht nur die Rückmeldung, entscheidet nicht
+    if ((await H.mode()) !== 'feedback' || (await H.fiq('dec')) !== d0) fail('Tipp auf das Feld überspringt Rückmeldung/Entscheidung ungefragt');
+    await H.tap('#fbRetry'); await H.wait('wechsel');
+    await H.page.waitForTimeout(270); // zweite Geste ist bewusst, kein Doppeltipp
+    await H.field(20, 4); await H.wait('decide', 3000);
+    await H.page.waitForTimeout(150);
+    if ((await H.mode()) !== 'decide' || (await H.fiq('dec')) !== d0) fail('Erzähl-Tipp hat versehentlich die Entscheidung ausgelöst');
+    if (await H.page.isVisible('#tapWeiter')) fail('Tipp-Hinweis während einer Fußballentscheidung sichtbar');
+    await H.choose('Dribbeln'); await H.field(31, 15); await H.wait('folge');
+    await H.field(20, 4); await H.wait('feedback', 3000);
+    if (!(await H.page.isVisible('#fbCompare'))) fail('Nach zwei Versuchen fehlt Vergleichen');
+    await H.tap('#fbCompare'); await H.wait('replay');
+    if ((await H.fiq('replayIdx')) !== 0) fail('Vergleich startet nicht bei Szene 1');
+    await H.page.waitForTimeout(270);
+    await H.field(20, 4); await H.page.waitForTimeout(100);
+    if ((await H.fiq('replayIdx')) !== 1) fail('Tipp in Szenenwiedergabe sollte nur zur nächsten Szene gehen');
+    await H.page.waitForTimeout(270);
+    await H.field(20, 4); await H.wait('feedback', 3000);
+    if ((await H.fiq('dec')) !== d0) fail('Vergleichstipp hat Spielstand verändert');
+    const sp = await H.fiq('speech');
+    if (sp.waiters || sp.deferred.length || sp.halted) fail('Nach übersprungenem Vergleich bleiben Sprachaufträge: ' + JSON.stringify(sp));
+    console.log('✓ Tipp-Weiter: Folge, Rückmeldung, Wiederholung, Vergleich; keine verfrühte Entscheidung oder Geisterübergänge');
+    await H.close();
+  }
   // 3) Freie Bahn (iPad quer): B3 Routine ohne Folge-Moment, V1 vorbei mit Folge-Moment vor der Kurzrückmeldung; Ansagen passend
   {
     const H = await open(IPAD, 'freie-bahn', ['B3', 'V1']); await H.start();
