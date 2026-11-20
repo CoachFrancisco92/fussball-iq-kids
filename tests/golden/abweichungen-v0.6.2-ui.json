@@ -109,7 +109,7 @@
     "where": "feedback",
     "said": [
      "Vor diesem Tor steht kein Gegner im Weg.",
-     "Tor! Jetzt war das obere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+     "Tor! Jetzt war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
     ],
     "title": "Welches Tor ist jetzt frei?",
     "tag": "Torabschluss",
@@ -131,7 +131,7 @@
    "neu": {
     "fb": [
      "Toooor! Der Weg war frei.",
-     "Jetzt war das obere Tor frei – du hast nochmal geschaut!",
+     "Jetzt war das obere Tor frei. Gut gewählt!",
      "✓ 💡 Gute Idee",
      "✓ 🎯 Freies Tor",
      "⭐"

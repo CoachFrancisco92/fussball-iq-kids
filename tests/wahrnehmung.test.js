@@ -114,10 +114,10 @@ test('Routine ohne Veränderung bekommt keinen Folge-Moment; Kernsituationen bek
   for (const sid of ['A1', 'A2', 'A5']) assert.strictEqual(erst('welches-tor-ist-frei', sid).bedeutsam, false, sid + ': Tor');
 });
 
-test('Maßnahme 2: „Nach dem Dribbling/Pass war das … Tor frei/zu“ stimmt mit der Simulation überein und kommt erst nach der Entscheidung', () => {
+test('Maßnahme 2: „Nach deinem Dribbling/Pass war das … Tor frei/zu“ stimmt mit der Simulation überein und kommt erst nach der Entscheidung', () => {
   let n = 0;
   for (const x of ALLE) {
-    const m = x.fb.say.match(/(?:Nach dem (?:Dribbling|Pass)|Jetzt) war das (obere|untere) Tor (frei|zu)/);
+    const m = x.fb.say.match(/(?:Nach deinem (?:Dribbling|Pass)|Jetzt) war das (obere|untere) Tor (frei|zu)/);
     if (!m) continue;
     n++;
     assert.strictEqual(x.a.kind, 'shoot', 'nur als Rückmeldung zum Schuss (rückblickend)');
@@ -137,4 +137,20 @@ test('Bewertung unverändert: Stern = Bewertung vor der Aktion; Folge-Moment und
   assert.strictEqual(abw.length, 0);
   const s = E.newState('freie-bahn', 0), t = E.clone(s);
   E.context(s, null); E.folge(s); assert.deepStrictEqual(JSON.stringify(s), JSON.stringify(t), 'context()/folge() ändern den Zustand nicht');
+});
+
+// PO 20.11.2026: keine unbelegten Aussagen über das Denken oder Wahrnehmen des Kindes – Rückmeldungen beschreiben
+// Spielsituation und gewählte Handlung („Nach deinem Dribbling war das obere Tor frei. Gut gewählt!“).
+const UNTERSTELLT = /\b(hast|habt)\b[^.!?]*\b(gesehen|erkannt|geschaut|gemerkt|bemerkt|gedacht|verstanden|entdeckt|gefunden|überlegt)\b/i;
+test('Rückmeldungen und Lernergebnisse unterstellen kein Sehen, Erkennen oder Denken des Kindes', () => {
+  const fehler = new Set();
+  for (const x of ALLE) for (const t of [x.fb.say, x.fb.text, x.fb.tip]) if (UNTERSTELLT.test(t)) fehler.add(t);
+  for (const id of ['mission-1', 'welches-tor-ist-frei', 'freie-bahn']) {
+    const L = E.texts(id).lern, U = E.texts(id).ursache;
+    for (const t of [...Object.values(L.geschafft), ...Object.values(L.nochNicht)]) if (UNTERSTELLT.test(t)) fehler.add(t);
+    for (const t of [U.toreVeraendert('deinem Dribbling', 'obere'), U.toreVeraendertJetzt('obere'), U.waechterErkannt('Rot 2', 'untere'), U.anderesTorZu('Rot 2')]) if (UNTERSTELLT.test(t)) fehler.add(t);
+  }
+  assert.deepStrictEqual([...fehler], []);
+  // „Gut gewählt!“ nur bei guter Entscheidung (sonst keine unpassende positive Bewertung)
+  for (const x of ALLE) if (/Gut gewählt|gewählt!/.test(x.fb.say)) assert.ok(x.fb.good, 'Lob ohne Stern: ' + x.fb.say);
 });

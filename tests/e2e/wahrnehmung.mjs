@@ -80,7 +80,7 @@ try {
     if (/obere|untere/.test(ctx.say + ctx.title)) fail('W1: Ansage verrät das Tor');
     // Schuss aufs jetzt zugestellte Tor: Rückmeldung nennt die Veränderung (rückblickend)
     await H.choose('Schießen'); await H.field(36, 18); await H.wait('feedback');
-    const t = await H.page.$eval('#fbTip', (e) => e.textContent); if (!/(Rot 2 ist vor das untere Tor gelaufen|Nach dem Dribbling war das untere Tor zu)\. Das obere Tor war frei\./.test(t)) fail('W1: Veränderung nicht benannt: ' + t);
+    const t = await H.page.$eval('#fbTip', (e) => e.textContent); if (!/(Rot 2 ist vor das untere Tor gelaufen|Nach deinem Dribbling war das untere Tor zu)\. Das obere Tor war frei\./.test(t)) fail('W1: Veränderung nicht benannt: ' + t);
     console.log(`✓ W1 iPad: Folge-Moment ${r.dauer} ms nur mit „Schau!“, Feld ${r.w0}→${r.w1} px; „Schau nochmal: Welches Tor ist jetzt frei?“; Schuss aufs zugestellte Tor: „${t}“`);
     fluss.push({ wo: 'W1 Dribbling (iPad)', folgeMs: r.dauer });
     await H.close();

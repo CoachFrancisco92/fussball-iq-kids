@@ -101,8 +101,8 @@ test('Lob nur bei Stern, Kritik nur ohne Stern; Entscheidung, Ausführung und Er
     const say = x.fb.say;
     if (/Manchmal klappt es nicht/.test(say)) fehler.push('Manchmal: ' + say);
     if (/\bSuper\b/.test(say) && !x.fb.good) fehler.push('Lob ohne Stern: ' + say);
-    if ((/ war zu eng\.|ist vor das (obere|untere) Tor gelaufen\./.test(say)) && x.fb.good) fehler.push('Kritik trotz Stern: ' + say);
-    if (/vorbei!|breit genug|hast das freie|nochmal geschaut/.test(say) && !x.fb.good) fehler.push('Lobende Ursache ohne Stern: ' + say);
+    if ((/ war zu eng\.|ist vor das (obere|untere) Tor gelaufen\.(?! Du hast das freie Tor gewählt)/.test(say)) && x.fb.good) fehler.push('Kritik trotz Stern: ' + say);
+    if (/vorbei!|breit genug|hast das freie|Gut gewählt|gewählt!/.test(say) && !x.fb.good) fehler.push('Lobende Ursache ohne Stern: ' + say);
     if (/war das (obere|untere) Tor zu\./.test(say) && x.fb.good) fehler.push('Kritik trotz Stern: ' + say);
     if (x.fb.good && !x.fb.success && !/trotzdem eine gute Idee/.test(say)) fehler.push('gute Entscheidung ohne Erfolg nicht als solche benannt: ' + say);
   }

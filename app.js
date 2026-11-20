@@ -815,7 +815,9 @@
     const L = h.lern, TL = T().lern, lern = $('fbLern');
     let lernSatz = '', lernGesagt = '';
     if (L && L.typ && TL.geschafft[L.typ]) {
-      lernSatz = L.geloest ? TL.geschafft[L.typ] : TL.nochNicht[L.typ];
+      // „Die Tore haben sich verändert“ nur, wenn die Simulation das belegt (Grund aus der Aufgabenbewertung)
+      const gk = L.typ === 'nochmalSchauen' && L.grund !== 'veraenderungErkannt' && TL.geschafft.nochmalSchauenOhne ? 'nochmalSchauenOhne' : L.typ;
+      lernSatz = L.geloest ? TL.geschafft[gk] : TL.nochNicht[L.typ];
       lernGesagt = L.geloest ? TL.geschafftKurz : lernSatz;
       lern.textContent = (L.geloest ? '⭐' + (L.hilfe ? '💡 ' : ' ') : '🔁 ') + lernSatz + (L.geloest && L.hilfe ? ` (${TL.mitHilfe})` : '');
       lern.className = L.geloest ? '' : 'offen';

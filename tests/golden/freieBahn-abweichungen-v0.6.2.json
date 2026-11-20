@@ -1,10 +1,10 @@
 {
- "grund": "V0.6.2 Paket Wahrnehmung: nur Ansagen und Rückmeldesätze (Spielverlauf unverändert) – zur Freigabe vorgelegt",
+ "grund": "V0.6.2 Paket Wahrnehmung (sprachlich korrigiert 20.11.2026): nur Ansagen und Rückmeldesätze, Spielverlauf unverändert – zur endgültigen Freigabe vorgelegt",
  "bericht": "docs/v0.6.2.md",
  "styles": {
   "hilfe": {
    "alt": "c309680260ab6d73",
-   "neu": "ea48a87480b0b74c"
+   "neu": "8fb1648b18efa23a"
   },
   "inDenGegner": {
    "alt": "84eb5534bb6141b5",
@@ -24,7 +24,7 @@
   },
   "lang": {
    "alt": "a1041948af5fd526",
-   "neu": "2669723f0142c40c"
+   "neu": "2d60199d8f0e3a25"
   },
   "falschesTor": {
    "alt": "e0a84bcd0e89e35a",
@@ -126,7 +126,7 @@
   },
   "26": {
    "alt": "3c933f96a31e05f5",
-   "neu": "3f753287ba93d374"
+   "neu": "64fd72dc0e2f678c"
   },
   "27": {
    "alt": "fdd48ffc469858a0",
@@ -226,7 +226,7 @@
   },
   "51": {
    "alt": "6938d8c6003b1a68",
-   "neu": "9278b0dc51d385be"
+   "neu": "55d988517decd546"
   },
   "52": {
    "alt": "2236c30f232d4861",
@@ -234,7 +234,7 @@
   },
   "53": {
    "alt": "eb2ae7a3ff228e39",
-   "neu": "b99e37e21ed48a72"
+   "neu": "e03b914a10ce2e77"
   },
   "54": {
    "alt": "d2a3d4747710ea52",
@@ -286,7 +286,7 @@
   },
   "67": {
    "alt": "6b97e06d587bdffe",
-   "neu": "5a65aa1e364b8ed7"
+   "neu": "bc644029237d6e07"
   },
   "68": {
    "alt": "1bb0c99ebefe4ae8",
@@ -618,11 +618,11 @@
   },
   "152": {
    "alt": "996e11ee254ddad1",
-   "neu": "01030f0ed32322ea"
+   "neu": "1749ffb0c09e88b5"
   },
   "153": {
    "alt": "a0486743823a3641",
-   "neu": "7e8fcff9cfef1457"
+   "neu": "91d39ffa35f8e9c9"
   },
   "154": {
    "alt": "4ad8685d74cd231c",
@@ -710,7 +710,7 @@
   },
   "176": {
    "alt": "33509c4363fa6f46",
-   "neu": "f7d8b8fa318e0be0"
+   "neu": "b87cf6e898c8000e"
   },
   "177": {
    "alt": "25bf8462994c113d",
@@ -754,7 +754,7 @@
   },
   "187": {
    "alt": "c036223b593998af",
-   "neu": "df660a21d4815e83"
+   "neu": "abde5e3a38936d27"
   },
   "188": {
    "alt": "17ccc94b71cb3002",

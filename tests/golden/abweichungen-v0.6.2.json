@@ -1,17 +1,22 @@
 {
- "grund": "V0.6.2 Paket Wahrnehmung: nur Ansagen und Rückmeldesätze (Spielverlauf unverändert) – zur Freigabe vorgelegt",
+ "grund": "V0.6.2 Paket Wahrnehmung (sprachlich korrigiert 20.11.2026): nur Ansagen und Rückmeldesätze, Spielverlauf unverändert – zur endgültigen Freigabe vorgelegt",
  "bericht": "docs/v0.6.2.md",
- "geaenderteEntscheidungen": 48,
+ "geaenderteEntscheidungen": 53,
  "spielverlaufGeaendert": [],
- "scripted": {},
+ "scripted": {
+  "musterweg": {
+   "alt": "8af6fda0b375e540",
+   "neu": "6e70378e35933d49"
+  }
+ },
  "hinted": {
   "alt": "8f4a14cf9ca25c8b",
-  "neu": "865d981741e49790"
+  "neu": "94877ef881a68046"
  },
  "seeds": {
   "2": {
    "alt": "d09710b0690afdb2",
-   "neu": "6da497859020a3be"
+   "neu": "48bca004e7bf59a4"
   },
   "8": {
    "alt": "770c602a111296fe",
@@ -23,7 +28,7 @@
   },
   "14": {
    "alt": "20338d78cf90bd5d",
-   "neu": "5295e03c0ffe8a23"
+   "neu": "87f3a2d705e7abd7"
   },
   "16": {
    "alt": "081c6867cb483440",
@@ -40,6 +45,10 @@
   "24": {
    "alt": "5226e789a07ebbf9",
    "neu": "d507fbb9abeb5c78"
+  },
+  "31": {
+   "alt": "83870aba97cce2f4",
+   "neu": "3bd22680071f225a"
   },
   "33": {
    "alt": "82a7e70323858d7b",
@@ -71,7 +80,7 @@
   },
   "53": {
    "alt": "9e05d2278a1580ff",
-   "neu": "c57544e20b418cc2"
+   "neu": "248a0fc084e0ff37"
   },
   "56": {
    "alt": "4d7450e7ad48a0a8",
@@ -79,7 +88,7 @@
   },
   "65": {
    "alt": "e402d74ce0b7cdb6",
-   "neu": "ceecfe63da93659b"
+   "neu": "af8b6a98eaf16d63"
   },
   "68": {
    "alt": "553a87c7285bf93d",
@@ -91,7 +100,7 @@
   },
   "70": {
    "alt": "f5f21cc088ff3c99",
-   "neu": "9b9606f9e2836ebc"
+   "neu": "d2eabe9b3adf63dd"
   },
   "71": {
    "alt": "bde3738a2c65777b",
@@ -99,7 +108,7 @@
   },
   "88": {
    "alt": "0ecad12b5b649876",
-   "neu": "35f223f443f9ae5e"
+   "neu": "d780fbe7d0abcc17"
   },
   "92": {
    "alt": "2727c9ed2c968edf",
@@ -123,19 +132,23 @@
   },
   "100": {
    "alt": "aff4f13be3bc7a00",
-   "neu": "0a761659eead33aa"
+   "neu": "db30ce8ccc8fdf1d"
   },
   "109": {
    "alt": "70a8c191fb93f21d",
    "neu": "878ef4da11bec81f"
   },
+  "110": {
+   "alt": "9e6350ba8e8b7a3f",
+   "neu": "957f3a8038d61839"
+  },
   "113": {
    "alt": "10484894b4e6cd9a",
-   "neu": "35230049a1397122"
+   "neu": "5dbd63c92b44b16f"
   },
   "123": {
    "alt": "772f389fd02f138e",
-   "neu": "f73cf25c0ca15c05"
+   "neu": "2080cf3f4646e8e2"
   },
   "132": {
    "alt": "bebc8f3c4f9fb755",
@@ -143,7 +156,7 @@
   },
   "135": {
    "alt": "a1488cd5d22c325d",
-   "neu": "ef2e354586e2e8ce"
+   "neu": "1d569c84982a2c65"
   },
   "141": {
    "alt": "283d0edfdbbebf9e",
@@ -155,7 +168,7 @@
   },
   "145": {
    "alt": "c08d2ab1c2f4e039",
-   "neu": "1820cb95b7dfd05c"
+   "neu": "c0c691b3fd14b369"
   },
   "149": {
    "alt": "1bc3848a382268a9",
@@ -163,7 +176,7 @@
   },
   "157": {
    "alt": "93dcb836eeb30ee7",
-   "neu": "83525c892e05ee96"
+   "neu": "563e1bec9d018f28"
   },
   "163": {
    "alt": "317b8d2276d8f7fe",
@@ -185,9 +198,17 @@
    "alt": "0c5c6a5d6710c557",
    "neu": "12948cff2d1b28a0"
   },
+  "186": {
+   "alt": "5fd97fa97fad5848",
+   "neu": "0bc99e88aed35f81"
+  },
   "196": {
    "alt": "8f532c3fcee9ded2",
-   "neu": "6c3131f4b9758966"
+   "neu": "605aafd88ce26772"
+  },
+  "198": {
+   "alt": "727583ced0bd5a9a",
+   "neu": "632dc47fad2257c8"
   },
   "199": {
    "alt": "2a09d676a57b266e",

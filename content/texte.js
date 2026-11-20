@@ -128,16 +128,17 @@
       passwegFrei: (f, g) => (g ? `Jetzt ist ${f} frei – ${g} steht nicht mehr im Weg!` : `Jetzt ist ${f} frei!`),
       waechterVerschoben: (g, tor) => `${g} ist vor das ${tor} Tor gelaufen.`,
       anderesFrei: (tor) => `Das ${tor} Tor war frei.`,
-      waechterErkannt: (g, torZu) => `${g} ist vor das ${torZu} Tor gelaufen – und du hast das freie Tor gesehen!`,
+      waechterErkannt: (g, torZu) => `${g} ist vor das ${torZu} Tor gelaufen. Du hast das freie Tor gewählt!`,
       anderesTorZu: (g) => `Vor dem anderen Tor stand ${g} – du hast das freie gewählt.`,
       freundDribbelt: (f) => `${f} hatte aber selbst Platz und ist nach vorn gedribbelt.`,
       gegnerMitgelaufen: (g) => `${g} ist mitgelaufen.`,
       gegnerSchoss: (g) => `${g} hat schnell geschossen.`,
       // V0.6.2: veränderte Torlage seit der vorigen Entscheidung (reiner Vorher/Nachher-Vergleich, keine Ursache)
-      nachAktion: { dribble: 'dem Dribbling', pass: 'dem Pass' },   // sonst ohne Aktion: „Jetzt war …“
-      toreVeraendertJetzt: (tor) => `Jetzt war das ${tor} Tor frei – du hast nochmal geschaut!`,
+      nachAktion: { dribble: 'deinem Dribbling', pass: 'deinem Pass' },   // sonst ohne Aktion: „Jetzt war …“
+      // V0.6.2: beschreibt Lage und Handlung – keine Aussage darüber, was das Kind gesehen oder gedacht hat
+      toreVeraendertJetzt: (tor) => `Jetzt war das ${tor} Tor frei. Gut gewählt!`,
       torJetztZuJetzt: (tor) => `Jetzt war das ${tor} Tor zu.`,
-      toreVeraendert: (akt, tor) => `Nach ${akt} war das ${tor} Tor frei – du hast nochmal geschaut!`,
+      toreVeraendert: (akt, tor) => `Nach ${akt} war das ${tor} Tor frei. Gut gewählt!`,
       torJetztZu: (akt, tor) => `Nach ${akt} war das ${tor} Tor zu.`,
     },
 
@@ -267,12 +268,13 @@
     lern: {
       titel: { torWaehlen: 'Freies Tor finden', andereLoesung: 'Beide Tore zu', nochmalSchauen: 'Nochmal schauen', platzVorDir: 'Platz vor dir', vorbei: 'Am Gegner vorbei', luecke: 'Lücke oder außen herum', angriff: 'Angriff', verteidigung: 'Abwehr' },
       geschafft: {
-        torWaehlen: 'Geschafft: Du hast das freie Tor gefunden!',
-        andereLoesung: 'Geschafft: Beide Tore waren zu – und du hast eine andere Lösung gefunden!',
-        nochmalSchauen: 'Geschafft: Du hast nochmal geschaut und das freie Tor gefunden!',
+        torWaehlen: 'Geschafft: Du hast das freie Tor gewählt!',
+        andereLoesung: 'Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt!',
+        nochmalSchauen: 'Geschafft: Die Tore haben sich verändert – und du hast gut gewählt!',
+        nochmalSchauenOhne: 'Geschafft: Du hast gut gewählt!',   // ohne Veränderung der Torlage
         platzVorDir: 'Geschafft: Du hast den Platz vor dir genutzt!',
         vorbei: 'Geschafft: Du bist am Gegner vorbeigekommen!',
-        luecke: 'Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden!',
+        luecke: 'Geschafft: Du bist sicher an den Gegnern vorbeigekommen!',
         angriff: 'Geschafft: Im Angriff hast du gut entschieden!',
         verteidigung: 'Geschafft: In der Abwehr hast du gut entschieden!',
       },

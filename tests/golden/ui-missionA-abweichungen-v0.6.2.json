@@ -1,5 +1,67 @@
 [
  {
+  "eintrag": 4,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 8,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
   "eintrag": 11,
   "alt": {
    "said": [
@@ -80,16 +142,16 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Pass war das untere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Pass war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Pass war das untere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Pass war das untere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐ Geschafft: Beide Tore waren zu – und du hast eine andere Lösung gefunden!",
+   "lern": "⭐ Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt!",
    "sitNochmal": false
   }
  },
@@ -297,16 +359,82 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Dribbling war das obere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Dribbling war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Dribbling war das obere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Dribbling war das obere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Du hast nochmal geschaut und das freie Tor gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 28,
+  "alt": {
+   "said": [
+    "Tippe auf ein rotes Tor.",
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐ Geschafft: Du hast das freie Tor gefunden!",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tippe auf ein rotes Tor.",
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐ Geschafft: Du hast das freie Tor gewählt!",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 31,
+  "alt": {
+   "said": [
+    "Tippe auf ein rotes Tor.",
+    "Tor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐ Geschafft: Du hast das freie Tor gefunden!",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tippe auf ein rotes Tor.",
+    "Tor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐ Geschafft: Du hast das freie Tor gewählt!",
    "sitNochmal": false
   }
  },
@@ -420,16 +548,16 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Dribbling war das untere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Dribbling war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Dribbling war das untere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Dribbling war das untere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Du hast nochmal geschaut und das freie Tor gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
    "sitNochmal": false
   }
  },
@@ -577,16 +705,16 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Pass war das untere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Pass war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Pass war das untere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Pass war das untere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere Lösung gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt! (mit Hilfe)",
    "sitNochmal": false
   }
  },
@@ -700,16 +828,78 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Dribbling war das untere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Dribbling war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Dribbling war das untere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Dribbling war das untere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Du hast nochmal geschaut und das freie Tor gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 65,
+  "alt": {
+   "said": [
+    "Tor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Super gemacht!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 69,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
    "sitNochmal": false
   }
  },
@@ -792,16 +982,16 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Pass war das obere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Pass war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Pass war das obere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Pass war das obere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere Lösung gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt! (mit Hilfe)",
    "sitNochmal": false
   }
  },
@@ -915,16 +1105,47 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Dribbling war das obere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Dribbling war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Dribbling war das obere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Dribbling war das obere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Du hast nochmal geschaut und das freie Tor gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 87,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
    "sitNochmal": false
   }
  },
@@ -1133,16 +1354,16 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Dribbling war das obere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Dribbling war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Dribbling war das obere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Dribbling war das obere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Du hast das freie Tor gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
    "sitNochmal": false
   }
  },
@@ -1225,16 +1446,16 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Pass war das obere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Pass war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Pass war das obere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Pass war das obere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere Lösung gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt! (mit Hilfe)",
    "sitNochmal": false
   }
  },
@@ -1348,16 +1569,16 @@
   },
   "neu": {
    "said": [
-    "Tor! Nach dem Dribbling war das untere Tor frei – du hast nochmal geschaut! Aufgabe geschafft!"
+    "Tor! Nach deinem Dribbling war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
    ],
    "fb": [
     "Toooor! Der Weg war frei.",
-    "Nach dem Dribbling war das untere Tor frei – du hast nochmal geschaut!",
+    "Nach deinem Dribbling war das untere Tor frei. Gut gewählt!",
     "✓ 💡 Gute Idee",
     "✓ 🎯 Freies Tor",
     "⭐"
    ],
-   "lern": "⭐💡 Geschafft: Du hast nochmal geschaut und das freie Tor gefunden! (mit Hilfe)",
+   "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
    "sitNochmal": false
   }
  }
