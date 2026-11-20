@@ -124,7 +124,7 @@ try {
       if (r.art === 'kurz') { const st = await state(); if (st.sit !== sit) fail(`${sit}: Situation wechselt nach Kurzrückmeldung`); continue; }
       expectStar(r, true, `${sit} Hilfe ${i + 1}`);
       if (!/^⭐💡 Geschafft/.test(r.lern)) fail(`${sit}: Lernergebnis „geschafft mit Hilfe“ erwartet, ist „${r.lern}“`);
-      const goal = /Toooor/.test(r.said.join(' ')); const n = await next(); if (goal) return n;
+      const goal = /(^|\s)Tor!/.test(r.said.join(' ')) /* Hotfix V0.6.1: gesprochen „Tor!“ */; const n = await next(); if (goal) return n;
       const st = await decision(sit + ' weiter'); if (st.sit !== sit) fail(`${sit}: Situation endet ohne Tor`);
     }
     fail(sit + ': kein Tor mit der Hilfe');

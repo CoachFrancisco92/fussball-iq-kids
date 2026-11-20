@@ -131,6 +131,10 @@
       gegnerSchoss: (g) => `${g} hat schnell geschossen.`,
     },
 
+    // Hotfix V0.6.1: Anzeige und Aussprache getrennt. Angezeigt wird „Toooor!“ / „TOOOR!“; die Sprachausgabe sagt „Tor!“
+    // (gedehntes „Toooor“ klang auf dem iPad teils wie „Tour“). Wird auf jeden gesprochenen Text angewendet (app.js → say).
+    sprechtext: (text) => String(text).replace(/\bto{2,}r!/gi, 'Tor!'),
+
     // Bewertung, Teil 3: Was ist passiert? (Ergebnis)
     ergebnis: {
       torKurz: 'Toooor!',

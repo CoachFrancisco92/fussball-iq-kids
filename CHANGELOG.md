@@ -1,5 +1,11 @@
 # Changelog
 
+## V0.6.1 – Hotfix Toraussprache
+- Kindertest: Die Sprachausgabe sprach das gedehnte „Toooor!“ teils wie „Tour“. Anzeige und Aussprache sind jetzt getrennt: angezeigt bleibt „Toooor!“ (Rückmeldung) bzw. „TOOOR! ⚽“ (Torbanner), gesprochen wird „Tor!“.
+- Umsetzung: `content/texte.js` → `sprechtext` (eine Regel); `app.js` wendet sie auf jeden gesprochenen Text an (Rückmeldung, 🔈, Szenen-Wiedergabe). Sprachsteuerung (`sprache.js`) und Engine unverändert; Engine-Referenzen unverändert.
+- Regressionstests: `tests/aussprache.test.js`, `tests/e2e/aussprache.mjs` (schlägt ohne den Hotfix fehl).
+- Referenzwechsel (freigegeben 20.11.2026): `ui-transcript/ui-mission-a/ui-freie-bahn.v0.6.1.json` – genau 36 Einträge, nur gesprochenes „Tor!“; Vorgänger und Listen in `tests/golden/historie/` (`*.v0.6.0.json`, `v0.6.1-*.json`), geprüft mit `tests/analysis/v0.6.1-referenzwechsel-pruefen.js`. Engine-Referenzen unverändert (v0.6.0).
+
 ## V0.6.0 – V0.6a: Lernaufbau, Ursachen, Kurzrückmeldung, Sterne je Situation (zur Abnahme, unveröffentlicht)
 Freigabe P1–P5 (PO, 20.11.2026). Bericht, Kriterien und Gegenprüfungen: `docs/v0.6a.md`. **Bewertung unverändert** (Mission 1: Spielverlauf identisch, nur Sätze).
 - **P1 Lernaufbau:** „Welches Tor ist frei?“ A1 → A2 → A3 → W1 (neu: A3m, W1, W1m „nochmal schauen“); „Freie Bahn!“ B3 → V1 → L4e → L4b (neu: B3/V1/L4e/L4b + Spiegel, B2/B4/B6 entfallen); 5 Durchläufe à 4 Situationen; Feld `lernziel` je Situation.
