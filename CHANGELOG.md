@@ -9,6 +9,7 @@ Freigabe Maßnahmen 1–3 aus `docs/qs-kindertest-v0.6.0.md` (PO, 20.11.2026). B
 - Ball als klassischer schwarz-weißer 2D-Fußball (Vektor, vorgezeichnet, Handy vereinfacht, ≥ 7 px); ruhender Ball vorn am Fuß statt über der Spielernummer. Nur Darstellung – Simulation, Kollision, Wege unverändert. Test `tests/e2e/ball.mjs`, Sichtprüfung `tests/analysis/v0.6/ball-bilder.mjs`.
 - Folge-Moment (~1,4 s, „Schau!“) nur bei bedeutsamer Veränderung: Spuren der Roten, neutraler „!“-Ring an veränderten Toren; Antippen überspringt.
 - Rückmeldeblatt im Querformat rechts neben dem Feld – das Feld wird nicht kleiner; Handy quer kompakter.
+- Minimal-UX (PR #3, PO-Entscheidung 21.11.2026): Folge-Hinweis aus genau einer Engine-Ursache – „Schau zum Ball!“ (Ballverlust), „Schau auf den Roten/die Roten!“ (überwunden), „Schau auf die Tore!“ (Torlage verändert; nicht in Mission 1, nicht nach Freilaufen), sonst „Schau!“. Szenenvergleich: Feld-Tipp = eine Szene weiter, versehentlicher Doppeltipp (≤ 250 ms) zählt einmal. Bericht: `docs/v0.6.2-ux-minimal.md`.
 - Tests: `tests/wahrnehmung.test.js`, `tests/e2e/wahrnehmung.mjs` (neu), `tests/ursachen.test.js` erweitert; Analysen `tests/analysis/v0.6.2-text-abweichungen.js`, `tests/analysis/v0.6/qs-wahrnehmung.js`.
 - Referenzen nicht erneuert – Abweichungen vorgelegt (`tests/golden/*v0.6.2*`).
 

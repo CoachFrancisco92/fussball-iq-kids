@@ -142,6 +142,36 @@ try {
     if ((await H.fiq('dec')) !== d0) fail('Vergleichstipp darf keine neue Fußballentscheidung auslösen');
     if (!(await H.page.isVisible('#fbCompare'))) fail('Nach Vergleich fehlt die Rückmeldung');
     console.log('✓ Vergleich: jeder Tipp geht genau eine Szene weiter; Rückkehr ohne neue Entscheidung');
+    // Feinschliff: versehentlicher Doppeltipp (≤ 250 ms) zählt als ein Tipp – gleiche und andere Stelle; danach wirkt ein bewusster Tipp
+    for (const [ms, x2] of [[120, 20], [200, 26]]) {
+      await H.tap('#fbCompare'); await H.wait('replay');
+      await H.field(20, 4); await H.page.waitForTimeout(ms); await H.field(x2, 4); await H.page.waitForTimeout(60);
+      if ((await H.mode()) !== 'replay' || (await H.fiq('replayIdx')) !== 1) fail(`Doppeltipp ${ms} ms darf nur eine Szene weitergehen (Modus ${await H.mode()}, Szene ${await H.fiq('replayIdx')})`);
+      await H.page.waitForTimeout(700); await H.field(20, 4); await H.wait('feedback', 3000);
+      if ((await H.fiq('dec')) !== d0) fail('Doppeltipp im Vergleich darf keine Fußballentscheidung auslösen');
+    }
+    console.log('✓ Vergleich: Doppeltipp nach 120/200 ms (gleiche/andere Stelle) = eine Szene; bewusster Tipp nach 700 ms wirkt');
+    await H.close();
+  }
+  // 2d) Feinschliff: Torveränderung nach Freilaufen (Aktion 'run') → neutrales „Schau!“, denn Lerngegenstand ist das
+  //     Anspielbarwerden. Erkennung über die Aktion der Engine, nicht über Rückmeldetexte. (A4: Pass zu Blau 2, dann Freilaufen mit Hilfe)
+  {
+    const H = await open(IPAD, 'welches-tor-ist-frei', ['A4', 'A1']); await H.start();
+    await H.choose('Passen'); const p = await H.page.evaluate(() => { const q = FIQ.P(window.__fiq.S, 'b2'); return [q.x, q.y]; }); await H.field(...p);
+    for (let i = 0; i < 40 && (await H.mode()) !== 'decide'; i++) { const m = await H.wait(['decide', 'feedback', 'folge', 'kurz']); if (m === 'feedback') { await H.page.waitForTimeout(400); await H.tap('#fbNext'); } else if (m !== 'decide') await H.page.waitForTimeout(100); }
+    const plan = await H.page.evaluate(() => { const S = window.__fiq.S, c = window.__fiq.ctx; return { actions: c.actions, h: FIQ.hint(S, 'freilaufen') }; });
+    if (plan.actions.join() !== 'freilaufen' || !plan.h.point) fail('A4 nach dem Pass: Freilaufen erwartet, ist ' + plan.actions);
+    await H.tap('#actions .hint'); await H.page.waitForTimeout(150);
+    if (plan.h.ids) { const q = await H.page.evaluate((id) => { const r = FIQ.P(window.__fiq.S, id); return [r.x, r.y]; }, plan.h.ids[0]); await H.field(...q); }
+    await H.field(plan.h.point.x, plan.h.point.y);
+    await H.wait('folge');
+    const fo = await H.fiq('folge');
+    if (!fo || fo.gruende.join() !== 'toreVeraendert') fail('A4 Freilaufen: Torveränderung als einzige Ursache erwartet, ist ' + JSON.stringify(fo && fo.gruende));
+    await H.page.waitForTimeout(150);
+    const gesagt = (await H.log()).filter((x) => x.e === 'start').at(-1)?.t;
+    if (gesagt !== 'Schau!') fail('A4 Freilaufen: neutrales „Schau!“ erwartet, ist ' + gesagt);
+    await H.wait(['feedback', 'kurz'], 8000);
+    console.log('✓ A4 Freilaufen mit Torveränderung: neutrales „Schau!“ (Lerngegenstand Anspielbarwerden); A3/W1 nach Pass bzw. Dribbling weiter „Schau auf die Tore!“');
     await H.close();
   }
   // 3) Freie Bahn (iPad quer): B3 Routine ohne Folge-Moment, V1 vorbei mit Folge-Moment vor der Kurzrückmeldung; Ansagen passend

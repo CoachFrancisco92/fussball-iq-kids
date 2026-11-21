@@ -809,11 +809,11 @@
     if (h.lern && h.lern.typ) lernErgebnis[h.sit] = h.lern; else delete lernErgebnis[h.sit];
     // V0.6.2: bei bedeutsamer Veränderung zuerst ein stiller Folge-Moment (volles Feld, Spuren der Gegner, veränderte Tore),
     // erst danach die erklärende Rückmeldung. Nach Routineaktionen kein Folge-Moment.
-    if (fo.bedeutsam) return folgeMoment(fo, () => zeigeErgebnis(fb, h, endet));
+    if (fo.bedeutsam) return folgeMoment(fo, () => zeigeErgebnis(fb, h, endet), attempt.a && attempt.a.kind);
     zeigeErgebnis(fb, h, endet);
   }
   /** V0.6.2: Folge-Moment – das Kind sieht zuerst, was sich verändert hat (ca. 1,4 s, Antippen überspringt). */
-  function folgeMoment(fo, danach) {
+  function folgeMoment(fo, danach, aktion) {
     mode = 'folge';
     folgeView = { ...fo, t0: performance.now() };
     const d = dec, weiterNachFolge = () => { if (mode === 'folge' && dec === d) { folgeWeiter = null; danach(); } };
@@ -826,7 +826,8 @@
     if (gruende.length === 1 && gruende[0] === 'ballVerloren') beobachtung = T().folge.ball;
     else if (gruende.length === 1 && gruende[0] === 'ueberwunden')
       beobachtung = fo.gegner.length > 1 ? T().folge.gegnerMehrere : T().folge.gegner;
-    else if (gruende.length === 1 && gruende[0] === 'toreVeraendert' && curId !== 'mission-1')
+    // Nach Freilaufen (Aktion 'run') ist Anspielbarwerden der Lerngegenstand, nicht die Torlage → neutrales „Schau!“.
+    else if (gruende.length === 1 && gruende[0] === 'toreVeraendert' && curId !== 'mission-1' && aktion !== 'run')
       beobachtung = T().folge.tore;
     say(beobachtung, 'ansage', false, false);
     const ms = T().folge.dauer || 1400;
@@ -983,8 +984,15 @@
   }
   /** Reines Szenen-Weiterschalten: verändert weder Spielstand noch Entscheidungen.
    *  Anders als ein globaler Tipp-Handler gilt das ausschließlich im Replay-Modus. */
+  // Versehentlicher Doppeltipp: ein zweiter Tipp innerhalb von 250 ms nach dem letzten wirksamen Vergleichstipp
+  // zählt nicht. Gilt nur im Szenenvergleich; bewusste Tipps danach (z. B. nach 700 ms) wirken wie gewohnt.
+  const REPLAY_DOPPELTIPP_MS = 250;
+  let replayTippZuletzt = -Infinity;
   function replayWeiter() {
     if (mode !== 'replay' || !replay || pausiert) return;
+    const jetzt = performance.now();
+    if (jetzt - replayTippZuletzt < REPLAY_DOPPELTIPP_MS) return;
+    replayTippZuletzt = jetzt;
     Sprache.stopp();
     const naechste = replay.i + 1;
     if (naechste >= replay.queue.length) {
@@ -1000,6 +1008,7 @@
   }
   function startReplay(queue, onDone) {
     mode = 'replay';
+    replayTippZuletzt = -Infinity;   // neue Wiedergabe: Doppeltipp-Schutz gilt nur innerhalb dieses Vergleichs
     replay = { queue, i: 0, f: 0, acc: 0, onDone: null };
     $('prompt').hidden = true; $('skip').hidden = false; setStepText('');
     replay.onDone = () => { $('skip').hidden = true; onDone(); $('prompt').hidden = mode === 'end'; syncLayout(); };
