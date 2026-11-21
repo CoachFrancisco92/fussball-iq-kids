@@ -735,6 +735,9 @@
     if (isGhostTap(ev)) { tapCount.ghost++; return; }
     tapCount.field++;
     if (mode === 'folge' && folgeWeiter && !pausiert) { Sprache.stopp(); folgeWeiter(); return; }  // Antippen beendet den Folge-Moment
+    // Nur im Szenenvergleich: ein Tipp geht genau eine Szene weiter. Alle anderen
+    // Tipp-/Entscheidungszustände behalten ihre bewährte Steuerung.
+    if (mode === 'replay' && replay && !pausiert) { replayWeiter(); return; }
     const pt = worldFromEvent(ev);
     const c = S && E.carrier(S);
     if (mode === 'look') {
@@ -816,7 +819,13 @@
     const d = dec, weiterNachFolge = () => { if (mode === 'folge' && dec === d) { folgeWeiter = null; danach(); } };
     folgeWeiter = weiterNachFolge;
     Sprache.phase();
-    say(T().folge.schau, 'ansage', false, false);
+    // Nur direkt belegte, eindeutige Ursachen lenken den Blick. Bei allen anderen
+    // Kombinationen gilt das bereits freigegebene neutrale „Schau!“.
+    const gruende = fo.gruende || [];
+    let beobachtung = T().folge.schau;
+    if (gruende.length === 1 && gruende[0] === 'ballVerloren') beobachtung = T().folge.ball;
+    else if (gruende.length === 1 && gruende[0] === 'ueberwunden') beobachtung = T().folge.gegner;
+    say(beobachtung, 'ansage', false, false);
     const ms = T().folge.dauer || 1400;
     Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 3000 });   // „Schau!“ wird nie abgeschnitten
   }
@@ -968,6 +977,23 @@
       { frames: a1.frames, label: T().bedienung.vorher, explain: a1.fb.explain, say: say(T().bedienung.vorher, a1) },
       { frames: a2.frames, label: T().bedienung.jetzt, explain: a2.fb.explain, say: say(T().bedienung.jetzt, a2) },
     ], () => { S = E.clone(h.final.endState); explainView = h.final.fb.explain; $('feedback').hidden = false; mode = 'feedback'; syncLayout(); });
+  }
+  /** Reines Szenen-Weiterschalten: verändert weder Spielstand noch Entscheidungen.
+   *  Anders als ein globaler Tipp-Handler gilt das ausschließlich im Replay-Modus. */
+  function replayWeiter() {
+    if (mode !== 'replay' || !replay || pausiert) return;
+    Sprache.stopp();
+    const naechste = replay.i + 1;
+    if (naechste >= replay.queue.length) {
+      const done = replay.onDone;
+      replay = null;
+      done();
+      return;
+    }
+    replay.i = naechste;
+    replay.f = 0;
+    replay.acc = 0;
+    say(replay.queue[naechste].say || '', 'ansage', true);
   }
   function startReplay(queue, onDone) {
     mode = 'replay';
