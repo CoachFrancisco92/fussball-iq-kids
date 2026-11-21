@@ -151,6 +151,24 @@ try {
     console.log('✓ Sichere Tipps: Folge und Wiederholung, Erklärung bleibt unberührt, Vergleich Szene für Szene');
     await H.close();
   }
+  // 2d) Während der Kurzrückmeldung darf dreimaliges Tippen keine Fußballaktion auslösen;
+  //     ↶ und 🔈 bleiben danach in der neuen Entscheidung erreichbar.
+  {
+    const H = await open(IPAD, 'freie-bahn', ['B3', 'V1']); await H.start();
+    await H.field(26, 12); await H.wait('kurz');
+    const d0 = await H.fiq('dec');
+    for (let i = 0; i < 3; i++) {
+      await H.field(20, 4);
+      await H.page.waitForTimeout(400);
+    }
+    await H.wait('decide', 5000);
+    if ((await H.fiq('dec')) !== d0 + 1 || (await H.mode()) !== 'decide')
+      fail('Dreifachtipp während Kurzrückmeldung hat den Spielablauf verändert');
+    for (const id of ['#kurzZurueck', '#kurzHoeren'])
+      if (!(await H.page.isVisible(id))) fail('Freigegebener Kurzrückmeldungsknopf fehlt nach dem Übergang: ' + id);
+    console.log('✓ Kurzrückmeldung: Dreifachtipp ignoriert, ↶ Nochmal und 🔈 in Folgeentscheidung erhalten');
+    await H.close();
+  }
   // 3) Freie Bahn (iPad quer): B3 Routine ohne Folge-Moment, V1 vorbei mit Folge-Moment vor der Kurzrückmeldung; Ansagen passend
   {
     const H = await open(IPAD, 'freie-bahn', ['B3', 'V1']); await H.start();
