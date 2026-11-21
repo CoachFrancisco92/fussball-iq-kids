@@ -729,7 +729,9 @@
   // „Weiterspielen“, ✔ …). Steht dort noch ein Knopf (z. B. die gewählte Aktion), ist der Feld-Tipp bewusst.
   const isGhostTap = (ev) => {
     const dt = performance.now() - lastErzaehlTap.t;
-    if (dt < 250 || (dt < 500 && Math.hypot(ev.clientX - lastErzaehlTap.x, ev.clientY - lastErzaehlTap.y) < 48)) return true;
+    // Eine Tippserie auf derselben Stelle (z. B. alle 400 ms) darf nach dem
+    // Szenenwechsel keine neue Fußballaktion auslösen. Ein bewusst anderer Tipp bleibt möglich.
+    if (dt < 250 || (dt < 1100 && Math.hypot(ev.clientX - lastErzaehlTap.x, ev.clientY - lastErzaehlTap.y) < 48)) return true;
     if (performance.now() - lastButtonTap.t >= 450 || Math.hypot(ev.clientX - lastButtonTap.x, ev.clientY - lastButtonTap.y) >= 48) return false;
     const el = document.elementFromPoint(lastButtonTap.x, lastButtonTap.y);
     return !(el && el.closest && el.closest('button'));
