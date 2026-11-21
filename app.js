@@ -735,6 +735,9 @@
     if (isGhostTap(ev)) { tapCount.ghost++; return; }
     tapCount.field++;
     if (mode === 'folge' && folgeWeiter && !pausiert) { Sprache.stopp(); folgeWeiter(); return; }  // Antippen beendet den Folge-Moment
+    // Nur im Szenenvergleich: ein Tipp geht genau eine Szene weiter. Alle anderen
+    // Tipp-/Entscheidungszustände behalten ihre bewährte Steuerung.
+    if (mode === 'replay' && replay && !pausiert) { replayWeiter(); return; }
     const pt = worldFromEvent(ev);
     const c = S && E.carrier(S);
     if (mode === 'look') {
@@ -806,17 +809,27 @@
     if (h.lern && h.lern.typ) lernErgebnis[h.sit] = h.lern; else delete lernErgebnis[h.sit];
     // V0.6.2: bei bedeutsamer Veränderung zuerst ein stiller Folge-Moment (volles Feld, Spuren der Gegner, veränderte Tore),
     // erst danach die erklärende Rückmeldung. Nach Routineaktionen kein Folge-Moment.
-    if (fo.bedeutsam) return folgeMoment(fo, () => zeigeErgebnis(fb, h, endet));
+    if (fo.bedeutsam) return folgeMoment(fo, () => zeigeErgebnis(fb, h, endet), attempt.a && attempt.a.kind);
     zeigeErgebnis(fb, h, endet);
   }
   /** V0.6.2: Folge-Moment – das Kind sieht zuerst, was sich verändert hat (ca. 1,4 s, Antippen überspringt). */
-  function folgeMoment(fo, danach) {
+  function folgeMoment(fo, danach, aktion) {
     mode = 'folge';
     folgeView = { ...fo, t0: performance.now() };
     const d = dec, weiterNachFolge = () => { if (mode === 'folge' && dec === d) { folgeWeiter = null; danach(); } };
     folgeWeiter = weiterNachFolge;
     Sprache.phase();
-    say(T().folge.schau, 'ansage', false, false);
+    // Nur direkt belegte, eindeutige Ursachen lenken den Blick. Bei allen anderen
+    // Kombinationen gilt das bereits freigegebene neutrale „Schau!“.
+    const gruende = fo.gruende || [];
+    let beobachtung = T().folge.schau;
+    if (gruende.length === 1 && gruende[0] === 'ballVerloren') beobachtung = T().folge.ball;
+    else if (gruende.length === 1 && gruende[0] === 'ueberwunden')
+      beobachtung = fo.gegner.length > 1 ? T().folge.gegnerMehrere : T().folge.gegner;
+    // Nach Freilaufen (Aktion 'run') ist Anspielbarwerden der Lerngegenstand, nicht die Torlage → neutrales „Schau!“.
+    else if (gruende.length === 1 && gruende[0] === 'toreVeraendert' && curId !== 'mission-1' && aktion !== 'run')
+      beobachtung = T().folge.tore;
+    say(beobachtung, 'ansage', false, false);
     const ms = T().folge.dauer || 1400;
     Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 3000 });   // „Schau!“ wird nie abgeschnitten
   }
@@ -969,8 +982,33 @@
       { frames: a2.frames, label: T().bedienung.jetzt, explain: a2.fb.explain, say: say(T().bedienung.jetzt, a2) },
     ], () => { S = E.clone(h.final.endState); explainView = h.final.fb.explain; $('feedback').hidden = false; mode = 'feedback'; syncLayout(); });
   }
+  /** Reines Szenen-Weiterschalten: verändert weder Spielstand noch Entscheidungen.
+   *  Anders als ein globaler Tipp-Handler gilt das ausschließlich im Replay-Modus. */
+  // Versehentlicher Doppeltipp: ein zweiter Tipp innerhalb von 250 ms nach dem letzten wirksamen Vergleichstipp
+  // zählt nicht. Gilt nur im Szenenvergleich; bewusste Tipps danach (z. B. nach 700 ms) wirken wie gewohnt.
+  const REPLAY_DOPPELTIPP_MS = 250;
+  let replayTippZuletzt = -Infinity;
+  function replayWeiter() {
+    if (mode !== 'replay' || !replay || pausiert) return;
+    const jetzt = performance.now();
+    if (jetzt - replayTippZuletzt < REPLAY_DOPPELTIPP_MS) return;
+    replayTippZuletzt = jetzt;
+    Sprache.stopp();
+    const naechste = replay.i + 1;
+    if (naechste >= replay.queue.length) {
+      const done = replay.onDone;
+      replay = null;
+      done();
+      return;
+    }
+    replay.i = naechste;
+    replay.f = 0;
+    replay.acc = 0;
+    say(replay.queue[naechste].say || '', 'ansage', true);
+  }
   function startReplay(queue, onDone) {
     mode = 'replay';
+    replayTippZuletzt = -Infinity;   // neue Wiedergabe: Doppeltipp-Schutz gilt nur innerhalb dieses Vergleichs
     replay = { queue, i: 0, f: 0, acc: 0, onDone: null };
     $('prompt').hidden = true; $('skip').hidden = false; setStepText('');
     replay.onDone = () => { $('skip').hidden = true; onDone(); $('prompt').hidden = mode === 'end'; syncLayout(); };

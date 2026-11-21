@@ -50,7 +50,7 @@ async function open(vp, mission, durchlauf) {
   };
   return H;
 }
-/** Folge-Moment: bis zum Ende nur „Schau!“ gesprochen, Blatt verborgen, Feld unverändert; danach Erklärung */
+/** Folge-Moment: eine kurze neutrale Aufforderung, Blatt verborgen, Feld unverändert; danach Erklärung */
 async function pruefeFolge(H, wo) {
   const w0 = await H.feldPx();
   await H.wait('folge'); const t0 = await H.now();
@@ -59,11 +59,16 @@ async function pruefeFolge(H, wo) {
   const m = await H.wait(['feedback', 'kurz'], 15000); const t1 = await H.now();
   const log = await H.log();
   const imFolge = log.filter((x) => x.e === 'start' && x.at >= t0 - 50 && x.at < t1 - 30).map((x) => x.t);
-  if (imFolge.some((t) => t !== 'Schau!')) fail(wo + ': im Folge-Moment wird schon erklärt: ' + imFolge.join(' | '));
-  if (log.some((x) => x.e === 'abbruch' && x.t === 'Schau!')) fail(wo + ': „Schau!“ abgeschnitten');
+  const erlaubte = ['Schau!', 'Schau zum Ball!', 'Schau auf die Tore!', 'Schau auf den Roten!', 'Schau auf die Roten!'];
+  if (imFolge.length !== 1 || !erlaubte.includes(imFolge[0]))
+    fail(wo + ': Folge-Moment muss eine kurze, neutrale Aufforderung sprechen: ' + imFolge.join(' | '));
+  if (log.some((x) => x.e === 'abbruch' && x.t === imFolge[0]))
+    fail(wo + ': Folge-Hinweis ohne Kindertipp abgeschnitten');
+  if (fo.gruende.includes('ballVerloren') && fo.gruende.length === 1 && imFolge[0] !== 'Schau zum Ball!')
+    fail(wo + ': Ballverlust ohne Ballhinweis');
   if (t1 - t0 < 1300) fail(`${wo}: Folge-Moment zu kurz (${Math.round(t1 - t0)} ms)`);
   const w1 = await H.feldPx(); if (w1 < w0 * 0.97) fail(`${wo}: Feld in der Rückmeldung kleiner (${Math.round(w0)} → ${Math.round(w1)} px)`);
-  return { m, dauer: Math.round(t1 - t0), fo, w0: Math.round(w0), w1: Math.round(w1) };
+  return { m, dauer: Math.round(t1 - t0), fo, hinweis: imFolge[0], w0: Math.round(w0), w1: Math.round(w1) };
 }
 
 let exit = 0;
@@ -74,6 +79,7 @@ try {
     const H = await open(IPAD, 'welches-tor-ist-frei', ['W1', 'A1']); await H.start();
     await H.choose('Dribbeln'); await H.field(31, 15);
     const r = await pruefeFolge(H, 'W1');
+    if (r.hinweis !== 'Schau auf die Tore!') fail('W1: gelb markiertes Tor ohne eindeutigen Tor-Hinweis: ' + r.hinweis);
     if (!r.fo.gruende.includes('toreVeraendert') || !r.fo.tore.length || !r.fo.gegner.includes('r2')) fail('W1: Folge-Moment zeigt nicht Torlage + Wächter: ' + JSON.stringify(r.fo));
     await H.tap('#fbNext'); await H.wait('decide');
     const ctx = await H.fiq('ctx'); if (ctx.say !== 'Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?') fail('W1: Ansage nach Veränderung: ' + ctx.say);
@@ -81,7 +87,7 @@ try {
     // Schuss aufs jetzt zugestellte Tor: Rückmeldung nennt die Veränderung (rückblickend)
     await H.choose('Schießen'); await H.field(36, 18); await H.wait('feedback');
     const t = await H.page.$eval('#fbTip', (e) => e.textContent); if (!/(Rot 2 ist vor das untere Tor gelaufen|Nach deinem Dribbling war das untere Tor zu)\. Das obere Tor war frei\./.test(t)) fail('W1: Veränderung nicht benannt: ' + t);
-    console.log(`✓ W1 iPad: Folge-Moment ${r.dauer} ms nur mit „Schau!“, Feld ${r.w0}→${r.w1} px; „Schau nochmal: Welches Tor ist jetzt frei?“; Schuss aufs zugestellte Tor: „${t}“`);
+    console.log(`✓ W1 iPad: Folge-Moment ${r.dauer} ms mit kurzem Hinweis, Feld ${r.w0}→${r.w1} px; „Schau nochmal: Welches Tor ist jetzt frei?“; Schuss aufs zugestellte Tor: „${t}“`);
     fluss.push({ wo: 'W1 Dribbling (iPad)', folgeMs: r.dauer });
     await H.close();
   }
@@ -89,7 +95,10 @@ try {
   {
     const H = await open(IPAD, 'welches-tor-ist-frei', ['A3', 'A1']); await H.start();
     await H.choose('Passen'); const p = await H.page.evaluate(() => { const q = FIQ.P(window.__fiq.S, 'b2'); return [q.x, q.y]; }); await H.field(...p);
-    await H.wait('folge'); const t0 = await H.now(); await H.field(20, 4); await H.wait('feedback', 3000); const dt = await H.now() - t0;
+    await H.wait('folge'); const t0 = await H.now();
+    const geradeGesagt = (await H.log()).filter((x) => x.e === 'start').at(-1)?.t;
+    if (geradeGesagt !== 'Schau auf die Tore!') fail('A3: Pass öffnet Tor, aber Hinweis fehlt: ' + geradeGesagt);
+    await H.field(20, 4); await H.wait('feedback', 3000); const dt = await H.now() - t0;
     if (dt > 900) fail('Antippen beendet den Folge-Moment nicht (' + Math.round(dt) + ' ms)');
     await H.tap('#fbNext'); await H.wait('decide');
     if (!/^Schau nochmal/.test((await H.fiq('ctx')).say)) fail('A3: nach dem Pass keine „Schau nochmal“-Ansage');
@@ -110,6 +119,60 @@ try {
     if ((await H2.mode()) !== 'start' || (await H2.log()).some((x) => x.e === 'start' && x.at > t + 5) || sp.timers || sp.waiters || sp.cur) fail('🏠 im Folge-Moment: Ablauf läuft weiter ' + JSON.stringify(sp));
     console.log('✓ Folge-Moment: ↺ hält ihn an, ✖ setzt fort; 🏠 beendet ihn ohne Geisterablauf');
     await H.close(); await H2.close();
+  }
+  // 2c) Der Vergleich darf auf dem Spielfeld Szene für Szene weitergeschaltet werden:
+  //     auch zwei Tipps mit 700 ms Abstand an derselben Stelle müssen beide wirken.
+  //     In allen anderen Modi bleibt das Feld wie in V0.6.2 bedienbar.
+  {
+    const H = await open(IPAD, 'welches-tor-ist-frei', ['W1', 'A1']); await H.start();
+    await H.choose('Dribbeln'); await H.field(31, 15);
+    await H.wait('folge'); await H.field(20, 4); await H.wait('feedback');
+    const d0 = await H.fiq('dec');
+    await H.tap('#fbRetry'); await H.wait('decide');
+    await H.choose('Dribbeln'); await H.field(31, 15);
+    await H.wait('folge'); await H.field(20, 4); await H.wait('feedback');
+    if (!(await H.page.isVisible('#fbCompare'))) fail('Vergleich nach zwei Versuchen fehlt');
+    await H.tap('#fbCompare'); await H.wait('replay');
+    if ((await H.fiq('replayIdx')) !== 0) fail('Vergleich muss bei Szene 1 beginnen');
+    await H.field(20, 4);
+    if ((await H.fiq('replayIdx')) !== 1 || (await H.mode()) !== 'replay')
+      fail('Erster Tipp muss genau eine Vergleichsszene weitergehen');
+    await H.page.waitForTimeout(700);
+    await H.field(20, 4); await H.wait('feedback', 3000);
+    if ((await H.fiq('dec')) !== d0) fail('Vergleichstipp darf keine neue Fußballentscheidung auslösen');
+    if (!(await H.page.isVisible('#fbCompare'))) fail('Nach Vergleich fehlt die Rückmeldung');
+    console.log('✓ Vergleich: jeder Tipp geht genau eine Szene weiter; Rückkehr ohne neue Entscheidung');
+    // Feinschliff: versehentlicher Doppeltipp (≤ 250 ms) zählt als ein Tipp – gleiche und andere Stelle; danach wirkt ein bewusster Tipp
+    for (const [ms, x2] of [[120, 20], [200, 26]]) {
+      await H.tap('#fbCompare'); await H.wait('replay');
+      await H.field(20, 4); await H.page.waitForTimeout(ms); await H.field(x2, 4); await H.page.waitForTimeout(60);
+      if ((await H.mode()) !== 'replay' || (await H.fiq('replayIdx')) !== 1) fail(`Doppeltipp ${ms} ms darf nur eine Szene weitergehen (Modus ${await H.mode()}, Szene ${await H.fiq('replayIdx')})`);
+      await H.page.waitForTimeout(700); await H.field(20, 4); await H.wait('feedback', 3000);
+      if ((await H.fiq('dec')) !== d0) fail('Doppeltipp im Vergleich darf keine Fußballentscheidung auslösen');
+    }
+    console.log('✓ Vergleich: Doppeltipp nach 120/200 ms (gleiche/andere Stelle) = eine Szene; bewusster Tipp nach 700 ms wirkt');
+    await H.close();
+  }
+  // 2d) Feinschliff: Torveränderung nach Freilaufen (Aktion 'run') → neutrales „Schau!“, denn Lerngegenstand ist das
+  //     Anspielbarwerden. Erkennung über die Aktion der Engine, nicht über Rückmeldetexte. (A4: Pass zu Blau 2, dann Freilaufen mit Hilfe)
+  {
+    const H = await open(IPAD, 'welches-tor-ist-frei', ['A4', 'A1']); await H.start();
+    await H.choose('Passen'); const p = await H.page.evaluate(() => { const q = FIQ.P(window.__fiq.S, 'b2'); return [q.x, q.y]; }); await H.field(...p);
+    for (let i = 0; i < 40 && (await H.mode()) !== 'decide'; i++) { const m = await H.wait(['decide', 'feedback', 'folge', 'kurz']); if (m === 'feedback') { await H.page.waitForTimeout(400); await H.tap('#fbNext'); } else if (m !== 'decide') await H.page.waitForTimeout(100); }
+    const plan = await H.page.evaluate(() => { const S = window.__fiq.S, c = window.__fiq.ctx; return { actions: c.actions, h: FIQ.hint(S, 'freilaufen') }; });
+    if (plan.actions.join() !== 'freilaufen' || !plan.h.point) fail('A4 nach dem Pass: Freilaufen erwartet, ist ' + plan.actions);
+    await H.tap('#actions .hint'); await H.page.waitForTimeout(150);
+    if (plan.h.ids) { const q = await H.page.evaluate((id) => { const r = FIQ.P(window.__fiq.S, id); return [r.x, r.y]; }, plan.h.ids[0]); await H.field(...q); }
+    await H.field(plan.h.point.x, plan.h.point.y);
+    await H.wait('folge');
+    const fo = await H.fiq('folge');
+    if (!fo || fo.gruende.join() !== 'toreVeraendert') fail('A4 Freilaufen: Torveränderung als einzige Ursache erwartet, ist ' + JSON.stringify(fo && fo.gruende));
+    await H.page.waitForTimeout(150);
+    const gesagt = (await H.log()).filter((x) => x.e === 'start').at(-1)?.t;
+    if (gesagt !== 'Schau!') fail('A4 Freilaufen: neutrales „Schau!“ erwartet, ist ' + gesagt);
+    await H.wait(['feedback', 'kurz'], 8000);
+    console.log('✓ A4 Freilaufen mit Torveränderung: neutrales „Schau!“ (Lerngegenstand Anspielbarwerden); A3/W1 nach Pass bzw. Dribbling weiter „Schau auf die Tore!“');
+    await H.close();
   }
   // 3) Freie Bahn (iPad quer): B3 Routine ohne Folge-Moment, V1 vorbei mit Folge-Moment vor der Kurzrückmeldung; Ansagen passend
   {

@@ -21,11 +21,16 @@
 //   v0.6.1 – Hotfix Toraussprache (freigegeben 20.11.2026): nur Oberflächen-Mitschriften, gesprochen „Tor!“ statt
 //            „Toooor!“ (36 Einträge); Engine-Referenzen unverändert v0.6.0. Vorgänger: historie/ui-*.v0.6.0.json;
 //            Listen: historie/v0.6.1-*.json; Prüfung: tests/analysis/v0.6.1-referenzwechsel-pruefen.js.
+//   v0.6.2 – Paket „Wahrnehmung“ + Minimal-UX (freigegeben 21.11.2026): Engine-Referenzen nur Sätze (Rückmeldungen, Ansagen,
+//            Bewertungstexte; Spielverlauf, Bewertung und Hilfe unverändert); Oberflächen-Mitschriften = die sechs vorgelegten
+//            V0.6.2-Listen + 23 gesprochene Folge-Hinweise (docs/v0.6.2-ux-minimal.md). Vorgänger: historie/*.v0.6.0.json,
+//            historie/ui-*.v0.6.1.json; Listen: historie/v0.6.2-*.json; Prüfung: tests/analysis/v0.6.2-referenzwechsel-pruefen.js.
+//            tag = 6c015af (Stand, aus dem die Referenzen erzeugt wurden).
 module.exports = {
-  file: 'mission1.v0.6.0.json', ui: 'ui-transcript.v0.6.1.json', tag: 'fc736a8d9a6e6ff7224721db0a2d2188046b87ae', seit: 'v0.6.0',
+  file: 'mission1.v0.6.2.json', ui: 'ui-transcript.v0.6.2.json', tag: '6c015afcb077ac8476f0d92323ec483fb6e14157', seit: 'v0.6.2',
   // Mission A v0.5.0 mit A4 und 5 Durchläufen (Meilenstein 4, freigegeben 19.11.2026). Vorgänger ohne A4:
   // historie/mission-a.v0.5.0-paket-d.json, historie/ui-mission-a.v0.5.0-paket-d.json; Liste: historie/v0.5.0-a4-missionA-abweichungen.json
-  missionA: { file: 'mission-a.v0.6.0.json', hash: 'c98bbfa6612b012a', ui: 'ui-mission-a.v0.6.1.json' },
+  missionA: { file: 'mission-a.v0.6.2.json', hash: 'bae427949999a35e', ui: 'ui-mission-a.v0.6.2.json' },
   // „Freie Bahn!“ (Meilenstein 4): Erstaufnahme v0.5.0, freigegeben 19.11.2026
-  freieBahn: { file: 'freie-bahn.v0.6.0.json', hash: 'baea940ec6c2d501', ui: 'ui-freie-bahn.v0.6.1.json' },
+  freieBahn: { file: 'freie-bahn.v0.6.2.json', hash: '1b55e520237946c4', ui: 'ui-freie-bahn.v0.6.2.json' },
 };

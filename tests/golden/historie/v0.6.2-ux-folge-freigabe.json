@@ -1,0 +1,189 @@
+{
+ "freigabe": "PO 21.11.2026 – 23 gesprochene Folge-Hinweise (docs/v0.6.2-ux-minimal.md, Abschnitt 4)",
+ "aenderungen": [
+  {
+   "mitschrift": "mission1",
+   "ablauf": "Schau falsch/richtig, Fehlpass, Wiederholen, Vergleichen, Rest mit Hilfe",
+   "eintrag": 5,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau zum Ball!"
+  },
+  {
+   "mitschrift": "mission1",
+   "ablauf": "Falscher Verteidiger und falscher Ort",
+   "eintrag": 1,
+   "satz": 5,
+   "alt": "Schau!",
+   "neu": "Schau zum Ball!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 11,
+   "satz": 1,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 17,
+   "satz": 1,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 22,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 38,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 44,
+   "satz": 1,
+   "alt": "Schau!",
+   "neu": "Schau zum Ball!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 51,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 58,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 73,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 80,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 96,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 106,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "missionA",
+   "ablauf": "",
+   "eintrag": 113,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Tore!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 13,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf den Roten!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 18,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau zum Ball!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 47,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Roten!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 63,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf den Roten!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 84,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Roten!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 98,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf den Roten!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 112,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Roten!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 128,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf den Roten!"
+  },
+  {
+   "mitschrift": "freieBahn",
+   "ablauf": "",
+   "eintrag": 134,
+   "satz": 0,
+   "alt": "Schau!",
+   "neu": "Schau auf die Roten!"
+  }
+ ]
+}
