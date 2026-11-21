@@ -116,6 +116,30 @@ try {
     console.log('✓ Folge-Moment: ↺ hält ihn an, ✖ setzt fort; 🏠 beendet ihn ohne Geisterablauf');
     await H.close(); await H2.close();
   }
+  // 2c) Der Vergleich darf auf dem Spielfeld Szene für Szene weitergeschaltet werden:
+  //     auch zwei Tipps mit 700 ms Abstand an derselben Stelle müssen beide wirken.
+  //     In allen anderen Modi bleibt das Feld wie in V0.6.2 bedienbar.
+  {
+    const H = await open(IPAD, 'welches-tor-ist-frei', ['W1', 'A1']); await H.start();
+    await H.choose('Dribbeln'); await H.field(31, 15);
+    await H.wait('folge'); await H.field(20, 4); await H.wait('feedback');
+    const d0 = await H.fiq('dec');
+    await H.tap('#fbRetry'); await H.wait('decide');
+    await H.choose('Dribbeln'); await H.field(31, 15);
+    await H.wait('folge'); await H.field(20, 4); await H.wait('feedback');
+    if (!(await H.page.isVisible('#fbCompare'))) fail('Vergleich nach zwei Versuchen fehlt');
+    await H.tap('#fbCompare'); await H.wait('replay');
+    if ((await H.fiq('replayIdx')) !== 0) fail('Vergleich muss bei Szene 1 beginnen');
+    await H.field(20, 4);
+    if ((await H.fiq('replayIdx')) !== 1 || (await H.mode()) !== 'replay')
+      fail('Erster Tipp muss genau eine Vergleichsszene weitergehen');
+    await H.page.waitForTimeout(700);
+    await H.field(20, 4); await H.wait('feedback', 3000);
+    if ((await H.fiq('dec')) !== d0) fail('Vergleichstipp darf keine neue Fußballentscheidung auslösen');
+    if (!(await H.page.isVisible('#fbCompare'))) fail('Nach Vergleich fehlt die Rückmeldung');
+    console.log('✓ Vergleich: jeder Tipp geht genau eine Szene weiter; Rückkehr ohne neue Entscheidung');
+    await H.close();
+  }
   // 3) Freie Bahn (iPad quer): B3 Routine ohne Folge-Moment, V1 vorbei mit Folge-Moment vor der Kurzrückmeldung; Ansagen passend
   {
     const H = await open(IPAD, 'freie-bahn', ['B3', 'V1']); await H.start();
