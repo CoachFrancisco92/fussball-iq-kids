@@ -824,7 +824,10 @@
     const gruende = fo.gruende || [];
     let beobachtung = T().folge.schau;
     if (gruende.length === 1 && gruende[0] === 'ballVerloren') beobachtung = T().folge.ball;
-    else if (gruende.length === 1 && gruende[0] === 'ueberwunden') beobachtung = T().folge.gegner;
+    else if (gruende.length === 1 && gruende[0] === 'ueberwunden')
+      beobachtung = fo.gegner.length > 1 ? T().folge.gegnerMehrere : T().folge.gegner;
+    else if (gruende.length === 1 && gruende[0] === 'toreVeraendert' && curId !== 'mission-1')
+      beobachtung = T().folge.tore;
     say(beobachtung, 'ansage', false, false);
     const ms = T().folge.dauer || 1400;
     Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 3000 });   // „Schau!“ wird nie abgeschnitten
