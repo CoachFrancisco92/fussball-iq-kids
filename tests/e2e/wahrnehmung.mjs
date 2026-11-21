@@ -68,7 +68,7 @@ async function pruefeFolge(H, wo) {
     fail(wo + ': Ballverlust ohne Ballhinweis');
   if (t1 - t0 < 1300) fail(`${wo}: Folge-Moment zu kurz (${Math.round(t1 - t0)} ms)`);
   const w1 = await H.feldPx(); if (w1 < w0 * 0.97) fail(`${wo}: Feld in der Rückmeldung kleiner (${Math.round(w0)} → ${Math.round(w1)} px)`);
-  return { m, dauer: Math.round(t1 - t0), fo, w0: Math.round(w0), w1: Math.round(w1) };
+  return { m, dauer: Math.round(t1 - t0), fo, hinweis: imFolge[0], w0: Math.round(w0), w1: Math.round(w1) };
 }
 
 let exit = 0;
@@ -79,6 +79,7 @@ try {
     const H = await open(IPAD, 'welches-tor-ist-frei', ['W1', 'A1']); await H.start();
     await H.choose('Dribbeln'); await H.field(31, 15);
     const r = await pruefeFolge(H, 'W1');
+    if (r.hinweis !== 'Schau auf die Tore!') fail('W1: gelb markiertes Tor ohne eindeutigen Tor-Hinweis: ' + r.hinweis);
     if (!r.fo.gruende.includes('toreVeraendert') || !r.fo.tore.length || !r.fo.gegner.includes('r2')) fail('W1: Folge-Moment zeigt nicht Torlage + Wächter: ' + JSON.stringify(r.fo));
     await H.tap('#fbNext'); await H.wait('decide');
     const ctx = await H.fiq('ctx'); if (ctx.say !== 'Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?') fail('W1: Ansage nach Veränderung: ' + ctx.say);
@@ -94,7 +95,10 @@ try {
   {
     const H = await open(IPAD, 'welches-tor-ist-frei', ['A3', 'A1']); await H.start();
     await H.choose('Passen'); const p = await H.page.evaluate(() => { const q = FIQ.P(window.__fiq.S, 'b2'); return [q.x, q.y]; }); await H.field(...p);
-    await H.wait('folge'); const t0 = await H.now(); await H.field(20, 4); await H.wait('feedback', 3000); const dt = await H.now() - t0;
+    await H.wait('folge'); const t0 = await H.now();
+    const geradeGesagt = (await H.log()).filter((x) => x.e === 'start').at(-1)?.t;
+    if (geradeGesagt !== 'Schau auf die Tore!') fail('A3: Pass öffnet Tor, aber Hinweis fehlt: ' + geradeGesagt);
+    await H.field(20, 4); await H.wait('feedback', 3000); const dt = await H.now() - t0;
     if (dt > 900) fail('Antippen beendet den Folge-Moment nicht (' + Math.round(dt) + ' ms)');
     await H.tap('#fbNext'); await H.wait('decide');
     if (!/^Schau nochmal/.test((await H.fiq('ctx')).say)) fail('A3: nach dem Pass keine „Schau nochmal“-Ansage');
