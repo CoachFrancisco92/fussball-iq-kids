@@ -266,11 +266,11 @@
     folge: {
       tag: 'Schau hin',
       titel: 'Was hat sich verändert?',
-      schau: 'Schau mal, was jetzt anders ist!',
-      tore: 'Schau auf die Tore. Was ist jetzt anders?',
-      gegner: 'Schau: Wo steht der Rote jetzt?',
-      gegnerMehrere: 'Schau: Wo stehen die Roten jetzt?',
-      ball: 'Schau: Wer hat jetzt den Ball?',
+      schau: 'Schau!',       // Rückfall, wenn keine konkrete Beobachtung zur Erklärung passt
+      tore: 'Schau auf die Tore!',
+      gegner: 'Schau auf den Roten!',
+      gegnerMehrere: 'Schau auf die Roten!',
+      ball: 'Schau zum Ball!',
       dauer: 1400,
     },
 
