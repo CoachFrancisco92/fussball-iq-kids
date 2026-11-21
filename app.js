@@ -526,16 +526,6 @@
         }
       }
     }
-    const tapWeiter = $('tapWeiter');
-    if (tapWeiter) {
-      const tippen = mode === 'folge' || mode === 'wechsel' || mode === 'kurz' || mode === 'replay' || (mode === 'look' && lookView && lookView.done);
-      if (tapWeiter.hidden === !!tippen) tapWeiter.hidden = !tippen;
-      if (tippen) {
-        const hinweis = mode === 'replay' ? 'Tippen: nächste Szene ⏭' : 'Tippen: weiter ⏭';
-        if (tapWeiter.textContent !== hinweis) tapWeiter.textContent = hinweis;
-      }
-      if (tapWeiter.classList.contains('replay') !== (mode === 'replay')) tapWeiter.classList.toggle('replay', mode === 'replay');
-    }
     render();
     requestAnimationFrame(loop);
   }
@@ -763,9 +753,8 @@
     if (isGhostTap(ev)) return;
     let verbraucht = false;
     if (mode === 'replay') verbraucht = replayNaechsteSzene();
-    else if (mode === 'folge' || mode === 'wechsel' || mode === 'kurz' || (mode === 'look' && lookView && lookView.done))
+    else if (mode === 'folge' || mode === 'wechsel' || (mode === 'look' && lookView && lookView.done))
       verbraucht = Sprache.ueberspringen();
-    else if (mode === 'feedback' && !Sprache.frei()) { Sprache.stopp(); verbraucht = true; }
     if (verbraucht) {
       lastErzaehlTap = { t: performance.now(), x: ev.clientX, y: ev.clientY };
       ev.preventDefault(); ev.stopPropagation();
@@ -845,11 +834,11 @@
     if (h.lern && h.lern.typ) lernErgebnis[h.sit] = h.lern; else delete lernErgebnis[h.sit];
     // V0.6.2: bei bedeutsamer Veränderung zuerst ein stiller Folge-Moment (volles Feld, Spuren der Gegner, veränderte Tore),
     // erst danach die erklärende Rückmeldung. Nach Routineaktionen kein Folge-Moment.
-    if (fo.bedeutsam) return folgeMoment(fo, () => zeigeErgebnis(fb, h, endet));
+    if (fo.bedeutsam) return folgeMoment(fo, fb, () => zeigeErgebnis(fb, h, endet));
     zeigeErgebnis(fb, h, endet);
   }
   /** V0.6.2: Folge-Moment – das Kind sieht zuerst, was sich verändert hat (ca. 1,4 s, Antippen überspringt). */
-  function folgeMoment(fo, danach) {
+  function folgeMoment(fo, fb, danach) {
     mode = 'folge';
     folgeView = { ...fo, t0: performance.now() };
     setPrompt(T().folge.tag, 'look', T().folge.titel);
@@ -857,13 +846,23 @@
     folgeWeiter = weiterNachFolge;
     Sprache.phase();
     const f = T().folge;
-    const grund = fo.gruende.includes('toreVeraendert') ? 'tore' : fo.gruende.includes('ballVerloren') ? 'ball'
-      : fo.gegner.length > 1 ? 'gegnerMehrere' : 'gegner';
-    say(f[grund] || f.schau, 'ansage', false, false);
+    // Die Aufforderung muss zur späteren Rückmeldung passen. Ein verändertes Tor allein
+    // rechtfertigt noch keine Torfrage, wenn die Erklärung tatsächlich einen Pass behandelt.
+    const erklaerung = String((fb && fb.say) || '') + ' ' + String((fb && fb.tip) || '');
+    let hinweis = f.schau;
+    if (fo.gruende.includes('ballVerloren') && /ball|abgefangen|abgenommen|erobert/i.test(erklaerung)) hinweis = f.ball;
+    else if (fo.gruende.includes('ueberwunden') && /rot|gegner|vorbei|lücke/i.test(erklaerung))
+      hinweis = fo.gegner.length > 1 ? f.gegnerMehrere : f.gegner;
+    else if (fo.gruende.includes('toreVeraendert') && /tor|schuss|schieß/i.test(erklaerung)) hinweis = f.tore;
+    else if (fo.gegner.length && /rot|gegner|pass|weg|freund/i.test(erklaerung))
+      hinweis = fo.gegner.length > 1 ? f.gegnerMehrere : f.gegner;
+    say(hinweis, 'ansage', false, false);
     const ms = f.dauer || 1400;
-    Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 6000 });   // kurze Frage zu Ende sprechen; Tippen darf sofort weiter
+    Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 3000 });   // kurze Aufforderung; Tippen darf sofort weiter
   }
   function zeigeErgebnis(fb, h, endet) {
+    // Nach dem Beobachtungsmoment wieder den passenden Entscheidungstitel herstellen.
+    setPrompt(h.ctx.tag, h.ctx.type === 'verteidigung' ? 'def' : 'att', h.ctx.title);
     // P3: Kurzrückmeldung (nur Missionen mit kurzrueckmeldung): gute Entscheidung, Situation läuft weiter, kein Tor
     const def = missionDef();
     if (def && def.kurzrueckmeldung === true && fb.good && !endet && !fb.goal) return kurzRueckmeldung(fb);
@@ -973,7 +972,8 @@
   }
   /** Zur nächsten Entscheidung (aus der Rückmeldung oder automatisch nach der Kurzrückmeldung) */
   function weiter() {
-    kurzAus(); // Kurzrückmeldung auch bei vorgezogenem Übergang zuverlässig ausblenden
+    // Kurzrückmeldung bleibt beim nächsten Entscheidungsschritt verfügbar:
+    // ↶ Nochmal und 🔈 sind bewusst bis zur nächsten eigenen Aktion erreichbar.
     $('feedback').hidden = true;
     explainView = null; lernView = null;
     const h = hist[dec];
