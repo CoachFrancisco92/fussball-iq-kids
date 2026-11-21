@@ -1,0 +1,3771 @@
+{
+ "scripted": {
+  "musterweg": [
+   {
+    "ctx": {
+     "type": "angriff",
+     "title": "Was machst du mit dem Ball?",
+     "tag": "Angriff",
+     "say": "Du hast den Ball! Schau dich um. Passen oder dribbeln?",
+     "actions": [
+      "passen",
+      "dribbeln"
+     ]
+    },
+    "a": {
+     "kind": "pass",
+     "id": "b2"
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b2",
+      0.26611
+     ],
+     [
+      "b3",
+      -0.031054
+     ]
+    ],
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Ein Freund stand frei – Abspielen war eine gute Wahl."
+     },
+     "exe": {
+      "good": true,
+      "why": "Der Weg zu Blau 2 war frei."
+     },
+     "why": "Der Weg zu Blau 2 war frei."
+    },
+    "fb": {
+     "good": true,
+     "success": true,
+     "icon": "👍",
+     "text": "Der Pass ist angekommen!",
+     "tip": "Super! Der Weg zu Blau 2 war frei.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Weg frei"
+      }
+     },
+     "say": "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 14,
+       "y": 13
+      },
+      "to": {
+       "x": 24,
+       "y": 6
+      },
+      "ok": true,
+      "key": null
+     }
+    },
+    "events": [
+     "received:b2"
+    ],
+    "ticks": 119,
+    "mission": {
+     "phase": "attack",
+     "att": 1,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       14,
+       13
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       16.932346,
+       13.659724
+      ],
+      [
+       "r2",
+       25.047973,
+       7.833953
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b2",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       14,
+       13
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       16.932346,
+       13.659724
+      ],
+      [
+       "r2",
+       25.047973,
+       7.833953
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b2",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "ohneBall",
+     "title": "Wo kann ich helfen?",
+     "tag": "Bewegung ohne Ball",
+     "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
+     "actions": [
+      "freilaufen"
+     ]
+    },
+    "a": {
+     "kind": "run",
+     "id": "b3",
+     "x": 23,
+     "y": 14
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b1",
+      -0.040402
+     ],
+     [
+      "b3",
+      -0.046523
+     ]
+    ],
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
+     },
+     "exe": {
+      "good": true,
+      "why": "Du bist in einen freien Raum gelaufen."
+     },
+     "why": "Du bist in einen freien Raum gelaufen."
+    },
+    "fb": {
+     "good": true,
+     "success": false,
+     "icon": "🤔",
+     "text": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne.",
+     "tip": "Das war trotzdem eine gute Idee!",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Guter Platz"
+      }
+     },
+     "say": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 19,
+       "y": 19.5
+      },
+      "to": {
+       "x": 23,
+       "y": 14
+      },
+      "ok": true,
+      "key": "r2",
+      "pass": {
+       "from": {
+        "x": 30.8,
+        "y": 2.373333
+       },
+       "to": {
+        "x": 23,
+        "y": 14
+       },
+       "ok": false
+      }
+     }
+    },
+    "events": [
+     "autoDribble"
+    ],
+    "ticks": 248,
+    "mission": {
+     "phase": "attack",
+     "att": 2,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       14,
+       13
+      ],
+      [
+       "b2",
+       30.8,
+       2.373333
+      ],
+      [
+       "b3",
+       23,
+       14
+      ],
+      [
+       "r1",
+       16.932346,
+       13.659724
+      ],
+      [
+       "r2",
+       29.57562,
+       3.052225
+      ],
+      [
+       "r3",
+       31.965738,
+       15.757691
+      ]
+     ],
+     "ball": "b2",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       14,
+       13
+      ],
+      [
+       "b2",
+       30.8,
+       2.373333
+      ],
+      [
+       "b3",
+       23,
+       14
+      ],
+      [
+       "r1",
+       16.932346,
+       13.659724
+      ],
+      [
+       "r2",
+       29.57562,
+       3.052225
+      ],
+      [
+       "r3",
+       31.965738,
+       15.757691
+      ]
+     ],
+     "ball": "b2",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "abschluss",
+     "title": "Welches Tor ist frei?",
+     "tag": "Torabschluss",
+     "say": "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?",
+     "actions": [
+      "schiessen",
+      "passen"
+     ]
+    },
+    "a": {
+     "kind": "shoot",
+     "goal": 0
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b1",
+      -0.088889
+     ],
+     [
+      "b3",
+      -0.111111
+     ]
+    ],
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Ein Tor war frei – Schießen war eine gute Wahl."
+     },
+     "exe": {
+      "good": true,
+      "why": "Du hast das freie Tor gewählt."
+     },
+     "why": "Du hast das freie Tor gewählt."
+    },
+    "fb": {
+     "good": true,
+     "success": true,
+     "icon": "🎉",
+     "text": "Toooor! Der Weg war frei.",
+     "tip": "Rot 3 ist vor das untere Tor gelaufen. Du hast das freie Tor gewählt!",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Freies Tor"
+      }
+     },
+     "say": "Toooor! Rot 3 ist vor das untere Tor gelaufen. Du hast das freie Tor gewählt!",
+     "goal": "blue",
+     "explain": {
+      "from": {
+       "x": 30.8,
+       "y": 2.373333
+      },
+      "to": {
+       "x": 36,
+       "y": 6
+      },
+      "ok": true,
+      "key": null
+     }
+    },
+    "events": [
+     "goal"
+    ],
+    "ticks": 129,
+    "mission": {
+     "phase": "defense",
+     "att": 3,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       17,
+       11
+      ],
+      [
+       "b2",
+       24.5,
+       8
+      ],
+      [
+       "b3",
+       26.5,
+       15
+      ],
+      [
+       "r1",
+       33.5,
+       12
+      ],
+      [
+       "r2",
+       31,
+       4
+      ],
+      [
+       "r3",
+       31,
+       20
+      ]
+     ],
+     "ball": "r1",
+     "poss": "red",
+     "score": {
+      "blue": 1,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       17,
+       11
+      ],
+      [
+       "b2",
+       24.5,
+       8
+      ],
+      [
+       "b3",
+       26.5,
+       15
+      ],
+      [
+       "r1",
+       33.5,
+       12
+      ],
+      [
+       "r2",
+       31,
+       4
+      ],
+      [
+       "r3",
+       31,
+       20
+      ]
+     ],
+     "ball": "r1",
+     "poss": "red",
+     "score": {
+      "blue": 1,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "verteidigung",
+     "title": "Wer hält den Gegner auf?",
+     "tag": "Verteidigung",
+     "say": "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?",
+     "actions": [
+      "erobern",
+      "raum"
+     ]
+    },
+    "a": {
+     "kind": "press",
+     "id": "b3"
+    },
+    "hint": null,
+    "opts": null,
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Angreifen war richtig – ein Spieler war nah genug."
+     },
+     "exe": {
+      "good": true,
+      "why": "Der Spieler am nächsten am Ball greift an."
+     },
+     "why": "Der Spieler am nächsten am Ball greift an."
+    },
+    "fb": {
+     "good": true,
+     "success": true,
+     "icon": "💨",
+     "text": "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen.",
+     "tip": "Super gemacht!",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Richtiger Spieler"
+      }
+     },
+     "say": "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen. Super gemacht!",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 26.5,
+       "y": 15
+      },
+      "to": {
+       "x": 33.5,
+       "y": 12
+      },
+      "ok": true,
+      "key": null,
+      "keyGood": false
+     }
+    },
+    "events": [
+     "redPass",
+     "received:r2"
+    ],
+    "ticks": 132,
+    "mission": {
+     "phase": "defense",
+     "att": 3,
+     "def": 1,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       22.473817,
+       11.274079
+      ],
+      [
+       "b2",
+       24.936906,
+       14.051427
+      ],
+      [
+       "b3",
+       29.460232,
+       11.574265
+      ],
+      [
+       "r1",
+       27.632509,
+       12.536314
+      ],
+      [
+       "r2",
+       27.927324,
+       4.670161
+      ],
+      [
+       "r3",
+       25.72,
+       20
+      ]
+     ],
+     "ball": "r2",
+     "poss": "red",
+     "score": {
+      "blue": 1,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       22.473817,
+       11.274079
+      ],
+      [
+       "b2",
+       24.936906,
+       14.051427
+      ],
+      [
+       "b3",
+       29.460232,
+       11.574265
+      ],
+      [
+       "r1",
+       27.632509,
+       12.536314
+      ],
+      [
+       "r2",
+       27.927324,
+       4.670161
+      ],
+      [
+       "r3",
+       25.72,
+       20
+      ]
+     ],
+     "ball": "r2",
+     "poss": "red",
+     "score": {
+      "blue": 1,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "verteidigung",
+     "title": "Wer hält den Gegner auf?",
+     "tag": "Verteidigung",
+     "say": "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?",
+     "actions": [
+      "erobern",
+      "raum"
+     ]
+    },
+    "a": {
+     "kind": "cover",
+     "id": "b1",
+     "x": 12,
+     "y": 6
+    },
+    "hint": null,
+    "opts": null,
+    "ev": {
+     "good": false,
+     "rec": {
+      "good": true,
+      "why": "Den Weg zu unserem Tor zu schützen war eine gute Wahl."
+     },
+     "exe": {
+      "good": false,
+      "why": "Der Weg zum Tor blieb offen."
+     },
+     "why": "Der Weg zum Tor blieb offen."
+    },
+    "fb": {
+     "good": true,
+     "success": true,
+     "icon": "🛡️",
+     "text": "Klasse! Der Gegner kommt nicht vorbei und muss die Richtung ändern.",
+     "tip": "Super gemacht!",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Gut gestellt"
+      }
+     },
+     "say": "Klasse! Der Gegner kommt nicht vorbei und muss die Richtung ändern. Super gemacht!",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 22.473817,
+       "y": 11.274079
+      },
+      "to": {
+       "x": 12,
+       "y": 6
+      },
+      "ok": true,
+      "key": "r2",
+      "threat": {
+       "from": {
+        "x": 27.927324,
+        "y": 4.670161
+       },
+       "to": {
+        "x": 0,
+        "y": 6
+       }
+      }
+     }
+    },
+    "events": [
+     "evade",
+     "evade"
+    ],
+    "ticks": 302,
+    "mission": {
+     "phase": "defense",
+     "att": 3,
+     "def": 2,
+     "done": true,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       12,
+       6
+      ],
+      [
+       "b2",
+       13.327535,
+       13.329971
+      ],
+      [
+       "b3",
+       17.495805,
+       18.390343
+      ],
+      [
+       "r1",
+       15.552509,
+       12.536314
+      ],
+      [
+       "r2",
+       14.264008,
+       4.968445
+      ],
+      [
+       "r3",
+       13.64,
+       20
+      ]
+     ],
+     "ball": "r2",
+     "poss": "red",
+     "score": {
+      "blue": 1,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       12,
+       6
+      ],
+      [
+       "b2",
+       13.327535,
+       13.329971
+      ],
+      [
+       "b3",
+       17.495805,
+       18.390343
+      ],
+      [
+       "r1",
+       15.552509,
+       12.536314
+      ],
+      [
+       "r2",
+       14.264008,
+       4.968445
+      ],
+      [
+       "r3",
+       13.64,
+       20
+      ]
+     ],
+     "ball": "r2",
+     "poss": "red",
+     "score": {
+      "blue": 1,
+      "red": 0
+     }
+    }
+   }
+  ],
+  "abgefangen": [
+   {
+    "ctx": {
+     "type": "angriff",
+     "title": "Was machst du mit dem Ball?",
+     "tag": "Angriff",
+     "say": "Du hast den Ball! Schau dich um. Passen oder dribbeln?",
+     "actions": [
+      "passen",
+      "dribbeln"
+     ]
+    },
+    "a": {
+     "kind": "pass",
+     "id": "b3"
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b2",
+      0.26611
+     ],
+     [
+      "b3",
+      -0.031054
+     ]
+    ],
+    "ev": {
+     "good": false,
+     "rec": {
+      "good": true,
+      "why": "Ein Freund stand frei – Abspielen war eine gute Wahl."
+     },
+     "exe": {
+      "good": false,
+      "why": "Rot 3 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier."
+     },
+     "why": "Rot 3 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier."
+    },
+    "fb": {
+     "good": false,
+     "success": false,
+     "icon": "😮",
+     "text": "Oh! Rot 3 stand im Weg und hat den Ball bekommen.",
+     "tip": "Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": false,
+       "label": "Gegner im Weg"
+      }
+     },
+     "say": "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 14,
+       "y": 13
+      },
+      "to": {
+       "x": 19,
+       "y": 19.5
+      },
+      "ok": false,
+      "key": "r3"
+     }
+    },
+    "events": [
+     "intercepted:r3"
+    ],
+    "ticks": 67,
+    "mission": {
+     "phase": "defense",
+     "att": 1,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       14.354197,
+       14.400821
+      ],
+      [
+       "b2",
+       24.212717,
+       7.659038
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       16.473353,
+       13.934693
+      ],
+      [
+       "r2",
+       26.370024,
+       11.670168
+      ],
+      [
+       "r3",
+       15.223291,
+       16.894636
+      ]
+     ],
+     "ball": "r3",
+     "poss": "red",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       14.354197,
+       14.400821
+      ],
+      [
+       "b2",
+       24.212717,
+       7.659038
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       16.473353,
+       13.934693
+      ],
+      [
+       "r2",
+       26.370024,
+       11.670168
+      ],
+      [
+       "r3",
+       15.223291,
+       16.894636
+      ]
+     ],
+     "ball": "r3",
+     "poss": "red",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "verteidigung",
+     "title": "Wie schützen wir unser Tor?",
+     "tag": "Verteidigung",
+     "say": "Der Gegner will zu unserem Tor! Wo muss dein Spieler stehen, damit er nicht einfach schießen kann?",
+     "actions": [
+      "raum",
+      "erobern"
+     ]
+    },
+    "a": {
+     "kind": "press",
+     "id": "b1"
+    },
+    "hint": null,
+    "opts": null,
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Angreifen war richtig – ein Spieler war nah genug."
+     },
+     "exe": {
+      "good": true,
+      "why": "Der Spieler am nächsten am Ball greift an."
+     },
+     "why": "Der Spieler am nächsten am Ball greift an."
+    },
+    "fb": {
+     "good": true,
+     "success": true,
+     "icon": "💪",
+     "text": "Ball erobert! Jetzt greifen wir an.",
+     "tip": "Super gemacht!",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Richtiger Spieler"
+      }
+     },
+     "say": "Ball erobert! Jetzt greifen wir an. Super gemacht!",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 14.354197,
+       "y": 14.400821
+      },
+      "to": {
+       "x": 15.223291,
+       "y": 16.894636
+      },
+      "ok": true,
+      "key": null,
+      "keyGood": false
+     }
+    },
+    "events": [
+     "evade",
+     "steal:b1"
+    ],
+    "ticks": 104,
+    "mission": {
+     "phase": "defense",
+     "att": 1,
+     "def": 1,
+     "done": true,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       13.832945,
+       18.394687
+      ],
+      [
+       "b2",
+       21.63448,
+       11.117689
+      ],
+      [
+       "b3",
+       14.10745,
+       16.057551
+      ],
+      [
+       "r1",
+       15.544421,
+       15.023657
+      ],
+      [
+       "r2",
+       24.460505,
+       10.110923
+      ],
+      [
+       "r3",
+       13.363914,
+       19.223855
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       13.832945,
+       18.394687
+      ],
+      [
+       "b2",
+       21.63448,
+       11.117689
+      ],
+      [
+       "b3",
+       14.10745,
+       16.057551
+      ],
+      [
+       "r1",
+       15.544421,
+       15.023657
+      ],
+      [
+       "r2",
+       24.460505,
+       10.110923
+      ],
+      [
+       "r3",
+       13.363914,
+       19.223855
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   }
+  ],
+  "geblockt": [
+   {
+    "ctx": {
+     "type": "angriff",
+     "title": "Was machst du mit dem Ball?",
+     "tag": "Angriff",
+     "say": "Du hast den Ball! Schau dich um. Passen oder dribbeln?",
+     "actions": [
+      "passen",
+      "dribbeln"
+     ]
+    },
+    "a": {
+     "kind": "pass",
+     "id": "b2"
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b2",
+      0.26611
+     ],
+     [
+      "b3",
+      -0.031054
+     ]
+    ],
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Ein Freund stand frei – Abspielen war eine gute Wahl."
+     },
+     "exe": {
+      "good": true,
+      "why": "Der Weg zu Blau 2 war frei."
+     },
+     "why": "Der Weg zu Blau 2 war frei."
+    },
+    "fb": {
+     "good": true,
+     "success": true,
+     "icon": "👍",
+     "text": "Der Pass ist angekommen!",
+     "tip": "Super! Der Weg zu Blau 2 war frei.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Weg frei"
+      }
+     },
+     "say": "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 14,
+       "y": 13
+      },
+      "to": {
+       "x": 24,
+       "y": 6
+      },
+      "ok": true,
+      "key": null
+     }
+    },
+    "events": [
+     "received:b2"
+    ],
+    "ticks": 119,
+    "mission": {
+     "phase": "attack",
+     "att": 1,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       14,
+       13
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       16.932346,
+       13.659724
+      ],
+      [
+       "r2",
+       25.047973,
+       7.833953
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b2",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       14,
+       13
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       16.932346,
+       13.659724
+      ],
+      [
+       "r2",
+       25.047973,
+       7.833953
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b2",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "ohneBall",
+     "title": "Wo kann ich helfen?",
+     "tag": "Bewegung ohne Ball",
+     "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
+     "actions": [
+      "freilaufen"
+     ]
+    },
+    "a": {
+     "kind": "run",
+     "id": "b3",
+     "x": 23,
+     "y": 14
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b1",
+      -0.040402
+     ],
+     [
+      "b3",
+      -0.046523
+     ]
+    ],
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
+     },
+     "exe": {
+      "good": true,
+      "why": "Du bist in einen freien Raum gelaufen."
+     },
+     "why": "Du bist in einen freien Raum gelaufen."
+    },
+    "fb": {
+     "good": true,
+     "success": false,
+     "icon": "🤔",
+     "text": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne.",
+     "tip": "Das war trotzdem eine gute Idee!",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Guter Platz"
+      }
+     },
+     "say": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 19,
+       "y": 19.5
+      },
+      "to": {
+       "x": 23,
+       "y": 14
+      },
+      "ok": true,
+      "key": "r2",
+      "pass": {
+       "from": {
+        "x": 30.8,
+        "y": 2.373333
+       },
+       "to": {
+        "x": 23,
+        "y": 14
+       },
+       "ok": false
+      }
+     }
+    },
+    "events": [
+     "autoDribble"
+    ],
+    "ticks": 248,
+    "mission": {
+     "phase": "attack",
+     "att": 2,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       14,
+       13
+      ],
+      [
+       "b2",
+       30.8,
+       2.373333
+      ],
+      [
+       "b3",
+       23,
+       14
+      ],
+      [
+       "r1",
+       16.932346,
+       13.659724
+      ],
+      [
+       "r2",
+       29.57562,
+       3.052225
+      ],
+      [
+       "r3",
+       31.965738,
+       15.757691
+      ]
+     ],
+     "ball": "b2",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       14,
+       13
+      ],
+      [
+       "b2",
+       30.8,
+       2.373333
+      ],
+      [
+       "b3",
+       23,
+       14
+      ],
+      [
+       "r1",
+       16.932346,
+       13.659724
+      ],
+      [
+       "r2",
+       29.57562,
+       3.052225
+      ],
+      [
+       "r3",
+       31.965738,
+       15.757691
+      ]
+     ],
+     "ball": "b2",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "abschluss",
+     "title": "Welches Tor ist frei?",
+     "tag": "Torabschluss",
+     "say": "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?",
+     "actions": [
+      "schiessen",
+      "passen"
+     ]
+    },
+    "a": {
+     "kind": "shoot",
+     "goal": 1
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b1",
+      -0.088889
+     ],
+     [
+      "b3",
+      -0.111111
+     ]
+    ],
+    "ev": {
+     "good": false,
+     "rec": {
+      "good": true,
+      "why": "Ein Tor war frei – Schießen war eine gute Wahl."
+     },
+     "exe": {
+      "good": false,
+      "why": "Vor diesem Tor stand Rot 3. Das andere Tor war frei."
+     },
+     "why": "Vor diesem Tor stand Rot 3. Das andere Tor war frei."
+    },
+    "fb": {
+     "good": false,
+     "success": false,
+     "icon": "🧤",
+     "text": "Geblockt! Rot 3 stand vor dem Tor.",
+     "tip": "Gute Idee, aufs Tor zu schießen! Aber schau mal: Rot 3 ist vor das untere Tor gelaufen. Das obere Tor war frei.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": false,
+       "label": "Gegner im Weg"
+      }
+     },
+     "say": "Geblockt! Gute Idee, aufs Tor zu schießen! Aber schau mal: Rot 3 ist vor das untere Tor gelaufen. Das obere Tor war frei.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 30.8,
+       "y": 2.373333
+      },
+      "to": {
+       "x": 36,
+       "y": 18
+      },
+      "ok": false,
+      "key": "r3"
+     }
+    },
+    "events": [
+     "blocked:r3"
+    ],
+    "ticks": 96,
+    "mission": {
+     "phase": "defense",
+     "att": 3,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       15.635048,
+       13.550683
+      ],
+      [
+       "b2",
+       29.619061,
+       3.624888
+      ],
+      [
+       "b3",
+       23,
+       14
+      ],
+      [
+       "r1",
+       21.343796,
+       13.990022
+      ],
+      [
+       "r2",
+       29.331482,
+       5.730871
+      ],
+      [
+       "r3",
+       32.771106,
+       13.847195
+      ]
+     ],
+     "ball": "r3",
+     "poss": "red",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       15.635048,
+       13.550683
+      ],
+      [
+       "b2",
+       29.619061,
+       3.624888
+      ],
+      [
+       "b3",
+       23,
+       14
+      ],
+      [
+       "r1",
+       21.343796,
+       13.990022
+      ],
+      [
+       "r2",
+       29.331482,
+       5.730871
+      ],
+      [
+       "r3",
+       32.771106,
+       13.847195
+      ]
+     ],
+     "ball": "r3",
+     "poss": "red",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "verteidigung",
+     "title": "Wer hält den Gegner auf?",
+     "tag": "Verteidigung",
+     "say": "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?",
+     "actions": [
+      "erobern",
+      "raum"
+     ]
+    },
+    "a": {
+     "kind": "press",
+     "id": "b1"
+    },
+    "hint": null,
+    "opts": null,
+    "ev": {
+     "good": false,
+     "rec": {
+      "good": false,
+      "why": "Der Gegner war weit weg. Besser erst den Weg zum Tor versperren."
+     },
+     "exe": {
+      "good": false,
+      "why": "Der Weg war weit. Blau 3 war näher am Ball."
+     },
+     "why": "Der Gegner war weit weg. Besser erst den Weg zum Tor versperren."
+    },
+    "fb": {
+     "good": false,
+     "success": true,
+     "icon": "💪",
+     "text": "Ball erobert! Jetzt greifen wir an.",
+     "tip": "Hat geklappt! Aber schau mal: Der Gegner war weit weg. Besser erst den Weg zum Tor versperren.",
+     "tags": {
+      "rec": {
+       "good": false,
+       "label": "Andere Idee besser"
+      },
+      "exe": {
+       "good": false,
+       "label": "Anderer Spieler näher"
+      }
+     },
+     "say": "Ball erobert! Jetzt greifen wir an. Hat geklappt! Aber schau mal: Der Gegner war weit weg. Besser erst den Weg zum Tor versperren.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 15.635048,
+       "y": 13.550683
+      },
+      "to": {
+       "x": 32.771106,
+       "y": 13.847195
+      },
+      "ok": false,
+      "key": "b3",
+      "keyGood": true
+     }
+    },
+    "events": [
+     "evade",
+     "steal:b1"
+    ],
+    "ticks": 230,
+    "mission": {
+     "phase": "defense",
+     "att": 3,
+     "def": 1,
+     "done": true,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       28.589571,
+       16.06896
+      ],
+      [
+       "b2",
+       21.81163,
+       5.757547
+      ],
+      [
+       "b3",
+       21.656547,
+       14.385156
+      ],
+      [
+       "r1",
+       24.556853,
+       15.098658
+      ],
+      [
+       "r2",
+       26.3542,
+       6.179288
+      ],
+      [
+       "r3",
+       29.328942,
+       16.669294
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       28.589571,
+       16.06896
+      ],
+      [
+       "b2",
+       21.81163,
+       5.757547
+      ],
+      [
+       "b3",
+       21.656547,
+       14.385156
+      ],
+      [
+       "r1",
+       24.556853,
+       15.098658
+      ],
+      [
+       "r2",
+       26.3542,
+       6.179288
+      ],
+      [
+       "r3",
+       29.328942,
+       16.669294
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   }
+  ],
+  "dribbling": [
+   {
+    "ctx": {
+     "type": "angriff",
+     "title": "Was machst du mit dem Ball?",
+     "tag": "Angriff",
+     "say": "Du hast den Ball! Schau dich um. Passen oder dribbeln?",
+     "actions": [
+      "passen",
+      "dribbeln"
+     ]
+    },
+    "a": {
+     "kind": "dribble",
+     "x": 10,
+     "y": 13
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b2",
+      0.26611
+     ],
+     [
+      "b3",
+      -0.031054
+     ]
+    ],
+    "ev": {
+     "good": false,
+     "rec": {
+      "good": true,
+      "why": "Vor dir war Platz – Dribbeln war eine gute Wahl."
+     },
+     "exe": {
+      "good": false,
+      "why": "Nach vorn war Platz – dribbel Richtung Tor."
+     },
+     "why": "Nach vorn war Platz – dribbel Richtung Tor."
+    },
+    "fb": {
+     "good": false,
+     "success": true,
+     "icon": "👍",
+     "text": "Gut gedribbelt – du hast den Ball behalten!",
+     "tip": "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": false,
+       "label": "Vorn war Platz"
+      }
+     },
+     "say": "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 14,
+       "y": 13
+      },
+      "to": {
+       "x": 10,
+       "y": 13
+      },
+      "ok": true,
+      "key": "r1"
+     }
+    },
+    "events": [],
+    "ticks": 89,
+    "mission": {
+     "phase": "attack",
+     "att": 1,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       10,
+       13
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       14.061449,
+       12.80688
+      ],
+      [
+       "r2",
+       27.454585,
+       9.182095
+      ],
+      [
+       "r3",
+       21.291202,
+       18.81044
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       10,
+       13
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       14.061449,
+       12.80688
+      ],
+      [
+       "r2",
+       27.454585,
+       9.182095
+      ],
+      [
+       "r3",
+       21.291202,
+       18.81044
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "angriff",
+     "title": "Wem spiele ich den Ball zu?",
+     "tag": "Angriff",
+     "say": "Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?",
+     "actions": [
+      "passen",
+      "dribbeln"
+     ]
+    },
+    "a": {
+     "kind": "dribble",
+     "x": 6,
+     "y": 13
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b2",
+      -0.010824
+     ],
+     [
+      "b3",
+      -0.065477
+     ]
+    ],
+    "ev": {
+     "good": false,
+     "rec": {
+      "good": true,
+      "why": "Vor dir war Platz – Dribbeln war eine gute Wahl."
+     },
+     "exe": {
+      "good": false,
+      "why": "Nach vorn war Platz – dribbel Richtung Tor."
+     },
+     "why": "Nach vorn war Platz – dribbel Richtung Tor."
+    },
+    "fb": {
+     "good": false,
+     "success": true,
+     "icon": "👍",
+     "text": "Gut gedribbelt – du hast den Ball behalten!",
+     "tip": "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": false,
+       "label": "Vorn war Platz"
+      }
+     },
+     "say": "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 10,
+       "y": 13
+      },
+      "to": {
+       "x": 6,
+       "y": 13
+      },
+      "ok": true,
+      "key": "r1"
+     }
+    },
+    "events": [],
+    "ticks": 89,
+    "mission": {
+     "phase": "attack",
+     "att": 2,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       6,
+       13
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       9.613403,
+       12.93269
+      ],
+      [
+       "r2",
+       27.001094,
+       6.007657
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       6,
+       13
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       9.613403,
+       12.93269
+      ],
+      [
+       "r2",
+       27.001094,
+       6.007657
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "angriff",
+     "title": "Wem spiele ich den Ball zu?",
+     "tag": "Angriff",
+     "say": "Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?",
+     "actions": [
+      "passen",
+      "dribbeln"
+     ]
+    },
+    "a": {
+     "kind": "dribble",
+     "x": 3,
+     "y": 16
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b2",
+      -0.02607
+     ],
+     [
+      "b3",
+      -0.056942
+     ]
+    ],
+    "ev": {
+     "good": false,
+     "rec": {
+      "good": true,
+      "why": "Vor dir war Platz – Dribbeln war eine gute Wahl."
+     },
+     "exe": {
+      "good": false,
+      "why": "Nach vorn war Platz – dribbel Richtung Tor."
+     },
+     "why": "Nach vorn war Platz – dribbel Richtung Tor."
+    },
+    "fb": {
+     "good": false,
+     "success": true,
+     "icon": "👍",
+     "text": "Gut gedribbelt – du hast den Ball behalten!",
+     "tip": "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": false,
+       "label": "Vorn war Platz"
+      }
+     },
+     "say": "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 6,
+       "y": 13
+      },
+      "to": {
+       "x": 3,
+       "y": 16
+      },
+      "ok": true,
+      "key": "r1"
+     }
+    },
+    "events": [],
+    "ticks": 93,
+    "mission": {
+     "phase": "attack",
+     "att": 3,
+     "def": 0,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       3,
+       16
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       5.332486,
+       14.585006
+      ],
+      [
+       "r2",
+       27.001094,
+       6.007657
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       3,
+       16
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       5.332486,
+       14.585006
+      ],
+      [
+       "r2",
+       27.001094,
+       6.007657
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "angriff",
+     "title": "Wem spiele ich den Ball zu?",
+     "tag": "Angriff",
+     "say": "Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?",
+     "actions": [
+      "passen",
+      "dribbeln"
+     ]
+    },
+    "a": {
+     "kind": "dribble",
+     "x": 3,
+     "y": 20
+    },
+    "hint": null,
+    "opts": [
+     [
+      "b2",
+      -0.244444
+     ],
+     [
+      "b3",
+      -0.057543
+     ]
+    ],
+    "ev": {
+     "good": false,
+     "rec": {
+      "good": true,
+      "why": "Vor dir war Platz – Dribbeln war eine gute Wahl."
+     },
+     "exe": {
+      "good": false,
+      "why": "Nach vorn war Platz – dribbel Richtung Tor."
+     },
+     "why": "Nach vorn war Platz – dribbel Richtung Tor."
+    },
+    "fb": {
+     "good": false,
+     "success": true,
+     "icon": "👍",
+     "text": "Gut gedribbelt – du hast den Ball behalten!",
+     "tip": "Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": false,
+       "label": "Vorn war Platz"
+      }
+     },
+     "say": "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 3,
+       "y": 16
+      },
+      "to": {
+       "x": 3,
+       "y": 20
+      },
+      "ok": true,
+      "key": "r1"
+     }
+    },
+    "events": [],
+    "ticks": 89,
+    "mission": {
+     "phase": "defense",
+     "att": 4,
+     "def": 0,
+     "done": false,
+     "note": "aus"
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       3,
+       20
+      ],
+      [
+       "b2",
+       24,
+       6
+      ],
+      [
+       "b3",
+       19,
+       19.5
+      ],
+      [
+       "r1",
+       3.355372,
+       18.419932
+      ],
+      [
+       "r2",
+       27.001094,
+       6.007657
+      ],
+      [
+       "r3",
+       21.98839,
+       19.236319
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       17,
+       11
+      ],
+      [
+       "b2",
+       24.5,
+       8
+      ],
+      [
+       "b3",
+       26.5,
+       15
+      ],
+      [
+       "r1",
+       33.5,
+       12
+      ],
+      [
+       "r2",
+       31,
+       4
+      ],
+      [
+       "r3",
+       31,
+       20
+      ]
+     ],
+     "ball": "r1",
+     "poss": "red",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "verteidigung",
+     "title": "Wer hält den Gegner auf?",
+     "tag": "Verteidigung",
+     "say": "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?",
+     "actions": [
+      "erobern",
+      "raum"
+     ]
+    },
+    "a": {
+     "kind": "press",
+     "id": "b3"
+    },
+    "hint": null,
+    "opts": null,
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Angreifen war richtig – ein Spieler war nah genug."
+     },
+     "exe": {
+      "good": true,
+      "why": "Der Spieler am nächsten am Ball greift an."
+     },
+     "why": "Der Spieler am nächsten am Ball greift an."
+    },
+    "fb": {
+     "good": true,
+     "success": true,
+     "icon": "💨",
+     "text": "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen.",
+     "tip": "Super gemacht!",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": true,
+       "label": "Richtiger Spieler"
+      }
+     },
+     "say": "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen. Super gemacht!",
+     "goal": null,
+     "explain": {
+      "from": {
+       "x": 26.5,
+       "y": 15
+      },
+      "to": {
+       "x": 33.5,
+       "y": 12
+      },
+      "ok": true,
+      "key": null,
+      "keyGood": false
+     }
+    },
+    "events": [
+     "redPass",
+     "received:r2"
+    ],
+    "ticks": 136,
+    "mission": {
+     "phase": "defense",
+     "att": 4,
+     "def": 1,
+     "done": false,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       22.563822,
+       11.294038
+      ],
+      [
+       "b2",
+       24.884935,
+       14.230708
+      ],
+      [
+       "b3",
+       29.614108,
+       11.415512
+      ],
+      [
+       "r1",
+       27.417228,
+       12.581636
+      ],
+      [
+       "r2",
+       27.769273,
+       4.673502
+      ],
+      [
+       "r3",
+       25.56,
+       20
+      ]
+     ],
+     "ball": "r2",
+     "poss": "red",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       22.563822,
+       11.294038
+      ],
+      [
+       "b2",
+       24.884935,
+       14.230708
+      ],
+      [
+       "b3",
+       29.614108,
+       11.415512
+      ],
+      [
+       "r1",
+       27.417228,
+       12.581636
+      ],
+      [
+       "r2",
+       27.769273,
+       4.673502
+      ],
+      [
+       "r3",
+       25.56,
+       20
+      ]
+     ],
+     "ball": "r2",
+     "poss": "red",
+     "score": {
+      "blue": 0,
+      "red": 0
+     }
+    }
+   },
+   {
+    "ctx": {
+     "type": "verteidigung",
+     "title": "Wer hält den Gegner auf?",
+     "tag": "Verteidigung",
+     "say": "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?",
+     "actions": [
+      "erobern",
+      "raum"
+     ]
+    },
+    "a": {
+     "kind": "cover",
+     "id": "b1",
+     "x": 20,
+     "y": 10
+    },
+    "hint": null,
+    "opts": null,
+    "ev": {
+     "good": true,
+     "rec": {
+      "good": true,
+      "why": "Den Weg zu unserem Tor zu schützen war eine gute Wahl."
+     },
+     "exe": {
+      "good": true,
+      "why": "Du stehst zwischen Gegner und Tor."
+     },
+     "why": "Du stehst zwischen Gegner und Tor."
+    },
+    "fb": {
+     "good": false,
+     "success": false,
+     "icon": "😬",
+     "text": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen.",
+     "tip": "Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+     "tags": {
+      "rec": {
+       "good": true,
+       "label": "Gute Idee"
+      },
+      "exe": {
+       "good": false,
+       "label": "Weg offen"
+      }
+     },
+     "say": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+     "goal": "red",
+     "explain": {
+      "from": {
+       "x": 22.563822,
+       "y": 11.294038
+      },
+      "to": {
+       "x": 20,
+       "y": 10
+      },
+      "ok": false,
+      "key": "r2",
+      "threat": {
+       "from": {
+        "x": 27.769273,
+        "y": 4.673502
+       },
+       "to": {
+        "x": 0,
+        "y": 6
+       }
+      }
+     }
+    },
+    "events": [
+     "redShot",
+     "goal"
+    ],
+    "ticks": 535,
+    "mission": {
+     "phase": "defense",
+     "att": 4,
+     "def": 2,
+     "done": true,
+     "note": null
+    },
+    "after": {
+     "p": [
+      [
+       "b1",
+       2.5,
+       12
+      ],
+      [
+       "b2",
+       6,
+       5
+      ],
+      [
+       "b3",
+       6,
+       19
+      ],
+      [
+       "r1",
+       19,
+       12
+      ],
+      [
+       "r2",
+       13,
+       7
+      ],
+      [
+       "r3",
+       13,
+       17
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 1
+     }
+    },
+    "afterApply": {
+     "p": [
+      [
+       "b1",
+       2.5,
+       12
+      ],
+      [
+       "b2",
+       6,
+       5
+      ],
+      [
+       "b3",
+       6,
+       19
+      ],
+      [
+       "r1",
+       19,
+       12
+      ],
+      [
+       "r2",
+       13,
+       7
+      ],
+      [
+       "r3",
+       13,
+       17
+      ]
+     ],
+     "ball": "b1",
+     "poss": "blue",
+     "score": {
+      "blue": 0,
+      "red": 1
+     }
+    }
+   }
+  ]
+ },
+ "hinted": [
+  {
+   "ctx": {
+    "type": "angriff",
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "say": "Du hast den Ball! Schau dich um. Passen oder dribbeln?",
+    "actions": [
+     "passen",
+     "dribbeln"
+    ]
+   },
+   "a": {
+    "kind": "pass",
+    "id": "b2"
+   },
+   "hint": {
+    "k": "passen",
+    "say": "Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner."
+   },
+   "opts": [
+    [
+     "b2",
+     0.26611
+    ],
+    [
+     "b3",
+     -0.031054
+    ]
+   ],
+   "ev": {
+    "good": true,
+    "rec": {
+     "good": true,
+     "why": "Ein Freund stand frei – Abspielen war eine gute Wahl."
+    },
+    "exe": {
+     "good": true,
+     "why": "Der Weg zu Blau 2 war frei."
+    },
+    "why": "Der Weg zu Blau 2 war frei."
+   },
+   "fb": {
+    "good": true,
+    "success": true,
+    "icon": "👍",
+    "text": "Der Pass ist angekommen!",
+    "tip": "Super! Der Weg zu Blau 2 war frei.",
+    "tags": {
+     "rec": {
+      "good": true,
+      "label": "Gute Idee"
+     },
+     "exe": {
+      "good": true,
+      "label": "Weg frei"
+     }
+    },
+    "say": "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei.",
+    "goal": null,
+    "explain": {
+     "from": {
+      "x": 14,
+      "y": 13
+     },
+     "to": {
+      "x": 24,
+      "y": 6
+     },
+     "ok": true,
+     "key": null
+    }
+   },
+   "events": [
+    "received:b2"
+   ],
+   "ticks": 119,
+   "mission": {
+    "phase": "attack",
+    "att": 1,
+    "def": 0,
+    "done": false,
+    "note": null
+   },
+   "after": {
+    "p": [
+     [
+      "b1",
+      14,
+      13
+     ],
+     [
+      "b2",
+      24,
+      6
+     ],
+     [
+      "b3",
+      19,
+      19.5
+     ],
+     [
+      "r1",
+      16.932346,
+      13.659724
+     ],
+     [
+      "r2",
+      25.047973,
+      7.833953
+     ],
+     [
+      "r3",
+      21.98839,
+      19.236319
+     ]
+    ],
+    "ball": "b2",
+    "poss": "blue",
+    "score": {
+     "blue": 0,
+     "red": 0
+    }
+   },
+   "afterApply": {
+    "p": [
+     [
+      "b1",
+      14,
+      13
+     ],
+     [
+      "b2",
+      24,
+      6
+     ],
+     [
+      "b3",
+      19,
+      19.5
+     ],
+     [
+      "r1",
+      16.932346,
+      13.659724
+     ],
+     [
+      "r2",
+      25.047973,
+      7.833953
+     ],
+     [
+      "r3",
+      21.98839,
+      19.236319
+     ]
+    ],
+    "ball": "b2",
+    "poss": "blue",
+    "score": {
+     "blue": 0,
+     "red": 0
+    }
+   }
+  },
+  {
+   "ctx": {
+    "type": "ohneBall",
+    "title": "Wo kann ich helfen?",
+    "tag": "Bewegung ohne Ball",
+    "say": "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.",
+    "actions": [
+     "freilaufen"
+    ]
+   },
+   "a": {
+    "kind": "run",
+    "id": "b1",
+    "x": 14,
+    "y": 8
+   },
+   "hint": {
+    "k": "freilaufen",
+    "say": "Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen."
+   },
+   "opts": [
+    [
+     "b1",
+     -0.040402
+    ],
+    [
+     "b3",
+     -0.046523
+    ]
+   ],
+   "ev": {
+    "good": true,
+    "rec": {
+     "good": true,
+     "why": "Du hast deinem Freund geholfen, statt stehen zu bleiben."
+    },
+    "exe": {
+     "good": true,
+     "why": "Du bist in einen freien Raum gelaufen."
+    },
+    "why": "Du bist in einen freien Raum gelaufen."
+   },
+   "fb": {
+    "good": true,
+    "success": false,
+    "icon": "🤔",
+    "text": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne.",
+    "tip": "Das war trotzdem eine gute Idee!",
+    "tags": {
+     "rec": {
+      "good": true,
+      "label": "Gute Idee"
+     },
+     "exe": {
+      "good": true,
+      "label": "Guter Platz"
+     }
+    },
+    "say": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+    "goal": null,
+    "explain": {
+     "from": {
+      "x": 14,
+      "y": 13
+     },
+     "to": {
+      "x": 14,
+      "y": 8
+     },
+     "ok": true,
+     "key": "r2",
+     "pass": {
+      "from": {
+       "x": 30.839778,
+       "y": 3.264089
+      },
+      "to": {
+       "x": 14,
+       "y": 8.013333
+      },
+      "ok": false
+     }
+    }
+   },
+   "events": [
+    "autoDribble"
+   ],
+   "ticks": 217,
+   "mission": {
+    "phase": "attack",
+    "att": 2,
+    "def": 0,
+    "done": false,
+    "note": null
+   },
+   "after": {
+    "p": [
+     [
+      "b1",
+      14,
+      8.013333
+     ],
+     [
+      "b2",
+      30.839778,
+      3.264089
+     ],
+     [
+      "b3",
+      19,
+      19.5
+     ],
+     [
+      "r1",
+      16.98702,
+      7.767986
+     ],
+     [
+      "r2",
+      29.529603,
+      3.820242
+     ],
+     [
+      "r3",
+      28.230462,
+      17.612496
+     ]
+    ],
+    "ball": "b2",
+    "poss": "blue",
+    "score": {
+     "blue": 0,
+     "red": 0
+    }
+   },
+   "afterApply": {
+    "p": [
+     [
+      "b1",
+      14,
+      8.013333
+     ],
+     [
+      "b2",
+      30.839778,
+      3.264089
+     ],
+     [
+      "b3",
+      19,
+      19.5
+     ],
+     [
+      "r1",
+      16.98702,
+      7.767986
+     ],
+     [
+      "r2",
+      29.529603,
+      3.820242
+     ],
+     [
+      "r3",
+      28.230462,
+      17.612496
+     ]
+    ],
+    "ball": "b2",
+    "poss": "blue",
+    "score": {
+     "blue": 0,
+     "red": 0
+    }
+   }
+  },
+  {
+   "ctx": {
+    "type": "abschluss",
+    "title": "Welches Tor ist jetzt frei?",
+    "tag": "Torabschluss",
+    "say": "Schau nochmal: Welches Tor ist jetzt frei?",
+    "actions": [
+     "schiessen",
+     "passen"
+    ]
+   },
+   "a": {
+    "kind": "shoot",
+    "goal": 0
+   },
+   "hint": {
+    "k": "schiessen",
+    "say": "Vor diesem Tor steht kein Gegner im Weg."
+   },
+   "opts": [
+    [
+     "b1",
+     -0.088889
+    ],
+    [
+     "b3",
+     -0.133333
+    ]
+   ],
+   "ev": {
+    "good": true,
+    "rec": {
+     "good": true,
+     "why": "Ein Tor war frei – Schießen war eine gute Wahl."
+    },
+    "exe": {
+     "good": true,
+     "why": "Du hast das freie Tor gewählt."
+    },
+    "why": "Du hast das freie Tor gewählt."
+   },
+   "fb": {
+    "good": true,
+    "success": true,
+    "icon": "🎉",
+    "text": "Toooor! Der Weg war frei.",
+    "tip": "Jetzt war das obere Tor frei. Gut gewählt!",
+    "tags": {
+     "rec": {
+      "good": true,
+      "label": "Gute Idee"
+     },
+     "exe": {
+      "good": true,
+      "label": "Freies Tor"
+     }
+    },
+    "say": "Toooor! Jetzt war das obere Tor frei. Gut gewählt!",
+    "goal": "blue",
+    "explain": {
+     "from": {
+      "x": 30.839778,
+      "y": 3.264089
+     },
+     "to": {
+      "x": 36,
+      "y": 6
+     },
+     "ok": true,
+     "key": null
+    }
+   },
+   "events": [
+    "goal"
+   ],
+   "ticks": 127,
+   "mission": {
+    "phase": "defense",
+    "att": 3,
+    "def": 0,
+    "done": false,
+    "note": null
+   },
+   "after": {
+    "p": [
+     [
+      "b1",
+      17,
+      11
+     ],
+     [
+      "b2",
+      24.5,
+      8
+     ],
+     [
+      "b3",
+      26.5,
+      15
+     ],
+     [
+      "r1",
+      33.5,
+      12
+     ],
+     [
+      "r2",
+      31,
+      4
+     ],
+     [
+      "r3",
+      31,
+      20
+     ]
+    ],
+    "ball": "r1",
+    "poss": "red",
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   },
+   "afterApply": {
+    "p": [
+     [
+      "b1",
+      17,
+      11
+     ],
+     [
+      "b2",
+      24.5,
+      8
+     ],
+     [
+      "b3",
+      26.5,
+      15
+     ],
+     [
+      "r1",
+      33.5,
+      12
+     ],
+     [
+      "r2",
+      31,
+      4
+     ],
+     [
+      "r3",
+      31,
+      20
+     ]
+    ],
+    "ball": "r1",
+    "poss": "red",
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   }
+  },
+  {
+   "ctx": {
+    "type": "verteidigung",
+    "title": "Wer hält den Gegner auf?",
+    "tag": "Verteidigung",
+    "say": "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?",
+    "actions": [
+     "erobern",
+     "raum"
+    ]
+   },
+   "a": {
+    "kind": "press",
+    "id": "b3"
+   },
+   "hint": {
+    "k": "erobern",
+    "say": "Der Spieler, der am nächsten am Ball ist, greift an."
+   },
+   "opts": null,
+   "ev": {
+    "good": true,
+    "rec": {
+     "good": true,
+     "why": "Angreifen war richtig – ein Spieler war nah genug."
+    },
+    "exe": {
+     "good": true,
+     "why": "Der Spieler am nächsten am Ball greift an."
+    },
+    "why": "Der Spieler am nächsten am Ball greift an."
+   },
+   "fb": {
+    "good": true,
+    "success": true,
+    "icon": "💨",
+    "text": "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen.",
+    "tip": "Super gemacht!",
+    "tags": {
+     "rec": {
+      "good": true,
+      "label": "Gute Idee"
+     },
+     "exe": {
+      "good": true,
+      "label": "Richtiger Spieler"
+     }
+    },
+    "say": "Du hast Druck gemacht! Der Gegner musste ausweichen oder abspielen. Super gemacht!",
+    "goal": null,
+    "explain": {
+     "from": {
+      "x": 26.5,
+      "y": 15
+     },
+     "to": {
+      "x": 33.5,
+      "y": 12
+     },
+     "ok": true,
+     "key": null,
+     "keyGood": false
+    }
+   },
+   "events": [
+    "redPass",
+    "received:r2"
+   ],
+   "ticks": 133,
+   "mission": {
+    "phase": "defense",
+    "att": 3,
+    "def": 1,
+    "done": false,
+    "note": null
+   },
+   "after": {
+    "p": [
+     [
+      "b1",
+      22.49752,
+      11.278088
+     ],
+     [
+      "b2",
+      24.924351,
+      14.096373
+     ],
+     [
+      "b3",
+      29.499719,
+      11.535672
+     ],
+     [
+      "r1",
+      27.580319,
+      12.547301
+     ],
+     [
+      "r2",
+      27.887808,
+      4.670993
+     ],
+     [
+      "r3",
+      25.68,
+      20
+     ]
+    ],
+    "ball": "r2",
+    "poss": "red",
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   },
+   "afterApply": {
+    "p": [
+     [
+      "b1",
+      22.49752,
+      11.278088
+     ],
+     [
+      "b2",
+      24.924351,
+      14.096373
+     ],
+     [
+      "b3",
+      29.499719,
+      11.535672
+     ],
+     [
+      "r1",
+      27.580319,
+      12.547301
+     ],
+     [
+      "r2",
+      27.887808,
+      4.670993
+     ],
+     [
+      "r3",
+      25.68,
+      20
+     ]
+    ],
+    "ball": "r2",
+    "poss": "red",
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   }
+  },
+  {
+   "ctx": {
+    "type": "verteidigung",
+    "title": "Wer hält den Gegner auf?",
+    "tag": "Verteidigung",
+    "say": "Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?",
+    "actions": [
+     "erobern",
+     "raum"
+    ]
+   },
+   "a": {
+    "kind": "press",
+    "id": "b3"
+   },
+   "hint": {
+    "k": "erobern",
+    "say": "Der Spieler, der am nächsten am Ball ist, greift an."
+   },
+   "opts": null,
+   "ev": {
+    "good": true,
+    "rec": {
+     "good": true,
+     "why": "Angreifen war richtig – ein Spieler war nah genug."
+    },
+    "exe": {
+     "good": true,
+     "why": "Der Spieler am nächsten am Ball greift an."
+    },
+    "why": "Der Spieler am nächsten am Ball greift an."
+   },
+   "fb": {
+    "good": true,
+    "success": true,
+    "icon": "💪",
+    "text": "Ball erobert! Jetzt greifen wir an.",
+    "tip": "Super gemacht!",
+    "tags": {
+     "rec": {
+      "good": true,
+      "label": "Gute Idee"
+     },
+     "exe": {
+      "good": true,
+      "label": "Richtiger Spieler"
+     }
+    },
+    "say": "Ball erobert! Jetzt greifen wir an. Super gemacht!",
+    "goal": null,
+    "explain": {
+     "from": {
+      "x": 29.499719,
+      "y": 11.535672
+     },
+     "to": {
+      "x": 27.887808,
+      "y": 4.670993
+     },
+     "ok": true,
+     "key": null,
+     "keyGood": false
+    }
+   },
+   "events": [
+    "evade",
+    "steal:b3"
+   ],
+   "ticks": 242,
+   "mission": {
+    "phase": "defense",
+    "att": 3,
+    "def": 2,
+    "done": true,
+    "note": null
+   },
+   "after": {
+    "p": [
+     [
+      "b1",
+      17.347619,
+      13.188718
+     ],
+     [
+      "b2",
+      15.392088,
+      19.728761
+     ],
+     [
+      "b3",
+      18.254306,
+      4.80586
+     ],
+     [
+      "r1",
+      20.247977,
+      13.927998
+     ],
+     [
+      "r2",
+      17.304831,
+      4.720252
+     ],
+     [
+      "r3",
+      18.406174,
+      19.475228
+     ]
+    ],
+    "ball": "b3",
+    "poss": "blue",
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   },
+   "afterApply": {
+    "p": [
+     [
+      "b1",
+      17.347619,
+      13.188718
+     ],
+     [
+      "b2",
+      15.392088,
+      19.728761
+     ],
+     [
+      "b3",
+      18.254306,
+      4.80586
+     ],
+     [
+      "r1",
+      20.247977,
+      13.927998
+     ],
+     [
+      "r2",
+      17.304831,
+      4.720252
+     ],
+     [
+      "r3",
+      18.406174,
+      19.475228
+     ]
+    ],
+    "ball": "b3",
+    "poss": "blue",
+    "score": {
+     "blue": 1,
+     "red": 0
+    }
+   }
+  }
+ ],
+ "seeds": {
+  "1": "2ef0b3ae4a23877a",
+  "2": "c5b723886c1ab4af",
+  "3": "19e0e281214e740a",
+  "4": "1d03c32f3680882d",
+  "5": "42572bc2c7109220",
+  "6": "b5c69260d51cce22",
+  "7": "b8832481cacd6e55",
+  "8": "f4b76c05df1fa914",
+  "9": "fc9bbf41545e85f0",
+  "10": "b2a3e96dc2e996bb",
+  "11": "ba281453a64ebeee",
+  "12": "0cef6d0582a75c91",
+  "13": "15c8083d8e34ce5a",
+  "14": "66cf1c55c1dba7b8",
+  "15": "01e67a2eb85cb2c5",
+  "16": "4ca3f66ae2fbfc6d",
+  "17": "ecac1dc3225fd3ed",
+  "18": "27ee921c2e2cb5a2",
+  "19": "9f59b89677b4a995",
+  "20": "3be4c4ff3a48a757",
+  "21": "68c4beda557020dc",
+  "22": "627a225e980d43fd",
+  "23": "7d673bde5f8bb177",
+  "24": "94f4fc2598ca847e",
+  "25": "2ef0b3ae4a23877a",
+  "26": "2b626d19a5bd3b9b",
+  "27": "6f938f8579d1a1e0",
+  "28": "3efbcb0657e48166",
+  "29": "d5058220ed35fefc",
+  "30": "e962cabc5c5073ff",
+  "31": "4986d538b5ed2c0d",
+  "32": "7d673bde5f8bb177",
+  "33": "53fc32b63d61a027",
+  "34": "fdd572de96b6c540",
+  "35": "7d673bde5f8bb177",
+  "36": "88f6bf23547acc0d",
+  "37": "bcd24d00ab0e9573",
+  "38": "43d5260dabdf13e9",
+  "39": "15e7b86645847849",
+  "40": "6a56130433c6cea9",
+  "41": "69dad37fd58bdc17",
+  "42": "c3c4f6f5ae7872ea",
+  "43": "56b47ed02006ed0a",
+  "44": "a82d58fa54e8627a",
+  "45": "5232d85be52c9d11",
+  "46": "f334a433eb0eea3a",
+  "47": "762e6b3730338f78",
+  "48": "812d95153b1106e9",
+  "49": "caa0791c1bfcacae",
+  "50": "2f502b8418e31cc2",
+  "51": "812434714b7e9f89",
+  "52": "50ac4a6355e20750",
+  "53": "6251ffa30a70e903",
+  "54": "19e0e281214e740a",
+  "55": "015d1be2c7d617f9",
+  "56": "ecfd1259d9c46156",
+  "57": "19e0e281214e740a",
+  "58": "2ef0b3ae4a23877a",
+  "59": "ad828b9e3dd4a8de",
+  "60": "22ed0523c75f20f6",
+  "61": "a4559ab450990109",
+  "62": "77e8c27bce494012",
+  "63": "382ac1c1b9496ce5",
+  "64": "23c51426653c90f0",
+  "65": "d72eaec577a33d0d",
+  "66": "7abf9fe798538d67",
+  "67": "260ff6707e06be02",
+  "68": "9976651aece1a12a",
+  "69": "35ef5d5546220bed",
+  "70": "df438dbdba2d4257",
+  "71": "64b1d642a1a7d033",
+  "72": "9e19c28fb464a68f",
+  "73": "229ea2211e3ade79",
+  "74": "b4427e8dc4f6c376",
+  "75": "13454b581f22539c",
+  "76": "59d70913d147eb78",
+  "77": "7d673bde5f8bb177",
+  "78": "c65c045be8beb66b",
+  "79": "2ef0b3ae4a23877a",
+  "80": "7d673bde5f8bb177",
+  "81": "79b6bc227f05fe30",
+  "82": "63b9bcc531851adc",
+  "83": "fa6a0c7cce8d1d2c",
+  "84": "bb7463627d74096b",
+  "85": "26ae8992dd95233b",
+  "86": "7d673bde5f8bb177",
+  "87": "098f2f551efdaccd",
+  "88": "4f04ce634f50404c",
+  "89": "7d673bde5f8bb177",
+  "90": "2fdbaf15ec6b5ff3",
+  "91": "8c430b2c3912c1e7",
+  "92": "52501fee207d2195",
+  "93": "bcd436ea96bdba1d",
+  "94": "35adf8d026c4e834",
+  "95": "952512acf5a4cc3c",
+  "96": "d55caa1d3510ebf4",
+  "97": "7871f63a19f7b38a",
+  "98": "b1163f50eacf3b9c",
+  "99": "cc3fb35cb35097b1",
+  "100": "6fbb02193aaa4136",
+  "101": "b647f58742ba1351",
+  "102": "817193cad122a0f2",
+  "103": "cca67725309251fe",
+  "104": "a3f449ecbca456ea",
+  "105": "3babe32000996404",
+  "106": "b25a655acabaf067",
+  "107": "7c31c7d3d3ec8b8d",
+  "108": "19e0e281214e740a",
+  "109": "df7b9b3e622f6cb8",
+  "110": "c4c94d5cfe5db7b0",
+  "111": "19e0e281214e740a",
+  "112": "2ef0b3ae4a23877a",
+  "113": "2bf4e365dc363562",
+  "114": "f4402abfc0ba416c",
+  "115": "42625a313e9cb060",
+  "116": "7530f782df5baf2c",
+  "117": "bdc726b1ad49c2e4",
+  "118": "f87064ed9e48cdcc",
+  "119": "cb1cc562ebb6bfc5",
+  "120": "13fc60989a6b5aa4",
+  "121": "86fe41299ba4d86a",
+  "122": "97c1dcd0b6ae6a31",
+  "123": "e479ac244e7d92b1",
+  "124": "2aeb69381362e56f",
+  "125": "37c393d38d00c22b",
+  "126": "8d709ba43d67b2ad",
+  "127": "7194785d3c639731",
+  "128": "e6ef25e1bc14024c",
+  "129": "339cbf95ebc81c5e",
+  "130": "c0cd60d4f75983ab",
+  "131": "7d673bde5f8bb177",
+  "132": "9231e1439c9ad566",
+  "133": "2ef0b3ae4a23877a",
+  "134": "7d673bde5f8bb177",
+  "135": "489bca00a151968a",
+  "136": "75b15fd637b2403e",
+  "137": "02a1fe6cc173f198",
+  "138": "45e3ad3801dc1a40",
+  "139": "bb95b227acaf0c85",
+  "140": "dde0f85d4e1ab14c",
+  "141": "2a1e226b894e631e",
+  "142": "18db52fc1d752db1",
+  "143": "7d673bde5f8bb177",
+  "144": "ef0b07de013515e1",
+  "145": "7bd81ebce82611bd",
+  "146": "0f296e9532f40076",
+  "147": "0ea9e608b6c3ef5d",
+  "148": "34cf44a0f7b82324",
+  "149": "61ca524a211ab3c8",
+  "150": "b493357d16a113cc",
+  "151": "7de4f16468e1cb40",
+  "152": "f36a8e7931bd90e7",
+  "153": "1c07efb37b2549e1",
+  "154": "13cf761f98501f59",
+  "155": "ca0bb1fa536ecf0e",
+  "156": "570ace4617fcd56d",
+  "157": "bb4be5dbd4aa0f6a",
+  "158": "5ee5d2c239671254",
+  "159": "40f6a61b9a27d022",
+  "160": "ca2183b88bb2a0b8",
+  "161": "d236ad28921618d8",
+  "162": "991b13662c6b6644",
+  "163": "e81e3daf41f6a852",
+  "164": "42475fd045921600",
+  "165": "19e0e281214e740a",
+  "166": "e80feeb5767e820b",
+  "167": "507d5ffb43e57b4d",
+  "168": "19e0e281214e740a",
+  "169": "be8bfa79b7c10cf0",
+  "170": "ed47f6b6a08eee7c",
+  "171": "2d24ee2c98dc415b",
+  "172": "8215aa68a9cdf11e",
+  "173": "95a4c5c9b0b8e7ab",
+  "174": "0baba81a94e4e034",
+  "175": "4e7cf01b8ab9d436",
+  "176": "5d86f94098a865e4",
+  "177": "b5f4af2e313aa153",
+  "178": "39cec5bf509c641f",
+  "179": "024e12492cc40c57",
+  "180": "1f0d8f6fc3bcf072",
+  "181": "7be8babb19b75374",
+  "182": "ca4bdfc11bb7fa74",
+  "183": "ac951cba01a728e7",
+  "184": "309b0484bbc61dfe",
+  "185": "55abdcbe79e0f0b1",
+  "186": "537126afb2afbc5b",
+  "187": "2ef0b3ae4a23877a",
+  "188": "7d673bde5f8bb177",
+  "189": "6ebaefafab918ef8",
+  "190": "2ef0b3ae4a23877a",
+  "191": "600adf12ec5ee2d5",
+  "192": "2ae8315b0e0a9763",
+  "193": "4fd7d7a871a5c4bf",
+  "194": "174f8e44574e61aa",
+  "195": "04de7835ef632133",
+  "196": "075474ce4f95e823",
+  "197": "7d673bde5f8bb177",
+  "198": "cd2f84562c1db0a7",
+  "199": "c209e95a9f09b2d8",
+  "200": "ca1871fbcab11155"
+ }
+}
