@@ -56,6 +56,8 @@ async function pruefeFolge(H, wo) {
   await H.wait('folge'); const t0 = await H.now();
   if (!(await H.page.isHidden('#feedback'))) fail(wo + ': Rückmeldeblatt im Folge-Moment sichtbar');
   const fo = await H.fiq('folge'); if (!fo || !fo.gruende.length) fail(wo + ': Folge-Moment ohne Grund');
+  const titelInFolge = await H.page.$eval('#title', (e) => e.textContent);
+  if (titelInFolge !== 'Was hat sich verändert?') fail(wo + ': falsche Überschrift im Lernmoment: ' + titelInFolge);
   const m = await H.wait(['feedback', 'kurz'], 15000); const t1 = await H.now();
   const log = await H.log();
   const imFolge = log.filter((x) => x.e === 'start' && x.at >= t0 - 50 && x.at < t1 - 30).map((x) => x.t);
@@ -64,8 +66,6 @@ async function pruefeFolge(H, wo) {
     fail(wo + ': im Folge-Moment nicht genau eine kurze, neutrale Aufforderung: ' + imFolge.join(' | '));
   if (log.some((x) => x.e === 'abbruch' && x.t === imFolge[0]))
     fail(wo + ': Beobachtungshinweis ohne Antippen abgeschnitten');
-  const titel = await H.page.$eval('#title', (e) => e.textContent);
-  if (titel !== 'Was hat sich verändert?') fail(wo + ': falsche Überschrift im Lernmoment: ' + titel);
   if (t1 - t0 < 1300) fail(`${wo}: Folge-Moment zu kurz (${Math.round(t1 - t0)} ms)`);
   const w1 = await H.feldPx(); if (w1 < w0 * 0.97) fail(`${wo}: Feld in der Rückmeldung kleiner (${Math.round(w0)} → ${Math.round(w1)} px)`);
   return { m, dauer: Math.round(t1 - t0), fo, w0: Math.round(w0), w1: Math.round(w1) };
