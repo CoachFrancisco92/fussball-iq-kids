@@ -263,7 +263,14 @@
     },
 
     // V0.6.2: Folge-Moment – erst schauen, dann die Erklärung
-    folge: { schau: 'Schau!', dauer: 1400 },
+    folge: {
+      schau: 'Schau!',
+      tore: 'Schau auf die Tore!',
+      ball: 'Schau zum Ball!',
+      gegner: 'Schau auf den Roten!',
+      gegnerMehrere: 'Schau auf die Roten!',
+      dauer: 1400,
+    },
 
     // V0.6a P4: Lernergebnis je Situation (Stern = Kernleistung geschafft; mit Hilfe = voller Stern + 💡)
     lern: {
