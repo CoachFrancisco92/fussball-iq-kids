@@ -136,6 +136,13 @@ try {
     await H.page.waitForTimeout(500); // neuer bewusster Tipp, kein Doppeltipp
     await H.field(20, 4); await H.wait('decide', 3000);
     if ((await H.fiq('dec')) !== d0) fail('Wechsel-Tipp hat die Entscheidung übersprungen');
+    // Weitere zwei schnelle Tipps auf dieselbe Stelle müssen als Teil derselben Tippserie gelten.
+    for (let i = 0; i < 2; i++) {
+      await H.page.waitForTimeout(400);
+      await H.field(20, 4);
+    }
+    if ((await H.mode()) !== 'decide' || (await H.fiq('dec')) !== d0)
+      fail('Wiederholtes Tippen nach Wechsel hat eine Fußballaktion ausgelöst');
     // Szenenvergleich darf per Feld-Tipp nur eine Szene weiterschalten.
     await H.choose('Dribbeln'); await H.field(31, 15); await H.wait('folge');
     await H.field(20, 4); await H.wait('feedback', 3000);
