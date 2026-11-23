@@ -90,13 +90,17 @@
 
   // ------------------------------------------------------------ Darstellung
   const VIEW_GANZ = { x0: -2.2, y0: -1.6, w: 40.4, h: 27.2 };
-  // V0.6a P5: ruhige Rahmung – Lernmissionen spielen in der rechten Feldhälfte. Fester Ausschnitt je Mission (wechselt
-  // nie innerhalb einer Mission): ganze Feldhöhe mit Linien und beiden Toren, der leere linke Teil entfällt.
-  const VIEW_LERNEN = { x0: 6, y0: -0.8, w: 32.0, h: 25.6 };
+  // V0.6a P5: ruhige Rahmung, fester Ausschnitt je Mission (wechselt nie innerhalb einer Mission).
+  // V0.6.2: Der Ausschnitt begann bei x = 6 m und schnitt damit die linke Feldseite samt beider blauen Minitore ab
+  // (Tore bei x = 0, Tornetz bis −1,1 m) – Funino war nicht erkennbar. Jetzt ganze Feldbreite mit allen vier Minitoren
+  // und 0,5 m Rand hinter den Tornetzen; Höhe wie bisher. Simulation und Feldkoordinaten unverändert.
+  const VIEW_LERNEN = { x0: -1.6, y0: -0.8, w: 39.2, h: 25.6 };
   const VIEW = { ...VIEW_GANZ };
+  let lernRahmen = false;
   function setzeRahmen() {
-    const def = MISSIONS.find((m) => m.id === curId), v = def && def.art === 'lernen' && def.situationen ? VIEW_LERNEN : VIEW_GANZ;
-    Object.assign(VIEW, v); resize();
+    const def = MISSIONS.find((m) => m.id === curId);
+    lernRahmen = !!(def && def.art === 'lernen' && def.situationen);
+    Object.assign(VIEW, lernRahmen ? VIEW_LERNEN : VIEW_GANZ); resize();
   }
   let scale = 20, dpr = 1;
 
@@ -110,7 +114,14 @@
   const feldScale = () => { const r = wrap.getBoundingClientRect(); return Math.min(r.width / VIEW.w, r.height / VIEW.h); };
   function resize() {
     const app = $('app'), blatt = !!($('feedback') && !$('feedback').hidden);
-    if (!blatt) { app.classList.remove('blattSeite'); spielScale = feldScale(); }
+    // V0.6.2: Mit dem ganzen Funino-Feld passt das Rückmeldeblatt im Tablet-Querformat nicht mehr neben das Feld – es
+    // würde unter das Feld rutschen und das Feld je nach Textlänge um 12–22 % verkleinern. Deshalb steht in den
+    // Lernmissionen die Bedienleiste im Querformat (wie auf dem Handy quer) dauerhaft rechts; die Rückmeldung erscheint
+    // an derselben Stelle, das Feld behält beim Entscheiden und in der Rückmeldung dieselbe Größe. Mission 1 unverändert.
+    const leiste = lernRahmen && window.innerWidth >= 900 && window.innerWidth / window.innerHeight >= 1.2;
+    app.classList.toggle('leisteSeite', leiste);
+    if (leiste) { app.classList.remove('blattSeite'); if (!blatt) spielScale = feldScale(); }
+    else if (!blatt) { app.classList.remove('blattSeite'); spielScale = feldScale(); }
     else if (!app.classList.contains('blattSeite') && window.innerWidth >= 900 && window.innerWidth / window.innerHeight >= 1.2) {
       app.classList.add('blattSeite');
       if (spielScale && feldScale() < spielScale * 0.97) app.classList.remove('blattSeite');
@@ -442,10 +453,10 @@
     ctx.stroke(); ctx.setLineDash([]);
   }
 
-  function label(text) {
+  function label(text, neu) {
     ctx.font = FONT(Mm(1.15));
     const tw = ctx.measureText(text).width + Mm(1.6);
-    ctx.fillStyle = 'rgba(15,23,42,.78)';
+    ctx.fillStyle = neu ? 'rgba(202,138,4,.92)' : 'rgba(15,23,42,.78)';   // neu: Szene gerade gewechselt (0,4 s)
     roundRect(X(F.W / 2) - tw / 2, Y(0.4), tw, Mm(2), Mm(1)); ctx.fill();
     ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(text, X(F.W / 2), Y(1.4));
@@ -486,7 +497,7 @@
     drawPlayers(v, opts);
     // P5: Ursachen über den Spielern (die Lücke liegt dort, wo die Gegner vorher standen – sonst verdeckt)
     if ((mode === 'feedback' || mode === 'kurz' || mode === 'folge') && lernView) drawLern(mode === 'folge' ? { vorbei: lernView.vorbei } : lernView);
-    if (mode === 'replay' && replay) label(replay.queue[replay.i].label);
+    if (mode === 'replay' && replay) label(replay.queue[replay.i].label, replay.i > 0 && performance.now() - replay.wechsel < 400);
   }
   function roundRect(x, y, w, h, r) {
     ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
@@ -520,7 +531,7 @@
         if (replay.f >= item.frames.length + 75 && (Sprache.frei() || replay.f >= item.frames.length + 375)) {
           // Höchstzeit erreicht: noch laufende Ansage der alten Szene beenden (keine verspätete Ansage)
           if (!Sprache.frei()) Sprache.vorrang();
-          replay.i++; replay.f = 0;
+          replay.i++; replay.f = 0; replay.wechsel = performance.now();
           if (replay.i >= replay.queue.length) { const done = replay.onDone; replay = null; done(); break; }
           say(replay.queue[replay.i].say || '', 'ansage');
         }
@@ -731,13 +742,23 @@
     const el = document.elementFromPoint(lastButtonTap.x, lastButtonTap.y);
     return !(el && el.closest && el.closest('button'));
   };
+  // Szenenvergleich: Ein Tipp irgendwo im Spielfeldbereich (auch auf den Rand neben dem Feld) geht eine Szene weiter.
+  // Vorher zählte nur das Canvas – je nach Gerät 13–44 % der Fläche reagierten nicht. Knöpfe (⏭) behalten ihre Funktion.
+  wrap.addEventListener('pointerdown', (ev) => {
+    if (mode !== 'replay' || !replay || pausiert) return;
+    if (ev.target && ev.target.closest && ev.target.closest('button')) return;
+    if (isGhostTap(ev)) { tapCount.ghost++; return; }
+    tapCount.field++;
+    replayWeiter();
+  });
   cv.addEventListener('pointerdown', (ev) => {
+    if (mode === 'replay') return;   // siehe Spielfeldbereich oben (sonst doppelt gezählt)
     if (isGhostTap(ev)) { tapCount.ghost++; return; }
     tapCount.field++;
     if (mode === 'folge' && folgeWeiter && !pausiert) { Sprache.stopp(); folgeWeiter(); return; }  // Antippen beendet den Folge-Moment
     // Nur im Szenenvergleich: ein Tipp geht genau eine Szene weiter. Alle anderen
     // Tipp-/Entscheidungszustände behalten ihre bewährte Steuerung.
-    if (mode === 'replay' && replay && !pausiert) { replayWeiter(); return; }
+    if (mode === 'replay') return;   // Szenenvergleich: wird über den ganzen Spielfeldbereich behandelt (unten)
     const pt = worldFromEvent(ev);
     const c = S && E.carrier(S);
     if (mode === 'look') {
@@ -984,15 +1005,14 @@
   }
   /** Reines Szenen-Weiterschalten: verändert weder Spielstand noch Entscheidungen.
    *  Anders als ein globaler Tipp-Handler gilt das ausschließlich im Replay-Modus. */
-  // Versehentlicher Doppeltipp: ein zweiter Tipp innerhalb von 250 ms nach dem letzten wirksamen Vergleichstipp
-  // zählt nicht. Gilt nur im Szenenvergleich; bewusste Tipps danach (z. B. nach 700 ms) wirken wie gewohnt.
+  // Versehentlicher Doppeltipp: Ein Tipp innerhalb von 250 ms nach einem Szenenwechsel zählt nicht – egal ob der
+  // Wechsel durch einen Tipp oder automatisch (Szene zu Ende) kam. Sonst überspringt ein Tipp genau im Moment des
+  // automatischen Wechsels die gerade begonnene Szene. Gilt nur im Szenenvergleich; bewusste Tipps danach wirken sofort.
   const REPLAY_DOPPELTIPP_MS = 250;
-  let replayTippZuletzt = -Infinity;
   function replayWeiter() {
     if (mode !== 'replay' || !replay || pausiert) return;
     const jetzt = performance.now();
-    if (jetzt - replayTippZuletzt < REPLAY_DOPPELTIPP_MS) return;
-    replayTippZuletzt = jetzt;
+    if (jetzt - replay.wechsel < REPLAY_DOPPELTIPP_MS) return;
     Sprache.stopp();
     const naechste = replay.i + 1;
     if (naechste >= replay.queue.length) {
@@ -1004,12 +1024,12 @@
     replay.i = naechste;
     replay.f = 0;
     replay.acc = 0;
+    replay.wechsel = jetzt;
     say(replay.queue[naechste].say || '', 'ansage', true);
   }
   function startReplay(queue, onDone) {
     mode = 'replay';
-    replayTippZuletzt = -Infinity;   // neue Wiedergabe: Doppeltipp-Schutz gilt nur innerhalb dieses Vergleichs
-    replay = { queue, i: 0, f: 0, acc: 0, onDone: null };
+    replay = { queue, i: 0, f: 0, acc: 0, onDone: null, wechsel: -Infinity };  // wechsel: Zeit des letzten Szenenwechsels (Start zählt nicht; den Knopf-Doppeltipp fängt isGhostTap ab)
     $('prompt').hidden = true; $('skip').hidden = false; setStepText('');
     replay.onDone = () => { $('skip').hidden = true; onDone(); $('prompt').hidden = mode === 'end'; syncLayout(); };
     say(queue[0].say || '', 'ansage', true);

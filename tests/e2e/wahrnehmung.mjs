@@ -143,14 +143,52 @@ try {
     if (!(await H.page.isVisible('#fbCompare'))) fail('Nach Vergleich fehlt die Rückmeldung');
     console.log('✓ Vergleich: jeder Tipp geht genau eine Szene weiter; Rückkehr ohne neue Entscheidung');
     // Feinschliff: versehentlicher Doppeltipp (≤ 250 ms) zählt als ein Tipp – gleiche und andere Stelle; danach wirkt ein bewusster Tipp
+    // Der tatsächliche Abstand der beiden Tipps wird im Browser gemessen (unter Last kann Playwright länger brauchen);
+    // gilt nur ein Versuch mit Abstand < 250 ms – sonst wird er wiederholt.
+    await H.page.evaluate(() => { window.__tippZeiten = []; document.addEventListener('pointerdown', () => window.__tippZeiten.push(performance.now()), true); });
     for (const [ms, x2] of [[120, 20], [200, 26]]) {
-      await H.tap('#fbCompare'); await H.wait('replay');
-      await H.field(20, 4); await H.page.waitForTimeout(ms); await H.field(x2, 4); await H.page.waitForTimeout(60);
-      if ((await H.mode()) !== 'replay' || (await H.fiq('replayIdx')) !== 1) fail(`Doppeltipp ${ms} ms darf nur eine Szene weitergehen (Modus ${await H.mode()}, Szene ${await H.fiq('replayIdx')})`);
-      await H.page.waitForTimeout(700); await H.field(20, 4); await H.wait('feedback', 3000);
-      if ((await H.fiq('dec')) !== d0) fail('Doppeltipp im Vergleich darf keine Fußballentscheidung auslösen');
+      let gap = Infinity;
+      for (let versuch = 0; versuch < 4 && gap >= 245; versuch++) {
+        await H.tap('#fbCompare'); await H.wait('replay');
+        await H.page.evaluate(() => { window.__tippZeiten = []; });
+        await H.field(20, 4); await H.page.waitForTimeout(ms); await H.field(x2, 4); await H.page.waitForTimeout(60);
+        const z = await H.page.evaluate(() => window.__tippZeiten); gap = z.length >= 2 ? z[1] - z[0] : Infinity;
+        if (gap < 245 && ((await H.mode()) !== 'replay' || (await H.fiq('replayIdx')) !== 1)) fail(`Doppeltipp ${Math.round(gap)} ms darf nur eine Szene weitergehen (Modus ${await H.mode()}, Szene ${await H.fiq('replayIdx')})`);
+        if ((await H.mode()) === 'replay') { await H.page.waitForTimeout(700); await H.field(20, 4); }
+        await H.wait('feedback', 3000);
+        if ((await H.fiq('dec')) !== d0) fail('Doppeltipp im Vergleich darf keine Fußballentscheidung auslösen');
+      }
+      if (gap >= 245) fail(`Doppeltipp ${ms} ms ließ sich nicht unter 250 ms erzeugen`);
     }
     console.log('✓ Vergleich: Doppeltipp nach 120/200 ms (gleiche/andere Stelle) = eine Szene; bewusster Tipp nach 700 ms wirkt');
+    // UX-Nachbesserung: (1) Tipp auf den Rand neben dem Canvas (im Spielfeldbereich) wirkt; (2) ein Tipp kurz nach dem
+    // automatischen Szenenwechsel überspringt die neue Szene nicht; (3) danach wirkt ein bewusster Tipp sofort.
+    {
+      await H.tap('#fbCompare'); await H.wait('replay');
+      const rand = await H.page.evaluate(() => { const w = document.getElementById('fieldWrap').getBoundingClientRect(), c = document.getElementById('field').getBoundingClientRect();
+        return c.bottom + 4 < w.bottom ? [c.left + c.width / 2, (c.bottom + w.bottom) / 2] : c.right + 4 < w.right ? [(c.right + w.right) / 2, c.top + c.height / 2] : null; });
+      if (!rand) fail('Testaufbau: kein Rand neben dem Spielfeld');
+      await H.page.touchscreen.tap(rand[0], rand[1]); await H.page.waitForTimeout(60);
+      if ((await H.fiq('replayIdx')) !== 1) fail('Tipp auf den Spielfeldrand muss im Vergleich eine Szene weitergehen');
+      await H.page.waitForTimeout(700); await H.page.touchscreen.tap(rand[0], rand[1]); await H.wait('feedback', 3000);
+      if ((await H.fiq('dec')) !== d0) fail('Randtipp im Vergleich darf keine Fußballentscheidung auslösen');
+      // Abstand automatischer Wechsel → Tipp wird im Browser gemessen; nur Versuche mit < 245 ms zählen (sonst Wiederholung)
+      let gap = Infinity;
+      for (let versuch = 0; versuch < 4 && gap >= 245; versuch++) {
+        await H.tap('#fbCompare'); await H.wait('replay');
+        await H.page.evaluate(() => { window.__w = null; window.__t = null; const f = () => { if (window.__fiq.replayIdx === 1 && window.__w == null) window.__w = performance.now(); if (window.__fiq.mode === 'replay' && window.__t == null) requestAnimationFrame(f); }; requestAnimationFrame(f);
+          document.addEventListener('pointerdown', () => { if (window.__t == null) window.__t = performance.now(); }, { capture: true, once: true }); });
+        for (let i = 0; i < 600 && (await H.fiq('replayIdx')) === 0; i++) await H.page.waitForTimeout(10);   // automatischer Wechsel
+        await H.page.waitForTimeout(60); await H.field(20, 4); await H.page.waitForTimeout(60);
+        const z = await H.page.evaluate(() => [window.__w, window.__t]); gap = z[0] != null && z[1] != null ? z[1] - z[0] : Infinity;
+        if (gap < 245 && ((await H.mode()) !== 'replay' || (await H.fiq('replayIdx')) !== 1)) fail(`Tipp ${Math.round(gap)} ms nach automatischem Szenenwechsel darf die neue Szene nicht überspringen`);
+        if ((await H.mode()) === 'replay') { await H.page.waitForTimeout(300); const t = Date.now(); await H.field(20, 4); await H.wait('feedback', 1000); if (gap < 245 && Date.now() - t > 400) fail('Bewusster Tipp nach dem Wechsel muss sofort wirken'); }
+        else await H.wait('feedback', 3000);
+      }
+      if (gap >= 245) fail('Tipp kurz nach automatischem Wechsel ließ sich nicht erzeugen');
+      if ((await H.fiq('dec')) !== d0) fail('Vergleich darf keine Fußballentscheidung auslösen');
+      console.log('✓ Vergleich: Tipp auf den Spielfeldrand wirkt; Tipp 80 ms nach automatischem Wechsel überspringt nicht; bewusster Tipp danach sofort');
+    }
     await H.close();
   }
   // 2d) Feinschliff: Torveränderung nach Freilaufen (Aktion 'run') → neutrales „Schau!“, denn Lerngegenstand ist das
@@ -202,6 +240,7 @@ try {
   // 4) Rückmeldung verkleinert das Feld nicht: iPad quer/hoch, Handy quer (L4e enge Lücke 💭, mit Folge-Moment)
   for (const [name, vp] of [['iPad quer', IPAD], ['iPad hoch', IPAD_HOCH], ['Handy quer', HANDY]]) {
     const H = await open(vp, 'freie-bahn', ['L4e', 'L4b']); await H.start();
+    await H.page.waitForTimeout(500);   // Geistertipp-Schutz: Tipp nicht innerhalb 450 ms an der Stelle von „Los geht's“
     const w0 = await H.feldPx();
     await H.field(27, 12); await H.wait(['folge', 'feedback']); await H.wait('feedback');
     const w1 = await H.feldPx(); if (w1 < w0 * 0.97) fail(`${name}: Feld mit Rückmeldung kleiner (${Math.round(w0)} → ${Math.round(w1)} px)`);

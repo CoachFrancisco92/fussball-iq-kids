@@ -213,6 +213,14 @@
   #app.blattSeite #bar { width: 340px; flex: none; flex-direction: column; justify-content: center; align-items: stretch; min-height: 0; padding: 4px 10px 8px 2px; gap: 8px; }
   #app.blattSeite .sheet { grid-template-columns: 1fr; padding: 10px 12px; gap: 8px; }
   #app.blattSeite .fbBtns { flex-direction: column; } #app.blattSeite .fbBtns button { width: 100%; min-width: 0; }
+  /* V0.6.2: Lernmissionen im Tablet-Querformat – Bedienleiste dauerhaft rechts (ganzes Funino-Feld, gleiche Feldgröße in Entscheidung und Rückmeldung) */
+  #app.leisteSeite #main { flex-direction: row; }
+  #app.leisteSeite #bar { width: 320px; flex: none; flex-direction: column; justify-content: center; align-items: stretch; min-height: 0; padding: 4px 10px 8px 2px; gap: 10px; }
+  #app.leisteSeite #step { flex: none; max-width: none; }
+  #app.leisteSeite #actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  #app.leisteSeite #actions .act, #app.leisteSeite #cancel { min-width: 0; width: 100%; }
+  #app.leisteSeite .sheet { grid-template-columns: 1fr; padding: 10px 12px; gap: 8px; }
+  #app.leisteSeite .fbBtns { flex-direction: column; } #app.leisteSeite .fbBtns button { width: 100%; min-width: 0; }
   @media (max-width: 640px) { header { flex-wrap: wrap; } #prompt { order: 10; flex-basis: 100%; } }
   @media (max-width: 700px) { .sheet { grid-template-columns: 1fr; } .fbBtns { flex-direction: row; } .fbBtns button { min-width: 0; flex: 1; font-size: 13px; } }
 </style>

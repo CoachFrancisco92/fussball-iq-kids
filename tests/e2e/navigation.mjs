@@ -493,6 +493,7 @@ try {
     await H.touch('#missionList .mcard[data-id="freie-bahn"]'); await H.reachable('#play', true); await H.touch('#play'); await H.waitMode('decide');
     for (const s of ['#actions .hint', '#restart', '#home', '#repeat']) await H.reachable(s);
     await H.touch('#restart'); await H.reachable('#confirmYes'); await H.reachable('#confirmNo'); await H.touch('#confirmNo');
+    await H.page.waitForTimeout(500);   // Geistertipp-Schutz: kein Feld-Tipp innerhalb 450 ms an der Stelle des verschwundenen „Nein“-Knopfs
     // V0.6a: Kurzrückmeldung – ↶ und 🔈 in der nächsten Entscheidung ohne Scrollen erreichbar, Hilfe weiter erreichbar
     { const c = await H.page.evaluate(() => { const c = FIQ.carrier(window.__fiq.S); return [c.x + 3.5, c.y]; }); await H.field(...c); }
     await H.waitMode('kurz'); await H.waitMode('decide', 15000);

@@ -38,7 +38,7 @@ async function open(g) {
     async wait(m, ms = 15000) { const t = Date.now(); while (Date.now() - t < ms) { if (errors.length) fail('JS-Fehler: ' + errors.join('; ')); const x = await H.mode(); if ([].concat(m).includes(x)) return x; await page.waitForTimeout(20); } fail(`Modus ${m} nicht erreicht (${await H.mode()})`); },
     async tap(sel) { const l = page.locator(sel).first(); await l.scrollIntoViewIfNeeded(); const b = await l.boundingBox(); await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2); },
     async field(x, y) { const b = await page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; }); const k = b[2] / b[3].w; await page.touchscreen.tap(b[0] + (x - b[3].x0) * k, b[1] + (y - b[3].y0) * k); },
-    async start(mission, durchlauf) { if (durchlauf) await page.evaluate(([m, d]) => { FIQ.mission(m).durchlaeufe.unshift(d); }, [mission, durchlauf]); await H.tap(`#missionList .mcard[data-id="${mission}"]`); await H.tap('#play'); return H.wait(['decide', 'look']); },
+    async start(mission, durchlauf) { if (durchlauf) await page.evaluate(([m, d]) => { FIQ.mission(m).durchlaeufe.unshift(d); }, [mission, durchlauf]); await H.tap(`#missionList .mcard[data-id="${mission}"]`); await H.tap('#play'); const m = await H.wait(['decide', 'look']); await page.waitForTimeout(500); return m; },   // 500 ms: Geistertipp-Schutz (Stelle von „Los geht's“)
     close: () => ctx.close(),
   };
   return H;
