@@ -191,7 +191,9 @@ test('Robustheit A3: jede Abweichung ±0,5 m (x/y, je Spieler) erhält Pass → 
     else if (!r.ok) other.push(`${ids[i]} ${ax ? 'y' : 'x'} ${d}: ${r.log}`);
   }
   assert.deepStrictEqual(other, [
-    'b2 x -1: abschluss:pass⭐ ohneBall:run⭐ abschluss:shoot1⭐⚽', // Blau 2 außerhalb der Torzone: erst Freilaufen, dann Tor
+    // Blau 2 außerhalb der Torzone: erst Freilaufen, dann Tor. V0.6c (vorgelegt, docs/v0.6c.md): Nach dem Freilaufen spielt
+    // Blau 2 den Freigelaufenen an (statt selbst in die Zone zu dribbeln); der dribbelt in die Zone und trifft.
+    'b2 x -1: abschluss:pass⭐ ohneBall:run⭐ angriff:dribble⭐ abschluss:shoot1⭐⚽',
     'r1 x -1: abschluss:pass💭 abschluss:shoot1⭐⚽', // Rot 1 näher am Passweg: Pass „zu eng“, kommt aber an
   ]);
 });

@@ -400,12 +400,14 @@
     const gain = Math.max(-4, Math.min(8, pt.x - c.x));           // Raumgewinn Richtung gegnerisches Tor
     return Math.min(sc.open, 6) * 0.5 + gain * 0.15 + Math.min(sc.l, 1) * 0.5 - dist(p, pt) * 0.03;
   }
+  /** V0.6c: „anspielbar“ heißt jetzt: Der Mitspieler spielt den Pass und er kommt an (gleiche Simulation wie die Szene).
+   *  Rückgabe: Passweg-Reserve im Moment des Zuspiels, sonst null. */
   function runEndFree(s, id, pt) {
     const t = clone(s); startAction(t, { kind: 'run', id, x: pt.x, y: pt.y });
     let n = 0; while (!t.ep.done && n++ < 1200) tick(t);
     if (!t.ep.done || t.ep.events.some((e) => e.type === 'steal')) return null;
-    const a = arrivalCheck(t, P(t, id));
-    return a && a.free ? passOptions(t).find((o) => o.id === id).margin : null;
+    const rec = t.ep.events.some((e) => e.type === 'received' && e.by === id);
+    return rec && t.ep.zuspiel && t.ep.zuspiel.pass ? t.ep.zuspiel.werte.lane : null;
   }
   function bestRunSpot(s) {
     const c = carrier(s), cands = [];
@@ -420,16 +422,18 @@
     }
     if (!cands.length) return null;
     cands.sort((a, b) => b.q - a.q || (a.id < b.id ? -1 : 1) || a.pt.x - b.pt.x || a.pt.y - b.pt.y);
-    let best = null;
+    let best = null, fragil = null;
     for (const k of cands) {                                         // alle guten Laufziele vorausrechnen
       const m = runEndFree(s, k.id, k.pt);
       if (m == null) continue;
       // nicht „zentimetergenau“: bevorzugt Ziele, bei denen auch ein etwas daneben getippter Punkt (±0,75 m) noch klappt
       const near = [[0.75, 0], [-0.75, 0], [0, 0.75], [0, -0.75]].filter(([dx, dy]) => runEndFree(s, k.id, clampP({ x: k.pt.x + dx, y: k.pt.y + dy })) != null).length;
       const v = k.q + Math.min(m, 1) * 0.5 + near * 0.3;
-      if (!best || v > best.v) best = { v, id: k.id, pt: k.pt, eng: false };
+      // V0.6c: „Dann kann dein Freund dich anspielen“ nur bei robusten Zielen (≥ 3 von 4 Nachbarn führen zum Zuspiel)
+      if (near >= 3) { if (!best || v > best.v) best = { v, id: k.id, pt: k.pt, eng: false }; }
+      else if (!fragil || v > fragil.v) fragil = { v, id: k.id, pt: k.pt, eng: true };
     }
-    return best || { id: cands[0].id, pt: cands[0].pt, eng: true };
+    return best || fragil || { id: cands[0].id, pt: cands[0].pt, eng: true };
   }
 
   /** E1: Ist ein Pass in diesen Raum fußballerisch sinnvoll? Kriterien (situationsabhängig, ohne Pauschalregeln
@@ -1077,6 +1081,89 @@
     const free = o.margin > CFG.passLaneOk;
     return { free, key: free ? null : (o.hit && o.hit.id) || laneKey(s, c, r, 'red'), from: { x: c.x, y: c.y }, to: { x: r.x, y: r.y } };
   }
+  // ---------------------------------------------------------------- V0.6c: Mitspieler reagiert auf das Freilaufen
+  // Nach der Ankunft des Läufers prüft der Ballführende das Zuspiel nach festen, objektiven Bedingungen (gleiche Maßstäbe wie
+  // der Stern beim Freilaufen, angewendet auf die aktuelle Lage). Kein garantierter Pass, kein Zufall. Ablauf: docs/v0.6c.md.
+  const ZUSPIEL = { open: 3.2, dMin: 3.5, dMax: 15, hinten: 1, blick: 0.3, takt: 0.2, maxBlick: 2 };
+  /** Lage „Spieler id hat jetzt den Ball“ – statische Momentaufnahme wie alle Bewertungen (Gegner reagieren nicht auf den Pass). */
+  function mitBallBei(s, id) {
+    const t = clone(Object.assign({}, s, { ep: null })), p = P(t, id);
+    t.ball = { x: p.x, y: p.y, owner: id, flight: null }; t.poss = p.team;
+    t.players.forEach((q) => { q.ctrl = null; q.tx = q.x; q.ty = q.y; });
+    return t;
+  }
+  /** Sichere Fortsetzungen des Ballführenden aus vorhandenen Auswertungen (situation, dribbleOptions, passOptions).
+   *  Der Pass zum jeweils anderen der beiden Beteiligten zählt nicht (sonst „Mehrwert“ durch Hin- und Herspielen). */
+  function anschluss(s, partnerId) {
+    const c = carrier(s), sit = situation(s), dO = dribbleOptions(s);
+    const dritte = passOptions(s).filter((o) => o.id !== partnerId && o.margin > CFG.passLaneOk);
+    const r = { schuss: !!sit.ok.shoot, dribbeln: !!sit.ok.dribble, passDritter: dritte.length > 0,
+      vorn: !!dO.forwardSafe || dritte.some((o) => P(s, o.id).x > c.x + ZUSPIEL.hinten) };
+    r.anzahl = (r.schuss ? 1 : 0) + (r.dribbeln ? 1 : 0) + (r.passDritter ? 1 : 0);
+    return r;
+  }
+  /** E2 (PO 26.11.2026): Ein klarer Rückpass braucht einen situativen Mehrwert beim Empfänger. Gegnerabstand allein zählt nicht. */
+  function rueckpassMehrwert(s, r) {
+    const c = carrier(s), A = anschluss(s, r.id), B = anschluss(mitBallBei(s, r.id), c.id);
+    if (B.anzahl > A.anzahl) return 'optionen';
+    if (B.schuss) return 'abschluss';
+    if (B.vorn && !A.vorn) return 'vorn';
+    return null;
+  }
+  const richtungVon = (c, r) => (r.x < c.x - ZUSPIEL.hinten ? 'rueck' : r.x > c.x + ZUSPIEL.hinten ? 'vor' : 'quer');
+  /** Zuspielprüfung. Reihenfolge = genannter Grund: zone → besetzt → zuNah → zuWeit → versperrt → rueckpass. */
+  function zuspielPruefung(s, r) {
+    const c = carrier(s);
+    if (!c || c.team !== 'blue' || !r || r.id === c.id || s.ball.flight) return { pass: false, grund: 'keinBall', key: null, werte: null };
+    const reds = team(s, 'red');
+    const nah = reds.slice().sort((x, y) => dist(x, r) - dist(y, r) || (x.id < y.id ? -1 : 1))[0];
+    const o = passOptions(s).find((x) => x.id === r.id), d = dist(c, r);
+    const werte = { d, open: dist(nah, r), lane: o.margin, richtung: richtungVon(c, r) };
+    const nein = (grund, key) => ({ pass: false, grund, key: key || null, werte });
+    if (c.x >= F.W - F.ZONE - 0.3) return nein('zone');
+    if (werte.open < ZUSPIEL.open) return nein('besetzt', nah.id);
+    if (d < ZUSPIEL.dMin) return nein('zuNah');
+    if (d > ZUSPIEL.dMax) return nein('zuWeit');
+    if (o.margin <= CFG.passLaneOk) return nein('versperrt', (o.hit && o.hit.id) || laneKey(s, c, r, 'red'));
+    if (werte.richtung === 'rueck') { const m = rueckpassMehrwert(s, r); if (!m) return nein('rueckpass'); werte.mehrwert = m; }
+    return { pass: true, grund: null, key: null, werte };
+  }
+  /** Gespeicherter Erklärzeitpunkt: Prüfergebnis mit den Positionen in genau diesem Moment. */
+  function zuspielSnap(s, z, r, quelle) {
+    const c = carrier(s), pos = (p) => ({ x: p.x, y: p.y });
+    const gegner = {}; for (const q of team(s, 'red')) gegner[q.id] = pos(q);
+    return Object.assign({}, z, { t: s.ep.t, quelle, von: c ? Object.assign({ id: c.id }, pos(c)) : null, zu: Object.assign({ id: r.id }, pos(r)), gegner });
+  }
+  function starteBlick(s, c) {
+    const ep = s.ep;
+    ep.blicke = (ep.blicke || 0) + 1; ep.phase = 'blick'; ep.blickEnde = ep.t + ZUSPIEL.blick;
+    c.ctrl = null; c.tx = c.x; c.ty = c.y;
+    event(s, 'blick');
+  }
+  /** Rückfall wie bis v0.6.2: Ballführender dribbelt nach vorn, sonst hält er den Ball. */
+  function zuspielRueckfall(s) {
+    const ep = s.ep, auto = autoDribble(s);
+    if (ep.autoT == null) ep.autoT = ep.t;
+    ep.naechstePruefung = ep.t + ZUSPIEL.takt;
+    ep.phase = auto ? 'auto' : 'hold';
+    if (!auto) ep.endT = ep.t + 0.4;
+    else if (!ep.events.some((e) => e.type === 'autoDribble')) event(s, 'autoDribble');
+  }
+  /** Prüfung bei Ankunft bzw. am Ende einer Blickpause. Erklärt wird ein ausbleibendes Zuspiel durch die letzte Prüfung nach
+   *  einer Blickpause (blickZu), sonst durch die Prüfung bei Ankunft. */
+  function laufZuspiel(s, r, quelle) {
+    const ep = s.ep, c = carrier(s), z = zuspielPruefung(s, r);
+    if (quelle === 'ankunft') {
+      if (z.pass) return starteBlick(s, c);
+      ep.zuspiel = zuspielSnap(s, z, r, quelle);
+      return zuspielRueckfall(s);
+    }
+    ep.zuspiel = zuspielSnap(s, z, r, quelle);
+    if (z.pass) { event(s, 'zuspiel', { to: r.id, from: c.id, richtung: z.werte.richtung }); doPass(s, c, { id: r.id }, true); ep.phase = 'zuspiel'; return; }
+    event(s, 'blickZu', { grund: z.grund, key: z.key });
+    zuspielRueckfall(s);
+  }
+
   function episodeLogic(s) {
     const ep = s.ep, a = ep.a;
     if (ep.endT != null) {
@@ -1101,16 +1188,28 @@
     } else if (a.kind === 'run') {
       const r = P(s, a.id);
       if (possChanged) ep.endT = ep.t + 0.6;
+      else if (ep.phase === 'zuspiel') { if (has('received') || has('intercepted')) ep.endT = ep.t + 0.6; }
       else if (ep.phase === 'main' && dist(r, { x: r.tx, y: r.ty }) < 0.05) {
         r.ctrl = null;
-        ep.phase = autoDribble(s) ? 'auto' : 'hold';
-        ep.autoT = ep.t;
-        if (ep.phase === 'hold') ep.endT = ep.t + 0.4;
-        else event(s, 'autoDribble');
+        laufZuspiel(s, r, 'ankunft');                                  // V0.6c: Mitspieler schaut, statt sofort zu dribbeln
+      } else if (ep.phase === 'blick' && c) {
+        c.tx = c.x; c.ty = c.y;                                        // Blickpause: Ballführender hält den Ball
+        if (ep.t >= ep.blickEnde - 1e-9) laufZuspiel(s, r, 'blick');
       } else if (ep.phase === 'auto' && c) {
         if (c.x >= F.W - F.ZONE + 0.8 || ep.t - ep.autoT > 2.6 || dist(c, { x: c.tx, y: c.ty }) < 0.05) { c.ctrl = null; c.tx = c.x; c.ty = c.y; ep.endT = ep.t + 0.3; }
+        else if ((ep.blicke || 0) < ZUSPIEL.maxBlick && ep.t >= ep.naechstePruefung - 1e-9) {
+          ep.naechstePruefung += ZUSPIEL.takt;                         // Neuprüfung im Dribbling (höchstens 2 Blickpausen je Szene)
+          if (zuspielPruefung(s, r).pass) starteBlick(s, c);
+        }
       }
-      if (ep.t > 8 && ep.endT == null) ep.endT = ep.t;
+      // Obergrenze 8 s; eine begonnene Blickpause bzw. ein Zuspiel endet noch regulär (harte Grenze 10 s)
+      if (ep.endT == null && (ep.t > 10 || (ep.t > 8 && ep.phase !== 'blick' && ep.phase !== 'zuspiel'))) {
+        if (!ep.zuspiel && s.poss === 'blue') {                        // Läufer nie angekommen: kein Zuspiel, Grund „unterwegs“
+          const z = zuspielPruefung(s, r);
+          ep.zuspiel = zuspielSnap(s, z.pass || z.grund === 'keinBall' ? { pass: false, grund: 'unterwegs', key: null, werte: z.werte } : z, r, 'ende');
+        }
+        ep.endT = ep.t;
+      }
     } else { // press / cover
       if (possChanged || has('turn')) ep.endT = ep.t + 0.7;
       else if (a.kind === 'cover' && has('evade') && ep.t > 1) ep.endT = ep.t + 0.6;
@@ -1137,14 +1236,15 @@
       if (st) { text = T.ballAbgenommen(nameOf(s, st.by)); icon = '😮'; }
       else { success = true; text = T.dribbelGut; icon = '👍'; }
     } else if (a.kind === 'run') {
+      // V0.6c: Ergebnis = was der Mitspieler tatsächlich getan hat. Ohne Zuspiel nennt der Text den Grund aus dem
+      // gespeicherten Erklärzeitpunkt (ep.zuspiel), nicht aus der späteren Lage.
+      const rec = evs.find((e) => e.type === 'received' && e.by === a.id), ic = find('intercepted'), z = ep.zuspiel;
       if (find('steal')) { text = T.laufBallweg; icon = '😮'; }
+      else if (rec) { success = true; text = T.laufAngespielt; icon = '🙌'; }
+      else if (ic && find('zuspiel')) { text = T.abgefangen(nameOf(s, ic.by)); icon = '😮'; }
       else {
-        // Ergebnis aus der tatsächlichen Lage am Ende der Szene – nur wenn das Laufziel selbst passte (sonst wie bisher „schwer“)
-        const grund = ep.eval.exe.lauf, arr = arrivalCheck(s, P(s, a.id));
-        if ((grund === 'frei' || grund === 'versperrt') && arr) {
-          if (arr.free) { success = true; text = grund === 'frei' ? (find('autoDribble') ? T.laufFreiDribbel : T.laufFrei) : T.laufJetztFrei; icon = grund === 'frei' ? '🙌' : '👍'; }
-          else { text = T.laufZu(arr.key ? nameOf(s, arr.key) : T.einGegner) + (find('autoDribble') ? T.laufZuDribbel : ''); icon = '🤔'; }
-        } else { text = T.laufSchwer; icon = '🤔'; }
+        const f = z && T.laufKeinZuspiel[z.grund];
+        text = (f ? f(z.key ? nameOf(s, z.key) : T.einGegner) : T.laufSchwer) + (find('autoDribble') ? T.laufZuDribbel : ''); icon = '🤔';
       }
     } else if (a.kind === 'press' || a.kind === 'cover') {
       if (goal && goal.team === 'red') { text = T.gegentor; icon = '😬'; }
@@ -1171,13 +1271,18 @@
       ev = { good: ev.good, rec: ev.rec, exe, why: !ev.rec.good ? ev.rec.why : exe.why };
     }
     let explain = s.ep.explain || null;
-    if (a.kind === 'run' && explain && explain.pass) {
-      const lost = s.ep.events.some((e) => e.type === 'steal');
-      const arr = lost ? null : arrivalCheck(s, P(s, a.id));
-      // ohne Ballbesitz (Ball verloren) gibt es keinen Passweg zu zeigen
-      explain = Object.assign({}, explain, arr ? { pass: { from: arr.from, to: arr.to, ok: arr.free }, key: arr.free ? null : arr.key } : { pass: null });
-      // Bei der Entscheidung versperrt, bei Ankunft frei: Begründung bezieht sich ausdrücklich auf den Moment des Loslaufens
-      if (arr && arr.free && ev.exe.lauf === 'versperrt') {
+    if (a.kind === 'run' && explain) {
+      // V0.6c: Passlinie und markierter Gegner aus dem gespeicherten Erklärzeitpunkt (ep.zuspiel) – gespielter Pass oder der
+      // Moment, der das ausbleibende Zuspiel erklärt. Ohne Ballbesitz (Ball verloren) gibt es keinen Passweg zu zeigen.
+      const lost = s.ep.events.some((e) => e.type === 'steal'), z = lost ? null : s.ep.zuspiel;
+      const rec = s.ep.events.some((e) => e.type === 'received' && e.by === a.id);
+      const zeigen = z && z.von && (rec || explain.pass);           // Passlinie: immer beim Zuspiel, sonst nur bei passendem Laufziel
+      explain = Object.assign({}, explain, zeigen
+        ? { pass: { from: { x: z.von.x, y: z.von.y }, to: { x: z.zu.x, y: z.zu.y }, ok: rec }, key: rec ? null : z.key,
+          zuspiel: { t: z.t, quelle: z.quelle, grund: z.grund, gegner: z.gegner, von: z.von, zu: z.zu } }
+        : { pass: null });
+      // Bei der Entscheidung versperrt, dann angespielt: Begründung bezieht sich ausdrücklich auf den Moment des Loslaufens
+      if (rec && ev.exe.lauf === 'versperrt') {
         const exe = { good: ev.exe.good, why: texts(s).ausfuehren.gelaufenZuBeimStart };
         ev = { good: ev.good, rec: ev.rec, exe, why: !ev.rec.good ? ev.rec.why : exe.why };
       }
@@ -1305,11 +1410,12 @@
         else if (anderes.margin <= CFG.shotLaneOk && anderes.hit && mein.margin > CFG.shotLaneOk) out.push({ typ: 'anderesTorZu', gegner: anderes.hit, tor: a.goal });
       } else if (mein.margin > CFG.shotLaneOk && anderes.margin <= CFG.shotLaneOk && anderes.hit) out.push({ typ: 'anderesTorZu', gegner: anderes.hit, tor: a.goal });
     }
-    if (a.kind === 'run' && find('autoDribble') && c1 && c1.team === 'blue') out.push({ typ: 'freundDribbelt', freund: c1.id });
-    if (a.kind === 'run' && !find('autoDribble') && !find('steal')) {
-      // Laufweg gut, bei Ankunft aber zu: Gegner ist mitgelaufen (≥ 1 m bewegt und steht jetzt im Passweg)
-      const arr = arrivalCheck(s, P(s, a.id));
-      if (arr && !arr.free && arr.key && v.pos[arr.key] && dist(P(s, arr.key), pt(v.pos[arr.key])) >= 1) out.push({ typ: 'gegnerMitgelaufen', gegner: arr.key });
+    const angespielt = a.kind === 'run' && ep.events.some((e) => e.type === 'received' && e.by === a.id);
+    if (a.kind === 'run' && !angespielt && find('autoDribble') && c1 && c1.team === 'blue') out.push({ typ: 'freundDribbelt', freund: c1.id });
+    if (a.kind === 'run' && !angespielt && !find('autoDribble') && !find('steal')) {
+      // Kein Zuspiel, weil ein Gegner im Passweg bzw. am Läufer stand – und dieser ist bis zum Erklärzeitpunkt ≥ 1 m mitgelaufen
+      const z = ep.zuspiel;
+      if (z && !z.pass && (z.grund === 'versperrt' || z.grund === 'besetzt') && z.key && v.pos[z.key] && z.gegner[z.key] && dist(z.gegner[z.key], pt(v.pos[z.key])) >= 1) out.push({ typ: 'gegnerMitgelaufen', gegner: z.key });
     }
     if ((a.kind === 'press' || a.kind === 'cover') && find('redShot')) {
       const rec = ep.events.filter((e) => e.type === 'received' && e.team === 'red').pop();
@@ -1536,5 +1642,5 @@
   }
 
   root.FIQ = {
-    VERSION: '0.6.2', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, ursachen, folge, lernStart, lernAuswertung, LERNZIELE, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
+    VERSION: '0.6.2', F, CFG, get ACTIONS() { return root.FIQ_TEXTE.aktionen; }, mission, missions: missionList, texts, validateMission, lookAnswer, lookBefore, zuspielPruefung, ZUSPIEL, spacePassInfo, bestSpacePass, goodActions, newState, context, startAction, tick, feedback, hint, frame, clone, carrier, P, team, dist, evaluate, ursachen, folge, lernStart, lernAuswertung, LERNZIELE, passOptions, shotOptions, newMission, missionAfter, missionApply, nameOf, laneKey, recommend, situation };
 })(typeof window !== 'undefined' ? window : globalThis);

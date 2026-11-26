@@ -1,0 +1,213 @@
+{
+ "stand": {
+  "raster": 1,
+  "lagenR": 53,
+  "quelleR": "v0.6.2 (eingefroren)",
+  "blickpause": 0.3,
+  "neupruefTakt": 0.2,
+  "maxBlick": 2
+ },
+ "gemessenSzenen": {
+  "szenen": 73458,
+  "ballverlustImLauf": 63,
+  "stern": 17555,
+  "M1": {
+   "zuspiele": 10355,
+   "angenommen": 10355,
+   "abgefangen": 0,
+   "anteilAngenommen": 100,
+   "zuspielOhneStern": 1221
+  },
+  "M2": {
+   "ankunftBedingungErfuellt": 9739,
+   "ohneZuspiel": 601,
+   "anteil": 6.2,
+   "blickZuGruende": {
+    "besetzt": 144,
+    "versperrt": 556,
+    "rueckpass": 33,
+    "zuWeit": 4
+   },
+   "fehlerOhneBlickZu": 0
+  },
+  "M2b": {
+   "sternMitBedingungBeiAnkunft": 9631,
+   "ohneAnnahme": 589,
+   "anteil": 6.1
+  },
+  "richtung": {
+   "rueck": 1134,
+   "quer": 1312,
+   "vor": 7909
+  },
+  "rueckpassMehrwert": {
+   "optionen": 1134
+  },
+  "grundOhneZuspiel": {
+   "zuWeit": 29102,
+   "versperrt": 10897,
+   "rueckpass": 5410,
+   "besetzt": 17239,
+   "zuNah": 389,
+   "unterwegs": 3
+  },
+  "M3": {
+   "szenenOhneZuspiel": 63040,
+   "fehler": 0
+  },
+  "M4": {
+   "folgekontext": {
+    "angriff": 9320,
+    "abschluss": 1035
+   },
+   "empfaengerNichtAmBall": 0,
+   "verbessertOhneSicherung": 7216,
+   "verbessertMitSicherung": 8307,
+   "anteilOhneSicherung": 69.7,
+   "nachRichtung": {
+    "rueck": {
+     "angenommen": 1134,
+     "verbessert": 47,
+     "anteil": 4.1
+    },
+    "quer": {
+     "angenommen": 1312,
+     "verbessert": 134,
+     "anteil": 10.2
+    },
+    "vor": {
+     "angenommen": 7909,
+     "verbessert": 7035,
+     "anteil": 88.9
+    }
+   },
+   "nach": {
+    "raum": 6969,
+    "zoneTor": 941,
+    "optionen": 1333,
+    "sicherung": 4084
+   }
+  },
+  "M6": {
+   "n": 73458,
+   "abweichend": 0,
+   "beispiele": []
+  },
+  "M9": {
+   "szenenMitSpaetemFenster": 1317,
+   "spaeteBlicke": 1353,
+   "davonZuspiel": 1222,
+   "mehrAls2Blicke": 0
+  }
+ },
+ "gemessenDurchlaeufe": {
+  "mission-1": {
+   "kinderAbfolgen": {
+    "laeufe": 109,
+    "zuspiele": 11,
+    "richtung": {
+     "rueck": 1,
+     "quer": 1,
+     "vor": 9
+    },
+    "m7weiterlaufend": 10,
+    "m7anGrenze": 1,
+    "zyklen": 8,
+    "leereZyklen": 3,
+    "abfolgenMitLeeremZyklus": 3,
+    "abfolgenMitZweiLeeren": 0,
+    "abfolgen": 200,
+    "fehler": []
+   },
+   "hilfe": {
+    "laeufe": 1,
+    "zuspiele": 0,
+    "richtung": {
+     "rueck": 0,
+     "quer": 0,
+     "vor": 0
+    },
+    "m7weiterlaufend": 0,
+    "m7anGrenze": 0,
+    "zyklen": 0,
+    "leereZyklen": 0,
+    "abfolgenMitLeeremZyklus": 0,
+    "abfolgenMitZweiLeeren": 0,
+    "abfolgen": 1,
+    "fehler": []
+   }
+  },
+  "welches-tor-ist-frei": {
+   "kinderAbfolgen": {
+    "laeufe": 170,
+    "zuspiele": 10,
+    "richtung": {
+     "rueck": 0,
+     "quer": 4,
+     "vor": 6
+    },
+    "m7weiterlaufend": 10,
+    "m7anGrenze": 0,
+    "zyklen": 10,
+    "leereZyklen": 9,
+    "abfolgenMitLeeremZyklus": 8,
+    "abfolgenMitZweiLeeren": 1,
+    "abfolgen": 200,
+    "fehler": []
+   },
+   "hilfe": {
+    "laeufe": 0,
+    "zuspiele": 0,
+    "richtung": {
+     "rueck": 0,
+     "quer": 0,
+     "vor": 0
+    },
+    "m7weiterlaufend": 0,
+    "m7anGrenze": 0,
+    "zyklen": 0,
+    "leereZyklen": 0,
+    "abfolgenMitLeeremZyklus": 0,
+    "abfolgenMitZweiLeeren": 0,
+    "abfolgen": 5,
+    "fehler": []
+   }
+  },
+  "freie-bahn": {
+   "kinderAbfolgen": {
+    "laeufe": 0,
+    "zuspiele": 0,
+    "richtung": {
+     "rueck": 0,
+     "quer": 0,
+     "vor": 0
+    },
+    "m7weiterlaufend": 0,
+    "m7anGrenze": 0,
+    "zyklen": 0,
+    "leereZyklen": 0,
+    "abfolgenMitLeeremZyklus": 0,
+    "abfolgenMitZweiLeeren": 0,
+    "abfolgen": 200,
+    "fehler": []
+   },
+   "hilfe": {
+    "laeufe": 0,
+    "zuspiele": 0,
+    "richtung": {
+     "rueck": 0,
+     "quer": 0,
+     "vor": 0
+    },
+    "m7weiterlaufend": 0,
+    "m7anGrenze": 0,
+    "zyklen": 0,
+    "leereZyklen": 0,
+    "abfolgenMitLeeremZyklus": 0,
+    "abfolgenMitZweiLeeren": 0,
+    "abfolgen": 5,
+    "fehler": []
+   }
+  }
+ }
+}

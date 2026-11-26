@@ -164,6 +164,17 @@
       laufJetztFrei: 'Jetzt ist der Weg zu dir frei.',
       laufZu: (gegner) => `Jetzt steht ${gegner} im Passweg.`,
       laufZuDribbel: ' Dein Freund dribbelt dafür nach vorne.',
+      // V0.6c: Mitspieler reagiert auf das Freilaufen (Entwurf – Wortlaut zur Freigabe in C3/E5)
+      laufAngespielt: 'Du warst frei – und dein Freund hat dich angespielt.',
+      laufKeinZuspiel: {
+        zone: () => 'Dein Freund steht schon vor dem Tor und entscheidet selbst.',
+        besetzt: (gegner) => `${gegner} war zu nah bei dir – da passt dein Freund nicht.`,
+        zuNah: () => 'Du warst zu nah an deinem Freund – da passt er nicht.',
+        zuWeit: () => 'Du warst zu weit weg für einen Pass.',
+        versperrt: (gegner) => `${gegner} stand im Passweg.`,
+        rueckpass: () => 'Du warst hinter dem Ball – von dort ging es nicht besser weiter.',
+        unterwegs: () => 'Du warst noch unterwegs – dein Freund hat den Ball behalten.',
+      },
       gegentor: 'Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen.',
       erobert: 'Ball erobert! Jetzt greifen wir an.',
       selbstGeblockt: 'Geblockt! Du hast im Weg gestanden.',

@@ -1,0 +1,3942 @@
+[
+ {
+  "where": "Ablauf „musterweg“",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 23,
+   "y": 14
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Ablauf „geblockt“",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 23,
+   "y": 14
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Hilfe-Durchlauf",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 14,
+   "y": 8
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": "Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen."
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": "Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen."
+  }
+ },
+ {
+  "where": "Abfolge 2",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 0.3925441838800907,
+   "y": 1.9971998217515647
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 5",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 17.94991021323949,
+   "y": 2.507214202079922
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 5",
+  "step": 4,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 1.8256013104692101,
+   "y": 23.737713205162436
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 8",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 22.760743499733508,
+   "y": 21.92875440651551
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 11",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 33.944843157660216,
+   "y": -2.105468301102519
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 11",
+  "step": 3,
+  "aktion": "Dribbeln",
+  "a": {
+   "kind": "dribble",
+   "x": -0.2323497859761119,
+   "y": 2.2668531597591937
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Vor dir war Platz – Dribbeln war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Nach vorn war Platz – dribbel Richtung Tor.",
+   "gesagt": "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 11",
+  "step": 4,
+  "aktion": "Dribbeln",
+  "a": {
+   "kind": "dribble",
+   "x": 7.44297542469576,
+   "y": 7.216287557967007
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Vor dir war Platz – Dribbeln war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Nach vorn war Platz – dribbel Richtung Tor.",
+   "gesagt": "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": true,
+   "zielWarum": "Du stehst zwischen Gegner und Tor.",
+   "gesagt": "Klasse! Der Gegner kommt nicht vorbei und muss die Richtung ändern. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 11",
+  "step": 5,
+  "aktion": "Ball erobern",
+  "a": {
+   "kind": "press",
+   "id": "b2"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": false,
+   "zielWarum": "Der Weg war weit. Blau 3 war näher am Ball.",
+   "gesagt": "Ball erobert! Jetzt greifen wir an. Gute Idee, den Gegner anzugreifen! Aber schau mal: Der Weg war weit. Blau 3 war näher am Ball.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": true,
+   "zielWarum": "Der Spieler am nächsten am Ball greift an.",
+   "gesagt": "Ball erobert! Jetzt greifen wir an. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 12",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 22.339543043635786,
+   "y": 12.549790796358138
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 14",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": -0.8710571844130754,
+   "y": 7.860308991279453
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 15",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 32.22694506123662,
+   "y": 7.999221208970994
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 17",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 25.882352030836046,
+   "y": 2.297622610349208
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Du bist frei – und dein Freund nutzt den Platz und dribbelt nach vorne. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 17",
+  "step": 3,
+  "aktion": "Pass zum Mitspieler",
+  "a": {
+   "kind": "pass",
+   "id": "b3"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Ein Freund stand frei – Abspielen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Rot 2 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier.",
+   "gesagt": "Oh! Rot 2 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 3 stand nah am Weg zu Blau 3. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 17",
+  "step": 4,
+  "aktion": "Ball erobern",
+  "a": {
+   "kind": "press",
+   "id": "b1"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": false,
+   "zielWarum": "Der Weg war weit. Blau 3 war näher am Ball.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, den Gegner anzugreifen! Aber schau mal: Der Weg war weit. Blau 3 war näher am Ball.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": false,
+   "zielWarum": "Der Weg war weit. Blau 3 war näher am Ball.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, den Gegner anzugreifen! Aber schau mal: Der Weg war weit. Blau 3 war näher am Ball.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 18",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": -0.28994448436424136,
+   "y": -0.5531766889616847
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 18",
+  "step": 3,
+  "aktion": "Dribbeln",
+  "a": {
+   "kind": "dribble",
+   "x": 23.330039786174893,
+   "y": 27.768763554748148
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Vor dir war Platz – Dribbeln war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Du bist direkt auf einen Gegner zugelaufen.",
+   "gesagt": "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Du bist direkt auf einen Gegner zugelaufen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Vor dir war Platz – Dribbeln war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Du bist direkt auf einen Gegner zugelaufen.",
+   "gesagt": "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Du bist direkt auf einen Gegner zugelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 21",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 9.891842017415911,
+   "y": 8.447122673504055
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 1 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 24",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 21.07594167534262,
+   "y": 18.412899965886027
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 26",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 20.331683394033462,
+   "y": 10.640428916551173
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 1 im Passweg. Das war trotzdem eine gute Idee! Rot 1 ist mitgelaufen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Das war trotzdem eine gute Idee! Rot 1 ist mitgelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 27",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 40.159386878833175,
+   "y": 7.78962961724028
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 27",
+  "step": 4,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 21.872824999969453,
+   "y": 0.833365885540843
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 3 im Passweg. Das war trotzdem eine gute Idee! Rot 3 ist mitgelaufen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 3 stand im Passweg. Das war trotzdem eine gute Idee! Rot 3 ist mitgelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 30",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 7.642497333232313,
+   "y": -0.7627682806923985
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 31",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 31.838840877171606,
+   "y": 18.999713648110628
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 33",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 8.628240649122745,
+   "y": 14.310231843031943
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 34",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": -2.9770594649016857,
+   "y": 28.9654909404926
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 36",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 19.812340307049453,
+   "y": 24.276009135413915
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 37",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 8.436421726830304,
+   "y": 13.281636624131352
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 1 im Passweg. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 1 stand im Passweg. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 37",
+  "step": 4,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 15.922473446466029,
+   "y": 20.849317195359617
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 39",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 2.0918286964297295,
+   "y": 7.580038025509566
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 40",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 21.919532181229442,
+   "y": 4.729238726198673
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 41",
+  "step": 3,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 38.11054596165195,
+   "y": 8.582220560871065
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 43",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 30.57523950887844,
+   "y": 24.862822817638516
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 46",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": -4.240660833194852,
+   "y": 0.8286001100204885
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 47",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 30.154039052780718,
+   "y": 15.483859207481146
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 50",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 36.19656702922657,
+   "y": 10.221245733089745
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 53",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 6.5222383686341345,
+   "y": 1.41541379224509
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 55",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 29.311638140585274,
+   "y": -3.2740680128335953
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 55",
+  "step": 3,
+  "aktion": "Pass zum Mitspieler",
+  "a": {
+   "kind": "pass",
+   "id": "b3"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Ein Freund stand frei – Abspielen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 2 stand nah am Weg zu Blau 3. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 2 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 55",
+  "step": 4,
+  "aktion": "Ball erobern",
+  "a": {
+   "kind": "press",
+   "id": "b2"
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": true,
+   "zielWarum": "Der Spieler am nächsten am Ball greift an.",
+   "gesagt": "Ball erobert! Jetzt greifen wir an. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 56",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 17.706338026560843,
+   "y": 11.381191084627062
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 59",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 30.645898392423987,
+   "y": 18.56405203929171
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 62",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": -1.870991153176874,
+   "y": 10.011654141359031
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst hinter dem Ball – von dort ging es nicht besser weiter. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 62",
+  "step": 4,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 36.299197452142835,
+   "y": 0.5421144193969667
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 65",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 5.258637000340968,
+   "y": 7.278522961772978
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 66",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 39.65333688631654,
+   "y": 21.933782059233636
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 68",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 16.442736658267677,
+   "y": 17.24430025415495
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 1 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 69",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 4.837436544243246,
+   "y": -2.1004406483843923
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 70",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 18.75063672522083,
+   "y": 21.20525974687189
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 71",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 38.57834021002054,
+   "y": 18.354460447560996
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 72",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 12.406043694820255,
+   "y": 15.503661148250103
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 1 im Passweg. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 1 stand im Passweg. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 72",
+  "step": 4,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 15.528427345212549,
+   "y": -2.497365940362215
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das war zu nah am Ball – dein Freund braucht Platz.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das war zu nah am Ball – dein Freund braucht Platz.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das war zu nah am Ball – dein Freund braucht Platz.",
+   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das war zu nah am Ball – dein Freund braucht Platz.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 75",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 27.205635860096663,
+   "y": 17.831113936379552
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 1 im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 78",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 38.38973551802337,
+   "y": 27.796891228761524
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 81",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 6.855375058017671,
+   "y": 23.846467454452068
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst hinter dem Ball – von dort ging es nicht besser weiter. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 84",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 20.33848551241681,
+   "y": 15.29406955651939
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 3 im Passweg. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 85",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 40.16618899721652,
+   "y": 12.443270257208496
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 87",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 25.942034491803497,
+   "y": 23.69422310590744
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 88",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 14.336734377779067,
+   "y": 4.3494822033680975
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst hinter dem Ball – von dort ging es nicht besser weiter. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 90",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 37.126134149730206,
+   "y": -0.33999960171058774
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 90",
+  "step": 3,
+  "aktion": "Pass zum Mitspieler",
+  "a": {
+   "kind": "pass",
+   "id": "b3"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Ein Freund stand frei – Abspielen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Rot 3 stand nah am Weg zu Blau 3. Ein anderer Freund stand freier.",
+   "gesagt": "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Ein Tor war frei – Schießen war eine gute Wahl.",
+   "ziel": true,
+   "zielWarum": "Du hast das freie Tor gewählt.",
+   "gesagt": "Toooor! Jetzt war das obere Tor frei. Gut gewählt!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 90",
+  "step": 4,
+  "aktion": "Weg versperren",
+  "a": {
+   "kind": "cover",
+   "id": "b2",
+   "x": 19.441656557377428,
+   "y": 13.655870523303747
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Der Gegner läuft weiter Richtung Tor. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 91",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 25.520834035705775,
+   "y": 14.31525949575007
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt ist der Weg zu dir frei. Gute Idee, dich freizulaufen! Aber schau mal: Als du losgelaufen bist, stand ein Gegner im Passweg.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 93",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 14.787816875614226,
+   "y": 23.636875862721354
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 94",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 34.61552036041394,
+   "y": 20.78607656341046
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 94",
+  "step": 4,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 16.59502693871036,
+   "y": 6.141861802898347
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 95",
+  "step": 3,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 36.43045595474541,
+   "y": 22.020538655575365
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 96",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 28.270927330013365,
+   "y": 15.084477964788675
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Gute Idee, dich freizulaufen! Aber schau mal: Als du losgelaufen bist, stand ein Gegner im Passweg.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 96",
+  "step": 3,
+  "aktion": "Pass zum Mitspieler",
+  "a": {
+   "kind": "pass",
+   "id": "b1"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 2 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zu Blau 2. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 96",
+  "step": 4,
+  "aktion": "Weg versperren",
+  "a": {
+   "kind": "cover",
+   "id": "b2",
+   "x": 6.941959262825549,
+   "y": 26.487755852285773
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Der Gegner hat abgespielt. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": true,
+   "zielWarum": "Der Spieler am nächsten am Ball greift an.",
+   "gesagt": "Ball erobert! Jetzt greifen wir an. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 97",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 1.889033351559192,
+   "y": 0.24681408051401377
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 100",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 13.0731330094859,
+   "y": 10.212591372895986
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 1 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 104",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 2.8925552084110677,
+   "y": 26.278083570301533
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 104",
+  "step": 3,
+  "aktion": "Pass zum Mitspieler",
+  "a": {
+   "kind": "pass",
+   "id": "b2"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Ein Freund stand frei – Abspielen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zu Blau 2. Ein anderer Freund stand freier.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zu Blau 3. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 104",
+  "step": 5,
+  "aktion": "Weg versperren",
+  "a": {
+   "kind": "cover",
+   "id": "b3",
+   "x": 24.24546413915232,
+   "y": 25.345258151181042
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Der Gegner hat abgespielt. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Der Gegner hat abgespielt. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 104",
+  "step": 6,
+  "aktion": "Ball erobern",
+  "a": {
+   "kind": "press",
+   "id": "b3"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": false,
+   "zielWarum": "Der Weg war weit. Blau 1 war näher am Ball.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, den Gegner anzugreifen! Aber schau mal: Der Weg war weit. Blau 1 war näher am Ball.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": false,
+   "zielWarum": "Der Weg war weit. Blau 1 war näher am Ball.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, den Gegner anzugreifen! Aber schau mal: Der Weg war weit. Blau 1 war näher am Ball.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 107",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 16.375665662810206,
+   "y": 17.725685672368854
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 109",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 0.6254319832660258,
+   "y": 6.109923250041902
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 110",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 35.020131869241595,
+   "y": 20.76518234750256
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 113",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 0.20423152716830373,
+   "y": -3.2690403601154685
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 116",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 10.824997026007622,
+   "y": 26.06849197857082
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 3 im Passweg. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 3 stand im Passweg. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 118",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 4.480403995607048,
+   "y": 20.366893379949033
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 119",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 22.57243084302172,
+   "y": 16.662514224648476
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 122",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 33.75653050094843,
+   "y": 26.628291517030448
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 123",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 22.151230386924,
+   "y": 7.283550614491105
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 125",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 5.2743283892050385,
+   "y": 0.4112982847727835
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst hinter dem Ball – von dort ging es nicht besser weiter. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 126",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 25.10203187400475,
+   "y": -2.4395010145381093
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 129",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 38.58514232840389,
+   "y": 23.008101087529212
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 129",
+  "step": 4,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 16.200980837456882,
+   "y": 16.795178667176515
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 132",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 9.703529360704124,
+   "y": 3.1808824916370213
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 135",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 20.887629018630832,
+   "y": 13.146659784018993
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 138",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 33.034473691601306,
+   "y": -2.649092606268823
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 141",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": -2.7441716655157506,
+   "y": -0.9217856312170625
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 142",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 31.65052822045982,
+   "y": 13.733473466243595
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 1 im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 144",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 8.439927992410958,
+   "y": 9.04399166116491
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 145",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": -3.1653721216134727,
+   "y": 23.699250758625567
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 147",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 27.483805054798722,
+   "y": 5.6937136999331415
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 1 im Passweg. Das war trotzdem eine gute Idee! Rot 1 ist mitgelaufen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Rot 1 stand im Passweg. Das war trotzdem eine gute Idee! Rot 1 ist mitgelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 147",
+  "step": 3,
+  "aktion": "Pass zum Mitspieler",
+  "a": {
+   "kind": "pass",
+   "id": "b1"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 147",
+  "step": 4,
+  "aktion": "Weg versperren",
+  "a": {
+   "kind": "cover",
+   "id": "b1",
+   "x": 31.90610197884962,
+   "y": 14.406218001618981
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 148",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 1.3115085395984352,
+   "y": 2.8429144006222486
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 150",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 40.96691550919786,
+   "y": -2.858684197999537
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 151",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 14.794618993997574,
+   "y": 28.29051650268957
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 154",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 30.386926852166653,
+   "y": 19.596582635771483
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 157",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": -4.428973489906639,
+   "y": -4.437640071846545
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 158",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 15.588543387595564,
+   "y": 8.33492140751332
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 161",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 29.071653841994703,
+   "y": -0.21747649041935802
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 163",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 17.939225825946778,
+   "y": 15.4939145129174
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 164",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 6.3339257119223475,
+   "y": -3.8508263896219432
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 166",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 29.123325483873487,
+   "y": 25.45969180529937
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 167",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 17.518025369849056,
+   "y": 6.114950902760029
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 167",
+  "step": 3,
+  "aktion": "Pass zum Mitspieler",
+  "a": {
+   "kind": "pass",
+   "id": "b1"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 2 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 2 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Vor dir war Platz – Dribbeln war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Nach vorn war Platz – dribbel Richtung Tor.",
+   "gesagt": "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 167",
+  "step": 4,
+  "aktion": "Weg versperren",
+  "a": {
+   "kind": "cover",
+   "id": "b1",
+   "x": 29.48416077811271,
+   "y": 23.51440659770742
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Klasse! Der Gegner kommt nicht vorbei und muss die Richtung ändern. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Vor dir war Platz – Dribbeln war eine gute Wahl.",
+   "ziel": true,
+   "zielWarum": "Jetzt ist dein Freund frei – gut vorbereitet!",
+   "gesagt": "Super! Jetzt ist Blau 1 frei – Rot 1 steht nicht mehr im Weg!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 167",
+  "step": 5,
+  "aktion": "Ball erobern",
+  "a": {
+   "kind": "press",
+   "id": "b2"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Angreifen war richtig – ein Spieler war nah genug.",
+   "ziel": false,
+   "zielWarum": "Der Weg war weit. Blau 3 war näher am Ball.",
+   "gesagt": "Oh nein, die Roten haben ein Tor geschossen. Der Weg zum Tor war offen. Gute Idee, den Gegner anzugreifen! Aber schau mal: Der Weg war weit. Blau 3 war näher am Ball.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Der Gegner läuft weiter Richtung Tor. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 170",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b2",
+   "x": 23.52098520519212,
+   "y": 8.125329815782607
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 172",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 17.176392174791545,
+   "y": 2.423731217160821
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 1 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst hinter dem Ball – von dort ging es nicht besser weiter. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 173",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 37.00409565959126,
+   "y": -0.42706808215007186
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 176",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 5.070324343629181,
+   "y": 2.012282779905945
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 177",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 39.46502422960475,
+   "y": 16.667541877366602
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 179",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 16.25442400155589,
+   "y": 11.978060072287917
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Dort stand schon ein Gegner.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Dort stand schon ein Gegner.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 180",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 37.79802005318925,
+   "y": 13.617336822673678
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 180",
+  "step": 4,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": -0.14462919579818845,
+   "y": 9.004297526553273
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 183",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 5.2811305075883865,
+   "y": 5.064938924741
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Super gemacht!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 183",
+  "step": 3,
+  "aktion": "Dribbeln",
+  "a": {
+   "kind": "dribble",
+   "x": -0.6358941723592579,
+   "y": 23.169650772586465
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Vor dir war Platz – Dribbeln war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Nach vorn war Platz – dribbel Richtung Tor.",
+   "gesagt": "Gut gedribbelt – du hast den Ball behalten! Gute Idee, zu dribbeln! Aber schau mal: Nach vorn war Platz – dribbel Richtung Tor.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Vor dir war Platz – Dribbeln war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Du bist direkt auf einen Gegner zugelaufen.",
+   "gesagt": "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Du bist direkt auf einen Gegner zugelaufen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 183",
+  "step": 4,
+  "aktion": "Pass zum Mitspieler",
+  "a": {
+   "kind": "pass",
+   "id": "b1"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zu Blau 1. In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: In den freien Raum hätte es geklappt – dein Freund wäre hingelaufen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Ein Freund stand frei – Abspielen war eine gute Wahl.",
+   "ziel": true,
+   "zielWarum": "Der Weg zu Blau 2 war frei.",
+   "gesagt": "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 183",
+  "step": 5,
+  "aktion": "Weg versperren",
+  "a": {
+   "kind": "cover",
+   "id": "b3",
+   "x": 28.80787157546729,
+   "y": -1.8267050231806934
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Der Gegner hat abgespielt. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": false,
+   "zielWarum": "Der Weg zum Tor blieb offen.",
+   "gesagt": "Der Gegner hat abgespielt. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 185",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b3",
+   "x": 38.62262331740931,
+   "y": -2.0903853429481387
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 185",
+  "step": 3,
+  "aktion": "Pass in den Raum",
+  "a": {
+   "kind": "pass",
+   "x": 4.6493672342039645,
+   "y": 20.022994860075414
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Abspielen war eine gute Idee.",
+   "ziel": false,
+   "zielWarum": "Rot 1 stand nah am Weg zur freien Stelle. Ein anderer Freund stand freier.",
+   "gesagt": "Oh! Rot 1 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": false,
+   "entscheidungWarum": "Beide Tore waren zugestellt. Ein Pass in den freien Raum, in den dein Freund laufen kann, wäre besser gewesen.",
+   "ziel": false,
+   "zielWarum": "Vor diesem Tor stand Rot 3.",
+   "gesagt": "Geblockt! Rot 3 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass in den freien Raum, in den dein Freund laufen kann, wäre besser gewesen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 185",
+  "step": 4,
+  "aktion": "Ball erobern",
+  "a": {
+   "kind": "press",
+   "id": "b1"
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": false,
+   "entscheidungWarum": "Der Gegner war weit weg. Besser erst den Weg zum Tor versperren.",
+   "ziel": true,
+   "zielWarum": "Der Spieler am nächsten am Ball greift an.",
+   "gesagt": "Ball erobert! Jetzt greifen wir an. Hat geklappt! Aber schau mal: Der Gegner war weit weg. Besser erst den Weg zum Tor versperren.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Den Weg zu unserem Tor zu schützen war eine gute Wahl.",
+   "ziel": true,
+   "zielWarum": "Du stehst zwischen Gegner und Tor.",
+   "gesagt": "Der Gegner läuft weiter Richtung Tor. Gute Idee, dich in den Weg zu stellen! Aber schau mal: Der Weg zum Tor blieb offen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 186",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 27.017323203384876,
+   "y": 12.564873754512519
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt ist der Weg zu dir frei. Gute Idee, dich freizulaufen! Aber schau mal: Als du losgelaufen bist, stand ein Gegner im Passweg.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 189",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 38.201422861311585,
+   "y": 22.53065104689449
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 192",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": -0.2695381292141974,
+   "y": 13.407745230942965
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Super! Jetzt bist du anspielbar. Super gemacht!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst hinter dem Ball – von dort ging es nicht besser weiter. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 195",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 13.213572325184941,
+   "y": 4.855347333010286
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 196",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 2.964322063140571,
+   "y": 23.117464729119092
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Dort ist es schwer, angespielt zu werden. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 198",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 25.75372183509171,
+   "y": 18.427982924040407
+  },
+  "vorher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Jetzt steht Rot 1 im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": false,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": false,
+   "zielWarum": "Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "hilfe": null
+  }
+ },
+ {
+  "where": "Abfolge 199",
+  "step": 2,
+  "aktion": "Freilaufen",
+  "a": {
+   "kind": "run",
+   "id": "b1",
+   "x": 14.14842172106728,
+   "y": -0.9167579784989357
+  },
+  "vorher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  },
+  "nachher": {
+   "stern": true,
+   "entscheidung": true,
+   "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
+   "ziel": true,
+   "zielWarum": "Du bist in einen freien Raum gelaufen.",
+   "gesagt": "Du warst hinter dem Ball – von dort ging es nicht besser weiter. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!",
+   "hilfe": null
+  }
+ }
+]

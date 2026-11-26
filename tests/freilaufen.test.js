@@ -1,5 +1,6 @@
-// Korrektur A: Freilaufen – gesprochene Rückmeldung, Etikett, Erklärbild und Stern widersprechen sich nicht.
-// Die Bewertung (Entscheidung/Ziel/Stern) bleibt unverändert; das Ergebnis kommt aus der Lage am Szenenende (= Bild).
+// Korrektur A / V0.6c: Freilaufen – gesprochene Rückmeldung, Etikett, Erklärbild und Stern widersprechen sich nicht.
+// Die Bewertung (Entscheidung/Ziel/Stern) bleibt unverändert. Seit V0.6c ist das Ergebnis, was der Mitspieler tatsächlich tut:
+// Zuspiel (angekommen) oder kein Zuspiel mit dem Grund aus dem gespeicherten Erklärzeitpunkt ep.zuspiel (docs/v0.6c.md).
 const test = require('node:test');
 const assert = require('node:assert');
 const E = require('./helpers/load.js');
@@ -32,25 +33,30 @@ test('Ziel weiter als 15 m: Grund „zu weit“, nicht „Passweg versperrt“; 
   assert.strictEqual(fb.explain.key, null); assert.strictEqual(fb.explain.pass, null); assert.strictEqual(fb.explain.ok, false);
 });
 
-test('Ziel (21/15): Stern bleibt, aber am Ende steht ein Gegner im Passweg – Ergebnis, Etikett und Bild sagen dasselbe', () => {
+test('Ziel (21/15): Stern bleibt, aber kein Zuspiel – Grund, genannter/markierter Gegner und Passlinie aus dem Erklärzeitpunkt', () => {
   const s0 = runState(), { s, ev, fb } = play(s0, { kind: 'run', id: 'b3', x: 21, y: 15 });
   assert.strictEqual(ev.good, true, 'Bewertung unverändert: Stern');
-  assert.strictEqual(fb.good, true);
-  assert.strictEqual(E.passOptions(s).find((o) => o.id === 'b3').margin > C.passLaneOk, false);
-  assert.match(fb.text, /^Jetzt steht Rot \d im Passweg\./);
-  assert.doesNotMatch(fb.say, /anspielbar|Du bist frei/);
+  assert.strictEqual(fb.good, true); assert.strictEqual(fb.success, false);
+  assert.ok(!s.ep.events.some((e) => e.type === 'zuspiel'), 'kein Zuspiel');
+  const z = s.ep.zuspiel; assert.ok(z && !z.pass && z.key);
+  assert.ok(fb.text.startsWith(T().ergebnis.laufKeinZuspiel[z.grund]('Rot ' + E.P(s, z.key).num)), fb.text);
+  assert.doesNotMatch(fb.say, /angespielt|anspielbar|Du bist frei/);
   assert.match(fb.say, /trotzdem eine gute Idee/);
   assert.strictEqual(fb.tags.exe.label, 'Guter Platz');
   assert.strictEqual(fb.explain.ok, true, 'Laufpfeil grün: das Laufziel war gut');
   assert.strictEqual(fb.explain.pass.ok, false, 'Passlinie rot');
-  assert.strictEqual('Rot ' + E.P(s, fb.explain.key).num, fb.text.match(/Rot \d/)[0], 'markierter Gegner = genannter Gegner');
+  assert.strictEqual(fb.explain.key, z.key, 'markierter Gegner = genannter Gegner');
+  assert.deepStrictEqual([fb.explain.pass.from, fb.explain.pass.to], [{ x: z.von.x, y: z.von.y }, { x: z.zu.x, y: z.zu.y }], 'Bild = gespeicherte Positionen');
 });
 
-test('Ziel (24/15): frei bei Entscheidung und am Ende – „Du bist frei“, grüne Passlinie, Stern', () => {
-  const { s, fb } = play(runState(), { kind: 'run', id: 'b3', x: 24, y: 15 });
-  assert.ok(E.passOptions(s).find((o) => o.id === 'b3').margin > C.passLaneOk && fb.good && fb.success);
-  assert.match(fb.text, /Du bist frei|anspielbar/);
+test('Ziel (30/7): frei bei Ankunft – Blickpause, Zuspiel kommt an, grüne Passlinie, Stern; danach entscheidet das Kind mit dem Empfänger', () => {
+  const { s, fb } = play(runState(), { kind: 'run', id: 'b3', x: 30, y: 7 });
+  const typen = s.ep.events.map((e) => e.type);
+  assert.deepStrictEqual(typen.slice(0, 4), ['blick', 'zuspiel', 'pass', 'received']);
+  assert.ok(fb.good && fb.success); assert.strictEqual(fb.text, T().ergebnis.laufAngespielt);
   assert.strictEqual(fb.explain.pass.ok, true); assert.strictEqual(fb.explain.key, null);
+  assert.strictEqual(E.carrier(s).id, 'b3');
+  assert.ok(['angriff', 'abschluss'].includes(E.context(s, { kind: 'run', success: true, team: 'blue' }).type));
 });
 
 // alle Freilauf-Szenen aus echten Lagen (200 Kinder-Abfolgen) mit Zielen im Raster
@@ -70,31 +76,46 @@ function runStates() {
   return out;
 }
 
-test('Eigenschaft: Rückmeldung, Etikett, Erklärbild und Stern passen in allen Freilauf-Szenen zusammen', () => {
-  const TT = T(), labels = TT.rueckmeldung.tagLaufSchlecht; let n = 0, zu = 0, weit = 0;
+test('Eigenschaft: Rückmeldung, Etikett, Erklärbild, Stern und Zuspiel passen in allen Freilauf-Szenen zusammen', () => {
+  const TT = T(), labels = TT.rueckmeldung.tagLaufSchlecht, Z = E.ZUSPIEL; let n = 0, pass = 0, kein = 0, weit = 0;
   for (const s0 of runStates()) {
     const c = E.carrier(s0);
     for (const r of E.team(s0, 'blue').filter((b) => b !== c)) for (let x = 2; x < 35; x += 4) for (let y = 2; y < 23; y += 4) {
-      const a = { kind: 'run', id: r.id, x, y }, { s, ev, fb } = play(s0, a), grund = s.ep.eval.exe.lauf;
+      const a = { kind: 'run', id: r.id, x, y }, { s, ev, fb } = play(s0, a), grund = s.ep.eval.exe.lauf, evs = s.ep.events;
       assert.strictEqual(fb.good, ev.good, 'Stern = Bewertung vor der Aktion');
       const zielOk = grund === 'frei' || grund === 'versperrt';
       assert.strictEqual(fb.explain.ok, zielOk, 'Laufpfeil zeigt das Laufziel');
       if (dist(c, { x: s.ep.explain.to.x, y: s.ep.explain.to.y }) > 15 && grund !== 'besetzt') { assert.strictEqual(grund, 'zuWeit'); weit++; }
       if (grund === 'zuWeit') assert.doesNotMatch(fb.say, /versperrt/);
       assert.strictEqual(fb.tags.exe.label, ev.exe.good ? 'Guter Platz' : labels[grund]);
-      if (zielOk && !s.ep.events.some((e) => e.type === 'steal')) {
-        const free = s.ep.arrival ? E.passOptions(s).find((o) => o.id === 'b3').margin > C.passLaneOk : fb.explain.pass.ok;
-        assert.strictEqual(fb.explain.pass.ok, free, 'Passlinie = Lage im Bild');
-        assert.strictEqual(fb.success, free, 'Ergebnis = Lage im Bild');
-        if (free) assert.doesNotMatch(fb.text, /im Passweg/); else { assert.doesNotMatch(fb.say, /anspielbar|Du bist frei|Weg zu dir frei/); zu++; }
-        if (!free) assert.ok(fb.explain.key && fb.text.includes('Rot ' + E.P(s, fb.explain.key).num), 'genannter = markierter Gegner');
-        const cc = E.carrier(s), rr = E.P(s, r.id);
-        assert.deepStrictEqual([fb.explain.pass.from, fb.explain.pass.to], [{ x: cc.x, y: cc.y }, { x: rr.x, y: rr.y }], 'Passlinie verbindet die Spieler, wie sie im Bild stehen');
-      } else assert.strictEqual(fb.explain.pass, null);
+      assert.ok(evs.filter((e) => e.type === 'blick').length <= Z.maxBlick, 'höchstens 2 Blickpausen');
+      const lost = evs.some((e) => e.type === 'steal'), zsp = evs.find((e) => e.type === 'zuspiel'), z = s.ep.zuspiel;
+      if (zsp) {
+        // Zuspiel nur nach einer Blickpause und nur unter den objektiven Bedingungen (nie „zu weit“, nie in einen geschlossenen Weg)
+        assert.ok(evs.findIndex((e) => e.type === 'blick') < evs.indexOf(zsp));
+        assert.ok(z.pass && z.werte.d <= Z.dMax && z.werte.d >= Z.dMin && z.werte.open >= Z.open && z.werte.lane > C.passLaneOk, JSON.stringify(z.werte));
+        if (z.werte.richtung === 'rueck') assert.ok(z.werte.mehrwert, 'Rückpass nur mit Mehrwert');
+      }
+      const rec = evs.some((e) => e.type === 'received' && e.by === r.id);
+      if (lost) assert.strictEqual(fb.explain.pass, null);
+      else if (rec) {
+        pass++;
+        assert.ok(fb.success && fb.text === TT.ergebnis.laufAngespielt);
+        assert.ok(fb.explain.pass.ok && fb.explain.key === null);
+      } else if (z) {
+        kein++;
+        assert.strictEqual(fb.success, false); assert.doesNotMatch(fb.say, /angespielt|anspielbar|Du bist frei|Weg zu dir frei/);
+        const nm = z.key ? 'Rot ' + E.P(s, z.key).num : TT.ergebnis.einGegner;
+        assert.ok(fb.text.startsWith(TT.ergebnis.laufKeinZuspiel[z.grund](nm)), 'Ergebnis nennt den ausschlaggebenden Grund: ' + fb.text);
+        if (fb.explain.pass) {
+          assert.strictEqual(fb.explain.pass.ok, false); assert.strictEqual(fb.explain.key, z.key, 'genannter = markierter Gegner');
+          assert.deepStrictEqual([fb.explain.pass.from, fb.explain.pass.to], [{ x: z.von.x, y: z.von.y }, { x: z.zu.x, y: z.zu.y }], 'Bild = gespeicherter Zeitpunkt');
+        } else assert.strictEqual(zielOk, false);
+      }
       n++;
     }
   }
-  assert.ok(n > 1500 && zu > 50 && weit > 50, `${n} Szenen, ${zu} am Ende zu, ${weit} zu weit`);
+  assert.ok(n > 1500 && pass > 100 && kein > 500 && weit > 50, `${n} Szenen, ${pass} Zuspiele, ${kein} ohne Zuspiel, ${weit} zu weit`);
 });
 
 test('Erklärbild entsteht erst durch die Entscheidung (keine Vorwegnahme)', () => {
@@ -131,7 +152,13 @@ test('K1: Hilfe beim Freilaufen – Empfehlung und spätere Rückmeldung passen 
     const a = { kind: 'run', id: h.ids[0], x: h.point.x, y: h.point.y };
     const { fb } = play(s0, a);
     assert.strictEqual(fb.good, true, 'empfohlen werden nur Laufziele, die die bestehende Bewertung als gut einstuft (keine neue Regel)');
-    if (h.eng) { eng++; assert.strictEqual(h.say, H.freilaufenEng); assert.strictEqual(fb.success, false, 'Warnung nur, wenn es wirklich nicht klappt'); assert.match(fb.say, /trotzdem eine gute Idee/); }
+    // V0.6c: Warnung, wenn kein Laufziel robust (≥ 3 von 4 Nachbarn) zum Zuspiel führt – klappt der Punkt selbst doch, dann nur
+    // zentimetergenau (höchstens 2 von 4 Nachbarn)
+    if (h.eng) {
+      eng++; assert.strictEqual(h.say, H.freilaufenEng);
+      if (fb.success) assert.ok([[0.75, 0], [-0.75, 0], [0, 0.75], [0, -0.75]].filter(([dx, dy]) => play(s0, { kind: 'run', id: a.id, x: a.x + dx, y: a.y + dy }).fb.success).length < 3, 'Warnung nur, wenn es nicht robust klappt');
+      else assert.match(fb.say, /trotzdem eine gute Idee|Gute Idee/);
+    }
     else {
       frei++; assert.strictEqual(h.say, H.freilaufen);
       assert.strictEqual(fb.success, true, 'Hilfe sagt „anspielen“ → am Ende anspielbar'); assert.doesNotMatch(fb.text, /im Passweg/);
@@ -140,12 +167,13 @@ test('K1: Hilfe beim Freilaufen – Empfehlung und spätere Rückmeldung passen 
     }
   }
   assert.strictEqual(frei + eng, LAGEN.length);
-  assert.ok(frei >= 45, `${frei} von ${LAGEN.length} Lagen mit anspielbarer Empfehlung (vor K1: 9)`);
+  // V0.6c: „anspielbar“ = Zuspiel kommt tatsächlich an (vorher: Passweg am Szenenende frei, ≥ 45). Gemessen: 39 von 53.
+  assert.ok(frei >= 39, `${frei} von ${LAGEN.length} Lagen mit anspielbarer Empfehlung (vor K1: 9; v0.6.2 mit alter Bedeutung: ≥ 45)`);
 });
 
 test('K1: Standardlage (Musterweg) – kein sicher anspielbarer Platz, die Hilfe sagt das ehrlich', () => {
   const s0 = runState(), h = E.hint(s0, 'freilaufen');
   assert.strictEqual(h.eng, true);
-  const { fb } = play(s0, { kind: 'run', id: h.ids[0], x: h.point.x, y: h.point.y });
-  assert.ok(fb.good && !fb.success && /im Passweg/.test(fb.text), fb.say);
+  const { s, fb } = play(s0, { kind: 'run', id: h.ids[0], x: h.point.x, y: h.point.y });
+  assert.ok(fb.good && !fb.success && !s.ep.events.some((e) => e.type === 'zuspiel'), fb.say);
 });
