@@ -38,6 +38,11 @@ for (const vp of [{ n: 'ipad', width: 1180, height: 820 }, { n: 'handy', width: 
     await H.choose('Dribbeln'); await H.field(31, 15); await H.wait('feedback'); await H.tap('#fbNext'); await H.wait('decide');
     await H.choose('Schießen'); await H.field(36, 18); await H.wait('feedback'); await H.page.waitForTimeout(200);
   });
+  // V0.6.2: Folge-Moment (W1 nach dem Dribbling, A3 nach dem Pass) und Rückmeldung ohne kleineres Feld
+  await szene(vp, '8-W1-folge', 'welches-tor-ist-frei', ['W1', 'A1'], async (H) => { await H.choose('Dribbeln'); await H.field(31, 15); await H.wait('folge'); await H.page.waitForTimeout(500); });
+  await szene(vp, '9-W1-nach-folge', 'welches-tor-ist-frei', ['W1', 'A1'], async (H) => { await H.choose('Dribbeln'); await H.field(31, 15); await H.wait('feedback'); await H.page.waitForTimeout(300); });
+  await szene(vp, '10-W1-schau-nochmal', 'welches-tor-ist-frei', ['W1', 'A1'], async (H) => { await H.choose('Dribbeln'); await H.field(31, 15); await H.wait('feedback'); await H.tap('#fbNext'); await H.wait('decide'); await H.page.waitForTimeout(300); });
+  await szene(vp, '11-L4b-folge', 'freie-bahn', ['L4b', 'L4e'], async (H) => { await H.field(27, 12); await H.wait('folge'); await H.page.waitForTimeout(400); });
   await szene(vp, '7-ende', 'freie-bahn', ['B3', 'V1'], async (H) => {
     for (let i = 0; i < 80 && (await H.mode()) !== 'end'; i++) {
       await H.wait(['decide', 'feedback', 'kurz', 'end', 'wechsel']); if ((await H.mode()) === 'wechsel' || (await H.mode()) === 'kurz') { await H.page.waitForTimeout(100); continue; } const m = await H.mode();

@@ -1,0 +1,803 @@
+[
+ {
+  "eintrag": 2,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Los geht's! Du spielst mit den Blauen.",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 3,
+  "alt": {
+   "kurz": "⭐ Super! Rot 1 war hinter dir. Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Rot 1 war hinter dir. Vor dir war Platz!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Rot 1 war hinter dir. Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Rot 1 war hinter dir. Vor dir war Platz!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 5,
+  "alt": {
+   "zurueck": [
+    "Gleiche Situation – probier etwas anderes!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "zurueck": [
+    "Gleiche Situation – probier etwas anderes!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 13,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  }
+ },
+ {
+  "eintrag": 18,
+  "alt": {
+   "said": [
+    "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Die Lücke zwischen Rot 1 und Rot 2 war zu eng. Außen herum war Platz.",
+    "Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum."
+   ],
+   "fb": [
+    "Rot 1 stand im Weg und hat dir den Ball abgenommen.",
+    "Gute Idee, zu dribbeln! Aber schau mal: Die Lücke zwischen Rot 1 und Rot 2 war zu eng. Außen herum war Platz.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Gegner kam dazu",
+    "💭"
+   ],
+   "lern": "🔁 Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum.",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Schau!",
+    "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Die Lücke zwischen Rot 1 und Rot 2 war zu eng. Außen herum war Platz.",
+    "Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum."
+   ],
+   "fb": [
+    "Rot 1 stand im Weg und hat dir den Ball abgenommen.",
+    "Gute Idee, zu dribbeln! Aber schau mal: Die Lücke zwischen Rot 1 und Rot 2 war zu eng. Außen herum war Platz.",
+    "✓ 💡 Gute Idee",
+    "✗ 🎯 Gegner kam dazu",
+    "💭"
+   ],
+   "lern": "🔁 Das üben wir nochmal: Ist die Lücke breit genug? Sonst außen herum.",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 21,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 25,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 33,
+  "alt": {
+   "said": [
+    "Tor! Rot 3 ist vor das obere Tor gelaufen – und du hast das freie Tor gesehen! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das obere Tor gelaufen – und du hast das freie Tor gesehen!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐ Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden!",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Rot 3 ist vor das obere Tor gelaufen. Du hast das freie Tor gewählt! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das obere Tor gelaufen. Du hast das freie Tor gewählt!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐ Geschafft: Du bist sicher an den Gegnern vorbeigekommen!",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 36,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3m",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3m",
+   "said": [
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 47,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 51,
+  "alt": {
+   "said": [
+    "Tor! Rot 3 ist vor das untere Tor gelaufen – und du hast das freie Tor gesehen! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das untere Tor gelaufen – und du hast das freie Tor gesehen!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Rot 3 ist vor das untere Tor gelaufen. Du hast das freie Tor gewählt! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das untere Tor gelaufen. Du hast das freie Tor gewählt!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 55,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 59,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 63,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  }
+ },
+ {
+  "eintrag": 69,
+  "alt": {
+   "kurz": "⭐ Super! Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Vor dir war Platz!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Vor dir war Platz!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 76,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 80,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 84,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 88,
+  "alt": {
+   "said": [
+    "Tor! Rot 3 ist vor das obere Tor gelaufen – und du hast das freie Tor gesehen! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das obere Tor gelaufen – und du hast das freie Tor gesehen!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Rot 3 ist vor das obere Tor gelaufen. Du hast das freie Tor gewählt! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das obere Tor gelaufen. Du hast das freie Tor gewählt!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 90,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3m",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3m",
+   "said": [
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ },
+ {
+  "eintrag": 98,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  }
+ },
+ {
+  "eintrag": 104,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 108,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 112,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 116,
+  "alt": {
+   "said": [
+    "Tor! Rot 3 ist vor das untere Tor gelaufen – und du hast das freie Tor gesehen! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das untere Tor gelaufen – und du hast das freie Tor gesehen!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Rot 3 ist vor das untere Tor gelaufen. Du hast das freie Tor gewählt! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das untere Tor gelaufen. Du hast das freie Tor gewählt!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 120,
+  "alt": {
+   "kurz": "⭐ Super! Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Vor dir war Platz!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Vor dir war Platz!",
+   "sheet": false,
+   "said": [
+    "Super! Vor dir war Platz!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 124,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 128,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 vorbei!",
+    "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+   ]
+  }
+ },
+ {
+  "eintrag": 134,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Die Lücke zwischen Rot 1 und Rot 2 war breit genug!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 138,
+  "alt": {
+   "said": [
+    "Tor! Rot 3 ist vor das obere Tor gelaufen – und du hast das freie Tor gesehen! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das obere Tor gelaufen – und du hast das freie Tor gesehen!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Rot 3 ist vor das obere Tor gelaufen. Du hast das freie Tor gewählt! Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Rot 3 ist vor das obere Tor gelaufen. Du hast das freie Tor gewählt!",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 142,
+  "alt": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ]
+  },
+  "neu": {
+   "kurz": "⭐ Super! Du bist an Rot 1 und Rot 2 vorbei!",
+   "sheet": false,
+   "said": [
+    "Schau!",
+    "Super! Du bist an Rot 1 und Rot 2 vorbei!",
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ]
+  }
+ },
+ {
+  "eintrag": 146,
+  "alt": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden! (mit Hilfe)",
+   "sitNochmal": false
+  },
+  "neu": {
+   "said": [
+    "Tor! Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt. Aufgabe geschafft!"
+   ],
+   "fb": [
+    "Toooor! Der Weg war frei.",
+    "Vor dem anderen Tor stand Rot 3 – du hast das freie gewählt.",
+    "✓ 💡 Gute Idee",
+    "✓ 🎯 Freies Tor",
+    "⭐"
+   ],
+   "lern": "⭐💡 Geschafft: Du bist sicher an den Gegnern vorbeigekommen! (mit Hilfe)",
+   "sitNochmal": false
+  }
+ },
+ {
+  "eintrag": 148,
+  "alt": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist nah! Dribbel an ihm vorbei – Richtung Tor."
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  },
+  "neu": {
+   "where": "entscheiden",
+   "sit": "B3",
+   "said": [
+    "Ein Roter ist hinter dir. Wohin dribbelst du?"
+   ],
+   "title": "Wohin dribbelst du?",
+   "tag": "Dribbeln",
+   "actions": []
+  }
+ }
+]

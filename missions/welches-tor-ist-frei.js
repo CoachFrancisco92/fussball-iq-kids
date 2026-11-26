@@ -73,6 +73,8 @@
         // A4: außerhalb der Schusszone – erst näher ran (Standardtexte würden nur zum Passen auffordern)
         angriffFrei: { title: 'Noch zu weit fürs Tor', say: 'Noch zu weit fürs Tor! Dribbel näher ran – oder pass zu deinem Freund.' },
         angriffDruck: { title: 'Noch zu weit fürs Tor', say: 'Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass.' },
+        angriffHinten: { title: 'Noch zu weit fürs Tor', say: 'Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?' },
+        abschlussNochmal: { say: 'Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?' },
       },
       ende: {
         merksatz: ' Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund.',

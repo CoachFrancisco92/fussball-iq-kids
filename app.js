@@ -1,7 +1,7 @@
 /* Fußball-IQ Kids – Oberfläche, Steuerung, Sprache, Wiederholen & Vergleichen (V0.2) */
 (function () {
   'use strict';
-  const APP_VERSION = '0.6.1';
+  const APP_VERSION = '0.6.2';
   // Schutz gegen gemischte Cache-Stände (neue Seite + altes Skript oder umgekehrt)
   try {
     const htmlV = (document.querySelector('meta[name="app-version"]') || {}).content;
@@ -84,17 +84,23 @@
   let lernStarts = {};   // key -> {start: E.lernStart(...), dec}
   let lernErgebnis = {}; // key -> Ergebnis von E.lernAuswertung (gesetzt, sobald die Situation zu Ende ist)
   let lernView = null;   // P5: sichtbare Ursachen nach der Aktion (Lücke, Wächter vorher, Vorbei-Moment, Passweg)
+  let folgeView = null;  // V0.6.2: Folge-Moment {gegner:[{id,von,nach}], tore, gruende, t0} – bleibt bis zur nächsten Entscheidung sichtbar
+  let folgeWeiter = null; // V0.6.2: Fortsetzung nach dem Folge-Moment (Antippen überspringt)
   let kurzInfo = null;   // P3: letzte Kurzrückmeldung {fb, dec} – ↶ und 🔈 bis zur nächsten Aktion
 
   // ------------------------------------------------------------ Darstellung
   const VIEW_GANZ = { x0: -2.2, y0: -1.6, w: 40.4, h: 27.2 };
-  // V0.6a P5: ruhige Rahmung – Lernmissionen spielen in der rechten Feldhälfte. Fester Ausschnitt je Mission (wechselt
-  // nie innerhalb einer Mission): ganze Feldhöhe mit Linien und beiden Toren, der leere linke Teil entfällt.
-  const VIEW_LERNEN = { x0: 6, y0: -0.8, w: 32.0, h: 25.6 };
+  // V0.6a P5: ruhige Rahmung, fester Ausschnitt je Mission (wechselt nie innerhalb einer Mission).
+  // V0.6.2: Der Ausschnitt begann bei x = 6 m und schnitt damit die linke Feldseite samt beider blauen Minitore ab
+  // (Tore bei x = 0, Tornetz bis −1,1 m) – Funino war nicht erkennbar. Jetzt ganze Feldbreite mit allen vier Minitoren
+  // und 0,5 m Rand hinter den Tornetzen; Höhe wie bisher. Simulation und Feldkoordinaten unverändert.
+  const VIEW_LERNEN = { x0: -1.6, y0: -0.8, w: 39.2, h: 25.6 };
   const VIEW = { ...VIEW_GANZ };
+  let lernRahmen = false;
   function setzeRahmen() {
-    const def = MISSIONS.find((m) => m.id === curId), v = def && def.art === 'lernen' && def.situationen ? VIEW_LERNEN : VIEW_GANZ;
-    Object.assign(VIEW, v); resize();
+    const def = MISSIONS.find((m) => m.id === curId);
+    lernRahmen = !!(def && def.art === 'lernen' && def.situationen);
+    Object.assign(VIEW, lernRahmen ? VIEW_LERNEN : VIEW_GANZ); resize();
   }
   let scale = 20, dpr = 1;
 
@@ -102,7 +108,24 @@
    *  Sonst zeigt das Spielfeld bis zum nächsten Frame die alte Größe, obwohl die App schon bereit
    *  für Eingaben ist – ein Tipp in diesem Moment landet daneben (Ursache des roten CI-Laufs e7cb504). */
   function syncLayout() { resize(); }
+  // V0.6.2: Die Rückmeldung darf das Spielfeld nicht verkleinern. Im Querformat steht das Rückmeldeblatt deshalb rechts
+  // neben dem Feld (wie auf dem Handy quer), wenn das Feld dort mindestens so groß bleibt wie beim Entscheiden.
+  let spielScale = 0;
+  const feldScale = () => { const r = wrap.getBoundingClientRect(); return Math.min(r.width / VIEW.w, r.height / VIEW.h); };
   function resize() {
+    const app = $('app'), blatt = !!($('feedback') && !$('feedback').hidden);
+    // V0.6.2: Mit dem ganzen Funino-Feld passt das Rückmeldeblatt im Tablet-Querformat nicht mehr neben das Feld – es
+    // würde unter das Feld rutschen und das Feld je nach Textlänge um 12–22 % verkleinern. Deshalb steht in den
+    // Lernmissionen die Bedienleiste im Querformat (wie auf dem Handy quer) dauerhaft rechts; die Rückmeldung erscheint
+    // an derselben Stelle, das Feld behält beim Entscheiden und in der Rückmeldung dieselbe Größe. Mission 1 unverändert.
+    const leiste = lernRahmen && window.innerWidth >= 900 && window.innerWidth / window.innerHeight >= 1.2;
+    app.classList.toggle('leisteSeite', leiste);
+    if (leiste) { app.classList.remove('blattSeite'); if (!blatt) spielScale = feldScale(); }
+    else if (!blatt) { app.classList.remove('blattSeite'); spielScale = feldScale(); }
+    else if (!app.classList.contains('blattSeite') && window.innerWidth >= 900 && window.innerWidth / window.innerHeight >= 1.2) {
+      app.classList.add('blattSeite');
+      if (spielScale && feldScale() < spielScale * 0.97) app.classList.remove('blattSeite');
+    }
     const r = wrap.getBoundingClientRect();
     dpr = Math.min(window.devicePixelRatio || 1, 2.5);
     scale = Math.min(r.width / VIEW.w, r.height / VIEW.h);
@@ -217,13 +240,89 @@
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(String(p.num), X(p.x), Y(p.y) + Mm(0.04));
     }
-    const b = v.ball;
-    ctx.fillStyle = 'rgba(0,0,0,.25)';
-    ctx.beginPath(); ctx.ellipse(X(b.x + 0.1), Y(b.y + 0.22), Mm(0.36), Mm(0.22), 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.strokeStyle = '#111'; ctx.lineWidth = Mm(0.07);
-    ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), Mm(0.38), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#111';
-    ctx.beginPath(); ctx.arc(X(b.x), Y(b.y), Mm(0.13), 0, Math.PI * 2); ctx.fill();
+    drawBall(v);
+  }
+
+  // ---------- V0.6.2: Ball als klassischer schwarz-weißer Fußball (2D-Vektorgrafik, nur Darstellung)
+  // Grafischer Radius 0,46 m (vorher 0,38 m), mindestens 7 CSS-Pixel; die Spielmechanik (Position, Kollision) bleibt unverändert.
+  // Muster: Fünfeck in der Mitte, fünf angeschnittene Fünfecke am Rand, Nähte dazwischen (Sechsecke); unter 9 CSS-Pixeln
+  // vereinfacht (ohne Nähte), damit es auch klein als Fußball erkennbar bleibt. Einmal je Pixelgröße
+  // vorgezeichnet (Zwischenspeicher) – keine Mehrkosten pro Bild.
+  const R_BALL = 0.46, BALL_MIN_CSS = 7;
+  const ballCache = new Map();
+  function ballSprite(rPx) {
+    const key = Math.round(rPx * 2) / 2, ck = key + '@' + dpr;
+    if (ballCache.has(ck)) return ballCache.get(ck);
+    const pad = 2, size = Math.ceil(key * 2 + pad * 2), c = document.createElement('canvas');
+    c.width = c.height = size;
+    const g = c.getContext('2d'), m = size / 2, R = key, klein = key / dpr < 9;
+    const P = (cx, cy, r, rot) => { const pts = []; for (let i = 0; i < 5; i++) { const w = rot + (i * 2 * Math.PI) / 5; pts.push([cx + Math.cos(w) * r, cy + Math.sin(w) * r]); } return pts; };
+    const flach = (pts, cx, cy, w, k) => pts.map(([x, y]) => { const dx = x - cx, dy = y - cy, ux = Math.cos(w), uy = Math.sin(w); const a = dx * ux + dy * uy, b = -dx * uy + dy * ux; return [cx + ux * a * k - uy * b, cy + uy * a * k + ux * b]; });
+    const poly = (pts) => { g.beginPath(); pts.forEach(([x, y], i) => g[i ? 'lineTo' : 'moveTo'](x, y)); g.closePath(); };
+    const grad = g.createRadialGradient(m - R * 0.35, m - R * 0.4, R * 0.1, m, m, R);
+    grad.addColorStop(0, '#ffffff'); grad.addColorStop(1, '#d9dee5');
+    g.fillStyle = grad; g.beginPath(); g.arc(m, m, R, 0, Math.PI * 2); g.fill();
+    g.save(); g.beginPath(); g.arc(m, m, R, 0, Math.PI * 2); g.clip();
+    const ink = '#16181c'; g.fillStyle = ink; g.strokeStyle = ink;
+    const rot = -Math.PI / 2, pc = R * 0.36, dist = R * 0.9, po = R * 0.34, fk = 0.62;
+    const mitte = P(m, m, pc, rot); poly(mitte); g.fill();
+    const aussen = [];
+    for (let k = 0; k < 5; k++) {
+      const w = rot + (k * 2 * Math.PI) / 5, cx = m + Math.cos(w) * dist, cy = m + Math.sin(w) * dist;
+      const pts = flach(P(cx, cy, po, w + Math.PI), cx, cy, w, fk); aussen.push(pts); poly(pts); g.fill();
+    }
+    if (!klein) {
+      g.lineWidth = Math.max(1, R * 0.05); g.lineCap = 'round'; g.lineJoin = 'round';
+      for (let k = 0; k < 5; k++) {
+        const w = rot + (k * 2 * Math.PI) / 5;
+        // Naht Mitte-Ecke → innere Ecke des Randfünfecks
+        g.beginPath(); g.moveTo(...mitte[k]); g.lineTo(...aussen[k][0]); g.stroke();
+        // Sechseck-Außenkante: nächstgelegene Ecken benachbarter Randfünfecke verbinden
+        const n = aussen[(k + 1) % 5]; let best = null;
+        for (const pa of aussen[k]) for (const pb of n) { const d = Math.hypot(pa[0] - pb[0], pa[1] - pb[1]); if (!best || d < best[0]) best = [d, pa, pb]; }
+        g.beginPath(); g.moveTo(...best[1]); g.lineTo(...best[2]); g.stroke();
+      }
+    }
+    g.restore();
+    g.lineWidth = Math.max(1, R * 0.09); g.strokeStyle = ink;
+    g.beginPath(); g.arc(m, m, R - g.lineWidth / 2, 0, Math.PI * 2); g.stroke();
+    const sprite = { c, m };
+    if (ballCache.size > 24) ballCache.clear();
+    ballCache.set(ck, sprite);
+    return sprite;
+  }
+  // Liegt der Ball beim Ballführenden näher als 1,05 m an dessen Mitte (Simulation: ruhend = Spielermitte, Mission 1 teils
+  // 0,4 m davor), zeigen wir ihn vorn am Fuß (1,05 m, wie beim Dribbling) – in Richtung des Balls, bei Ball in der Mitte in
+  // Angriffsrichtung. So verdeckt er weder Figur noch Nummer, und der Besitz ist eindeutig. Fliegt er danach los, klingt der
+  // Versatz auf den ersten 2 m Flugweg gleichmäßig aus (kein Rücksprung). Reine Darstellung: Simulation, Kollision, Wege unverändert.
+  const BALL_VOR = 1.05;
+  let ballHalt = null, ballZuletzt = null;
+  function ballAnzeige(v) {
+    const b = v.ball, o = v.owner && v.players.find((p) => p.id === v.owner);
+    if (o) {
+      const dx = b.x - o.x, dy = b.y - o.y, d = Math.hypot(dx, dy);
+      if (d < BALL_VOR - 0.01) {
+        const ux = d > 0.05 ? dx / d : (o.team === 'blue' ? 1 : -1), uy = d > 0.05 ? dy / d : 0;
+        const ziel = { x: o.x + ux * BALL_VOR, y: o.y + uy * BALL_VOR };
+        ballHalt = { x: b.x, y: b.y, ox: ziel.x - b.x, oy: ziel.y - b.y };
+        return ziel;
+      }
+      ballHalt = null; return b;
+    }
+    if (ballHalt) {
+      const f = Math.max(0, 1 - Math.hypot(b.x - ballHalt.x, b.y - ballHalt.y) / 2);
+      if (f > 0) return { x: b.x + ballHalt.ox * f, y: b.y + ballHalt.oy * f };
+    }
+    return b;
+  }
+  function drawBall(v) {
+    const b = ballAnzeige(v);
+    const rPx = Math.max(Mm(R_BALL), BALL_MIN_CSS * dpr);
+    ctx.fillStyle = 'rgba(0,0,0,.25)';                                       // Schatten
+    ctx.beginPath(); ctx.ellipse(X(b.x) + rPx * 0.2, Y(b.y) + rPx * 0.55, rPx * 0.95, rPx * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+    const sp = ballSprite(rPx);
+    ballZuletzt = { x: b.x, y: b.y, rCss: rPx / dpr, owner: v.owner || null };
+    ctx.drawImage(sp.c, Math.round(X(b.x) - sp.m), Math.round(Y(b.y) - sp.m));
   }
 
   const R_SPIELER = 1.02; // V0.6a P5: Spieler ca. 20 % größer (vorher 0,85 m; 25 % überdeckt den Ballführenden beim Pressing zu stark); Tippflächen unverändert
@@ -262,6 +361,29 @@
         const yy = lv.vorbei.at.y - 2 - t * 0.8;
         ctx.strokeText(lv.vorbei.text, X(lv.vorbei.at.x), Y(yy)); ctx.fillText(lv.vorbei.text, X(lv.vorbei.at.x), Y(yy));
         ctx.globalAlpha = 1;
+      }
+    }
+  }
+  /** V0.6.2: Folge-Moment zeichnen – woher die beteiligten Roten kamen (Schatten + Spur) und welche Tore sich verändert
+   *  haben (neutraler Ring „!“, ohne frei/zu zu verraten). Im Folge-Moment kräftig, danach (Rückmeldung) zurückhaltend. */
+  function drawFolge(fv, stark) {
+    const a = stark ? 1 : 0.55;
+    for (const g of fv.gegner) {
+      ctx.globalAlpha = a;
+      ctx.fillStyle = 'rgba(190,18,60,.25)'; ctx.strokeStyle = '#fff'; ctx.lineWidth = Mm(0.12); ctx.setLineDash([Mm(0.25), Mm(0.2)]);
+      ctx.beginPath(); ctx.arc(X(g.von.x), Y(g.von.y), Mm(R_SPIELER), 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+      if (Math.hypot(g.nach.x - g.von.x, g.nach.y - g.von.y) > R_SPIELER * 1.6) arrow(g.von, g.nach, 'rgba(255,255,255,.95)', 0.2, true);
+      ctx.globalAlpha = 1;
+    }
+    if (stark && fv.tore.length) {
+      const t = ((performance.now() - fv.t0) % 900) / 900, puls = 0.75 + 0.25 * Math.sin(t * Math.PI * 2);
+      for (const g of fv.tore) {
+        const gx = F.goals.red[g].x, gy = F.goals.red[g].y;
+        ctx.strokeStyle = 'rgba(255,214,10,' + puls + ')'; ctx.lineWidth = Mm(0.35);
+        ctx.beginPath(); ctx.arc(X(gx - 0.2), Y(gy), Mm(1.9), 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = '#ffd60a'; ctx.beginPath(); ctx.arc(X(gx + 1.1), Y(gy - 2.6), Mm(0.75), 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#5c4300'; ctx.font = FONT(Mm(1.1)); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('!', X(gx + 1.1), Y(gy - 2.6) + Mm(0.05));
       }
     }
   }
@@ -331,10 +453,10 @@
     ctx.stroke(); ctx.setLineDash([]);
   }
 
-  function label(text) {
+  function label(text, neu) {
     ctx.font = FONT(Mm(1.15));
     const tw = ctx.measureText(text).width + Mm(1.6);
-    ctx.fillStyle = 'rgba(15,23,42,.78)';
+    ctx.fillStyle = neu ? 'rgba(202,138,4,.92)' : 'rgba(15,23,42,.78)';   // neu: Szene gerade gewechselt (0,4 s)
     roundRect(X(F.W / 2) - tw / 2, Y(0.4), tw, Mm(2), Mm(1)); ctx.fill();
     ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(text, X(F.W / 2), Y(1.4));
@@ -371,10 +493,11 @@
       drawMarker(marker, 'rgba(255,255,255,.9)');
     }
     if ((mode === 'feedback' || mode === 'kurz') && explainView) { drawExplain(explainView); Object.assign(opts, explainIds(explainView)); }
+    if ((mode === 'folge' || mode === 'feedback' || mode === 'kurz') && folgeView) drawFolge(folgeView, mode === 'folge');
     drawPlayers(v, opts);
     // P5: Ursachen über den Spielern (die Lücke liegt dort, wo die Gegner vorher standen – sonst verdeckt)
-    if ((mode === 'feedback' || mode === 'kurz') && lernView) drawLern(lernView);
-    if (mode === 'replay' && replay) label(replay.queue[replay.i].label);
+    if ((mode === 'feedback' || mode === 'kurz' || mode === 'folge') && lernView) drawLern(mode === 'folge' ? { vorbei: lernView.vorbei } : lernView);
+    if (mode === 'replay' && replay) label(replay.queue[replay.i].label, replay.i > 0 && performance.now() - replay.wechsel < 400);
   }
   function roundRect(x, y, w, h, r) {
     ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
@@ -408,7 +531,7 @@
         if (replay.f >= item.frames.length + 75 && (Sprache.frei() || replay.f >= item.frames.length + 375)) {
           // Höchstzeit erreicht: noch laufende Ansage der alten Szene beenden (keine verspätete Ansage)
           if (!Sprache.frei()) Sprache.vorrang();
-          replay.i++; replay.f = 0;
+          replay.i++; replay.f = 0; replay.wechsel = performance.now();
           if (replay.i >= replay.queue.length) { const done = replay.onDone; replay = null; done(); break; }
           say(replay.queue[replay.i].say || '', 'ansage');
         }
@@ -430,7 +553,7 @@
     curRun = n != null ? n : (runs[curId] || 0);
     S = E.newState(curId, curRun); M = E.newMission(curId, curRun); dec = 0; hist = [];
     hintView = null; marker = null; explainView = null; lookView = null; replay = null; sel = null;
-    lernStarts = {}; lernErgebnis = {}; lernView = null; kurzAus();
+    lernStarts = {}; lernErgebnis = {}; lernView = null; folgeView = null; folgeWeiter = null; kurzAus();
     setzeRahmen();
     $('startScreen').hidden = true; $('endScreen').hidden = true; $('feedback').hidden = true; $('skip').hidden = true;
     $('restart').hidden = false; $('prompt').classList.remove('dim');
@@ -448,7 +571,7 @@
     if (!lernStarts[key]) lernStarts[key] = { start: E.lernStart(S, situationsMission() ? null : key), dec };
     hist[dec] = { snap: E.clone(S), mission: E.clone(M), ctx: c, last, attempts: prev ? prev.attempts : [], final: null, look: prev ? prev.look : null, sit: key, usedHint: !!(prev && prev.usedHint) };
     hist.length = dec + 1;
-    sel = null; hintView = null; marker = null; explainView = null; lookView = null; lernView = null;
+    sel = null; hintView = null; marker = null; explainView = null; lookView = null; lernView = null; folgeView = null; folgeWeiter = null;
     updateProgress();
     setPrompt(c.tag, c.type === 'verteidigung' ? 'def' : 'att', c.title);
     if (E.lookBefore(S, c) && !hist[dec].look) return beginLook(c);
@@ -619,9 +742,23 @@
     const el = document.elementFromPoint(lastButtonTap.x, lastButtonTap.y);
     return !(el && el.closest && el.closest('button'));
   };
-  cv.addEventListener('pointerdown', (ev) => {
+  // Szenenvergleich: Ein Tipp irgendwo im Spielfeldbereich (auch auf den Rand neben dem Feld) geht eine Szene weiter.
+  // Vorher zählte nur das Canvas – je nach Gerät 13–44 % der Fläche reagierten nicht. Knöpfe (⏭) behalten ihre Funktion.
+  wrap.addEventListener('pointerdown', (ev) => {
+    if (mode !== 'replay' || !replay || pausiert) return;
+    if (ev.target && ev.target.closest && ev.target.closest('button')) return;
     if (isGhostTap(ev)) { tapCount.ghost++; return; }
     tapCount.field++;
+    replayWeiter();
+  });
+  cv.addEventListener('pointerdown', (ev) => {
+    if (mode === 'replay') return;   // siehe Spielfeldbereich oben (sonst doppelt gezählt)
+    if (isGhostTap(ev)) { tapCount.ghost++; return; }
+    tapCount.field++;
+    if (mode === 'folge' && folgeWeiter && !pausiert) { Sprache.stopp(); folgeWeiter(); return; }  // Antippen beendet den Folge-Moment
+    // Nur im Szenenvergleich: ein Tipp geht genau eine Szene weiter. Alle anderen
+    // Tipp-/Entscheidungszustände behalten ihre bewährte Steuerung.
+    if (mode === 'replay') return;   // Szenenvergleich: wird über den ganzen Spielfeldbereich behandelt (unten)
     const pt = worldFromEvent(ev);
     const c = S && E.carrier(S);
     if (mode === 'look') {
@@ -676,6 +813,7 @@
 
   function finishEpisode() {
     const fb = E.feedback(S);
+    const fo = E.folge(S);                       // V0.6.2: Folge-Moment? (vor missionAfter – Lage direkt nach der Aktion)
     const ctxType = hist[dec].ctx.type;
     const attempt = { frames: S.ep.frames, fb, a: S.ep.a, endState: null, missionAfter: null };
     E.missionAfter(M, S, ctxType);               // kann bei „Ball im Aus“ einen Neustart auslösen
@@ -690,6 +828,33 @@
     const endet = situationEndet(h.sit);
     h.lern = endet ? lernAuswerten(h.sit) : null;
     if (h.lern && h.lern.typ) lernErgebnis[h.sit] = h.lern; else delete lernErgebnis[h.sit];
+    // V0.6.2: bei bedeutsamer Veränderung zuerst ein stiller Folge-Moment (volles Feld, Spuren der Gegner, veränderte Tore),
+    // erst danach die erklärende Rückmeldung. Nach Routineaktionen kein Folge-Moment.
+    if (fo.bedeutsam) return folgeMoment(fo, () => zeigeErgebnis(fb, h, endet), attempt.a && attempt.a.kind);
+    zeigeErgebnis(fb, h, endet);
+  }
+  /** V0.6.2: Folge-Moment – das Kind sieht zuerst, was sich verändert hat (ca. 1,4 s, Antippen überspringt). */
+  function folgeMoment(fo, danach, aktion) {
+    mode = 'folge';
+    folgeView = { ...fo, t0: performance.now() };
+    const d = dec, weiterNachFolge = () => { if (mode === 'folge' && dec === d) { folgeWeiter = null; danach(); } };
+    folgeWeiter = weiterNachFolge;
+    Sprache.phase();
+    // Nur direkt belegte, eindeutige Ursachen lenken den Blick. Bei allen anderen
+    // Kombinationen gilt das bereits freigegebene neutrale „Schau!“.
+    const gruende = fo.gruende || [];
+    let beobachtung = T().folge.schau;
+    if (gruende.length === 1 && gruende[0] === 'ballVerloren') beobachtung = T().folge.ball;
+    else if (gruende.length === 1 && gruende[0] === 'ueberwunden')
+      beobachtung = fo.gegner.length > 1 ? T().folge.gegnerMehrere : T().folge.gegner;
+    // Nach Freilaufen (Aktion 'run') ist Anspielbarwerden der Lerngegenstand, nicht die Torlage → neutrales „Schau!“.
+    else if (gruende.length === 1 && gruende[0] === 'toreVeraendert' && curId !== 'mission-1' && aktion !== 'run')
+      beobachtung = T().folge.tore;
+    say(beobachtung, 'ansage', false, false);
+    const ms = T().folge.dauer || 1400;
+    Sprache.wennFertig(weiterNachFolge, { min: ms, max: ms + 3000 });   // „Schau!“ wird nie abgeschnitten
+  }
+  function zeigeErgebnis(fb, h, endet) {
     // P3: Kurzrückmeldung (nur Missionen mit kurzrueckmeldung): gute Entscheidung, Situation läuft weiter, kein Tor
     const def = missionDef();
     if (def && def.kurzrueckmeldung === true && fb.good && !endet && !fb.goal) return kurzRueckmeldung(fb);
@@ -760,7 +925,9 @@
     const L = h.lern, TL = T().lern, lern = $('fbLern');
     let lernSatz = '', lernGesagt = '';
     if (L && L.typ && TL.geschafft[L.typ]) {
-      lernSatz = L.geloest ? TL.geschafft[L.typ] : TL.nochNicht[L.typ];
+      // „Die Tore haben sich verändert“ nur, wenn die Simulation das belegt (Grund aus der Aufgabenbewertung)
+      const gk = L.typ === 'nochmalSchauen' && L.grund !== 'veraenderungErkannt' && TL.geschafft.nochmalSchauenOhne ? 'nochmalSchauenOhne' : L.typ;
+      lernSatz = L.geloest ? TL.geschafft[gk] : TL.nochNicht[L.typ];
       lernGesagt = L.geloest ? TL.geschafftKurz : lernSatz;
       lern.textContent = (L.geloest ? '⭐' + (L.hilfe ? '💡 ' : ' ') : '🔁 ') + lernSatz + (L.geloest && L.hilfe ? ` (${TL.mitHilfe})` : '');
       lern.className = L.geloest ? '' : 'offen';
@@ -836,9 +1003,33 @@
       { frames: a2.frames, label: T().bedienung.jetzt, explain: a2.fb.explain, say: say(T().bedienung.jetzt, a2) },
     ], () => { S = E.clone(h.final.endState); explainView = h.final.fb.explain; $('feedback').hidden = false; mode = 'feedback'; syncLayout(); });
   }
+  /** Reines Szenen-Weiterschalten: verändert weder Spielstand noch Entscheidungen.
+   *  Anders als ein globaler Tipp-Handler gilt das ausschließlich im Replay-Modus. */
+  // Versehentlicher Doppeltipp: Ein Tipp innerhalb von 250 ms nach einem Szenenwechsel zählt nicht – egal ob der
+  // Wechsel durch einen Tipp oder automatisch (Szene zu Ende) kam. Sonst überspringt ein Tipp genau im Moment des
+  // automatischen Wechsels die gerade begonnene Szene. Gilt nur im Szenenvergleich; bewusste Tipps danach wirken sofort.
+  const REPLAY_DOPPELTIPP_MS = 250;
+  function replayWeiter() {
+    if (mode !== 'replay' || !replay || pausiert) return;
+    const jetzt = performance.now();
+    if (jetzt - replay.wechsel < REPLAY_DOPPELTIPP_MS) return;
+    Sprache.stopp();
+    const naechste = replay.i + 1;
+    if (naechste >= replay.queue.length) {
+      const done = replay.onDone;
+      replay = null;
+      done();
+      return;
+    }
+    replay.i = naechste;
+    replay.f = 0;
+    replay.acc = 0;
+    replay.wechsel = jetzt;
+    say(replay.queue[naechste].say || '', 'ansage', true);
+  }
   function startReplay(queue, onDone) {
     mode = 'replay';
-    replay = { queue, i: 0, f: 0, acc: 0, onDone: null };
+    replay = { queue, i: 0, f: 0, acc: 0, onDone: null, wechsel: -Infinity };  // wechsel: Zeit des letzten Szenenwechsels (Start zählt nicht; den Knopf-Doppeltipp fängt isGhostTap ab)
     $('prompt').hidden = true; $('skip').hidden = false; setStepText('');
     replay.onDone = () => { $('skip').hidden = true; onDone(); $('prompt').hidden = mode === 'end'; syncLayout(); };
     say(queue[0].say || '', 'ansage', true);
@@ -855,7 +1046,7 @@
     const good = sits.filter((x) => x.e.geloest).length, mitHilfe = sits.filter((x) => x.e.geloest && x.e.hilfe).length;
     $('stars').innerHTML = sits.map((x) => `<span class="${x.e.geloest ? 'on' : ''}">★</span>`).join('');
     const TE = T().ende, TL = T().lern;
-    $('endScore').textContent = TE.spielstand(S.score.blue, S.score.red) + (looks.length ? TE.erkannt(looks.filter((l) => l.right && l.tries === 1).length, looks.length) : '') + '  ·  ' + TE.zaehler(good, sits.length, mitHilfe);
+    $('endScore').textContent = TE.spielstand(S.score.blue, S.score.red) + (looks.length ? TE.schauRichtig(looks.filter((l) => l.right && l.tries === 1).length, looks.length) : '') + '  ·  ' + TE.zaehler(good, sits.length, mitHilfe);
     const msg = TE.lob(good, sits.length) + (TE.merksatz || '');
     $('endMsg').textContent = msg;
     $('endList').innerHTML = sits.map((x) => `<li class="${x.e.geloest ? 'good' : ''}"><b>${x.key === 'verteidigung' ? '🛡️' : '⚽'}</b> ${TL.titel[x.e.typ] || ''} <span>${x.e.geloest ? '⭐' + (x.e.hilfe ? '💡' : '') : '✓'}</span></li>`).join('');
@@ -949,7 +1140,7 @@
   };
   function goHome() {
     Sprache.abbrechen(); hideHand(); closeConfirm(false);
-    replay = null; mode = 'start'; sel = null; kurzAus(); lernView = null;
+    replay = null; mode = 'start'; sel = null; kurzAus(); lernView = null; folgeView = null; folgeWeiter = null;
     $('feedback').hidden = true; $('endScreen').hidden = true; $('skip').hidden = true; $('restart').hidden = true;
     renderStart(); $('startScreen').hidden = false;
   }
@@ -1016,11 +1207,13 @@
   resize();
   S = E.newState(curId, 0); M = E.newMission(curId, 0);
   updateScore(); updateProgress();
+  // V0.6.2: Layout folgt dem Rückmeldeblatt (an allen Stellen, die es zeigen oder verbergen)
+  new MutationObserver(() => resize()).observe($('feedback'), { attributes: true, attributeFilter: ['hidden'] });
   requestAnimationFrame(loop);
 
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     try { navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
   }
   // Testzugriff (nur lesend) für automatisierte Oberflächentests
-  window.__fiq = { get taps() { return { ...tapCount }; }, get replayIdx() { return replay ? replay.i : -1; }, get dec() { return dec; }, get run() { return curRun; }, get id() { return curId; }, get paused() { return pausiert; }, get relevant() { return Sprache.relevant; }, get speech() { return Sprache._zustand(); }, get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; }, get view() { return { ...VIEW }; }, get lern() { return JSON.parse(JSON.stringify(lernErgebnis)); }, get kurz() { return kurzInfo ? { dec: kurzInfo.dec, tip: kurzInfo.fb.tip } : null; }, get lernView() { return lernView ? Object.keys(lernView) : []; } };
+  window.__fiq = { get taps() { return { ...tapCount }; }, get replayIdx() { return replay ? replay.i : -1; }, get dec() { return dec; }, get run() { return curRun; }, get id() { return curId; }, get paused() { return pausiert; }, get relevant() { return Sprache.relevant; }, get speech() { return Sprache._zustand(); }, get mode() { return mode; }, get S() { return S; }, get M() { return M; }, get ctx() { return hist[dec] ? hist[dec].ctx : null; }, get sel() { return sel ? { ...sel } : null; }, get look() { return lookView ? { tries: lookView.tries, done: !!lookView.done } : null; }, get view() { return { ...VIEW }; }, get lern() { return JSON.parse(JSON.stringify(lernErgebnis)); }, get feldScale() { return scale; }, get ball() { return ballZuletzt ? { ...ballZuletzt } : null; }, get blattSeite() { return $('app').classList.contains('blattSeite'); }, get folge() { return folgeView ? { gruende: folgeView.gruende, gegner: folgeView.gegner.map((g) => g.id), tore: folgeView.tore } : null; }, get kurz() { return kurzInfo ? { dec: kurzInfo.dec, tip: kurzInfo.fb.tip } : null; }, get lernView() { return lernView ? Object.keys(lernView) : []; } };
 })();

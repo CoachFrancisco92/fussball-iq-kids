@@ -1,0 +1,1336 @@
+[
+ {
+  "start": [
+   [
+    "welches-tor-ist-frei",
+    "🥅",
+    "Welches Tor ist frei?",
+    "Erst schauen, dann schießen",
+    true
+   ],
+   [
+    "freie-bahn",
+    "🏃",
+    "Freie Bahn!",
+    "Freie Wege finden",
+    false
+   ],
+   [
+    "mission-1",
+    "3",
+    "Zusammen sind wir stark!",
+    "Erst schauen, dann entscheiden",
+    false
+   ]
+  ]
+ },
+ {
+  "gewaehlt": [
+   "Welches Tor ist frei? Heute schießt du Tore! Schau vor jedem Schuss genau: Vor welchem Tor steht kein Roter? Dorthin schießt du. Tippe auf Los geht's!"
+  ]
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A1",
+  "said": [
+   "Los geht's! Du spielst mit den Blauen.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A1",
+   "A2"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A2",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A2",
+   "A3"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A3",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "said": [
+   "Tippe auf einen Mitspieler. Oder auf eine freie Stelle.",
+   "Schau auf die Tore!",
+   "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei."
+  ],
+  "fb": [
+   "Der Pass ist angekommen!",
+   "Super! Der Weg zu Blau 2 war frei.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "nach Pass",
+  "sit": "A3",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Pass war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Pass war das untere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐ Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt!",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A3",
+   "W1"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "W1",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "said": [
+   "Tippe dorthin, wohin du dribbeln willst.",
+   "Schau auf die Tore!",
+   "Super! Vor dir war Platz!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super! Vor dir war Platz!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "W1 in der Schusszone",
+  "sit": "W1",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "said": [
+   "Tippe auf ein rotes Tor.",
+   "Geblockt! Gute Idee, aufs Tor zu schießen! Aber schau mal: Rot 2 ist vor das untere Tor gelaufen. Das obere Tor war frei.",
+   "Das üben wir nochmal: Nach dem Dribbeln nochmal schauen – welches Tor ist jetzt frei?"
+  ],
+  "fb": [
+   "Geblockt! Rot 2 stand vor dem Tor.",
+   "Gute Idee, aufs Tor zu schießen! Aber schau mal: Rot 2 ist vor das untere Tor gelaufen. Das obere Tor war frei.",
+   "✓ 💡 Gute Idee",
+   "✗ 🎯 Gegner im Weg",
+   "💭"
+  ],
+  "lern": "🔁 Das üben wir nochmal: Nach dem Dribbeln nochmal schauen – welches Tor ist jetzt frei?",
+  "sitNochmal": true
+ },
+ {
+  "where": "W1 nochmal",
+  "sit": "W1",
+  "said": [
+   "Die gleiche Situation nochmal von vorn!",
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Super! Vor dir war Platz!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super! Vor dir war Platz!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "W1 weiter",
+  "sit": "W1",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Dribbling war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Dribbling war das obere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "end": "Durchlauf 1",
+  "said": [
+   "Super gespielt! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund. Du hast 4 von 4 Aufgaben geschafft."
+  ],
+  "stars": "★★★★",
+  "score": "Blau 4 : 0 Rot  ·  ⭐ 4 von 4 geschafft  ·  💡 3 mit Hilfe",
+  "msg": "Super gespielt! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A2",
+  "said": [
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "said": [
+   "Tippe auf ein rotes Tor.",
+   "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐ Geschafft: Du hast das freie Tor gewählt!",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A2",
+   "A5"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A5",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "said": [
+   "Tippe auf ein rotes Tor.",
+   "Tor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐ Geschafft: Du hast das freie Tor gewählt!",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A5",
+   "A3m"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A3m",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "said": [
+   "Tippe auf ein rotes Tor.",
+   "Geblockt! Rot 2 stand vor dem Tor. Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen. Das üben wir nochmal: Wenn beide Tore zu sind – steht ein Freund frei?"
+  ],
+  "fb": [
+   "Geblockt! Rot 2 stand vor dem Tor.",
+   "Schau mal: Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.",
+   "✗ 💡 Andere Idee besser",
+   "✗ 🎯 Gegner im Weg",
+   "💭"
+  ],
+  "lern": "🔁 Das üben wir nochmal: Wenn beide Tore zu sind – steht ein Freund frei?",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A3m",
+   "W1m"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "W1m",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Super! Vor dir war Platz!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super! Vor dir war Platz!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "W1m weiter",
+  "sit": "W1m",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Dribbling war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Dribbling war das untere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "end": "Durchlauf 2",
+  "said": [
+   "Super gespielt! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund. Du hast 3 von 4 Aufgaben geschafft."
+  ],
+  "stars": "★★☆★",
+  "score": "Blau 3 : 0 Rot  ·  ⭐ 3 von 4 geschafft  ·  💡 1 mit Hilfe",
+  "msg": "Super gespielt! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A4",
+  "said": [
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "said": [
+   "Tippe dorthin, wohin du dribbeln willst.",
+   "Schau zum Ball!",
+   "Rot 1 stand im Weg und hat dir den Ball abgenommen. Gute Idee, zu dribbeln! Aber schau mal: Du bist direkt auf einen Gegner zugelaufen.",
+   "Das üben wir nochmal: Schau vor dem Schuss, welches Tor frei ist."
+  ],
+  "fb": [
+   "Rot 1 stand im Weg und hat dir den Ball abgenommen.",
+   "Gute Idee, zu dribbeln! Aber schau mal: Du bist direkt auf einen Gegner zugelaufen.",
+   "✓ 💡 Gute Idee",
+   "✗ 🎯 Gegner im Weg",
+   "💭"
+  ],
+  "lern": "🔁 Das üben wir nochmal: Schau vor dem Schuss, welches Tor frei ist.",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A4",
+   "A1"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A1",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "said": [
+   "Tippe auf ein rotes Tor.",
+   "Geblockt! Rot 2 stand vor dem Tor. Gute Idee, aufs Tor zu schießen! Aber schau mal: Das andere Tor war frei. Das üben wir nochmal: Schau vor dem Schuss, welches Tor frei ist."
+  ],
+  "fb": [
+   "Geblockt! Rot 2 stand vor dem Tor.",
+   "Gute Idee, aufs Tor zu schießen! Aber schau mal: Das andere Tor war frei.",
+   "✓ 💡 Gute Idee",
+   "✗ 🎯 Gegner im Weg",
+   "💭"
+  ],
+  "lern": "🔁 Das üben wir nochmal: Schau vor dem Schuss, welches Tor frei ist.",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A1",
+   "A3"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A3",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "passen",
+  "said": [
+   "Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei."
+  ],
+  "fb": [
+   "Der Pass ist angekommen!",
+   "Super! Der Weg zu Blau 2 war frei.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "A3 weiter",
+  "sit": "A3",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Pass war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Pass war das untere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A3",
+   "W1m"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "W1m",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Super! Vor dir war Platz!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super! Vor dir war Platz!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "W1m weiter",
+  "sit": "W1m",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Dribbling war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Dribbling war das untere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "end": "Durchlauf 3",
+  "said": [
+   "Gut gemacht! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund. Du hast 2 von 4 Aufgaben geschafft."
+  ],
+  "stars": "☆☆★★",
+  "score": "Blau 2 : 0 Rot  ·  ⭐ 2 von 4 geschafft  ·  💡 2 mit Hilfe",
+  "msg": "Gut gemacht! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A5",
+  "said": [
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A5",
+   "A2"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A2",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A2",
+   "A3m"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A3m",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "passen",
+  "said": [
+   "Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei."
+  ],
+  "fb": [
+   "Der Pass ist angekommen!",
+   "Super! Der Weg zu Blau 2 war frei.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "A3m weiter",
+  "sit": "A3m",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Pass war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Pass war das obere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A3m",
+   "W1"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "W1",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Super! Vor dir war Platz!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super! Vor dir war Platz!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "W1 weiter",
+  "sit": "W1",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Dribbling war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Dribbling war das obere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "end": "Durchlauf 4",
+  "said": [
+   "Super gespielt! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund. Du hast 4 von 4 Aufgaben geschafft."
+  ],
+  "stars": "★★★★",
+  "score": "Blau 4 : 0 Rot  ·  ⭐ 4 von 4 geschafft  ·  💡 4 mit Hilfe",
+  "msg": "Super gespielt! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A1",
+  "said": [
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt. Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Vor dem anderen Tor stand Rot 2 – du hast das freie gewählt.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A1",
+   "A4"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A4",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "said": [
+   "Tippe auf einen Mitspieler. Oder auf eine freie Stelle.",
+   "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei."
+  ],
+  "fb": [
+   "Der Pass ist angekommen!",
+   "Super! Der Weg zu Blau 2 war frei.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "A4 weiter",
+  "sit": "A4",
+  "said": [
+   "Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball."
+  ],
+  "title": "Wo kann ich helfen?",
+  "tag": "Bewegung ohne Ball",
+  "actions": []
+ },
+ {
+  "hilfe": "freilaufen",
+  "said": [
+   "Lauf in den freien Raum, weg vom Gegner. Dann kann dein Freund dich anspielen."
+  ]
+ },
+ {
+  "said": [
+   "Wohin soll er laufen? Tippe auf eine freie Stelle.",
+   "Schau!",
+   "Super! Jetzt bist du anspielbar. Super gemacht!"
+  ],
+  "fb": [
+   "Super! Jetzt bist du anspielbar.",
+   "Super gemacht!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Guter Platz",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "A4 weiter",
+  "sit": "A4",
+  "said": [
+   "Noch zu weit fürs Tor! Dribbel am Roten vorbei näher ran – oder pass."
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Super! Vor dir war Platz!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super! Vor dir war Platz!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "A4 weiter",
+  "sit": "A4",
+  "said": [
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Schau!",
+   "Super! Du bist an Rot 2 vorbei!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super! Du bist an Rot 2 vorbei!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "A4 weiter",
+  "sit": "A4",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Dribbling war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Dribbling war das obere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Du hast das freie Tor gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A4",
+   "A3m"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A3m",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "passen",
+  "said": [
+   "Schau mal auf den Spieler, der leuchtet. Zwischen euch steht kein Gegner."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei."
+  ],
+  "fb": [
+   "Der Pass ist angekommen!",
+   "Super! Der Weg zu Blau 2 war frei.",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "A3m weiter",
+  "sit": "A3m",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Pass war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Pass war das obere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "wechsel": [
+   "A3m",
+   "W1m"
+  ],
+  "step": "🔄 Neue Situation"
+ },
+ {
+  "where": "entscheiden",
+  "sit": "W1m",
+  "said": [
+   "Neue Situation! Schau genau hin.",
+   "Noch zu weit fürs Tor! Ein Roter ist hinter dir. Dribbeln oder passen?"
+  ],
+  "title": "Noch zu weit fürs Tor",
+  "tag": "Angriff",
+  "actions": [
+   "⚽Passen",
+   "🏃Dribbeln"
+  ]
+ },
+ {
+  "hilfe": "dribbeln",
+  "said": [
+   "Dribbel dorthin, wo kein Gegner im Weg ist."
+  ]
+ },
+ {
+  "said": [
+   "Schau auf die Tore!",
+   "Super! Vor dir war Platz!"
+  ],
+  "fb": [
+   "Gut gedribbelt – du hast den Ball behalten!",
+   "Super! Vor dir war Platz!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Weg frei",
+   "⭐"
+  ],
+  "lern": "",
+  "sitNochmal": false
+ },
+ {
+  "where": "W1m weiter",
+  "sit": "W1m",
+  "said": [
+   "Schau nochmal: Welches Tor ist jetzt frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist jetzt frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ },
+ {
+  "hilfe": "schiessen",
+  "said": [
+   "Vor diesem Tor steht kein Gegner im Weg."
+  ]
+ },
+ {
+  "said": [
+   "Tor! Nach deinem Dribbling war das untere Tor frei. Gut gewählt! Aufgabe geschafft!"
+  ],
+  "fb": [
+   "Toooor! Der Weg war frei.",
+   "Nach deinem Dribbling war das untere Tor frei. Gut gewählt!",
+   "✓ 💡 Gute Idee",
+   "✓ 🎯 Freies Tor",
+   "⭐"
+  ],
+  "lern": "⭐💡 Geschafft: Die Tore haben sich verändert – und du hast gut gewählt! (mit Hilfe)",
+  "sitNochmal": false
+ },
+ {
+  "end": "Durchlauf 5",
+  "said": [
+   "Super gespielt! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund. Du hast 4 von 4 Aufgaben geschafft."
+  ],
+  "stars": "★★★★",
+  "score": "Blau 4 : 0 Rot  ·  ⭐ 4 von 4 geschafft  ·  💡 4 mit Hilfe",
+  "msg": "Super gespielt! Vor dem Schuss schaust du: Wo steht kein Roter? Und wenn beide Tore zu sind, hilft dir ein Freund."
+ },
+ {
+  "where": "entscheiden",
+  "sit": "A1",
+  "said": [
+   "Welches Tor ist frei? Schießen oder passen?"
+  ],
+  "title": "Welches Tor ist frei?",
+  "tag": "Torabschluss",
+  "actions": [
+   "🥅Schießen",
+   "⚽Passen"
+  ]
+ }
+]

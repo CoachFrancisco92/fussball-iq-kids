@@ -1,5 +1,19 @@
 # Changelog
 
+## V0.6.2 – Paket „Wahrnehmung“ (Branch `wahrnehmung`, unveröffentlicht)
+Freigabe Maßnahmen 1–3 aus `docs/qs-kindertest-v0.6.0.md` (PO, 20.11.2026). Bericht: `docs/v0.6.2.md`. **Bewertung und Simulation unverändert** (nachgewiesen für alle drei Missionen).
+- Ansagen passen zur Lage: „Ein Roter ist hinter dir …“ (B3 u. a.), „Schau nochmal: Welches Tor ist jetzt frei?“ nach veränderter Torlage (W1, A3) – ohne Lösung.
+- Neue Möglichkeiten rückblickend benannt („Nach deinem Dribbling war das obere Tor frei. Gut gewählt!“); „vorbei“ mit dem Kriterium der Aufgabenbewertung; Lücke vor „vorbei“.
+- Sprachliche Korrektur (PO): keine unbelegten Aussagen über Sehen/Erkennen/Denken des Kindes – Rückmeldungen und Lernergebnisse beschreiben Lage und Handlung (u. a. „… gelaufen. Du hast das freie Tor gewählt!“ statt „… und du hast das freie Tor gesehen!“).
+- Sprachliche Restkorrektur (PO, zweiter Durchgang): versteckte Bewertungstexte beschreiben Lage und Entscheidung („Ein Tor war frei – Schießen war eine gute Wahl.“ statt „Du hast die Torchance erkannt.“ u. a.); Missionsende „👀 x/y beim ersten Versuch richtig“ statt „sofort erkannt“ (keine Reaktionszeit erfasst).
+- Ball als klassischer schwarz-weißer 2D-Fußball (Vektor, vorgezeichnet, Handy vereinfacht, ≥ 7 px); ruhender Ball vorn am Fuß statt über der Spielernummer. Nur Darstellung – Simulation, Kollision, Wege unverändert. Test `tests/e2e/ball.mjs`, Sichtprüfung `tests/analysis/v0.6/ball-bilder.mjs`.
+- Folge-Moment (~1,4 s, „Schau!“) nur bei bedeutsamer Veränderung: Spuren der Roten, neutraler „!“-Ring an veränderten Toren; Antippen überspringt.
+- Rückmeldeblatt im Querformat rechts neben dem Feld – das Feld wird nicht kleiner; Handy quer kompakter.
+- Minimal-UX (PR #3, PO-Entscheidung 21.11.2026): Folge-Hinweis aus genau einer Engine-Ursache – „Schau zum Ball!“ (Ballverlust), „Schau auf den Roten/die Roten!“ (überwunden), „Schau auf die Tore!“ (Torlage verändert; nicht in Mission 1, nicht nach Freilaufen), sonst „Schau!“. Szenenvergleich: Feld-Tipp = eine Szene weiter, versehentlicher Doppeltipp (≤ 250 ms) zählt einmal. Bericht: `docs/v0.6.2-ux-minimal.md`.
+- Tests: `tests/wahrnehmung.test.js`, `tests/e2e/wahrnehmung.mjs` (neu), `tests/ursachen.test.js` erweitert; Analysen `tests/analysis/v0.6.2-text-abweichungen.js`, `tests/analysis/v0.6/qs-wahrnehmung.js`.
+- UX-Nachbesserung nach iPad-Abnahme (Branch `ux-feld-vergleich`): Lernmissionen zeigen das ganze Funino-Feld mit allen vier Minitoren (Ausschnitt begann bei x = 6 m); im Tablet-Querformat Bedienleiste rechts, damit die Rückmeldung das Feld nicht verkleinert. Szenenvergleich: Tipp im ganzen Spielfeldbereich, 250-ms-Sperre auch nach automatischem Szenenwechsel, Szenenname leuchtet kurz auf. Test `tests/e2e/feld.mjs`. Bericht: `docs/v0.6.2-ux-feld-vergleich.md`.
+- **Referenzen v0.6.2 (freigegeben 21.11.2026):** `mission1/mission-a/freie-bahn.v0.6.2.json` (nur Sätze; Spielverlauf, Bewertung, Hilfe unverändert), `ui-transcript/ui-mission-a/ui-freie-bahn.v0.6.2.json` (sechs vorgelegte Listen + 23 freigegebene Folge-Hinweise). Vorgänger und Listen in `tests/golden/historie/` (`*.v0.6.0.json`, `ui-*.v0.6.1.json`, `v0.6.2-*.json`), geprüft mit `tests/analysis/v0.6.2-referenzwechsel-pruefen.js`. Erzeugt aus `6c015af`.
+
 ## V0.6.1 – Hotfix Toraussprache
 - Kindertest: Die Sprachausgabe sprach das gedehnte „Toooor!“ teils wie „Tour“. Anzeige und Aussprache sind jetzt getrennt: angezeigt bleibt „Toooor!“ (Rückmeldung) bzw. „TOOOR! ⚽“ (Torbanner), gesprochen wird „Tor!“.
 - Umsetzung: `content/texte.js` → `sprechtext` (eine Regel); `app.js` wendet sie auf jeden gesprochenen Text an (Rückmeldung, 🔈, Szenen-Wiedergabe). Sprachsteuerung (`sprache.js`) und Engine unverändert; Engine-Referenzen unverändert.

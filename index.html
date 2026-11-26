@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Fußball-IQ Kids</title>
 <meta name="theme-color" content="#1e3a8a">
-<meta name="app-version" content="0.6.1">
+<meta name="app-version" content="0.6.2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fußball-IQ">
@@ -205,8 +205,22 @@
     .sheet { grid-template-columns: 1fr; padding: 8px 10px; gap: 6px; }
     .fbTop { gap: 8px; } #fbIcon { font-size: 26px; } .bigstar { font-size: 28px; }
     #fbText { font-size: 15px; } #fbTip { font-size: 13px; } .chip { font-size: 11.5px; }
+    #fbLern { font-size: 13px; padding: 3px 8px; margin-top: 3px; } /* V0.6.2: Knöpfe bleiben auch bei langer Rückmeldung erreichbar */
     .fbBtns { flex-direction: row; } .fbBtns button { min-width: 0; flex: 1; height: 44px; font-size: 13px; padding: 0 6px; } .fbBtns .ico { font-size: 18px; }
   }
+  /* V0.6.2: Rückmeldung im Querformat rechts neben dem Feld – das Feld wird dadurch nicht kleiner (Prüfung in app.js) */
+  #app.blattSeite #main { flex-direction: row; }
+  #app.blattSeite #bar { width: 340px; flex: none; flex-direction: column; justify-content: center; align-items: stretch; min-height: 0; padding: 4px 10px 8px 2px; gap: 8px; }
+  #app.blattSeite .sheet { grid-template-columns: 1fr; padding: 10px 12px; gap: 8px; }
+  #app.blattSeite .fbBtns { flex-direction: column; } #app.blattSeite .fbBtns button { width: 100%; min-width: 0; }
+  /* V0.6.2: Lernmissionen im Tablet-Querformat – Bedienleiste dauerhaft rechts (ganzes Funino-Feld, gleiche Feldgröße in Entscheidung und Rückmeldung) */
+  #app.leisteSeite #main { flex-direction: row; }
+  #app.leisteSeite #bar { width: 320px; flex: none; flex-direction: column; justify-content: center; align-items: stretch; min-height: 0; padding: 4px 10px 8px 2px; gap: 10px; }
+  #app.leisteSeite #step { flex: none; max-width: none; }
+  #app.leisteSeite #actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  #app.leisteSeite #actions .act, #app.leisteSeite #cancel { min-width: 0; width: 100%; }
+  #app.leisteSeite .sheet { grid-template-columns: 1fr; padding: 10px 12px; gap: 8px; }
+  #app.leisteSeite .fbBtns { flex-direction: column; } #app.leisteSeite .fbBtns button { width: 100%; min-width: 0; }
   @media (max-width: 640px) { header { flex-wrap: wrap; } #prompt { order: 10; flex-basis: 100%; } }
   @media (max-width: 700px) { .sheet { grid-template-columns: 1fr; } .fbBtns { flex-direction: row; } .fbBtns button { min-width: 0; flex: 1; font-size: 13px; } }
 </style>
@@ -273,7 +287,7 @@
       <div><i>👆</i>Knopf, dann Feld</div>
       <div><i>↩️</i>Nochmal probieren</div>
     </div>
-    <p class="ver" id="ver">Version 0.6.1</p>
+    <p class="ver" id="ver">Version 0.6.2</p>
   </div>
 </div>
 
@@ -315,12 +329,12 @@
 <div id="confetti"></div>
 <div class="goalBanner" id="goalBanner"></div>
 
-<script src="content/texte.js?v=0.6.1"></script>
-<script src="missions/mission-1.js?v=0.6.1"></script>
-<script src="missions/welches-tor-ist-frei.js?v=0.6.1"></script>
-<script src="missions/freie-bahn.js?v=0.6.1"></script>
-<script src="engine.js?v=0.6.1"></script>
-<script src="sprache.js?v=0.6.1"></script>
-<script src="app.js?v=0.6.1"></script>
+<script src="content/texte.js?v=0.6.2"></script>
+<script src="missions/mission-1.js?v=0.6.2"></script>
+<script src="missions/welches-tor-ist-frei.js?v=0.6.2"></script>
+<script src="missions/freie-bahn.js?v=0.6.2"></script>
+<script src="engine.js?v=0.6.2"></script>
+<script src="sprache.js?v=0.6.2"></script>
+<script src="app.js?v=0.6.2"></script>
 </body>
 </html>

@@ -24,6 +24,10 @@
       ohneBall: { title: 'Wo kann ich helfen?', tag: 'Bewegung ohne Ball', say: 'Dein Freund hat den Ball! Wo kannst du hinlaufen, damit du ihm helfen kannst? Tippe auf einen blauen Spieler ohne Ball.' },
       angriffDruck: { title: 'Wem spiele ich den Ball zu?', tag: 'Angriff', say: 'Ein Gegner kommt! Schau mal, welcher Freund frei steht. Wem spielst du den Ball zu?' },
       angriffFrei: { title: 'Was machst du mit dem Ball?', tag: 'Angriff', say: 'Du hast den Ball! Schau dich um. Passen oder dribbeln?' },
+      // V0.6.2: Ansage passt zur Lage – alle nahen Roten stehen hinter dem Ball
+      angriffHinten: { title: 'Was machst du mit dem Ball?', tag: 'Angriff', say: 'Ein Roter ist hinter dir! Schau nach vorn. Passen oder dribbeln?' },
+      // V0.6.2: die freien Tore haben sich seit der vorigen Entscheidung verändert – nochmal schauen (ohne Lösung)
+      abschlussNochmal: { title: 'Welches Tor ist jetzt frei?', tag: 'Torabschluss', say: 'Schau nochmal: Welches Tor ist jetzt frei?' },
       verteidigungNah: { title: 'Wie schützen wir unser Tor?', tag: 'Verteidigung', say: 'Der Gegner will zu unserem Tor! Wo muss dein Spieler stehen, damit er nicht einfach schießen kann?' },
       verteidigungFern: { title: 'Wer hält den Gegner auf?', tag: 'Verteidigung', say: 'Oh, jetzt greifen die Roten an! Wer kann den Spieler mit dem Ball aufhalten?' },
     },
@@ -50,11 +54,12 @@
 
     // Bewertung, Teil 1: War die Art der Entscheidung sinnvoll? (👀 Entscheidung)
     erkennen: {
-      torchance: 'Du hast die Torchance erkannt.',
-      freund: 'Du hast gesehen, dass ein Freund frei war.',
-      raum: 'Du hast den freien Raum gesehen, in den dein Freund laufen kann.',
+      // V0.6.2 (PO): beobachtbare Lage + Entscheidung beschreiben, kein Sehen/Erkennen/Denken unterstellen
+      torchance: 'Ein Tor war frei – Schießen war eine gute Wahl.',
+      freund: 'Ein Freund stand frei – Abspielen war eine gute Wahl.',
+      raum: 'Ein Pass in den freien Raum war eine gute Wahl – dein Freund kann hinlaufen.',
       abspielen: 'Abspielen war eine gute Idee.',
-      platz: 'Du hast den freien Platz gesehen.',
+      platz: 'Vor dir war Platz – Dribbeln war eine gute Wahl.',
       schwierig: 'Eine schwierige Lage – nirgends war es richtig frei.',
       besserSchiessen: 'Ein Tor war frei – Schießen wäre gut gewesen.',
       besserPassStattSchuss: 'Beide Tore waren zugestellt. Ein Pass zu einem freien Freund wäre besser gewesen.',
@@ -68,7 +73,7 @@
       geholfen: 'Du hast deinem Freund geholfen, statt stehen zu bleiben.',
       angreifenRichtig: 'Angreifen war richtig – ein Spieler war nah genug.',
       angreifenZuWeit: 'Der Gegner war weit weg. Besser erst den Weg zum Tor versperren.',
-      torGedacht: 'Du hast an unser Tor gedacht.',
+      torGedacht: 'Den Weg zu unserem Tor zu schützen war eine gute Wahl.',
     },
 
     // Bewertung, Teil 2: War das gewählte Ziel sinnvoll? (🎯 Ausführung)
@@ -124,11 +129,18 @@
       passwegFrei: (f, g) => (g ? `Jetzt ist ${f} frei – ${g} steht nicht mehr im Weg!` : `Jetzt ist ${f} frei!`),
       waechterVerschoben: (g, tor) => `${g} ist vor das ${tor} Tor gelaufen.`,
       anderesFrei: (tor) => `Das ${tor} Tor war frei.`,
-      waechterErkannt: (g, torZu) => `${g} ist vor das ${torZu} Tor gelaufen – und du hast das freie Tor gesehen!`,
+      waechterErkannt: (g, torZu) => `${g} ist vor das ${torZu} Tor gelaufen. Du hast das freie Tor gewählt!`,
       anderesTorZu: (g) => `Vor dem anderen Tor stand ${g} – du hast das freie gewählt.`,
       freundDribbelt: (f) => `${f} hatte aber selbst Platz und ist nach vorn gedribbelt.`,
       gegnerMitgelaufen: (g) => `${g} ist mitgelaufen.`,
       gegnerSchoss: (g) => `${g} hat schnell geschossen.`,
+      // V0.6.2: veränderte Torlage seit der vorigen Entscheidung (reiner Vorher/Nachher-Vergleich, keine Ursache)
+      nachAktion: { dribble: 'deinem Dribbling', pass: 'deinem Pass' },   // sonst ohne Aktion: „Jetzt war …“
+      // V0.6.2: beschreibt Lage und Handlung – keine Aussage darüber, was das Kind gesehen oder gedacht hat
+      toreVeraendertJetzt: (tor) => `Jetzt war das ${tor} Tor frei. Gut gewählt!`,
+      torJetztZuJetzt: (tor) => `Jetzt war das ${tor} Tor zu.`,
+      toreVeraendert: (akt, tor) => `Nach ${akt} war das ${tor} Tor frei. Gut gewählt!`,
+      torJetztZu: (akt, tor) => `Nach ${akt} war das ${tor} Tor zu.`,
     },
 
     // Hotfix V0.6.1: Anzeige und Aussprache getrennt. Angezeigt wird „Toooor!“ / „TOOOR!“; die Sprachausgabe sagt „Tor!“
@@ -180,7 +192,8 @@
       },
       ergebnisKurzVor: (ergebnis, grund) => {
         const saetze = String(ergebnis).split(/(?<=[.!?])\s+/);
-        const rest = saetze.filter((x) => { const n = x.match(/Rot \d/); return !(n && / stand /.test(x) && grund.includes(n[0])); });
+        // V0.6.2: auch wenn der Grund die veränderte Torlage nennt („… war das untere Tor zu.“) – dann reicht „Geblockt!“
+        const rest = saetze.filter((x) => { const n = x.match(/Rot \d/); return !(n && / stand /.test(x) && (grund.includes(n[0]) || / Tor zu\./.test(grund))); });
         return rest.length ? rest.join(' ') : ergebnis;
       },
       tagIdeeGut: 'Gute Idee',
@@ -249,16 +262,27 @@
       naechsteMission: (titel, einfuehrung) => `${titel}${/[.!?]$/.test(titel) ? '' : '.'} ${einfuehrung}`.trim(),
     },
 
+    // V0.6.2: Folge-Moment – erst schauen, dann die Erklärung
+    folge: {
+      schau: 'Schau!',
+      tore: 'Schau auf die Tore!',
+      ball: 'Schau zum Ball!',
+      gegner: 'Schau auf den Roten!',
+      gegnerMehrere: 'Schau auf die Roten!',
+      dauer: 1400,
+    },
+
     // V0.6a P4: Lernergebnis je Situation (Stern = Kernleistung geschafft; mit Hilfe = voller Stern + 💡)
     lern: {
       titel: { torWaehlen: 'Freies Tor finden', andereLoesung: 'Beide Tore zu', nochmalSchauen: 'Nochmal schauen', platzVorDir: 'Platz vor dir', vorbei: 'Am Gegner vorbei', luecke: 'Lücke oder außen herum', angriff: 'Angriff', verteidigung: 'Abwehr' },
       geschafft: {
-        torWaehlen: 'Geschafft: Du hast das freie Tor gefunden!',
-        andereLoesung: 'Geschafft: Beide Tore waren zu – und du hast eine andere Lösung gefunden!',
-        nochmalSchauen: 'Geschafft: Du hast nochmal geschaut und das freie Tor gefunden!',
+        torWaehlen: 'Geschafft: Du hast das freie Tor gewählt!',
+        andereLoesung: 'Geschafft: Beide Tore waren zu – und du hast eine andere gute Lösung gewählt!',
+        nochmalSchauen: 'Geschafft: Die Tore haben sich verändert – und du hast gut gewählt!',
+        nochmalSchauenOhne: 'Geschafft: Du hast gut gewählt!',   // ohne Veränderung der Torlage
         platzVorDir: 'Geschafft: Du hast den Platz vor dir genutzt!',
         vorbei: 'Geschafft: Du bist am Gegner vorbeigekommen!',
-        luecke: 'Geschafft: Du hast einen sicheren Weg an den Gegnern vorbei gefunden!',
+        luecke: 'Geschafft: Du bist sicher an den Gegnern vorbeigekommen!',
         angriff: 'Geschafft: Im Angriff hast du gut entschieden!',
         verteidigung: 'Geschafft: In der Abwehr hast du gut entschieden!',
       },
@@ -286,7 +310,8 @@
       lob: (gut, anzahl) => (gut >= anzahl - 1 ? 'Super gespielt!' : gut >= 2 ? 'Gut gemacht!' : 'Toll, dass du es probiert hast!'),
       sterne: (gut, anzahl) => ` Du hast ${gut} von ${anzahl} Sternen.`,
       spielstand: (blau, rot) => `Blau ${blau} : ${rot} Rot`,
-      erkannt: (sofort, anzahl) => `  ·  👀 ${sofort}/${anzahl} sofort erkannt`,
+      // Schau-Schritt: richtige Antwort beim ersten Versuch (keine Reaktionszeit erfasst – daher nicht „sofort“)
+      schauRichtig: (ersterVersuch, anzahl) => `  ·  👀 ${ersterVersuch}/${anzahl} beim ersten Versuch richtig`,
       // V0.6a P4: Sterne je Lernsituation
       sterneSituationen: (gut, anzahl) => ` Du hast ${gut} von ${anzahl} Aufgaben geschafft.`,
       zaehler: (gut, anzahl, hilfe) => `⭐ ${gut} von ${anzahl} geschafft` + (hilfe ? `  ·  💡 ${hilfe} mit Hilfe` : ''),

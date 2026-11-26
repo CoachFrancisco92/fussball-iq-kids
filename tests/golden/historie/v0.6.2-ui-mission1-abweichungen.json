@@ -1,0 +1,236 @@
+{
+ "Schau falsch/richtig, Fehlpass, Wiederholen, Vergleichen, Rest mit Hilfe": [
+  {
+   "eintrag": 5,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier. Das üben wir nochmal: Schau, wo frei ist, bevor du entscheidest."
+    ],
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Schau!",
+     "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier. Das üben wir nochmal: Schau, wo frei ist, bevor du entscheidest."
+    ],
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 8,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Tippe auf einen Mitspieler. Oder auf eine freie Stelle.",
+     "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei."
+    ],
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Tippe auf einen Mitspieler. Oder auf eine freie Stelle.",
+     "Schau!",
+     "Der Pass ist angekommen! Super! Der Weg zu Blau 2 war frei."
+    ],
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 12,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen.",
+     "Wohin soll er laufen? Tippe auf eine freie Stelle.",
+     "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!"
+    ],
+    "title": "Wo kann ich helfen?",
+    "tag": "Bewegung ohne Ball",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Lauf in den freien Raum, weg vom Gegner. Aber Achtung: Die Gegner laufen mit – vielleicht kann dein Freund dich trotzdem nicht anspielen.",
+     "Wohin soll er laufen? Tippe auf eine freie Stelle.",
+     "Schau!",
+     "Jetzt steht Rot 2 im Passweg. Dein Freund dribbelt dafür nach vorne. Das war trotzdem eine gute Idee!"
+    ],
+    "title": "Wo kann ich helfen?",
+    "tag": "Bewegung ohne Ball",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 14,
+   "alt": {
+    "where": "entscheiden",
+    "said": [
+     "Jetzt kannst du schießen! Schau genau: Welches Tor ist frei?"
+    ],
+    "title": "Welches Tor ist frei?",
+    "tag": "Torabschluss",
+    "step": ""
+   },
+   "neu": {
+    "where": "entscheiden",
+    "said": [
+     "Schau nochmal: Welches Tor ist jetzt frei?"
+    ],
+    "title": "Welches Tor ist jetzt frei?",
+    "tag": "Torabschluss",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 15,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Vor diesem Tor steht kein Gegner im Weg.",
+     "Tor! Der Weg war frei. Super gemacht! Aufgabe geschafft!"
+    ],
+    "title": "Welches Tor ist frei?",
+    "tag": "Torabschluss",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Vor diesem Tor steht kein Gegner im Weg.",
+     "Tor! Jetzt war das obere Tor frei. Gut gewählt! Aufgabe geschafft!"
+    ],
+    "title": "Welches Tor ist jetzt frei?",
+    "tag": "Torabschluss",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 16,
+   "alt": {
+    "fb": [
+     "Toooor! Der Weg war frei.",
+     "Super gemacht!",
+     "✓ 💡 Gute Idee",
+     "✓ 🎯 Freies Tor",
+     "⭐"
+    ],
+    "compare": false
+   },
+   "neu": {
+    "fb": [
+     "Toooor! Der Weg war frei.",
+     "Jetzt war das obere Tor frei. Gut gewählt!",
+     "✓ 💡 Gute Idee",
+     "✓ 🎯 Freies Tor",
+     "⭐"
+    ],
+    "compare": false
+   }
+  },
+  {
+   "eintrag": 24,
+   "alt": {
+    "end": [
+     "★★",
+     "Blau 1 : 0 Rot  ·  👀 0/1 sofort erkannt  ·  ⭐ 2 von 2 geschafft  ·  💡 2 mit Hilfe",
+     "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+     "⚽ Angriff ⭐💡🛡️ Abwehr ⭐💡"
+    ]
+   },
+   "neu": {
+    "end": [
+     "★★",
+     "Blau 1 : 0 Rot  ·  👀 0/1 beim ersten Versuch richtig  ·  ⭐ 2 von 2 geschafft  ·  💡 2 mit Hilfe",
+     "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+     "⚽ Angriff ⭐💡🛡️ Abwehr ⭐💡"
+    ]
+   }
+  }
+ ],
+ "Keiner ist frei, Ball im Aus, Verteidigung": [
+  {
+   "eintrag": 25,
+   "alt": {
+    "end": [
+     "★★",
+     "Blau 0 : 0 Rot  ·  👀 0/4 sofort erkannt  ·  ⭐ 1 von 2 geschafft  ·  💡 1 mit Hilfe",
+     "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+     "⚽ Angriff ✓🛡️ Abwehr ⭐💡"
+    ]
+   },
+   "neu": {
+    "end": [
+     "★★",
+     "Blau 0 : 0 Rot  ·  👀 0/4 beim ersten Versuch richtig  ·  ⭐ 1 von 2 geschafft  ·  💡 1 mit Hilfe",
+     "Super gespielt! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+     "⚽ Angriff ✓🛡️ Abwehr ⭐💡"
+    ]
+   }
+  }
+ ],
+ "Falscher Verteidiger und falscher Ort": [
+  {
+   "eintrag": 1,
+   "alt": {
+    "where": "feedback",
+    "said": [
+     "Los geht's! Du spielst mit den Blauen.",
+     "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+     "Ja! Blau 2 steht frei. Zwischen euch ist kein Gegner.",
+     "Und jetzt: Was machst du mit dem Ball?",
+     "Tippe auf einen Mitspieler. Oder auf eine freie Stelle.",
+     "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier. Das üben wir nochmal: Schau, wo frei ist, bevor du entscheidest."
+    ],
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "step": ""
+   },
+   "neu": {
+    "where": "feedback",
+    "said": [
+     "Los geht's! Du spielst mit den Blauen.",
+     "Schau dich um! Welcher Freund steht frei? Tippe ihn an. Wenn keiner frei ist, tippe auf: Keiner ist frei.",
+     "Ja! Blau 2 steht frei. Zwischen euch ist kein Gegner.",
+     "Und jetzt: Was machst du mit dem Ball?",
+     "Tippe auf einen Mitspieler. Oder auf eine freie Stelle.",
+     "Schau!",
+     "Oh! Rot 3 stand im Weg und hat den Ball bekommen. Gute Idee, den Ball abzuspielen! Aber schau mal: Ein anderer Freund stand freier. Das üben wir nochmal: Schau, wo frei ist, bevor du entscheidest."
+    ],
+    "title": "Was machst du mit dem Ball?",
+    "tag": "Angriff",
+    "step": ""
+   }
+  },
+  {
+   "eintrag": 7,
+   "alt": {
+    "end": [
+     "★★",
+     "Blau 0 : 1 Rot  ·  👀 0/1 sofort erkannt  ·  ⭐ 0 von 2 geschafft",
+     "Toll, dass du es probiert hast! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+     "⚽ Angriff ✓🛡️ Abwehr ✓"
+    ]
+   },
+   "neu": {
+    "end": [
+     "★★",
+     "Blau 0 : 1 Rot  ·  👀 0/1 beim ersten Versuch richtig  ·  ⭐ 0 von 2 geschafft",
+     "Toll, dass du es probiert hast! Ihr habt angegriffen und eure Tore beschützt. Denk daran: Wenn ein Freund den Ball hat, kannst du ihm helfen, indem du dich freiläufst!",
+     "⚽ Angriff ✓🛡️ Abwehr ✓"
+    ]
+   }
+  }
+ ]
+}
