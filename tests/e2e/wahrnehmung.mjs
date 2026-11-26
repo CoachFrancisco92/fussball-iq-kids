@@ -145,14 +145,20 @@ try {
     // Feinschliff: versehentlicher Doppeltipp (≤ 250 ms) zählt als ein Tipp – gleiche und andere Stelle; danach wirkt ein bewusster Tipp
     // Der tatsächliche Abstand der beiden Tipps wird im Browser gemessen (unter Last kann Playwright länger brauchen);
     // gilt nur ein Versuch mit Abstand < 250 ms – sonst wird er wiederholt.
+    // Zeitreserve für ausgelastete CI-Runner: Bildschirmpunkte beider Tipps werden vorab berechnet (kein Browser-Roundtrip
+    // zwischen den Tipps), die zweite Variante (andere Stelle) zielt auf 150 ms. Mit 200 ms lagen die gemessenen Abstände
+    // unter Last bei 249–265 ms (Playwright-Overhead 50–65 ms), die Testvoraussetzung (< 250 ms) kam nie zustande.
     await H.page.evaluate(() => { window.__tippZeiten = []; document.addEventListener('pointerdown', () => window.__tippZeiten.push(performance.now()), true); });
-    for (const [ms, x2] of [[120, 20], [200, 26]]) {
+    const punkt = async (x, y) => { const b = await H.page.$eval('#field', (e) => { const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, window.__fiq.view]; }); const k = b[2] / b[3].w; return [b[0] + (x - b[3].x0) * k, b[1] + (y - b[3].y0) * k]; };
+    const gaps = [];
+    for (const [ms, x2] of [[120, 20], [150, 26]]) {
       let gap = Infinity;
       for (let versuch = 0; versuch < 4 && gap >= 245; versuch++) {
         await H.tap('#fbCompare'); await H.wait('replay');
         await H.page.evaluate(() => { window.__tippZeiten = []; });
-        await H.field(20, 4); await H.page.waitForTimeout(ms); await H.field(x2, 4); await H.page.waitForTimeout(60);
-        const z = await H.page.evaluate(() => window.__tippZeiten); gap = z.length >= 2 ? z[1] - z[0] : Infinity;
+        const p1 = await punkt(20, 4), p2 = await punkt(x2, 4);
+        await H.page.touchscreen.tap(p1[0], p1[1]); await H.page.waitForTimeout(ms); await H.page.touchscreen.tap(p2[0], p2[1]); await H.page.waitForTimeout(60);
+        const z = await H.page.evaluate(() => window.__tippZeiten); gap = z.length >= 2 ? z[1] - z[0] : Infinity; gaps.push(Math.round(gap));
         if (gap < 245 && ((await H.mode()) !== 'replay' || (await H.fiq('replayIdx')) !== 1)) fail(`Doppeltipp ${Math.round(gap)} ms darf nur eine Szene weitergehen (Modus ${await H.mode()}, Szene ${await H.fiq('replayIdx')})`);
         if ((await H.mode()) === 'replay') { await H.page.waitForTimeout(700); await H.field(20, 4); }
         await H.wait('feedback', 3000);
@@ -160,7 +166,7 @@ try {
       }
       if (gap >= 245) fail(`Doppeltipp ${ms} ms ließ sich nicht unter 250 ms erzeugen`);
     }
-    console.log('✓ Vergleich: Doppeltipp nach 120/200 ms (gleiche/andere Stelle) = eine Szene; bewusster Tipp nach 700 ms wirkt');
+    console.log(`✓ Vergleich: Doppeltipp nach 120/150 ms (gleiche/andere Stelle) = eine Szene (gemessen: ${gaps.join('/')} ms); bewusster Tipp nach 700 ms wirkt`);
     // UX-Nachbesserung: (1) Tipp auf den Rand neben dem Canvas (im Spielfeldbereich) wirkt; (2) ein Tipp kurz nach dem
     // automatischen Szenenwechsel überspringt die neue Szene nicht; (3) danach wirkt ein bewusster Tipp sofort.
     {
