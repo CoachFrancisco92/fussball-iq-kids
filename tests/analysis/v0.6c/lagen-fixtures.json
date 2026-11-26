@@ -1,0 +1,268 @@
+{
+ "L5": {
+  "titel": "Passweg öffnet sich erst während des Dribblings des Ballführenden",
+  "herkunft": {
+   "seed": 2
+  },
+  "lage": {
+   "missionId": "mission-1",
+   "t": 1.983333,
+   "poss": "blue",
+   "owner": "b2",
+   "ball": {
+    "x": 25.05,
+    "y": 6
+   },
+   "spieler": [
+    {
+     "id": "b1",
+     "x": 14,
+     "y": 13,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "b2",
+     "x": 24,
+     "y": 6,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "b3",
+     "x": 19,
+     "y": 19.5,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "r1",
+     "x": 16.932346,
+     "y": 13.659724,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "r2",
+     "x": 25.047973,
+     "y": 7.833953,
+     "vx": -1.488417,
+     "vy": -2.604729
+    },
+    {
+     "id": "r3",
+     "x": 21.98839,
+     "y": 19.236319,
+     "vx": 0,
+     "vy": 0
+    }
+   ],
+   "score": {
+    "blue": 0,
+    "red": 0
+   },
+   "ai": {
+    "goal": 0,
+    "next": 0
+   }
+  },
+  "ziele": [
+   {
+    "name": "spaeterOffen",
+    "a": {
+     "kind": "run",
+     "id": "b3",
+     "x": 34,
+     "y": 12
+    },
+    "ankunftGrund": "versperrt",
+    "stern": true,
+    "spaetFensterNach": 1.2
+   }
+  ]
+ },
+ "L3": {
+  "titel": "Zwei gleich gute Räume oben/unten (beide Stern, beide anspielbar)",
+  "herkunft": {
+   "seed": 26
+  },
+  "lage": {
+   "missionId": "mission-1",
+   "t": 2.033333,
+   "poss": "blue",
+   "owner": "b3",
+   "ball": {
+    "x": 24.627669,
+    "y": 16.451239
+   },
+   "spieler": [
+    {
+     "id": "b1",
+     "x": 14,
+     "y": 13,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "b2",
+     "x": 24,
+     "y": 6,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "b3",
+     "x": 23.577669,
+     "y": 16.451239,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "r1",
+     "x": 16.932346,
+     "y": 13.659724,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "r2",
+     "x": 24.690229,
+     "y": 15.585616,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "r3",
+     "x": 16.932161,
+     "y": 13.684592,
+     "vx": 0,
+     "vy": 0
+    }
+   ],
+   "score": {
+    "blue": 0,
+    "red": 0
+   },
+   "ai": {
+    "goal": 0,
+    "next": 0
+   }
+  },
+  "ziele": [
+   {
+    "name": "oben",
+    "a": {
+     "kind": "run",
+     "id": "b2",
+     "x": 23,
+     "y": 12
+    },
+    "ankunftGrund": null,
+    "stern": true
+   },
+   {
+    "name": "unten",
+    "a": {
+     "kind": "run",
+     "id": "b2",
+     "x": 23,
+     "y": 21
+    },
+    "ankunftGrund": null,
+    "stern": true
+   }
+  ]
+ },
+ "L2": {
+  "titel": "Ballführender am Rand unter Druck: Rückpass sichert vs. Vorwärtsziel im Deckungsschatten",
+  "herkunft": {
+   "seed": 37
+  },
+  "lage": {
+   "missionId": "mission-1",
+   "t": 12.55,
+   "poss": "blue",
+   "owner": "b1",
+   "ball": {
+    "x": 22.930461,
+    "y": 0.709319
+   },
+   "spieler": [
+    {
+     "id": "b1",
+     "x": 21.880461,
+     "y": 0.709319,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "b2",
+     "x": 2.116793,
+     "y": 0.710819,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "b3",
+     "x": 19,
+     "y": 19.5,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "r1",
+     "x": 5.079161,
+     "y": 1.173857,
+     "vx": 0,
+     "vy": 0
+    },
+    {
+     "id": "r2",
+     "x": 21.906263,
+     "y": 4.336548,
+     "vx": -0.021339,
+     "vy": -2.999924
+    },
+    {
+     "id": "r3",
+     "x": 21.98839,
+     "y": 19.236319,
+     "vx": 0,
+     "vy": 0
+    }
+   ],
+   "score": {
+    "blue": 0,
+    "red": 0
+   },
+   "ai": {
+    "goal": 0,
+    "next": 0
+   }
+  },
+  "ziele": [
+   {
+    "name": "rueckpassUnterDruck",
+    "a": {
+     "kind": "run",
+     "id": "b3",
+     "x": 11,
+     "y": 3
+    },
+    "ankunftGrund": null,
+    "stern": true
+   },
+   {
+    "name": "vornVersperrt",
+    "a": {
+     "kind": "run",
+     "id": "b2",
+     "x": 25,
+     "y": 6
+    },
+    "ankunftGrund": "versperrt",
+    "stern": true
+   }
+  ]
+ }
+}

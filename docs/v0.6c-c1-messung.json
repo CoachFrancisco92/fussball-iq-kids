@@ -1,0 +1,377 @@
+{
+ "stand": {
+  "engine": "0.6.2",
+  "raster": 1,
+  "lagenR": 53,
+  "blickpause": 0.3,
+  "neupruefTakt": 0.2
+ },
+ "gemessen": {
+  "szenen": 73458,
+  "stern": 17610,
+  "ohneStern": 55848,
+  "keineAnkunft": 172,
+  "ballverlustImLauf": 12,
+  "bewertet": 73274,
+  "autoDribbling": 14983,
+  "halten": 58291,
+  "ankunftPasswegFrei": 23472,
+  "endePasswegFrei": 18738,
+  "ankunftFreiUndAuto": 7031,
+  "ankunftFreiAutoEndeZu": 4757,
+  "anteilEndeZu": 67.7,
+  "sternAnkunftFreiUndAuto": 3688,
+  "sternAnkunftFreiAutoEndeZu": 2530,
+  "gruendeBeiAnkunft": {
+   "stern": {
+    "versperrt": 1964,
+    "pass": 14910,
+    "besetzt": 599,
+    "zuNah": 5,
+    "hinten": 17,
+    "zuWeit": 6
+   },
+   "ohneStern": {
+    "zuWeit": 29547,
+    "versperrt": 9153,
+    "besetzt": 16535,
+    "zuNah": 392,
+    "pass": 146
+   }
+  },
+  "gruendeBeiAnkunftOhneFreiraumregel": {
+   "zuWeit": 41246,
+   "versperrt": 14569,
+   "pass": 15291,
+   "zuNah": 2151,
+   "hinten": 17
+  },
+  "spaetesFensterImAutoDribbling": 1793,
+  "druckBeiAnkunft": 72475,
+  "druckAnteil": 98.9,
+  "naechsterGegnerAmBallfuehrendenM": {
+   "1": 71672,
+   "2": 346,
+   "3": 185,
+   "4": 84,
+   "5": 96,
+   "1.5": 439,
+   "2.5": 235,
+   "3.5": 124,
+   "4.5": 75,
+   "0.5": 18
+  }
+ },
+ "prognose": {
+  "hinweis": "nur ab Ankunft: Blickpause + Neuprüfung + Pass als neue Aktion auf dem Klon (Näherung); keine späteren Passfenster, keine Zyklen",
+  "ankunftPass": 15056,
+  "davonOhneStern": 146,
+  "blickZu": 722,
+  "blickZuAnteil": 4.8,
+  "blickZuGruende": {
+   "versperrt": 574,
+   "besetzt": 137,
+   "zuWeit": 11
+  },
+  "pass": 14334,
+  "received": 14334,
+  "intercepted": 0,
+  "receivedAnteil": 100,
+  "rueckpaesse": 6117,
+  "rueckpaesseBeiZweiGegnernUnter3_5m": 168,
+  "verbessertNurSicherung": 4411,
+  "verbessert": 10912,
+  "verbessertAnteil": 76.1,
+  "verbessertNach": {
+   "raum": 6245,
+   "zoneTor": 532,
+   "optionen": 939,
+   "sicherung": 7012
+  },
+  "folgekontext": {
+   "angriff": 13706,
+   "abschluss": 625,
+   "verteidigung": 3
+  }
+ },
+ "freiraumregel": {
+  "hinweis": "neue Zuspielbedingung (bisher nur Stern): Freiraum ≥ 3,2 m um den Empfänger",
+  "passOhneRegel": 15291,
+  "passMitRegel": 15056,
+  "anteilAusgeschlossen": 1.5,
+  "ausgeschlossen": 235,
+  "blickZu": 41,
+  "received": 194,
+  "intercepted": 0,
+  "verbessert": 79,
+  "stern": 96,
+  "kontext": {
+   "angriff": 192,
+   "abschluss": 2
+  }
+ },
+ "erstC2": [
+  "spätere Passfenster während des Dribblings (Neuprüfung, zweite Blickpause) – L5",
+  "Zyklen über mehrere Kinderentscheidungen (Doppelpass vs. leerer Zyklus) – M5",
+  "Pass innerhalb derselben Szene (doPass statt neuer Aktion), Szenenende, Zählung att/Kontext an der Missionsgrenze – M7",
+  "gespeicherter Erklärzeitpunkt ep.zuspiel – M3"
+ ],
+ "lernLagen": {
+  "L1": {
+   "titel": "Standardlage: freier Raum vor dem Tor vs. Gegner läuft mit",
+   "kontext": "ohneBall",
+   "ziele": [
+    {
+     "name": "frei",
+     "a": {
+      "kind": "run",
+      "id": "b3",
+      "x": 30,
+      "y": 7
+     },
+     "gemessen": {
+      "stern": true,
+      "laufGrund": "frei",
+      "ankunftGrund": "pass",
+      "autoDribbling": true,
+      "endePasswegFrei": true,
+      "spaetesFenster": 0.2
+     },
+     "prognose": {
+      "klasse": "pass",
+      "folge": {
+       "raum": true,
+       "zoneTor": true,
+       "optionen": true,
+       "sicherung": false,
+       "verbessert": true,
+       "kontext": "abschluss"
+      },
+      "nachbarnGleich": "4/4"
+     }
+    },
+    {
+     "name": "mitgelaufen",
+     "a": {
+      "kind": "run",
+      "id": "b3",
+      "x": 21,
+      "y": 15
+     },
+     "gemessen": {
+      "stern": true,
+      "laufGrund": "frei",
+      "ankunftGrund": "besetzt",
+      "autoDribbling": true,
+      "endePasswegFrei": false,
+      "spaetesFenster": null
+     },
+     "prognose": {
+      "klasse": "kein:besetzt",
+      "folge": null,
+      "nachbarnGleich": "4/4"
+     }
+    },
+    {
+     "name": "erstNachDribbelFrei",
+     "a": {
+      "kind": "run",
+      "id": "b3",
+      "x": 24,
+      "y": 15
+     },
+     "gemessen": {
+      "stern": true,
+      "laufGrund": "frei",
+      "ankunftGrund": "besetzt",
+      "autoDribbling": true,
+      "endePasswegFrei": true,
+      "spaetesFenster": 1.2
+     },
+     "prognose": {
+      "klasse": "kein:besetzt",
+      "folge": null,
+      "nachbarnGleich": "4/4"
+     }
+    }
+   ]
+  },
+  "L4": {
+   "titel": "Laufziel zu nah am Ball",
+   "kontext": "ohneBall",
+   "ziele": [
+    {
+     "name": "zuNah",
+     "a": {
+      "kind": "run",
+      "id": "b3",
+      "x": 23,
+      "y": 4
+     },
+     "gemessen": {
+      "stern": false,
+      "laufGrund": "zuNah",
+      "ankunftGrund": "zuNah",
+      "autoDribbling": true,
+      "endePasswegFrei": false,
+      "spaetesFenster": 1.2
+     },
+     "prognose": {
+      "klasse": "kein:zuNah",
+      "folge": null,
+      "nachbarnGleich": "3/4"
+     }
+    }
+   ]
+  },
+  "L2": {
+   "titel": "Ballführender am Rand unter Druck: Rückpass sichert vs. Vorwärtsziel im Deckungsschatten",
+   "kontext": "ohneBall",
+   "ziele": [
+    {
+     "name": "rueckpassUnterDruck",
+     "a": {
+      "kind": "run",
+      "id": "b3",
+      "x": 11,
+      "y": 3
+     },
+     "gemessen": {
+      "stern": true,
+      "laufGrund": "frei",
+      "ankunftGrund": "pass",
+      "autoDribbling": true,
+      "endePasswegFrei": false,
+      "spaetesFenster": 0.2
+     },
+     "prognose": {
+      "klasse": "pass",
+      "folge": {
+       "raum": false,
+       "zoneTor": false,
+       "optionen": false,
+       "sicherung": false,
+       "verbessert": false,
+       "kontext": "angriff"
+      },
+      "nachbarnGleich": "4/4"
+     }
+    },
+    {
+     "name": "vornVersperrt",
+     "a": {
+      "kind": "run",
+      "id": "b2",
+      "x": 25,
+      "y": 6
+     },
+     "gemessen": {
+      "stern": true,
+      "laufGrund": "frei",
+      "ankunftGrund": "versperrt",
+      "autoDribbling": true,
+      "endePasswegFrei": false,
+      "spaetesFenster": 0.2
+     },
+     "prognose": {
+      "klasse": "kein:versperrt",
+      "folge": null,
+      "nachbarnGleich": "2/4"
+     }
+    }
+   ]
+  },
+  "L3": {
+   "titel": "Zwei gleich gute Räume oben/unten (beide Stern, beide anspielbar)",
+   "kontext": "ohneBall",
+   "ziele": [
+    {
+     "name": "oben",
+     "a": {
+      "kind": "run",
+      "id": "b2",
+      "x": 23,
+      "y": 12
+     },
+     "gemessen": {
+      "stern": true,
+      "laufGrund": "frei",
+      "ankunftGrund": "pass",
+      "autoDribbling": false,
+      "endePasswegFrei": true,
+      "spaetesFenster": null
+     },
+     "prognose": {
+      "klasse": "pass",
+      "folge": {
+       "raum": false,
+       "zoneTor": false,
+       "optionen": false,
+       "sicherung": false,
+       "verbessert": false,
+       "kontext": "angriff"
+      },
+      "nachbarnGleich": "4/4"
+     }
+    },
+    {
+     "name": "unten",
+     "a": {
+      "kind": "run",
+      "id": "b2",
+      "x": 23,
+      "y": 21
+     },
+     "gemessen": {
+      "stern": true,
+      "laufGrund": "frei",
+      "ankunftGrund": "pass",
+      "autoDribbling": false,
+      "endePasswegFrei": true,
+      "spaetesFenster": null
+     },
+     "prognose": {
+      "klasse": "pass",
+      "folge": {
+       "raum": false,
+       "zoneTor": false,
+       "optionen": false,
+       "sicherung": false,
+       "verbessert": false,
+       "kontext": "angriff"
+      },
+      "nachbarnGleich": "4/4"
+     }
+    }
+   ]
+  },
+  "L5": {
+   "titel": "Passweg öffnet sich erst während des Dribblings des Ballführenden",
+   "kontext": "ohneBall",
+   "ziele": [
+    {
+     "name": "spaeterOffen",
+     "a": {
+      "kind": "run",
+      "id": "b3",
+      "x": 34,
+      "y": 12
+     },
+     "gemessen": {
+      "stern": true,
+      "laufGrund": "frei",
+      "ankunftGrund": "versperrt",
+      "autoDribbling": true,
+      "endePasswegFrei": false,
+      "spaetesFenster": 1.2
+     },
+     "prognose": {
+      "klasse": "kein:versperrt",
+      "folge": null,
+      "nachbarnGleich": "3/4"
+     }
+    }
+   ]
+  }
+ }
+}
