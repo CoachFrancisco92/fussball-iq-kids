@@ -69,7 +69,8 @@ function szenen(alt) {
       // M3: Begründung = gespeicherter Zeitpunkt
       if (!rec && s.ep.zuspiel && !s.ep.zuspiel.pass) {
         inc('m3.n'); const zz = s.ep.zuspiel, T = E.texts(s).ergebnis, nm = zz.key ? E.nameOf(s, zz.key) : T.einGegner;
-        const ok = fb.text.startsWith(T.laufKeinZuspiel[zz.grund](nm)) && (!fb.explain.pass || (fb.explain.key === zz.key && fb.explain.pass.from.x === zz.von.x && fb.explain.pass.to.y === zz.zu.y));
+        const lauf = ev.exe.lauf, einGrund = !(zz.alle && zz.alle.includes(lauf)) || zz.grund === lauf;
+        const ok = fb.text.startsWith(T.laufKeinZuspiel[zz.grund](nm)) && fb.explain.key === zz.key && einGrund && (!fb.explain.pass || (fb.explain.pass.from.x === zz.von.x && fb.explain.pass.to.y === zz.zu.y));
         if (!ok) inc('fehler.m3');
       }
       // M4: Folge nach Annahme (Szenenende = nächste Entscheidung); „Lage verbessert“ wie C1, getrennt nach Richtung

@@ -101,14 +101,19 @@ test('Eigenschaft: Rückmeldung, Etikett, Erklärbild, Stern und Zuspiel passen 
       else if (rec) {
         pass++;
         assert.ok(fb.success && fb.text === TT.ergebnis.laufAngespielt);
+        // nach dem Zuspiel keine Ziel-Kritik im Präsens („Dort stand schon ein Gegner“), sondern auf den Moment des Loslaufens bezogen
+        if (!ev.exe.good) assert.match(fb.say, /Als du losgelaufen bist/, fb.say);
         assert.ok(fb.explain.pass.ok && fb.explain.key === null);
       } else if (z) {
         kein++;
         assert.strictEqual(fb.success, false); assert.doesNotMatch(fb.say, /angespielt|anspielbar|Du bist frei|Weg zu dir frei/);
         const nm = z.key ? 'Rot ' + E.P(s, z.key).num : TT.ergebnis.einGegner;
         assert.ok(fb.text.startsWith(TT.ergebnis.laufKeinZuspiel[z.grund](nm)), 'Ergebnis nennt den ausschlaggebenden Grund: ' + fb.text);
+        assert.strictEqual(fb.explain.key, z.key, 'genannter = markierter Gegner (auch ohne Passlinie)');
+        // nur ein Grund in der Ansage: gilt der Grund der Ziel-Bewertung zum Erklärzeitpunkt noch, wird genau er genannt
+        if (z.alle && z.alle.includes(grund)) assert.strictEqual(z.grund, grund, 'ein Grund: Bewertung und Ergebnis nennen denselben');
         if (fb.explain.pass) {
-          assert.strictEqual(fb.explain.pass.ok, false); assert.strictEqual(fb.explain.key, z.key, 'genannter = markierter Gegner');
+          assert.strictEqual(fb.explain.pass.ok, false);
           assert.deepStrictEqual([fb.explain.pass.from, fb.explain.pass.to], [{ x: z.von.x, y: z.von.y }, { x: z.zu.x, y: z.zu.y }], 'Bild = gespeicherter Zeitpunkt');
         } else assert.strictEqual(zielOk, false);
       }

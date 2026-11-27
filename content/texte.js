@@ -109,6 +109,9 @@
       gelaufenZu: 'Von dort war der Passweg versperrt.',
       gelaufenZuWeit: 'Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.',
       gelaufenZuBeimStart: 'Als du losgelaufen bist, stand ein Gegner im Passweg.',
+      gelaufenBesetztBeimStart: 'Als du losgelaufen bist, stand dort ein Gegner.',
+      gelaufenZuNahBeimStart: 'Als du losgelaufen bist, war das zu nah am Ball.',
+      gelaufenZuWeitBeimStart: 'Als du losgelaufen bist, war das weit weg vom Ball.',
       naechsterGreift: 'Der Spieler am nächsten am Ball greift an.',
       wegWeit: (spieler) => `Der Weg war weit. ${spieler} war näher am Ball.`,
       zwischenTor: 'Du stehst zwischen Gegner und Tor.',
@@ -166,6 +169,7 @@
       laufZuDribbel: ' Dein Freund dribbelt dafür nach vorne.',
       // V0.6c: Mitspieler reagiert auf das Freilaufen (Entwurf – Wortlaut zur Freigabe in C3/E5)
       laufAngespielt: 'Du warst frei – und dein Freund hat dich angespielt.',
+      laufAngespieltVerloren: 'Dein Freund hat dich angespielt – aber dann hat der Gegner den Ball erobert.',
       laufKeinZuspiel: {
         zone: () => 'Dein Freund steht schon vor dem Tor und entscheidet selbst.',
         besetzt: (gegner) => `${gegner} war zu nah bei dir – da passt dein Freund nicht.`,

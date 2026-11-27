@@ -423,7 +423,9 @@
     if (!cands.length) return null;
     cands.sort((a, b) => b.q - a.q || (a.id < b.id ? -1 : 1) || a.pt.x - b.pt.x || a.pt.y - b.pt.y);
     let best = null, fragil = null;
-    for (const k of cands) {                                         // alle guten Laufziele vorausrechnen
+    for (const k of cands) {                                         // alle guten Laufziele vorausrechnen (nach q absteigend)
+      // Obergrenze des Werts: q + 0,5 (Passweg) + 4 × 0,3 (Nachbarn) – kann kein weiteres Ziel das beste robuste schlagen: fertig
+      if (best && k.q + 1.7 <= best.v) break;
       const m = runEndFree(s, k.id, k.pt);
       if (m == null) continue;
       // nicht „zentimetergenau“: bevorzugt Ziele, bei denen auch ein etwas daneben getippter Punkt (±0,75 m) noch klappt
@@ -1072,15 +1074,6 @@
     return true;
   }
 
-  /** Freilaufen: Ist der Läufer am Ende der Szene anspielbar? Das ist genau die Lage, die das Kind im Rückmeldebild sieht
-   *  und in der es als Nächstes entscheidet (tatsächliche Lage, nicht die Lage bei der Entscheidung). */
-  function arrivalCheck(s, r) {
-    const c = carrier(s);
-    if (!c || c.team !== r.team) return null;
-    const o = passOptions(s).find((x) => x.id === r.id);
-    const free = o.margin > CFG.passLaneOk;
-    return { free, key: free ? null : (o.hit && o.hit.id) || laneKey(s, c, r, 'red'), from: { x: c.x, y: c.y }, to: { x: r.x, y: r.y } };
-  }
   // ---------------------------------------------------------------- V0.6c: Mitspieler reagiert auf das Freilaufen
   // Nach der Ankunft des Läufers prüft der Ballführende das Zuspiel nach festen, objektiven Bedingungen (gleiche Maßstäbe wie
   // der Stern beim Freilaufen, angewendet auf die aktuelle Lage). Kein garantierter Pass, kein Zufall. Ablauf: docs/v0.6c.md.
@@ -1092,45 +1085,78 @@
     t.players.forEach((q) => { q.ctrl = null; q.tx = q.x; q.ty = q.y; });
     return t;
   }
-  /** Sichere Fortsetzungen des Ballführenden aus vorhandenen Auswertungen (situation, dribbleOptions, passOptions).
-   *  Der Pass zum jeweils anderen der beiden Beteiligten zählt nicht (sonst „Mehrwert“ durch Hin- und Herspielen). */
-  function anschluss(s, partnerId) {
-    const c = carrier(s), sit = situation(s), dO = dribbleOptions(s);
-    const dritte = passOptions(s).filter((o) => o.id !== partnerId && o.margin > CFG.passLaneOk);
-    const r = { schuss: !!sit.ok.shoot, dribbeln: !!sit.ok.dribble, passDritter: dritte.length > 0,
-      vorn: !!dO.forwardSafe || dritte.some((o) => P(s, o.id).x > c.x + ZUSPIEL.hinten) };
-    r.anzahl = (r.schuss ? 1 : 0) + (r.dribbeln ? 1 : 0) + (r.passDritter ? 1 : 0);
-    return r;
+  /** Sicherer Weg nach vorn per Dribbling (wie dribbleOptions.forwardSafe: sicheres Dribbling mit ≥ 1 m Raumgewinn,
+   *  gleiche Vorausrechnung dribbleJudge), mit Abbruch beim ersten Fund und Zwischenspeicher je Lage. */
+  const vornCache = new Map();
+  function vornSicher(s) {
+    const key = probeKey(s);
+    if (vornCache.has(key)) return vornCache.get(key);
+    let ok = false;
+    const c = carrier(s);
+    for (const cd of dribbleCandidates(s)) {
+      if (cd.t.x - c.x < D_GAIN) continue;                            // ohne Raumgewinn im Ziel kein „nach vorn“
+      const j = dribbleJudge(s, cd.t, key); if (j.safe && j.gain >= D_GAIN) { ok = true; break; }
+    }
+    if (vornCache.size > 2000) vornCache.clear();
+    vornCache.set(key, ok);
+    return ok;
   }
-  /** E2 (PO 26.11.2026): Ein klarer Rückpass braucht einen situativen Mehrwert beim Empfänger. Gegnerabstand allein zählt nicht. */
+  /** Günstige Anschluss-Fakten des Ballführenden (Schuss frei, Pass zu einem freien Dritten – der Pass zum jeweils
+   *  anderen Beteiligten zählt nicht, sonst entstünde „Mehrwert“ durch Hin- und Herspielen). */
+  function anschlussGuenstig(s, partnerId) {
+    const c = carrier(s);
+    const schuss = inZoneP(c) && Math.max(...shotOptions(s).map((o) => o.margin)) > CFG.shotLaneOk;
+    const dritte = passOptions(s).filter((o) => o.id !== partnerId && o.margin > CFG.passLaneOk);
+    return { schuss, passDritter: dritte.length > 0, passVorn: dritte.some((o) => P(s, o.id).x > c.x + ZUSPIEL.hinten) };
+  }
+  /** E2 (PO 26.11.2026): Ein klarer Rückpass braucht einen situativen Mehrwert beim Empfänger (vorhandene Auswertungen:
+   *  shotOptions, passOptions, Dribbel-Vorausrechnung). Gegnerabstand allein zählt nicht; Dribbeln zählt nur mit sicherem
+   *  Raumgewinn nach vorn („Ball sichern“ hieße nur „hat Platz“).
+   *  optionen: mehr sichere Anschlussoptionen (Schuss, Dribbling nach vorn, Pass zu einem Dritten) · abschluss: freier Schuss ·
+   *  vorn: Empfänger hat eine sichere Fortsetzung nach vorn, der Ballführende keine. Teure Teile nur bei Bedarf. */
   function rueckpassMehrwert(s, r) {
-    const c = carrier(s), A = anschluss(s, r.id), B = anschluss(mitBallBei(s, r.id), c.id);
-    if (B.anzahl > A.anzahl) return 'optionen';
+    const c = carrier(s), h = mitBallBei(s, r.id);
+    const A = anschlussGuenstig(s, r.id), B = anschlussGuenstig(h, c.id);
     if (B.schuss) return 'abschluss';
-    if (B.vorn && !A.vorn) return 'vorn';
+    const nA = (A.schuss ? 1 : 0) + (A.passDritter ? 1 : 0), nB = (B.schuss ? 1 : 0) + (B.passDritter ? 1 : 0);
+    const fB = vornSicher(h);
+    if (nB + (fB ? 1 : 0) > nA + 1) return 'optionen';                 // unabhängig vom Dribbling des Ballführenden
+    const vornB = fB || B.passVorn;
+    if (nB + (fB ? 1 : 0) <= nA && !vornB) return null;                // weder mehr Optionen noch Fortsetzung nach vorn möglich
+    const fA = vornSicher(s);
+    if (nB + (fB ? 1 : 0) > nA + (fA ? 1 : 0)) return 'optionen';
+    if (vornB && !(fA || A.passVorn)) return 'vorn';
     return null;
   }
   const richtungVon = (c, r) => (r.x < c.x - ZUSPIEL.hinten ? 'rueck' : r.x > c.x + ZUSPIEL.hinten ? 'vor' : 'quer');
-  /** Zuspielprüfung. Reihenfolge = genannter Grund: zone → besetzt → zuNah → zuWeit → versperrt → rueckpass. */
-  function zuspielPruefung(s, r) {
+  /** Zuspielprüfung. Reihenfolge = genannter Grund: zone → besetzt → zuNah → zuWeit → versperrt → rueckpass.
+   *  alle = alle nicht erfüllten Bedingungen (jede allein verhindert das Zuspiel). opts.ohneRueck: Rückpass gilt ohne
+   *  Mehrwert-Bewertung als nicht erfüllt (Neuprüfung im Dribbling: wer nach vorn dribbelt, spielt nicht zurück; Rechenzeit). */
+  function zuspielPruefung(s, r, opts) {
     const c = carrier(s);
     if (!c || c.team !== 'blue' || !r || r.id === c.id || s.ball.flight) return { pass: false, grund: 'keinBall', key: null, werte: null };
     const reds = team(s, 'red');
     const nah = reds.slice().sort((x, y) => dist(x, r) - dist(y, r) || (x.id < y.id ? -1 : 1))[0];
     const o = passOptions(s).find((x) => x.id === r.id), d = dist(c, r);
     const werte = { d, open: dist(nah, r), lane: o.margin, richtung: richtungVon(c, r) };
-    const nein = (grund, key) => ({ pass: false, grund, key: key || null, werte });
-    if (c.x >= F.W - F.ZONE - 0.3) return nein('zone');
-    if (werte.open < ZUSPIEL.open) return nein('besetzt', nah.id);
-    if (d < ZUSPIEL.dMin) return nein('zuNah');
-    if (d > ZUSPIEL.dMax) return nein('zuWeit');
-    if (o.margin <= CFG.passLaneOk) return nein('versperrt', (o.hit && o.hit.id) || laneKey(s, c, r, 'red'));
-    if (werte.richtung === 'rueck') { const m = rueckpassMehrwert(s, r); if (!m) return nein('rueckpass'); werte.mehrwert = m; }
-    return { pass: true, grund: null, key: null, werte };
+    const alle = [], keys = {};
+    if (c.x >= F.W - F.ZONE - 0.3) alle.push('zone');
+    if (werte.open < ZUSPIEL.open) { alle.push('besetzt'); keys.besetzt = nah.id; }
+    if (d < ZUSPIEL.dMin) alle.push('zuNah');
+    if (d > ZUSPIEL.dMax) alle.push('zuWeit');
+    if (o.margin <= CFG.passLaneOk) { alle.push('versperrt'); keys.versperrt = (o.hit && o.hit.id) || laneKey(s, c, r, 'red'); }
+    if (!alle.length && werte.richtung === 'rueck') {
+      const m = opts && opts.ohneRueck ? null : rueckpassMehrwert(s, r);
+      if (!m) alle.push('rueckpass'); else werte.mehrwert = m;
+    }
+    if (!alle.length) return { pass: true, grund: null, key: null, werte, alle };
+    return { pass: false, grund: alle[0], key: keys[alle[0]] || null, werte, alle, keys };
   }
   /** Gespeicherter Erklärzeitpunkt: Prüfergebnis mit den Positionen in genau diesem Moment. */
   function zuspielSnap(s, z, r, quelle) {
     const c = carrier(s), pos = (p) => ({ x: p.x, y: p.y });
+    const lauf = s.ep.eval && s.ep.eval.exe && s.ep.eval.exe.lauf;
+    if (!z.pass && z.alle && lauf && lauf !== z.grund && z.alle.includes(lauf)) z = Object.assign({}, z, { grund: lauf, key: z.keys[lauf] || null });
     const gegner = {}; for (const q of team(s, 'red')) gegner[q.id] = pos(q);
     return Object.assign({}, z, { t: s.ep.t, quelle, von: c ? Object.assign({ id: c.id }, pos(c)) : null, zu: Object.assign({ id: r.id }, pos(r)), gegner });
   }
@@ -1199,7 +1225,7 @@
         if (c.x >= F.W - F.ZONE + 0.8 || ep.t - ep.autoT > 2.6 || dist(c, { x: c.tx, y: c.ty }) < 0.05) { c.ctrl = null; c.tx = c.x; c.ty = c.y; ep.endT = ep.t + 0.3; }
         else if ((ep.blicke || 0) < ZUSPIEL.maxBlick && ep.t >= ep.naechstePruefung - 1e-9) {
           ep.naechstePruefung += ZUSPIEL.takt;                         // Neuprüfung im Dribbling (höchstens 2 Blickpausen je Szene)
-          if (zuspielPruefung(s, r).pass) starteBlick(s, c);
+          if (zuspielPruefung(s, r, { ohneRueck: true }).pass) starteBlick(s, c);
         }
       }
       // Obergrenze 8 s; eine begonnene Blickpause bzw. ein Zuspiel endet noch regulär (harte Grenze 10 s)
@@ -1239,7 +1265,7 @@
       // V0.6c: Ergebnis = was der Mitspieler tatsächlich getan hat. Ohne Zuspiel nennt der Text den Grund aus dem
       // gespeicherten Erklärzeitpunkt (ep.zuspiel), nicht aus der späteren Lage.
       const rec = evs.find((e) => e.type === 'received' && e.by === a.id), ic = find('intercepted'), z = ep.zuspiel;
-      if (find('steal')) { text = T.laufBallweg; icon = '😮'; }
+      if (find('steal')) { text = rec ? T.laufAngespieltVerloren : T.laufBallweg; icon = '😮'; }
       else if (rec) { success = true; text = T.laufAngespielt; icon = '🙌'; }
       else if (ic && find('zuspiel')) { text = T.abgefangen(nameOf(s, ic.by)); icon = '😮'; }
       else {
@@ -1281,9 +1307,11 @@
         ? { pass: { from: { x: z.von.x, y: z.von.y }, to: { x: z.zu.x, y: z.zu.y }, ok: rec }, key: rec ? null : z.key,
           zuspiel: { t: z.t, quelle: z.quelle, grund: z.grund, gegner: z.gegner, von: z.von, zu: z.zu } }
         : { pass: null });
-      // Bei der Entscheidung versperrt, dann angespielt: Begründung bezieht sich ausdrücklich auf den Moment des Loslaufens
-      if (rec && ev.exe.lauf === 'versperrt') {
-        const exe = { good: ev.exe.good, why: texts(s).ausfuehren.gelaufenZuBeimStart };
+      if (z && !rec) explain.key = z.key;                            // markierter Gegner = im Ergebnis genannter Gegner
+      // Bei der Entscheidung ungünstig, dann doch angespielt: Begründung bezieht sich ausdrücklich auf den Moment des Loslaufens
+      const beimStart = { versperrt: 'gelaufenZuBeimStart', besetzt: 'gelaufenBesetztBeimStart', zuNah: 'gelaufenZuNahBeimStart', zuWeit: 'gelaufenZuWeitBeimStart' }[ev.exe.lauf];
+      if (rec && beimStart) {
+        const exe = { good: ev.exe.good, why: texts(s).ausfuehren[beimStart] };
         ev = { good: ev.good, rec: ev.rec, exe, why: !ev.rec.good ? ev.rec.why : exe.why };
       }
     }

@@ -12,20 +12,20 @@
   "ballverlustImLauf": 63,
   "stern": 17555,
   "M1": {
-   "zuspiele": 10355,
-   "angenommen": 10355,
+   "zuspiele": 10140,
+   "angenommen": 10140,
    "abgefangen": 0,
    "anteilAngenommen": 100,
-   "zuspielOhneStern": 1221
+   "zuspielOhneStern": 1022
   },
   "M2": {
    "ankunftBedingungErfuellt": 9739,
    "ohneZuspiel": 601,
    "anteil": 6.2,
    "blickZuGruende": {
-    "besetzt": 144,
-    "versperrt": 556,
-    "rueckpass": 33,
+    "besetzt": 134,
+    "versperrt": 495,
+    "rueckpass": 32,
     "zuWeit": 4
    },
    "fehlerOhneBlickZu": 0
@@ -36,39 +36,39 @@
    "anteil": 6.1
   },
   "richtung": {
-   "rueck": 1134,
+   "rueck": 919,
    "quer": 1312,
    "vor": 7909
   },
   "rueckpassMehrwert": {
-   "optionen": 1134
+   "optionen": 919
   },
   "grundOhneZuspiel": {
-   "zuWeit": 29102,
-   "versperrt": 10897,
-   "rueckpass": 5410,
-   "besetzt": 17239,
-   "zuNah": 389,
+   "zuWeit": 36750,
+   "versperrt": 12391,
+   "rueckpass": 5409,
+   "besetzt": 8099,
+   "zuNah": 603,
    "unterwegs": 3
   },
   "M3": {
-   "szenenOhneZuspiel": 63040,
+   "szenenOhneZuspiel": 63255,
    "fehler": 0
   },
   "M4": {
    "folgekontext": {
-    "angriff": 9320,
+    "angriff": 9105,
     "abschluss": 1035
    },
    "empfaengerNichtAmBall": 0,
    "verbessertOhneSicherung": 7216,
-   "verbessertMitSicherung": 8307,
-   "anteilOhneSicherung": 69.7,
+   "verbessertMitSicherung": 8287,
+   "anteilOhneSicherung": 71.2,
    "nachRichtung": {
     "rueck": {
-     "angenommen": 1134,
+     "angenommen": 919,
      "verbessert": 47,
-     "anteil": 4.1
+     "anteil": 5.1
     },
     "quer": {
      "angenommen": 1312,
@@ -85,7 +85,7 @@
     "raum": 6969,
     "zoneTor": 941,
     "optionen": 1333,
-    "sicherung": 4084
+    "sicherung": 4064
    }
   },
   "M6": {
@@ -94,9 +94,9 @@
    "beispiele": []
   },
   "M9": {
-   "szenenMitSpaetemFenster": 1317,
-   "spaeteBlicke": 1353,
-   "davonZuspiel": 1222,
+   "szenenMitSpaetemFenster": 1047,
+   "spaeteBlicke": 1066,
+   "davonZuspiel": 1007,
    "mehrAls2Blicke": 0
   }
  },

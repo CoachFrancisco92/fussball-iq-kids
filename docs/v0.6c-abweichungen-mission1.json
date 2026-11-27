@@ -653,7 +653,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
-   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
    "hilfe": null
   }
  },
@@ -972,7 +972,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
-   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
    "hilfe": null
   }
  },
@@ -1059,7 +1059,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Von dort war der Passweg versperrt.",
-   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
    "hilfe": null
   }
  },
@@ -1548,7 +1548,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Das war zu nah am Ball – dein Freund braucht Platz.",
-   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das war zu nah am Ball – dein Freund braucht Platz.",
+   "gesagt": "Du warst zu nah an deinem Freund – da passt er nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das war zu nah am Ball – dein Freund braucht Platz.",
    "hilfe": null
   }
  },
@@ -1577,7 +1577,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Von dort war der Passweg versperrt.",
-   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
    "hilfe": null
   }
  },
@@ -1664,7 +1664,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Von dort war der Passweg versperrt.",
-   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 3 stand im Passweg. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
    "hilfe": null
   }
  },
@@ -1722,7 +1722,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
-   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
    "hilfe": null
   }
  },
@@ -1865,7 +1865,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Von dort war der Passweg versperrt.",
-   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
    "hilfe": null
   }
  },
@@ -3104,7 +3104,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
-   "gesagt": "Rot 2 war zu nah bei dir – da passt dein Freund nicht. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst zu weit weg für einen Pass. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
    "hilfe": null
   }
  },
@@ -3677,7 +3677,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
-   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Gute Idee, dich freizulaufen! Aber schau mal: Das ist zu weit weg vom Ball – dort kann dich dein Freund schwer erreichen.",
+   "gesagt": "Du warst frei – und dein Freund hat dich angespielt. Gute Idee, dich freizulaufen! Aber schau mal: Als du losgelaufen bist, war das weit weg vom Ball.",
    "hilfe": null
   }
  },
@@ -3761,7 +3761,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Von dort war der Passweg versperrt.",
-   "gesagt": "Rot 1 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
    "hilfe": null
   }
  },
@@ -3906,7 +3906,7 @@
    "entscheidungWarum": "Du hast deinem Freund geholfen, statt stehen zu bleiben.",
    "ziel": false,
    "zielWarum": "Von dort war der Passweg versperrt.",
-   "gesagt": "Rot 3 war zu nah bei dir – da passt dein Freund nicht. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
+   "gesagt": "Rot 2 stand im Passweg. Dein Freund dribbelt dafür nach vorne. Gute Idee, dich freizulaufen! Aber schau mal: Von dort war der Passweg versperrt.",
    "hilfe": null
   }
  },
